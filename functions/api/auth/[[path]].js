@@ -1,5 +1,5 @@
 // functions/api/auth/[[path]].js
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+ import { createClient } from '@supabase/supabase-js';
 
 // Initialize Supabase client
 function getSupabaseClient(env) {
