@@ -1,11 +1,19 @@
 // functions/api/auth/[[path]].js
- import { createClient } from '@supabase/supabase-js';
+import { createClient } from '@supabase/supabase-js';
 
 // Initialize Supabase client
 function getSupabaseClient(env) {
   return createClient(
     env.SUPABASE_URL,
-    env.SUPABASE_ANON_KEY
+    env.SUPABASE_ANON_KEY,
+    {
+      auth: {
+        flowType: 'pkce',
+        autoRefreshToken: true,
+        persistSession: true,
+        detectSessionInUrl: true
+      }
+    }
   );
 }
 
@@ -99,15 +107,14 @@ async function handleLogin(request, env) {
   });
 }
 
-// Google OAuth
+// Google OAuth - SIMPLIFIED using Supabase's callback
 async function handleGoogleAuth(request, env) {
   const supabase = getSupabaseClient(env);
   
+  // Let Supabase handle the callback at its own endpoint
   const { data, error } = await supabase.auth.signInWithOAuth({
-    provider: 'google',
-    options: {
-      redirectTo: `${new URL(request.url).origin}/api/auth/callback`
-    }
+    provider: 'google'
+    // No redirectTo - uses Supabase's default callback
   });
   
   if (error) {
@@ -119,47 +126,6 @@ async function handleGoogleAuth(request, env) {
   
   // Redirect to Google OAuth
   return Response.redirect(data.url, 302);
-}
-
-// Auth callback
-async function handleCallback(request, env) {
-  const url = new URL(request.url);
-  const code = url.searchParams.get('code');
-  
-  if (!code) {
-    return Response.redirect(`${url.origin}/login.html?error=no_code`, 302);
-  }
-  
-  const supabase = getSupabaseClient(env);
-  
-  const { data, error } = await supabase.auth.exchangeCodeForSession(code);
-  
-  if (error) {
-    return Response.redirect(`${url.origin}/login.html?error=auth_failed`, 302);
-  }
-  
-  // Create profile if it doesn't exist
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', data.user.id)
-    .single();
-  
-  if (!profile) {
-    await supabase
-      .from('profiles')
-      .insert([
-        { 
-          id: data.user.id,
-          name: data.user.user_metadata.name || data.user.user_metadata.full_name || 'User',
-          email: data.user.email,
-          created_at: new Date().toISOString()
-        }
-      ]);
-  }
-  
-  // Redirect to app with session
-  return Response.redirect(`${url.origin}/app.html?session=${data.session.access_token}`, 302);
 }
 
 // Logout
@@ -176,6 +142,25 @@ async function handleLogout(request, env) {
   }
   
   return new Response(JSON.stringify({ success: true }), {
+    status: 200,
+    headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+  });
+}
+
+// Get current user session
+async function handleGetSession(request, env) {
+  const supabase = getSupabaseClient(env);
+  
+  const { data: { session }, error } = await supabase.auth.getSession();
+  
+  if (error) {
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 400,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+    });
+  }
+  
+  return new Response(JSON.stringify({ session }), {
     status: 200,
     headers: { ...corsHeaders, 'Content-Type': 'application/json' }
   });
@@ -201,10 +186,10 @@ export async function onRequest(context) {
         return await handleLogin(request, env);
       case 'google':
         return await handleGoogleAuth(request, env);
-      case 'callback':
-        return await handleCallback(request, env);
       case 'logout':
         return await handleLogout(request, env);
+      case 'session':
+        return await handleGetSession(request, env);
       default:
         return new Response(JSON.stringify({ error: 'Not found' }), {
           status: 404,
