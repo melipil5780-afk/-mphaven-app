@@ -1,7 +1,19 @@
 // functions/api/auth/[[path]].js
-// Cloudflare Pages Functions for authentication
-
 import { createClient } from '@supabase/supabase-js';
+
+// CORS headers helper
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+};
+
+// Add OPTIONS handler
+export async function onRequestOptions() {
+  return new Response(null, {
+    headers: corsHeaders
+  });
+}
 
 // Initialize Supabase client
 function getSupabaseClient(env) {
@@ -11,213 +23,237 @@ function getSupabaseClient(env) {
   );
 }
 
-// CORS headers
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-};
-
-// Handle OPTIONS requests
-function handleOptions() {
-  return new Response(null, {
-    headers: corsHeaders
-  });
-}
-
-// Sign up new user
 async function handleSignup(request, env) {
-  const { email, password, name } = await request.json();
-  
-  const supabase = getSupabaseClient(env);
-  
-  // Create user in Supabase Auth
-  const { data: authData, error: authError } = await supabase.auth.signUp({
-    email,
-    password,
-    options: {
-      data: {
-        name: name
-      }
+  try {
+    const { email, password, name } = await request.json();
+    const supabase = getSupabaseClient(env);
+    
+    const { data: authData, error: authError } = await supabase.auth.signUp({
+      email,
+      password,
+      options: { data: { name } }
+    });
+    
+    if (authError) throw authError;
+    
+    // Create profile
+    if (authData.user) {
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .upsert([
+          { 
+            id: authData.user.id,
+            name: name,
+            email: email,
+            created_at: new Date().toISOString()
+          }
+        ]);
+      
+      if (profileError) console.error('Profile error:', profileError);
     }
-  });
-  
-  if (authError) {
-    return new Response(JSON.stringify({ error: authError.message }), {
+    
+    return new Response(JSON.stringify({ 
+      user: authData.user,
+      session: authData.session 
+    }), {
+      status: 200,
+      headers: { 
+        'Content-Type': 'application/json',
+        ...corsHeaders 
+      }
+    });
+  } catch (error) {
+    return new Response(JSON.stringify({ error: error.message }), {
       status: 400,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      headers: { 
+        'Content-Type': 'application/json',
+        ...corsHeaders 
+      }
     });
   }
-  
-  // Create user profile in database
-  const { error: profileError } = await supabase
-    .from('profiles')
-    .insert([
-      { 
-        id: authData.user.id,
-        name: name,
-        email: email,
-        created_at: new Date().toISOString()
-      }
-    ]);
-  
-  if (profileError) {
-    console.error('Profile creation error:', profileError);
-  }
-  
-  return new Response(JSON.stringify({ 
-    user: authData.user,
-    session: authData.session
-  }), {
-    status: 200,
-    headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-  });
 }
 
-// Login existing user
 async function handleLogin(request, env) {
-  const { email, password } = await request.json();
-  
-  const supabase = getSupabaseClient(env);
-  
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email,
-    password
-  });
-  
-  if (error) {
+  try {
+    const { email, password } = await request.json();
+    const supabase = getSupabaseClient(env);
+    
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password
+    });
+    
+    if (error) throw error;
+    
+    return new Response(JSON.stringify({ 
+      user: data.user,
+      session: data.session 
+    }), {
+      status: 200,
+      headers: { 
+        'Content-Type': 'application/json',
+        ...corsHeaders 
+      }
+    });
+  } catch (error) {
     return new Response(JSON.stringify({ error: error.message }), {
       status: 401,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      headers: { 
+        'Content-Type': 'application/json',
+        ...corsHeaders 
+      }
     });
   }
-  
-  return new Response(JSON.stringify({ 
-    user: data.user,
-    session: data.session
-  }), {
-    status: 200,
-    headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-  });
 }
 
-// Google OAuth
 async function handleGoogleAuth(request, env) {
   const supabase = getSupabaseClient(env);
+  const url = new URL(request.url);
   
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: `${new URL(request.url).origin}/api/auth/callback`
+      redirectTo: `${url.origin}/api/auth/callback`,
+      queryParams: {
+        access_type: 'offline',
+        prompt: 'consent'
+      }
     }
   });
   
   if (error) {
     return new Response(JSON.stringify({ error: error.message }), {
       status: 400,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      headers: { 
+        'Content-Type': 'application/json',
+        ...corsHeaders 
+      }
     });
   }
   
-  // Redirect to Google OAuth
   return Response.redirect(data.url, 302);
 }
 
-// Auth callback
 async function handleCallback(request, env) {
   const url = new URL(request.url);
   const code = url.searchParams.get('code');
   
   if (!code) {
-    return Response.redirect(`${url.origin}/login.html?error=no_code`, 302);
+    return Response.redirect(`${url.origin}/login?error=no_code`, 302);
   }
   
   const supabase = getSupabaseClient(env);
   
-  const { data, error } = await supabase.auth.exchangeCodeForSession(code);
-  
-  if (error) {
-    return Response.redirect(`${url.origin}/login.html?error=auth_failed`, 302);
-  }
-  
-  // Create profile if it doesn't exist
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', data.user.id)
-    .single();
-  
-  if (!profile) {
-    await supabase
-      .from('profiles')
-      .insert([
-        { 
+  try {
+    const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+    
+    if (error) throw error;
+    
+    // Upsert profile for OAuth users
+    if (data.user) {
+      await supabase
+        .from('profiles')
+        .upsert({
           id: data.user.id,
-          name: data.user.user_metadata.name || data.user.user_metadata.full_name || 'User',
+          name: data.user.user_metadata.name || 
+                data.user.user_metadata.full_name || 
+                data.user.user_metadata.user_name ||
+                'User',
           email: data.user.email,
-          created_at: new Date().toISOString()
-        }
-      ]);
+          avatar_url: data.user.user_metadata.avatar_url,
+          updated_at: new Date().toISOString()
+        }, {
+          onConflict: 'id'
+        });
+    }
+    
+    // Set cookie or redirect with token
+    const html = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Authenticating...</title>
+          <script>
+            localStorage.setItem('supabase.auth.token', '${data.session.access_token}');
+            window.location.href = '${url.origin}/app';
+          </script>
+        </head>
+        <body>
+          <p>Redirecting...</p>
+        </body>
+      </html>
+    `;
+    
+    return new Response(html, {
+      status: 200,
+      headers: { 'Content-Type': 'text/html' }
+    });
+    
+  } catch (error) {
+    console.error('Callback error:', error);
+    return Response.redirect(`${url.origin}/login?error=auth_failed`, 302);
   }
-  
-  // Redirect to app with session
-  return Response.redirect(`${url.origin}/app.html?session=${data.session.access_token}`, 302);
 }
 
-// Logout
 async function handleLogout(request, env) {
   const supabase = getSupabaseClient(env);
   
-  const { error } = await supabase.auth.signOut();
-  
-  if (error) {
+  try {
+    const { error } = await supabase.auth.signOut();
+    if (error) throw error;
+    
+    return new Response(JSON.stringify({ success: true }), {
+      status: 200,
+      headers: { 
+        'Content-Type': 'application/json',
+        ...corsHeaders 
+      }
+    });
+  } catch (error) {
     return new Response(JSON.stringify({ error: error.message }), {
       status: 400,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      headers: { 
+        'Content-Type': 'application/json',
+        ...corsHeaders 
+      }
     });
   }
-  
-  return new Response(JSON.stringify({ success: true }), {
-    status: 200,
-    headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-  });
 }
 
 // Main handler
 export async function onRequest(context) {
   const { request, env } = context;
+  
+  // Handle OPTIONS requests
+  if (request.method === 'OPTIONS') {
+    return onRequestOptions();
+  }
+  
   const url = new URL(request.url);
   const path = url.pathname.replace('/api/auth/', '');
   
-  // Handle OPTIONS for CORS
-  if (request.method === 'OPTIONS') {
-    return handleOptions();
+  switch (path) {
+    case 'signup':
+      if (request.method === 'POST') return handleSignup(request, env);
+      break;
+    case 'login':
+      if (request.method === 'POST') return handleLogin(request, env);
+      break;
+    case 'google':
+      return handleGoogleAuth(request, env);
+    case 'callback':
+      return handleCallback(request, env);
+    case 'logout':
+      if (request.method === 'POST') return handleLogout(request, env);
+      break;
   }
   
-  try {
-    // Route to appropriate handler
-    switch (path) {
-      case 'signup':
-        return await handleSignup(request, env);
-      case 'login':
-        return await handleLogin(request, env);
-      case 'google':
-        return await handleGoogleAuth(request, env);
-      case 'callback':
-        return await handleCallback(request, env);
-      case 'logout':
-        return await handleLogout(request, env);
-      default:
-        return new Response(JSON.stringify({ error: 'Not found' }), {
-          status: 404,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-        });
+  // Method not allowed or not found
+  return new Response(JSON.stringify({ error: 'Not found' }), {
+    status: 404,
+    headers: { 
+      'Content-Type': 'application/json',
+      ...corsHeaders 
     }
-  } catch (error) {
-    console.error('Auth error:', error);
-    return new Response(JSON.stringify({ error: 'Internal server error' }), {
-      status: 500,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-    });
-  }
+  });
 }
