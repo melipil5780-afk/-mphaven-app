@@ -44,7 +44,7 @@ export async function onRequest(context) {
   }
 }
 
-// Helper functions (keep outside onRequest)
+// Helper functions
 async function handleSignup(request, env) {
   const { email, password, name } = await request.json();
   
@@ -54,13 +54,10 @@ async function handleSignup(request, env) {
     env.SUPABASE_ANON_KEY
   );
   
-  // Create user in Supabase Auth
   const { data: authData, error: authError } = await supabase.auth.signUp({
     email,
     password,
-    options: {
-      data: { name: name }
-    }
+    options: { data: { name: name } }
   });
   
   if (authError) {
@@ -73,7 +70,7 @@ async function handleSignup(request, env) {
     });
   }
   
-  // Create user profile
+  // Create profile
   const { error: profileError } = await supabase
     .from('profiles')
     .insert([{ 
@@ -84,7 +81,7 @@ async function handleSignup(request, env) {
     }]);
   
   if (profileError) {
-    console.error('Profile creation error:', profileError);
+    console.error('Profile error:', profileError);
   }
   
   return new Response(JSON.stringify({ 
@@ -140,17 +137,13 @@ async function handleGoogleAuth(request, env) {
   const supabase = createClient(
     env.SUPABASE_URL,
     env.SUPABASE_ANON_KEY,
-    {
-      auth: { flowType: 'pkce' }
-    }
+    { auth: { flowType: 'pkce' } }
   );
-  
-  const origin = new URL(request.url).origin;
   
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: `${origin}/app.html`
+      redirectTo: 'https://mphaven-app.pages.dev/app.html'
     }
   });
   
@@ -164,7 +157,6 @@ async function handleGoogleAuth(request, env) {
     });
   }
   
-  // Redirect to Google OAuth
   return Response.redirect(data.url, 302);
 }
 
