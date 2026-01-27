@@ -1,10 +1,13 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign In - MPHaven</title>
+    <title>Sign Up - MPHaven</title>
+    
+    <!-- ✅ ADD THIS LINE: Supabase Client Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <style>
         * {
             margin: 0;
@@ -12,305 +15,331 @@
             box-sizing: border-box;
         }
 
-```
-    @keyframes pulse-glow {
-        0%, 100% { opacity: 0.2; }
-        50% { opacity: 0.4; }
-    }
-    
-    html, body {
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-    }
-    
-    body {
-        background: linear-gradient(to bottom, #020617, #0f172a, #020617);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    
-    .container {
-        width: 100%;
-        max-width: 28rem;
-        height: 100vh;
-        background: rgba(15, 23, 42, 0.5);
-        backdrop-filter: blur(40px);
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-        display: flex;
-        flex-direction: column;
-        overflow-y: auto;
-        position: relative;
-        border: 1px solid rgba(30, 41, 59, 0.5);
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-    }
-    
-    .container::-webkit-scrollbar {
-        display: none;
-    }
-    
-    .bg-blur-1 {
-        position: absolute;
-        top: -10%;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 30rem;
-        height: 30rem;
-        background: rgba(147, 51, 234, 0.15);
-        border-radius: 50%;
-        filter: blur(120px);
-        pointer-events: none;
-        animation: pulse-glow 4s ease-in-out infinite;
-    }
-    
-    .content {
-        position: relative;
-        z-index: 10;
-        padding: 3rem 2rem;
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-    
-    .back-btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        color: rgb(148, 163, 184);
-        font-size: 0.875rem;
-        font-weight: 500;
-        margin-bottom: 2rem;
-        cursor: pointer;
-        border: none;
-        background: none;
-        padding: 0;
-        transition: color 0.3s;
-    }
-    
-    .back-btn:hover {
-        color: white;
-    }
-    
-    .back-btn svg {
-        width: 1.25rem;
-        height: 1.25rem;
-    }
-    
-    h1 {
-        color: white;
-        font-size: 2.5rem;
-        font-weight: 700;
-        letter-spacing: -0.025em;
-        margin-bottom: 0.5rem;
-    }
-    
-    .subtitle {
-        color: rgb(148, 163, 184);
-        font-size: 1rem;
-        margin-bottom: 2rem;
-    }
-    
-    .form-group {
-        margin-bottom: 1.5rem;
-    }
-    
-    label {
-        display: block;
-        color: rgb(203, 213, 225);
-        font-size: 0.875rem;
-        font-weight: 600;
-        margin-bottom: 0.5rem;
-    }
-    
-    input {
-        width: 100%;
-        padding: 0.875rem 1rem;
-        background: rgba(30, 41, 59, 0.6);
-        border: 1px solid rgba(100, 116, 139, 0.3);
-        border-radius: 0.75rem;
-        color: white;
-        font-size: 1rem;
-        transition: all 0.3s;
-    }
-    
-    input:focus {
-        outline: none;
-        border-color: #9333EA;
-        background: rgba(30, 41, 59, 0.8);
-        box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.1);
-    }
-    
-    input::placeholder {
-        color: rgb(100, 116, 139);
-    }
-    
-    .form-footer {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 1.5rem;
-    }
-    
-    .checkbox-group {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-    
-    input[type="checkbox"] {
-        width: 1.125rem;
-        height: 1.125rem;
-        cursor: pointer;
-    }
-    
-    .checkbox-label {
-        color: rgb(148, 163, 184);
-        font-size: 0.875rem;
-    }
-    
-    .forgot-link {
-        color: #9333EA;
-        font-size: 0.875rem;
-        text-decoration: none;
-        font-weight: 500;
-    }
-    
-    .forgot-link:hover {
-        text-decoration: underline;
-    }
-    
-    .btn {
-        width: 100%;
-        padding: 1rem 1.5rem;
-        border-radius: 1rem;
-        font-size: 1rem;
-        font-weight: 600;
-        border: none;
-        cursor: pointer;
-        transition: all 0.3s;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.75rem;
-    }
-    
-    .btn:active {
-        transform: scale(0.98);
-    }
-    
-    .btn:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-    }
-    
-    .btn-primary {
-        background: linear-gradient(135deg, #9333EA, #7C3AED);
-        color: white;
-        box-shadow: 0 10px 25px rgba(147, 51, 234, 0.4);
-    }
-    
-    .btn-primary:hover:not(:disabled) {
-        box-shadow: 0 15px 35px rgba(147, 51, 234, 0.5);
-        transform: translateY(-2px);
-    }
-    
-    .divider {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        margin: 1.5rem 0;
-    }
-    
-    .divider-line {
-        flex: 1;
-        height: 1px;
-        background: rgba(100, 116, 139, 0.3);
-    }
-    
-    .divider-text {
-        color: rgb(148, 163, 184);
-        font-size: 0.875rem;
-        font-weight: 500;
-    }
-    
-    .social-btn {
-        width: 100%;
-        padding: 0.875rem 1.5rem;
-        border-radius: 0.75rem;
-        font-size: 0.875rem;
-        font-weight: 600;
-        border: 1px solid rgba(100, 116, 139, 0.3);
-        background: rgba(30, 41, 59, 0.6);
-        color: white;
-        cursor: pointer;
-        transition: all 0.3s;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.75rem;
-    }
-    
-    .social-btn:hover {
-        background: rgba(30, 41, 59, 0.8);
-        border-color: rgba(100, 116, 139, 0.5);
-    }
-    
-    .social-btn svg {
-        width: 1.25rem;
-        height: 1.25rem;
-    }
-    
-    .signup-link {
-        text-align: center;
-        margin-top: 2rem;
-        color: rgb(148, 163, 184);
-        font-size: 0.875rem;
-    }
-    
-    .signup-link a {
-        color: #9333EA;
-        text-decoration: none;
-        font-weight: 600;
-    }
-    
-    .signup-link a:hover {
-        text-decoration: underline;
-    }
-    
-    .error-message {
-        background: rgba(239, 68, 68, 0.1);
-        border: 1px solid rgba(239, 68, 68, 0.3);
-        color: rgb(252, 165, 165);
-        padding: 0.75rem 1rem;
-        border-radius: 0.75rem;
-        font-size: 0.875rem;
-        margin-bottom: 1.5rem;
-        display: none;
-    }
-    
-    .error-message.show {
-        display: block;
-    }
-    
-    @media (min-width: 640px) {
-        .container {
-            height: 844px;
-            border-radius: 2.5rem;
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 0.4; }
         }
-    }
-</style>
-```
-
+        
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        body {
+            background: linear-gradient(to bottom, #020617, #0f172a, #020617);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 28rem;
+            height: 100vh;
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(40px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            position: relative;
+            border: 1px solid rgba(30, 41, 59, 0.5);
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        .container::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .bg-blur-1 {
+            position: absolute;
+            top: -10%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30rem;
+            height: 30rem;
+            background: rgba(147, 51, 234, 0.15);
+            border-radius: 50%;
+            filter: blur(120px);
+            pointer-events: none;
+            animation: pulse-glow 4s ease-in-out infinite;
+        }
+        
+        .content {
+            position: relative;
+            z-index: 10;
+            padding: 3rem 2rem;
+            flex: 1;
+        }
+        
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: rgb(148, 163, 184);
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            cursor: pointer;
+            border: none;
+            background: none;
+            padding: 0;
+            transition: color 0.3s;
+        }
+        
+        .back-btn:hover {
+            color: white;
+        }
+        
+        .back-btn svg {
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+        
+        h1 {
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            color: rgb(148, 163, 184);
+            font-size: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            color: rgb(203, 213, 225);
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(100, 116, 139, 0.3);
+            border-radius: 0.75rem;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #9333EA;
+            background: rgba(30, 41, 59, 0.8);
+            box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.1);
+        }
+        
+        input::placeholder {
+            color: rgb(100, 116, 139);
+        }
+        
+        .password-strength {
+            margin-top: 0.5rem;
+            display: flex;
+            gap: 0.25rem;
+        }
+        
+        .strength-bar {
+            flex: 1;
+            height: 0.25rem;
+            background: rgba(100, 116, 139, 0.3);
+            border-radius: 9999px;
+            transition: all 0.3s;
+        }
+        
+        .strength-bar.active {
+            background: #9333EA;
+        }
+        
+        .strength-text {
+            font-size: 0.75rem;
+            color: rgb(148, 163, 184);
+            margin-top: 0.5rem;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: start;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        input[type="checkbox"] {
+            width: 1.25rem;
+            height: 1.25rem;
+            margin-top: 0.125rem;
+            cursor: pointer;
+        }
+        
+        .checkbox-label {
+            color: rgb(148, 163, 184);
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+        
+        .checkbox-label a {
+            color: #9333EA;
+            text-decoration: none;
+        }
+        
+        .checkbox-label a:hover {
+            text-decoration: underline;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border-radius: 1rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+        
+        .btn:active {
+            transform: scale(0.98);
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #9333EA, #7C3AED);
+            color: white;
+            box-shadow: 0 10px 25px rgba(147, 51, 234, 0.4);
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            box-shadow: 0 15px 35px rgba(147, 51, 234, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .divider-line {
+            flex: 1;
+            height: 1px;
+            background: rgba(100, 116, 139, 0.3);
+        }
+        
+        .divider-text {
+            color: rgb(148, 163, 184);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        
+        .social-btn {
+            width: 100%;
+            padding: 0.875rem 1.5rem;
+            border-radius: 0.75rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            border: 1px solid rgba(100, 116, 139, 0.3);
+            background: rgba(30, 41, 59, 0.6);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+        
+        .social-btn:hover {
+            background: rgba(30, 41, 59, 0.8);
+            border-color: rgba(100, 116, 139, 0.5);
+        }
+        
+        .social-btn svg {
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+        
+        .signin-link {
+            text-align: center;
+            margin-top: 2rem;
+            color: rgb(148, 163, 184);
+            font-size: 0.875rem;
+        }
+        
+        .signin-link a {
+            color: #9333EA;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .signin-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: rgb(252, 165, 165);
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+            font-size: 0.875rem;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+        
+        .error-message.show {
+            display: block;
+        }
+        
+        .success-message {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: rgb(110, 231, 183);
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+            font-size: 0.875rem;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+        
+        .success-message.show {
+            display: block;
+        }
+        
+        @media (min-width: 640px) {
+            .container {
+                height: 844px;
+                border-radius: 2.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
 
-```
 <div class="container">
     <div class="bg-blur-1"></div>
     
@@ -322,12 +351,20 @@
             Back
         </button>
         
-        <h1>Welcome Back</h1>
-        <p class="subtitle">Sign in to continue your journey</p>
+        <h1>Create Account</h1>
+        <p class="subtitle">Start your journey to authentic wellbeing</p>
         
         <div id="errorMessage" class="error-message"></div>
+        <div id="successMessage" class="success-message">
+            ✅ Account created successfully! Please check your email to confirm your account.
+        </div>
         
-        <form id="loginForm" onsubmit="handleLogin(event)">
+        <form id="signupForm" onsubmit="handleSignup(event)">
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" placeholder="Enter your name" required>
+            </div>
+            
             <div class="form-group">
                 <label for="email">Email Address</label>
                 <input type="email" id="email" name="email" placeholder="you@example.com" required>
@@ -335,22 +372,28 @@
             
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                <input type="password" id="password" name="password" placeholder="Create a strong password" required minlength="8" oninput="checkPasswordStrength()">
+                <div class="password-strength">
+                    <div class="strength-bar" id="strength1"></div>
+                    <div class="strength-bar" id="strength2"></div>
+                    <div class="strength-bar" id="strength3"></div>
+                    <div class="strength-bar" id="strength4"></div>
+                </div>
+                <div class="strength-text" id="strengthText">At least 8 characters</div>
             </div>
             
-            <div class="form-footer">
-                <div class="checkbox-group">
-                    <input type="checkbox" id="remember">
-                    <label for="remember" class="checkbox-label">Remember me</label>
-                </div>
-                <a href="#" class="forgot-link">Forgot password?</a>
+            <div class="checkbox-group">
+                <input type="checkbox" id="terms" required>
+                <label for="terms" class="checkbox-label">
+                    I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                </label>
             </div>
             
             <button type="submit" class="btn btn-primary" id="submitBtn">
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 1.5rem; height: 1.5rem;">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                 </svg>
-                Sign In
+                Create Account
             </button>
         </form>
         
@@ -370,67 +413,152 @@
             Google
         </button>
         
-        <p class="signup-link">
-            Don't have an account? <a href="signup.html">Create one</a>
+        <p class="signin-link">
+            Already have an account? <a href="login.html">Sign In</a>
         </p>
     </div>
 </div>
 
 <script>
-    async function handleLogin(event) {
+    // ✅ ADDED: Your Supabase Credentials
+    const SUPABASE_URL = 'https://ocdwpaefmslyidelkzde.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJHUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jZHdwYWVmbXNseWlkZWxremRlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk0NjQ1OTQsImV4cCI6MjA4NTA0MDU5NH0.OAYuCQhxrmZMLI_H8OuaJvs7dKVm82gUPgGzQDUYq-Q';
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // ✅ ADDED: Check if user is already logged in
+    async function checkAuth() {
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        if (session) {
+            // User is already logged in - redirect to main app
+            window.location.href = 'app.html';
+        }
+    }
+
+    // Check auth on page load
+    checkAuth();
+
+    function checkPasswordStrength() {
+        const password = document.getElementById('password').value;
+        const strength = [
+            document.getElementById('strength1'),
+            document.getElementById('strength2'),
+            document.getElementById('strength3'),
+            document.getElementById('strength4')
+        ];
+        const strengthText = document.getElementById('strengthText');
+        
+        // Reset
+        strength.forEach(bar => bar.classList.remove('active'));
+        
+        let score = 0;
+        if (password.length >= 8) score++;
+        if (password.length >= 12) score++;
+        if (/[a-z]/.test(password) && /[A-Z]/.test(password)) score++;
+        if (/[0-9]/.test(password) && /[^a-zA-Z0-9]/.test(password)) score++;
+        
+        for (let i = 0; i < score; i++) {
+            strength[i].classList.add('active');
+        }
+        
+        const messages = [
+            'At least 8 characters',
+            'Weak password',
+            'Fair password',
+            'Good password',
+            'Strong password'
+        ];
+        
+        strengthText.textContent = messages[score];
+    }
+    
+    async function handleSignup(event) {
         event.preventDefault();
         
         const submitBtn = document.getElementById('submitBtn');
         const errorMessage = document.getElementById('errorMessage');
+        const successMessage = document.getElementById('successMessage');
         
         submitBtn.disabled = true;
-        submitBtn.textContent = 'Signing in...';
+        submitBtn.innerHTML = '<span>Creating account...</span>';
         errorMessage.classList.remove('show');
+        successMessage.classList.remove('show');
         
         const formData = {
+            name: document.getElementById('name').value,
             email: document.getElementById('email').value,
-            password: document.getElementById('password').value,
-            remember: document.getElementById('remember').checked
+            password: document.getElementById('password').value
         };
         
         try {
-            const response = await fetch('/api/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
+            // ✅ UPDATED: Use Supabase for signup
+            const { data, error } = await supabase.auth.signUp({
+                email: formData.email,
+                password: formData.password,
+                options: {
+                    data: {
+                        name: formData.name,
+                        full_name: formData.name
+                    },
+                    emailRedirectTo: window.location.origin + '/app.html'
+                }
             });
             
-            const data = await response.json();
+            if (error) throw error;
             
-            if (response.ok) {
-                // Success - redirect to app
-                window.location.href = 'app.html';
-            } else {
-                // Show error
-                errorMessage.textContent = data.error || 'Invalid email or password. Please try again.';
-                errorMessage.classList.add('show');
-            }
+            // Show success message
+            successMessage.textContent = '✅ Account created successfully! Please check your email to confirm your account.';
+            successMessage.classList.add('show');
+            
+            // Clear form
+            document.getElementById('signupForm').reset();
+            checkPasswordStrength();
+            
+            // Optional: Auto-redirect after a few seconds if email confirmation not required
+            // setTimeout(() => {
+            //     window.location.href = 'app.html';
+            // }, 3000);
+            
         } catch (error) {
-            errorMessage.textContent = 'Network error. Please check your connection and try again.';
+            console.error('Signup error:', error);
+            errorMessage.textContent = error.message || 'Failed to create account. Please try again.';
             errorMessage.classList.add('show');
         } finally {
             submitBtn.disabled = false;
             submitBtn.innerHTML = `
                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 1.5rem; height: 1.5rem;">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                 </svg>
-                Sign In
+                Create Account
             `;
         }
     }
     
-    function signInWithGoogle() {
-        window.location.href = '/api/auth/google';
+    async function signInWithGoogle() {
+        try {
+            const { data, error } = await supabase.auth.signInWithOAuth({
+                provider: 'google',
+                options: {
+                    redirectTo: window.location.origin + '/app.html'
+                }
+            });
+            
+            if (error) throw error;
+        } catch (error) {
+            console.error('Google sign in error:', error.message);
+            document.getElementById('errorMessage').textContent = 'Google sign in failed. Please try again.';
+            document.getElementById('errorMessage').classList.add('show');
+        }
     }
+
+    // Listen for auth changes
+    supabase.auth.onAuthStateChange((event, session) => {
+        if (event === 'SIGNED_IN' && session) {
+            // Redirect to main app when user signs in (for OAuth)
+            window.location.href = 'app.html';
+        }
+    });
 </script>
-```
 
 </body>
 </html>
