@@ -1,5 +1,15 @@
 // functions/api/auth/[[path]].js
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.0';
+// Cloudflare Pages Functions for authentication
+
+import { createClient } from '@supabase/supabase-js';
+
+// Initialize Supabase client
+function getSupabaseClient(env) {
+  return createClient(
+    env.SUPABASE_URL,
+    env.SUPABASE_ANON_KEY
+  );
+}
 
 // CORS headers
 const corsHeaders = {
@@ -19,7 +29,7 @@ function handleOptions() {
 async function handleSignup(request, env) {
   const { email, password, name } = await request.json();
   
-  const supabase = createClient(env.SUPABASE_URL, env.SUPABASE_ANON_KEY);
+  const supabase = getSupabaseClient(env);
   
   // Create user in Supabase Auth
   const { data: authData, error: authError } = await supabase.auth.signUp({
@@ -68,7 +78,7 @@ async function handleSignup(request, env) {
 async function handleLogin(request, env) {
   const { email, password } = await request.json();
   
-  const supabase = createClient(env.SUPABASE_URL, env.SUPABASE_ANON_KEY);
+  const supabase = getSupabaseClient(env);
   
   const { data, error } = await supabase.auth.signInWithPassword({
     email,
@@ -93,7 +103,7 @@ async function handleLogin(request, env) {
 
 // Google OAuth
 async function handleGoogleAuth(request, env) {
-  const supabase = createClient(env.SUPABASE_URL, env.SUPABASE_ANON_KEY);
+  const supabase = getSupabaseClient(env);
   
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
@@ -122,7 +132,7 @@ async function handleCallback(request, env) {
     return Response.redirect(`${url.origin}/login.html?error=no_code`, 302);
   }
   
-  const supabase = createClient(env.SUPABASE_URL, env.SUPABASE_ANON_KEY);
+  const supabase = getSupabaseClient(env);
   
   const { data, error } = await supabase.auth.exchangeCodeForSession(code);
   
@@ -156,7 +166,7 @@ async function handleCallback(request, env) {
 
 // Logout
 async function handleLogout(request, env) {
-  const supabase = createClient(env.SUPABASE_URL, env.SUPABASE_ANON_KEY);
+  const supabase = getSupabaseClient(env);
   
   const { error } = await supabase.auth.signOut();
   
