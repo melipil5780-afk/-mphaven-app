@@ -1,15 +1,5 @@
 {
   "name": "mphaven-app",
   "version": "1.0.0",
-  "description": "MPHaven - Mental Health & Personal Growth App",
-  "scripts": {
-    "dev": "wrangler pages dev public",
-    "deploy": "wrangler pages deploy public"
-  },
-  "dependencies": {
-    "@supabase/supabase-js": "^2.39.0"
-  },
-  "devDependencies": {
-    "wrangler": "^3.22.0"
-  }
+  "description": "MPHaven - Mental Health & Personal Growth App"
 }
