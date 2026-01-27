@@ -1,1 +1,8 @@
-{"name":"mphaven-app","version":"1.0.0","dependencies":{"@supabase/supabase-js":"^2.39.0"}}
+{
+  "name": "mphaven-app",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0"
+  }
+}
