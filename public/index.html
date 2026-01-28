@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>MPHaven - Your Wellness Hub</title>
+    <title>MPHaven - Welcome</title>
     <style>
         * {
             margin: 0;
@@ -20,176 +20,380 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            background: #0f172a;
-            color: white;
+            background: linear-gradient(to bottom, #020617, #0f172a, #020617);
         }
         
         body {
-            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+            padding-left: env(safe-area-inset-left);
+            padding-right: env(safe-area-inset-right);
         }
         
-        .app-container {
-            flex: 1;
+        .container {
+            width: 100%;
+            max-width: 28rem;
+            height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(40px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
             display: flex;
             flex-direction: column;
-            max-width: 28rem;
-            margin: 0 auto;
-            width: 100%;
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(20px);
-            height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+            border: 1px solid rgba(30, 41, 59, 0.5);
+            -ms-overflow-style: none;
+            scrollbar-width: none;
             margin-top: env(safe-area-inset-top);
             margin-bottom: env(safe-area-inset-bottom);
         }
         
-        .header {
-            padding: 1rem 1.5rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-shrink: 0;
-        }
-        
-        .header h1 {
-            font-size: 1.5rem;
-            font-weight: 600;
-        }
-        
-        .logout-btn {
-            background: rgba(239, 68, 68, 0.2);
-            color: #f87171;
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            padding: 0.5rem 1rem;
-            border-radius: 0.75rem;
-            font-size: 0.875rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .logout-btn:hover {
-            background: rgba(239, 68, 68, 0.3);
-        }
-        
-        .logout-btn:active {
-            transform: scale(0.98);
-        }
-        
-        .main-content {
-            flex: 1;
-            padding: 2rem 1.5rem;
-            overflow-y: auto;
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-        
-        .main-content::-webkit-scrollbar {
+        .container::-webkit-scrollbar {
             display: none;
         }
         
-        .welcome-card {
-            background: linear-gradient(135deg, #9333EA, #0891B2);
-            padding: 2rem;
-            border-radius: 1rem;
-            margin-bottom: 2rem;
+        .bg-blur-1 {
+            position: absolute;
+            top: -10%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30rem;
+            height: 30rem;
+            background: rgba(147, 51, 234, 0.15);
+            border-radius: 50%;
+            filter: blur(120px);
+            pointer-events: none;
+            animation: pulse-glow 4s ease-in-out infinite;
+        }
+        
+        .bg-blur-2 {
+            position: absolute;
+            bottom: -10%;
+            right: -10%;
+            width: 25rem;
+            height: 25rem;
+            background: rgba(6, 182, 212, 0.15);
+            border-radius: 50%;
+            filter: blur(100px);
+            pointer-events: none;
+        }
+        
+        .content {
+            position: relative;
+            z-index: 10;
+            padding: 2rem 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: min-content;
+            padding-top: max(2rem, env(safe-area-inset-top));
+            padding-bottom: max(2rem, env(safe-area-inset-bottom));
+        }
+        
+        .logo {
             text-align: center;
+            margin-bottom: 2rem;
         }
         
-        .welcome-card h2 {
-            font-size: 1.5rem;
+        .logo-icon {
+            width: 4.5rem;
+            height: 4.5rem;
+            margin: 0 auto 1rem;
+            background: linear-gradient(135deg, #9333EA, #0891B2);
+            border-radius: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 20px 40px rgba(147, 51, 234, 0.3);
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .logo-icon svg {
+            width: 2.5rem;
+            height: 2.5rem;
+            color: white;
+        }
+        
+        h1 {
+            color: white;
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
             margin-bottom: 0.5rem;
+            line-height: 1.1;
+            padding-top: 0.5rem;
         }
         
-        .welcome-card p {
-            opacity: 0.9;
+        .tagline {
+            color: rgb(203, 213, 225);
+            font-size: 1rem;
+            line-height: 1.5;
+            margin-bottom: 0.75rem;
         }
         
-        .features-grid {
-            display: grid;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-        
-        .feature-card {
-            background: rgba(30, 41, 59, 0.5);
-            border: 1px solid rgba(100, 116, 139, 0.2);
-            border-radius: 1rem;
-            padding: 1.5rem;
-            transition: all 0.3s;
-        }
-        
-        .feature-card:hover {
-            border-color: rgba(100, 116, 139, 0.4);
-            transform: translateY(-2px);
-        }
-        
-        .feature-card h3 {
-            margin-bottom: 0.5rem;
-            color: #60a5fa;
-            font-size: 1.125rem;
-        }
-        
-        .feature-card p {
+        .subtitle {
             color: rgb(148, 163, 184);
             font-size: 0.875rem;
             line-height: 1.5;
         }
         
-        .loading {
+        .auth-buttons {
+            margin-top: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 0.875rem 1.25rem;
+            border-radius: 1rem;
+            font-size: 0.9375rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 100%;
-            font-size: 1.125rem;
-            color: rgb(148, 163, 184);
+            gap: 0.75rem;
+            position: relative;
+            overflow: hidden;
+            min-height: 48px;
         }
         
-        .user-info {
+        .btn:active {
+            transform: scale(0.98);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #9333EA, #7C3AED);
+            color: white;
+            box-shadow: 0 10px 25px rgba(147, 51, 234, 0.4);
+        }
+        
+        .btn-primary:hover {
+            box-shadow: 0 15px 35px rgba(147, 51, 234, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: rgba(30, 41, 59, 0.8);
+            color: white;
+            border: 1px solid rgba(100, 116, 139, 0.3);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(30, 41, 59, 1);
+            border-color: rgba(100, 116, 139, 0.5);
+        }
+        
+        .btn-google {
+            background: white;
+            color: #1f2937;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-google:hover {
+            background: #f9fafb;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .btn svg {
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+        
+        .divider {
             display: flex;
             align-items: center;
             gap: 1rem;
-            margin-bottom: 2rem;
-            padding: 1rem;
-            background: rgba(30, 41, 59, 0.5);
+            margin: 1.5rem 0;
+        }
+        
+        .divider-line {
+            flex: 1;
+            height: 1px;
+            background: rgba(100, 116, 139, 0.3);
+        }
+        
+        .divider-text {
+            color: rgb(148, 163, 184);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        
+        .features {
+            margin-top: 2rem;
+            display: grid;
+            gap: 0.75rem;
+        }
+        
+        .feature {
+            display: flex;
+            align-items: start;
+            gap: 0.75rem;
+            padding: 0.875rem;
+            background: rgba(30, 41, 59, 0.3);
             border-radius: 1rem;
             border: 1px solid rgba(100, 116, 139, 0.2);
         }
         
-        .user-avatar {
-            width: 3rem;
-            height: 3rem;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #9333EA, #0891B2);
+        .feature-icon {
+            width: 2.25rem;
+            height: 2.25rem;
+            border-radius: 0.75rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 600;
-            font-size: 1.25rem;
+            flex-shrink: 0;
         }
         
-        .user-details h3 {
+        .feature-icon svg {
+            width: 1.25rem;
+            height: 1.25rem;
+            color: white;
+        }
+        
+        .feature-content h3 {
+            color: white;
+            font-size: 0.8125rem;
+            font-weight: 600;
             margin-bottom: 0.25rem;
         }
         
-        .user-details p {
+        .feature-content p {
             color: rgb(148, 163, 184);
-            font-size: 0.875rem;
+            font-size: 0.75rem;
+            line-height: 1.4;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 1.5rem;
+            color: rgb(100, 116, 139);
+            font-size: 0.75rem;
+            flex-shrink: 0;
+            padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+        }
+        
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            display: none;
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+        
+        .loading-spinner {
+            width: 3rem;
+            height: 3rem;
+            border: 3px solid rgba(100, 116, 139, 0.3);
+            border-top: 3px solid #9333EA;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 0.4; }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         
         @media (min-width: 640px) {
-            .app-container {
+            .container {
                 height: 844px;
                 max-height: 90vh;
-                border-radius: 2rem;
-                margin: 20px auto;
-                overflow: hidden;
+                border-radius: 2.5rem;
+                margin: 20px;
+                height: 844px;
+                margin-top: 20px;
+                margin-bottom: 20px;
+            }
+            
+            .content {
+                padding: 3rem 2rem;
+                padding-top: 3rem;
+                padding-bottom: 3rem;
+            }
+            
+            .logo-icon {
+                width: 5rem;
+                height: 5rem;
+            }
+            
+            .logo-icon svg {
+                width: 3rem;
+                height: 3rem;
+            }
+            
+            h1 {
+                font-size: 3rem;
+                padding-top: 0;
+            }
+            
+            .tagline {
+                font-size: 1.125rem;
+            }
+            
+            .btn {
+                padding: 1rem 1.5rem;
+                font-size: 1rem;
+            }
+            
+            .btn svg {
+                width: 1.5rem;
+                height: 1.5rem;
+            }
+            
+            .footer {
+                padding-bottom: 1.5rem;
             }
         }
         
-        /* Prevent overscroll/bounce */
+        @supports (padding: max(0px)) {
+            .content {
+                padding-left: max(1.5rem, env(safe-area-inset-left));
+                padding-right: max(1.5rem, env(safe-area-inset-right));
+            }
+        }
+        
+        @media (hover: none) and (pointer: coarse) {
+            html, body {
+                height: -webkit-fill-available;
+            }
+            
+            .container {
+                height: -webkit-fill-available;
+            }
+        }
+        
         html {
             overscroll-behavior: none;
         }
@@ -201,65 +405,103 @@
     </style>
 </head>
 <body>
-    <div class="app-container">
-        <div class="header">
-            <h1>MPHaven</h1>
-            <button class="logout-btn" id="logoutBtn">Logout</button>
-        </div>
+    
+    <div class="container">
+        <div class="bg-blur-1"></div>
+        <div class="bg-blur-2"></div>
         
-        <div class="main-content" id="mainContent">
-            <div class="loading" id="loading">
-                Loading your wellness hub...
+        <div class="content">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                    </svg>
+                </div>
+                <h1>MPHaven</h1>
+                <p class="tagline">Your journey to authentic wellbeing</p>
+                <p class="subtitle">Mental health & personal growth tools designed for real life</p>
             </div>
             
-            <div class="welcome-section" id="welcomeSection" style="display: none;">
-                <div class="user-info" id="userInfo">
-                    <div class="user-avatar" id="userAvatar">U</div>
-                    <div class="user-details">
-                        <h3 id="userName">Loading...</h3>
-                        <p id="userEmail">user@example.com</p>
+            <div class="auth-buttons">
+                <button class="btn btn-google" id="googleBtn">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                    </svg>
+                    Continue with Google
+                </button>
+                
+                <div class="divider">
+                    <div class="divider-line"></div>
+                    <span class="divider-text">or</span>
+                    <div class="divider-line"></div>
+                </div>
+                
+                <button class="btn btn-primary" onclick="window.location.href='signup.html'">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                    </svg>
+                    Create Account
+                </button>
+                
+                <button class="btn btn-secondary" onclick="window.location.href='login.html'">
+                    Already have an account? Sign In
+                </button>
+            </div>
+            
+            <div class="features">
+                <div class="feature">
+                    <div class="feature-icon" style="background: linear-gradient(135deg, #9333EA, #7C3AED);">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                        </svg>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Private & Secure</h3>
+                        <p>Your data is encrypted and never shared</p>
                     </div>
                 </div>
                 
-                <div class="welcome-card">
-                    <h2>Welcome back!</h2>
-                    <p>Ready to continue your wellness journey?</p>
+                <div class="feature">
+                    <div class="feature-icon" style="background: linear-gradient(135deg, #059669, #10B981);">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Start Immediately</h3>
+                        <p>No credit card required, free forever</p>
+                    </div>
                 </div>
                 
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <h3>Daily Check-in</h3>
-                        <p>Track your mood and emotions throughout the day</p>
+                <div class="feature">
+                    <div class="feature-icon" style="background: linear-gradient(135deg, #0891B2, #06B6D4);">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
                     </div>
-                    <div class="feature-card">
-                        <h3>Meditation</h3>
-                        <p>Guided mindfulness and meditation sessions</p>
-                    </div>
-                    <div class="feature-card">
-                        <h3>Journal</h3>
-                        <p>Reflect on your thoughts and experiences</p>
-                    </div>
-                    <div class="feature-card">
-                        <h3>Progress</h3>
-                        <p>View your wellness journey and milestones</p>
-                    </div>
-                    <div class="feature-card">
-                        <h3>Sleep Tracker</h3>
-                        <p>Monitor your sleep patterns and quality</p>
-                    </div>
-                    <div class="feature-card">
-                        <h3>Breathing Exercises</h3>
-                        <p>Calm your mind with guided breathing</p>
+                    <div class="feature-content">
+                        <h3>Evidence-Based</h3>
+                        <p>Tools backed by psychology research</p>
                     </div>
                 </div>
             </div>
         </div>
+        
+        <div class="footer">
+            <p>By continuing, you agree to our <a href="terms.html" style="color: #9333EA; text-decoration: none;">Terms of Service</a> and <a href="privacy.html" style="color: #9333EA; text-decoration: none;">Privacy Policy</a></p>
+        </div>
+    </div>
+
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <script>
-        // Initialize Supabase
         const SUPABASE_URL = 'https://ocdwpaefmslyidelkzde.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jZHdwYWVmbXNseWlkZWxremRlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk0NjQ1OTQsImV4cCI6MjA4NTA0MDU5NH0.OAYuCQhxrmZMLI_H8OuaJvs7dKVm82gUPgGzQDUYq-Q';
         
@@ -273,115 +515,46 @@
             }
         });
 
-        // Handle OAuth callback from URL
-        async function handleAuth() {
-            const loading = document.getElementById('loading');
-            const welcomeSection = document.getElementById('welcomeSection');
-            const logoutBtn = document.getElementById('logoutBtn');
+        document.getElementById('googleBtn').addEventListener('click', async function() {
+            const googleBtn = this;
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            
+            googleBtn.disabled = true;
+            googleBtn.innerHTML = 'Redirecting to Google...';
+            loadingOverlay.style.display = 'flex';
             
             try {
-                // Check URL for OAuth tokens
-                const hash = window.location.hash;
-                const searchParams = new URLSearchParams(window.location.search);
-                
-                // If we have OAuth callback in URL, process it
-                if (hash.includes('access_token') || searchParams.get('code') || hash.includes('error')) {
-                    console.log('Processing OAuth callback from URL...');
-                    
-                    // Get session which will process the URL tokens
-                    const { data: { session }, error } = await supabase.auth.getSession();
-                    
-                    if (error) {
-                        console.error('OAuth processing error:', error);
-                        window.location.href = 'index.html?error=' + encodeURIComponent(error.message);
-                        return;
+                const { data, error } = await supabase.auth.signInWithOAuth({
+                    provider: 'google',
+                    options: {
+                        redirectTo: 'https://mphaven-app.pages.dev/app.html'
                     }
-                    
-                    if (!session) {
-                        window.location.href = 'index.html';
-                        return;
-                    }
-                    
-                    // Clear URL after processing
-                    window.history.replaceState({}, document.title, '/app.html');
-                }
+                });
                 
-                // Check if we have a valid session
-                const { data: { session }, error } = await supabase.auth.getSession();
-                
-                if (error) {
-                    console.error('Session error:', error);
-                    window.location.href = 'index.html?error=' + encodeURIComponent(error.message);
-                    return;
-                }
-                
-                if (!session) {
-                    window.location.href = 'index.html';
-                    return;
-                }
-                
-                // User is authenticated - show content
-                console.log('✅ User authenticated:', session.user.email);
-                
-                // Update UI with user info
-                const userName = session.user.user_metadata?.full_name || 
-                                session.user.email?.split('@')[0] || 
-                                'User';
-                const userEmail = session.user.email || 'user@example.com';
-                const userInitial = userName.charAt(0).toUpperCase();
-                
-                document.getElementById('userName').textContent = userName;
-                document.getElementById('userEmail').textContent = userEmail;
-                document.getElementById('userAvatar').textContent = userInitial;
-                
-                // Show content
-                loading.style.display = 'none';
-                welcomeSection.style.display = 'block';
-                
-                // Enable logout button
-                logoutBtn.disabled = false;
+                if (error) throw error;
                 
             } catch (error) {
-                console.error('Auth error:', error);
-                window.location.href = 'index.html?error=' + encodeURIComponent(error.message);
-            }
-        }
-
-        // Handle logout
-        document.getElementById('logoutBtn').addEventListener('click', async function() {
-            const logoutBtn = this;
-            
-            logoutBtn.disabled = true;
-            logoutBtn.textContent = 'Logging out...';
-            
-            try {
-                const { error } = await supabase.auth.signOut();
+                console.error('Google auth error:', error);
+                loadingOverlay.style.display = 'none';
+                googleBtn.disabled = false;
+                googleBtn.innerHTML = `
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                    </svg>
+                    Continue with Google
+                `;
                 
-                if (error) {
-                    throw error;
-                }
-                
-                // Successfully logged out
-                window.location.href = 'index.html';
-                
-            } catch (error) {
-                console.error('Logout error:', error);
-                alert('Error logging out: ' + error.message);
-                logoutBtn.disabled = false;
-                logoutBtn.textContent = 'Logout';
+                alert('Error: ' + error.message);
             }
         });
 
-        // Initialize app
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('MPHaven App Loaded');
-            handleAuth();
-            
-            // Debug helper (optional - can be removed)
-            window.debugUser = async () => {
-                const { data: { session } } = await supabase.auth.getSession();
-                console.log('Current user:', session ? session.user : 'No user');
-            };
+        supabase.auth.getSession().then(({ data: { session } }) => {
+            if (session) {
+                window.location.href = 'app.html';
+            }
         });
     </script>
 </body>
