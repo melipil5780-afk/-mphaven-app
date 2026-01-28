@@ -13,6 +13,16 @@
             box-sizing: border-box;
         }
         
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 0.4; }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
         html, body {
             width: 100%;
             height: 100%;
@@ -27,13 +37,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 0;
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
             margin: 0;
             overflow: hidden;
-            padding-top: env(safe-area-inset-top);
-            padding-bottom: env(safe-area-inset-bottom);
-            padding-left: env(safe-area-inset-left);
-            padding-right: env(safe-area-inset-right);
         }
         
         .container {
@@ -129,7 +135,6 @@
             letter-spacing: -0.025em;
             margin-bottom: 0.5rem;
             line-height: 1.1;
-            padding-top: 0.5rem;
         }
         
         .tagline {
@@ -170,7 +175,12 @@
             min-height: 48px;
         }
         
-        .btn:active {
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .btn:active:not(:disabled) {
             transform: scale(0.98);
         }
         
@@ -180,7 +190,7 @@
             box-shadow: 0 10px 25px rgba(147, 51, 234, 0.4);
         }
         
-        .btn-primary:hover {
+        .btn-primary:hover:not(:disabled) {
             box-shadow: 0 15px 35px rgba(147, 51, 234, 0.5);
             transform: translateY(-2px);
         }
@@ -191,7 +201,7 @@
             border: 1px solid rgba(100, 116, 139, 0.3);
         }
         
-        .btn-secondary:hover {
+        .btn-secondary:hover:not(:disabled) {
             background: rgba(30, 41, 59, 1);
             border-color: rgba(100, 116, 139, 0.5);
         }
@@ -202,7 +212,7 @@
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         }
         
-        .btn-google:hover {
+        .btn-google:hover:not(:disabled) {
             background: #f9fafb;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
             transform: translateY(-2px);
@@ -286,6 +296,15 @@
             padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
         }
         
+        .footer a {
+            color: #9333EA;
+            text-decoration: none;
+        }
+        
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        
         .loading-overlay {
             position: fixed;
             top: 0;
@@ -293,13 +312,18 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.8);
-            display: flex;
+            display: none;
             align-items: center;
             justify-content: center;
             z-index: 1000;
-            display: none;
+            flex-direction: column;
+            gap: 1rem;
             padding-top: env(safe-area-inset-top);
             padding-bottom: env(safe-area-inset-bottom);
+        }
+        
+        .loading-overlay.show {
+            display: flex;
         }
         
         .loading-spinner {
@@ -311,14 +335,9 @@
             animation: spin 1s linear infinite;
         }
         
-        @keyframes pulse-glow {
-            0%, 100% { opacity: 0.2; }
-            50% { opacity: 0.4; }
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
+        .loading-text {
+            color: white;
+            font-size: 1rem;
         }
         
         @keyframes spin {
@@ -355,7 +374,6 @@
             
             h1 {
                 font-size: 3rem;
-                padding-top: 0;
             }
             
             .tagline {
@@ -371,26 +389,12 @@
                 width: 1.5rem;
                 height: 1.5rem;
             }
-            
-            .footer {
-                padding-bottom: 1.5rem;
-            }
         }
         
         @supports (padding: max(0px)) {
             .content {
                 padding-left: max(1.5rem, env(safe-area-inset-left));
                 padding-right: max(1.5rem, env(safe-area-inset-right));
-            }
-        }
-        
-        @media (hover: none) and (pointer: coarse) {
-            html, body {
-                height: -webkit-fill-available;
-            }
-            
-            .container {
-                height: -webkit-fill-available;
             }
         }
         
@@ -491,17 +495,21 @@
         </div>
         
         <div class="footer">
-            <p>By continuing, you agree to our <a href="terms.html" style="color: #9333EA; text-decoration: none;">Terms of Service</a> and <a href="privacy.html" style="color: #9333EA; text-decoration: none;">Privacy Policy</a></p>
+            <p>By continuing, you agree to our <a href="terms.html">Terms of Service</a> and <a href="privacy.html">Privacy Policy</a></p>
         </div>
     </div>
-
+    
     <div class="loading-overlay" id="loadingOverlay">
         <div class="loading-spinner"></div>
+        <div class="loading-text">Connecting to Google...</div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <script>
+        // ============================================
+        // SUPABASE CONFIGURATION
+        // ============================================
         const SUPABASE_URL = 'https://ocdwpaefmslyidelkzde.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jZHdwYWVmbXNseWlkZWxremRlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk0NjQ1OTQsImV4cCI6MjA4NTA0MDU5NH0.OAYuCQhxrmZMLI_H8OuaJvs7dKVm82gUPgGzQDUYq-Q';
         
@@ -515,15 +523,55 @@
             }
         });
 
-        document.getElementById('googleBtn').addEventListener('click', async function() {
-            const googleBtn = this;
-            const loadingOverlay = document.getElementById('loadingOverlay');
+        // ============================================
+        // HELPER FUNCTIONS
+        // ============================================
+        function showLoading(message = 'Connecting to Google...') {
+            const overlay = document.getElementById('loadingOverlay');
+            const text = overlay.querySelector('.loading-text');
+            text.textContent = message;
+            overlay.classList.add('show');
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.remove('show');
+        }
+
+        // ============================================
+        // CHECK EXISTING SESSION
+        // ============================================
+        async function checkExistingSession() {
+            try {
+                const { data: { session }, error } = await supabase.auth.getSession();
+                
+                if (error) {
+                    console.error('Session check error:', error);
+                    return;
+                }
+                
+                if (session) {
+                    console.log('✅ User already logged in:', session.user.email);
+                    showLoading('Redirecting to app...');
+                    setTimeout(() => {
+                        window.location.href = 'app.html';
+                    }, 500);
+                }
+            } catch (err) {
+                console.error('Error checking session:', err);
+            }
+        }
+
+        // ============================================
+        // GOOGLE OAUTH HANDLER - SIMPLE & RELIABLE
+        // ============================================
+        async function handleGoogleSignIn() {
+            const googleBtn = document.getElementById('googleBtn');
             
             googleBtn.disabled = true;
-            googleBtn.innerHTML = 'Redirecting to Google...';
-            loadingOverlay.style.display = 'flex';
+            showLoading('Opening Google...');
             
             try {
+                // ✅ USE YOUR ACTUAL DOMAIN
                 const { data, error } = await supabase.auth.signInWithOAuth({
                     provider: 'google',
                     options: {
@@ -533,29 +581,72 @@
                 
                 if (error) throw error;
                 
-            } catch (error) {
-                console.error('Google auth error:', error);
-                loadingOverlay.style.display = 'none';
-                googleBtn.disabled = false;
-                googleBtn.innerHTML = `
-                    <svg viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-                        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-                        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-                        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-                    </svg>
-                    Continue with Google
-                `;
+                // If no redirect happens after 2 seconds, show message
+                setTimeout(() => {
+                    hideLoading();
+                    googleBtn.disabled = false;
+                    alert('Please check your popup blocker. Google login should open in a new window.');
+                }, 2000);
                 
-                alert('Error: ' + error.message);
+            } catch (error) {
+                console.error('❌ Google auth error:', error);
+                hideLoading();
+                googleBtn.disabled = false;
+                
+                // Show helpful error message
+                let errorMessage = 'Error signing in with Google. Please try again.';
+                
+                if (error.message.includes('provider is not enabled')) {
+                    errorMessage = 'Google Sign-In is not enabled. Please contact support.';
+                } else if (error.message.includes('redirect_uri_mismatch')) {
+                    errorMessage = 'Configuration error. Please ensure Google Cloud Console has the correct redirect URL.';
+                }
+                
+                alert(errorMessage);
+            }
+        }
+
+        // ============================================
+        // PAGE INITIALIZATION
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 MPHaven Index Page Loaded');
+            
+            // Check for OAuth errors in URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const error = urlParams.get('error');
+            
+            if (error) {
+                console.log('OAuth error in URL:', error);
+                alert('Authentication error: ' + decodeURIComponent(error));
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+            
+            // Check existing session
+            checkExistingSession();
+            
+            // Setup Google button
+            document.getElementById('googleBtn').addEventListener('click', handleGoogleSignIn);
+            
+            // Fix for iOS viewport
+            if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
+                setTimeout(() => {
+                    document.documentElement.style.height = window.innerHeight + 'px';
+                }, 100);
             }
         });
 
-        supabase.auth.getSession().then(({ data: { session } }) => {
+        // ============================================
+        // DEBUG HELPERS
+        // ============================================
+        window.debugAuth = async function() {
+            const { data: { session } } = await supabase.auth.getSession();
+            console.log('Session:', session ? '✅ Active' : '❌ None');
             if (session) {
-                window.location.href = 'app.html';
+                console.log('User:', session.user.email);
             }
-        });
+            alert(session ? `Logged in as ${session.user.email}` : 'Not logged in');
+        };
     </script>
 </body>
 </html>
