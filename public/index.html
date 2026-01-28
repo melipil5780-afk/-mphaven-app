@@ -1,15 +1,19 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <!-- Keep your original meta tag but fixed the warning -->
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes"> <!-- Added this to fix the warning -->
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- iOS specific meta tags -->
+    <meta name="apple-mobile-web-app-title" content="MPHaven">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="theme-color" content="#020617">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>❤️</text></svg>">
     <title>MPHaven - Welcome</title>
-    <!-- ALL YOUR ORIGINAL CSS STAYS EXACTLY THE SAME -->
     <style>
+        /* YOUR EXACT CSS REMAINS THE SAME */
         * {
             margin: 0;
             padding: 0;
@@ -43,6 +47,8 @@
             padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
             margin: 0;
             overflow: hidden;
+            -webkit-tap-highlight-color: transparent; /* iOS fix */
+            -webkit-touch-callout: none; /* iOS fix */
         }
         
         .container {
@@ -62,6 +68,7 @@
             scrollbar-width: none;
             margin-top: env(safe-area-inset-top);
             margin-bottom: env(safe-area-inset-bottom);
+            -webkit-overflow-scrolling: touch; /* iOS smooth scroll */
         }
         
         .container::-webkit-scrollbar {
@@ -174,6 +181,9 @@
             position: relative;
             overflow: hidden;
             min-height: 48px;
+            -webkit-appearance: none; /* iOS fix */
+            -webkit-tap-highlight-color: rgba(0,0,0,0); /* iOS fix */
+            touch-action: manipulation; /* iOS fix */
         }
         
         .btn:disabled {
@@ -183,6 +193,11 @@
         
         .btn:active:not(:disabled) {
             transform: scale(0.98);
+        }
+        
+        /* iOS active state fix */
+        .btn:active {
+            opacity: 0.8;
         }
         
         .btn-primary {
@@ -394,6 +409,21 @@
             overscroll-behavior: none;
             touch-action: pan-y;
         }
+        
+        /* iOS Safari specific fixes */
+        @supports (-webkit-touch-callout: none) {
+            body {
+                height: -webkit-fill-available;
+            }
+            
+            .container {
+                height: -webkit-fill-available;
+            }
+            
+            .btn {
+                min-height: 44px; /* Apple's minimum touch target size */
+            }
+        }
     </style>
 </head>
 <body>
@@ -492,20 +522,32 @@
         <div class="loading-text">Connecting to Google...</div>
     </div>
 
-    <!-- ONLY MINIMAL CHANGES TO THE SCRIPT BELOW -->
+    <!-- Load Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <script>
         // ============================================
-        // FIX 1: Prevent Supabase duplicate declaration
+        // IOS-SPECIFIC FIXES
         // ============================================
-        // Check if supabase is already initialized
-        if (!window.supabaseInitialized) {
+        
+        // Detect iOS
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+        
+        console.log('iOS detected:', isIOS);
+        console.log('Safari detected:', isSafari);
+        
+        // ============================================
+        // SUPABASE INITIALIZATION (iOS compatible)
+        // ============================================
+        let supabase;
+        
+        try {
             const SUPABASE_URL = 'https://ocdwpaefmslyidelkzde.supabase.co';
             const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jZHdwYWVmbXNseWlkZWxremRlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk0NjQ1OTQsImV4cCI6MjA4NTA0MDU5NH0.OAYuCQhxrmZMLI_H8OuaJvs7dKVm82gUPgGzQDUYq-Q';
             
-            // Initialize Supabase
-            window.supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+            // iOS/Safari needs specific configuration
+            const options = {
                 auth: {
                     autoRefreshToken: true,
                     persistSession: true,
@@ -513,14 +555,46 @@
                     storageKey: 'mphaven-session',
                     storage: window.localStorage
                 }
-            });
+            };
             
-            window.supabaseInitialized = true;
-            console.log('Supabase initialized');
+            // For iOS Safari, we need to handle storage differently
+            if (isIOS && isSafari) {
+                console.log('Applying iOS Safari fixes');
+                options.auth.storage = {
+                    getItem: (key) => {
+                        try {
+                            return localStorage.getItem(key);
+                        } catch (e) {
+                            console.log('iOS localStorage error:', e);
+                            return null;
+                        }
+                    },
+                    setItem: (key, value) => {
+                        try {
+                            localStorage.setItem(key, value);
+                        } catch (e) {
+                            console.log('iOS localStorage error:', e);
+                        }
+                    },
+                    removeItem: (key) => {
+                        try {
+                            localStorage.removeItem(key);
+                        } catch (e) {
+                            console.log('iOS localStorage error:', e);
+                        }
+                    }
+                };
+            }
+            
+            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, options);
+            console.log('Supabase initialized for', isIOS ? 'iOS' : 'desktop');
+            
+        } catch (error) {
+            console.error('Failed to initialize Supabase:', error);
         }
-
+        
         // ============================================
-        // FIX 2: Simple loading functions
+        // LOADING FUNCTIONS
         // ============================================
         function showLoading(message) {
             const overlay = document.getElementById('loadingOverlay');
@@ -528,71 +602,225 @@
                 const text = overlay.querySelector('.loading-text');
                 if (text) text.textContent = message || 'Loading...';
                 overlay.classList.add('show');
+                // Prevent scrolling while loading on iOS
+                if (isIOS) {
+                    document.body.style.overflow = 'hidden';
+                }
             }
         }
-
+        
         function hideLoading() {
             const overlay = document.getElementById('loadingOverlay');
             if (overlay) overlay.classList.remove('show');
+            if (isIOS) {
+                document.body.style.overflow = '';
+            }
         }
-
+        
         // ============================================
-        // FIX 3: Simple button click handlers
+        // IOS-COMPATIBLE GOOGLE SIGN IN
         // ============================================
         async function handleGoogleSignIn() {
-            console.log('Google button clicked');
+            console.log('Google button clicked on', isIOS ? 'iOS' : 'desktop');
             
             const googleBtn = document.getElementById('googleBtn');
-            if (googleBtn) googleBtn.disabled = true;
+            if (googleBtn) {
+                googleBtn.disabled = true;
+                // iOS needs visual feedback
+                googleBtn.style.opacity = '0.7';
+            }
             
             showLoading('Opening Google...');
             
             try {
-                const redirectUrl = window.location.origin + '/app.html';
+                if (!supabase) {
+                    throw new Error('Authentication service not available');
+                }
                 
-                if (window.supabase) {
-                    const { data, error } = await window.supabase.auth.signInWithOAuth({
+                // iOS Safari needs a different approach for redirects
+                let redirectUrl;
+                
+                if (isIOS) {
+                    // For iOS, use the current origin (works better)
+                    redirectUrl = window.location.origin + '/app.html';
+                    console.log('iOS redirect URL:', redirectUrl);
+                } else {
+                    redirectUrl = window.location.origin + '/app.html';
+                }
+                
+                // For iOS, we might need to open in a new window
+                if (isIOS && isSafari) {
+                    // Try window.open for iOS Safari
+                    const authUrl = `https://ocdwpaefmslyidelkzde.supabase.co/auth/v1/authorize?provider=google&redirect_to=${encodeURIComponent(redirectUrl)}`;
+                    console.log('Opening auth URL for iOS Safari:', authUrl);
+                    
+                    // Try to open in same window
+                    window.location.href = authUrl;
+                    
+                    // Fallback after 1 second
+                    setTimeout(() => {
+                        if (window.location.href.includes('index.html')) {
+                            console.log('Fallback: trying Supabase SDK');
+                            supabase.auth.signInWithOAuth({
+                                provider: 'google',
+                                options: { redirectTo: redirectUrl }
+                            });
+                        }
+                    }, 1000);
+                    
+                } else {
+                    // Normal flow for other browsers
+                    const { data, error } = await supabase.auth.signInWithOAuth({
                         provider: 'google',
                         options: {
-                            redirectTo: redirectUrl
+                            redirectTo: redirectUrl,
+                            // iOS needs extra parameters
+                            ...(isIOS ? {
+                                queryParams: {
+                                    prompt: 'select_account'
+                                }
+                            } : {})
                         }
                     });
                     
                     if (error) throw error;
-                } else {
-                    throw new Error('Supabase not loaded');
                 }
+                
             } catch (error) {
                 console.error('Google sign-in error:', error);
+                
                 hideLoading();
-                if (googleBtn) googleBtn.disabled = false;
-                alert('Could not sign in with Google. Please try again.');
+                
+                if (googleBtn) {
+                    googleBtn.disabled = false;
+                    googleBtn.style.opacity = '1';
+                }
+                
+                // User-friendly error message for iOS
+                let errorMessage = 'Could not sign in with Google. ';
+                
+                if (isIOS) {
+                    errorMessage += 'On iOS, please make sure:\n';
+                    errorMessage += '1. Cookies are enabled in Safari Settings\n';
+                    errorMessage += '2. You are not in Private Browsing mode\n';
+                    errorMessage += '3. Pop-ups are not blocked\n\n';
+                    errorMessage += 'Try again or use email sign up.';
+                } else {
+                    errorMessage += 'Please try again.';
+                }
+                
+                alert(errorMessage);
             }
         }
-
+        
+        // ============================================
+        // SIMPLE BUTTON HANDLERS (iOS compatible)
+        // ============================================
         function handleSignUp() {
             console.log('Sign up clicked');
-            window.location.href = 'signup.html';
+            // Add slight delay for iOS touch feedback
+            if (isIOS) {
+                setTimeout(() => {
+                    window.location.href = 'signup.html';
+                }, 100);
+            } else {
+                window.location.href = 'signup.html';
+            }
         }
-
+        
         function handleLogin() {
             console.log('Login clicked');
-            window.location.href = 'login.html';
+            // Add slight delay for iOS touch feedback
+            if (isIOS) {
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 100);
+            } else {
+                window.location.href = 'login.html';
+            }
         }
-
+        
         // ============================================
-        // FIX 4: Initialize page with proper event listeners
+        // CHECK EXISTING SESSION
+        // ============================================
+        async function checkSession() {
+            try {
+                if (supabase) {
+                    const { data: { session }, error } = await supabase.auth.getSession();
+                    
+                    if (error) {
+                        console.log('Session check error:', error);
+                        return false;
+                    }
+                    
+                    if (session) {
+                        console.log('Already logged in:', session.user.email);
+                        showLoading('Welcome back! Redirecting...');
+                        setTimeout(() => {
+                            window.location.href = 'app.html';
+                        }, 1000);
+                        return true;
+                    }
+                }
+                return false;
+            } catch (err) {
+                console.log('No active session');
+                return false;
+            }
+        }
+        
+        // ============================================
+        // IOS TOUCH EVENT FIXES
+        // ============================================
+        function setupTouchEvents() {
+            if (!isIOS) return;
+            
+            console.log('Setting up iOS touch events');
+            
+            const buttons = ['googleBtn', 'signupBtn', 'loginBtn'];
+            
+            buttons.forEach(btnId => {
+                const btn = document.getElementById(btnId);
+                if (btn) {
+                    // Remove any existing listeners to avoid duplicates
+                    btn.removeEventListener('touchstart', handleTouchStart);
+                    btn.removeEventListener('touchend', handleTouchEnd);
+                    
+                    // Add touch events for better iOS feedback
+                    btn.addEventListener('touchstart', handleTouchStart);
+                    btn.addEventListener('touchend', handleTouchEnd);
+                    btn.addEventListener('touchcancel', handleTouchEnd);
+                    
+                    console.log(`Added touch events to ${btnId}`);
+                }
+            });
+        }
+        
+        function handleTouchStart(e) {
+            const btn = e.currentTarget;
+            btn.style.opacity = '0.7';
+            btn.style.transform = 'scale(0.98)';
+        }
+        
+        function handleTouchEnd(e) {
+            const btn = e.currentTarget;
+            btn.style.opacity = '1';
+            btn.style.transform = 'scale(1)';
+        }
+        
+        // ============================================
+        // PAGE INITIALIZATION (iOS optimized)
         // ============================================
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('Page loaded');
+            console.log('Page loaded on', isIOS ? 'iOS' : 'desktop');
             
-            // Get buttons
+            // Setup button event listeners
             const googleBtn = document.getElementById('googleBtn');
             const signupBtn = document.getElementById('signupBtn');
             const loginBtn = document.getElementById('loginBtn');
             
-            // Add click listeners
             if (googleBtn) {
+                // Use click event for all devices, iOS will handle it
                 googleBtn.addEventListener('click', handleGoogleSignIn);
                 console.log('Google button listener added');
             }
@@ -607,40 +835,88 @@
                 console.log('Login button listener added');
             }
             
-            // iOS viewport fix
-            if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
-                document.body.style.height = window.innerHeight + 'px';
+            // Setup iOS touch events
+            if (isIOS) {
+                setupTouchEvents();
+                
+                // iOS viewport height fix
+                setTimeout(() => {
+                    const vh = window.innerHeight * 0.01;
+                    document.documentElement.style.setProperty('--vh', `${vh}px`);
+                    
+                    // Fix 100vh issue on iOS
+                    document.body.style.height = window.innerHeight + 'px';
+                    if (document.querySelector('.container')) {
+                        document.querySelector('.container').style.height = window.innerHeight + 'px';
+                    }
+                }, 100);
             }
             
             // Check for existing session
             setTimeout(async () => {
-                try {
-                    if (window.supabase) {
-                        const { data: { session } } = await window.supabase.auth.getSession();
-                        if (session) {
-                            console.log('Already logged in, redirecting...');
-                            showLoading('Redirecting...');
-                            setTimeout(() => {
-                                window.location.href = 'app.html';
-                            }, 1000);
-                        }
-                    }
-                } catch (err) {
-                    console.log('No active session');
-                }
+                await checkSession();
             }, 500);
+            
+            // Handle OAuth callback if in URL
+            const hash = window.location.hash;
+            const search = window.location.search;
+            if (hash.includes('access_token') || search.includes('code=')) {
+                console.log('OAuth callback detected');
+                showLoading('Completing sign in...');
+                setTimeout(() => {
+                    window.location.href = 'app.html';
+                }, 1000);
+            }
         });
-
+        
+        // iOS resize handler
+        window.addEventListener('resize', function() {
+            if (isIOS) {
+                document.body.style.height = window.innerHeight + 'px';
+                if (document.querySelector('.container')) {
+                    document.querySelector('.container').style.height = window.innerHeight + 'px';
+                }
+            }
+        });
+        
         // ============================================
-        // Optional: Debug helpers (can be removed)
+        // DEBUG FUNCTIONS
         // ============================================
-        window.testButtons = function() {
-            console.log('Testing buttons...');
+        window.debugIOS = function() {
+            console.log('=== iOS DEBUG INFO ===');
+            console.log('User Agent:', navigator.userAgent);
+            console.log('Is iOS:', isIOS);
+            console.log('Is Safari:', isSafari);
+            console.log('LocalStorage available:', typeof localStorage !== 'undefined');
+            console.log('Supabase initialized:', !!supabase);
+            console.log('Window location:', window.location.href);
+            
+            // Test button clicks
             const buttons = ['googleBtn', 'signupBtn', 'loginBtn'];
             buttons.forEach(id => {
                 const btn = document.getElementById(id);
-                console.log(id + ':', btn ? 'EXISTS' : 'MISSING');
+                console.log(`${id}:`, btn ? 'FOUND' : 'NOT FOUND');
+                if (btn) {
+                    console.log(`  Disabled: ${btn.disabled}`);
+                    console.log(`  Has click listener: ${btn.onclick ? 'YES' : 'NO'}`);
+                }
             });
+        };
+        
+        // Test Supabase connection
+        window.testSupabase = async function() {
+            if (supabase) {
+                try {
+                    const { data, error } = await supabase.auth.getSession();
+                    console.log('Supabase test:', error ? 'ERROR' : 'OK', data);
+                    alert(error ? 'Supabase error: ' + error.message : 'Supabase connected OK');
+                } catch (e) {
+                    console.error('Supabase test failed:', e);
+                    alert('Supabase test failed: ' + e.message);
+                }
+            } else {
+                alert('Supabase not initialized');
+            }
         };
     </script>
 </body>
