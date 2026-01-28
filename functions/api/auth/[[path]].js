@@ -1,7 +1,10 @@
 import { createClient } from ‘https://esm.sh/@supabase/supabase-js@2’;
 
 function getSupabaseClient(env) {
-return createClient(env.SUPABASE_URL, env.SUPABASE_ANON_KEY);
+return createClient(
+env.SUPABASE_URL,
+env.SUPABASE_ANON_KEY
+);
 }
 
 const corsHeaders = {
@@ -11,17 +14,24 @@ const corsHeaders = {
 };
 
 function handleOptions() {
-return new Response(null, { headers: corsHeaders });
+return new Response(null, {
+headers: corsHeaders
+});
 }
 
 async function handleSignup(request, env) {
 const { email, password, name } = await request.json();
+
 const supabase = getSupabaseClient(env);
 
 const { data: authData, error: authError } = await supabase.auth.signUp({
 email,
 password,
-options: { data: { name: name } }
+options: {
+data: {
+name: name
+}
+}
 });
 
 if (authError) {
@@ -33,14 +43,18 @@ headers: { …corsHeaders, ‘Content-Type’: ‘application/json’ }
 
 const { error: profileError } = await supabase
 .from(‘profiles’)
-.insert([{
+.insert([
+{
 id: authData.user.id,
 name: name,
 email: email,
 created_at: new Date().toISOString()
-}]);
+}
+]);
 
-if (profileError) console.error(‘Profile creation error:’, profileError);
+if (profileError) {
+console.error(‘Profile creation error:’, profileError);
+}
 
 return new Response(JSON.stringify({
 user: authData.user,
@@ -53,6 +67,7 @@ headers: { …corsHeaders, ‘Content-Type’: ‘application/json’ }
 
 async function handleLogin(request, env) {
 const { email, password } = await request.json();
+
 const supabase = getSupabaseClient(env);
 
 const { data, error } = await supabase.auth.signInWithPassword({
@@ -82,7 +97,7 @@ const supabase = getSupabaseClient(env);
 const { data, error } = await supabase.auth.signInWithOAuth({
 provider: ‘google’,
 options: {
-redirectTo: ‘https://mphaven-app.pages.dev/api/auth/callback’
+redirectTo: `${new URL(request.url).origin}/app.html`
 }
 });
 
@@ -96,41 +111,9 @@ headers: { …corsHeaders, ‘Content-Type’: ‘application/json’ }
 return Response.redirect(data.url, 302);
 }
 
-async function handleCallback(request, env) {
-const url = new URL(request.url);
-const code = url.searchParams.get(‘code’);
-
-if (!code) {
-return Response.redirect(‘https://mphaven-app.pages.dev/login.html?error=no_code’, 302);
-}
-
-const supabase = getSupabaseClient(env);
-const { data, error } = await supabase.auth.exchangeCodeForSession(code);
-
-if (error) {
-return Response.redirect(‘https://mphaven-app.pages.dev/login.html?error=auth_failed’, 302);
-}
-
-const { data: profile } = await supabase
-.from(‘profiles’)
-.select(’*’)
-.eq(‘id’, data.user.id)
-.single();
-
-if (!profile) {
-await supabase.from(‘profiles’).insert([{
-id: data.user.id,
-name: data.user.user_metadata.name || data.user.user_metadata.full_name || ‘User’,
-email: data.user.email,
-created_at: new Date().toISOString()
-}]);
-}
-
-return Response.redirect(‘https://mphaven-app.pages.dev/app.html?session=’ + data.session.access_token, 302);
-}
-
 async function handleLogout(request, env) {
 const supabase = getSupabaseClient(env);
+
 const { error } = await supabase.auth.signOut();
 
 if (error) {
@@ -163,8 +146,6 @@ case ‘login’:
 return await handleLogin(request, env);
 case ‘google’:
 return await handleGoogleAuth(request, env);
-case ‘callback’:
-return await handleCallback(request, env);
 case ‘logout’:
 return await handleLogout(request, env);
 default:
