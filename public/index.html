@@ -379,7 +379,62 @@
             height: 1.5rem;
         }
     }
+        /* iPhone notch safe areas - ADD THIS */
+    body {
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: env(safe-area-inset-bottom);
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+    }
     
+    .container {
+        margin-top: env(safe-area-inset-top);
+        margin-bottom: env(safe-area-inset-bottom);
+        height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    }
+    
+    .content {
+        padding-top: max(2rem, env(safe-area-inset-top));
+        padding-bottom: max(2rem, env(safe-area-inset-bottom));
+    }
+    
+    .footer {
+        padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+    }
+    
+    /* Loading overlay safe area */
+    .loading-overlay {
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+    
+    /* Desktop reset */
+    @media (min-width: 640px) {
+        .container {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            height: 844px;
+        }
+        
+        .content {
+            padding-top: 3rem;
+            padding-bottom: 3rem;
+        }
+        
+        .footer {
+            padding-bottom: 1.5rem;
+        }
+    }
+    
+    /* Prevent overscroll/bounce */
+    html {
+        overscroll-behavior: none;
+    }
+    
+    body {
+        overscroll-behavior: none;
+        touch-action: pan-y;
+    }
     /* Prevent overscroll/bounce */
     html {
         overscroll-behavior: none;
