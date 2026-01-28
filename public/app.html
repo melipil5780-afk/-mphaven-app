@@ -1,4 +1,4 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -24,7 +24,7 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            position: fixed; /* Prevent bounce scrolling on iOS */
+            position: fixed;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
@@ -35,7 +35,8 @@
         }
         
         body {
-            background: linear-gradient(to bottom, #020617, #0f172a, #020617);
+            background: #020617 !important;
+            background: linear-gradient(to bottom, #020617, #0f172a, #020617) !important;
             padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
             margin: 0;
             touch-action: pan-y;
@@ -67,7 +68,7 @@
             width: 100%;
             max-width: 28rem;
             height: 100%;
-            background: rgba(15, 23, 42, 0.5);
+            background: rgba(15, 23, 42, 0.95) !important;
             backdrop-filter: blur(40px);
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
             display: flex;
@@ -157,6 +158,15 @@
             width: 1.5rem;
             height: 1.5rem;
             transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .nav-icon svg {
+            width: 100%;
+            height: 100%;
+            display: block;
         }
         
         .nav-icon.active {
@@ -404,7 +414,33 @@
             }
             
             button {
-                min-height: 44px; /* iOS minimum touch target size */
+                min-height: 44px;
+            }
+            
+            /* Force colors on iOS */
+            body {
+                background: #020617 !important;
+            }
+            
+            .app-wrapper {
+                background: rgba(15, 23, 42, 0.95) !important;
+            }
+        }
+        
+        /* Mobile-specific fixes */
+        @media (max-width: 768px) {
+            body {
+                background: #020617 !important;
+            }
+            
+            .app-wrapper {
+                background: rgba(15, 23, 42, 0.95) !important;
+                max-width: 100%;
+            }
+            
+            .nav-icon svg {
+                width: 24px;
+                height: 24px;
             }
         }
     </style>
@@ -416,40 +452,48 @@
             <div class="bg-blur-2"></div>
 
             <div id="mainContent" class="main-content scroll-container">
-                <!-- Content will be inserted here -->
+                <!-- Home page will load here -->
             </div>
 
             <div class="nav-bar">
                 <div class="nav-container">
                     <button onclick="switchTab('home')" class="nav-btn" data-tab="home">
                         <div class="nav-indicator"></div>
-                        <svg class="nav-icon active" stroke-width="2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-                        </svg>
+                        <div class="nav-icon active">
+                            <svg stroke-width="2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                            </svg>
+                        </div>
                         <span class="nav-label active">Home</span>
                     </button>
                     
                     <button onclick="switchTab('courses')" class="nav-btn" data-tab="courses">
                         <div class="nav-indicator hidden"></div>
-                        <svg class="nav-icon inactive" stroke-width="2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-                        </svg>
+                        <div class="nav-icon inactive">
+                            <svg stroke-width="2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                            </svg>
+                        </div>
                         <span class="nav-label inactive">Courses</span>
                     </button>
                     
                     <button onclick="switchTab('progress')" class="nav-btn" data-tab="progress">
                         <div class="nav-indicator hidden"></div>
-                        <svg class="nav-icon inactive" stroke-width="2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-                        </svg>
+                        <div class="nav-icon inactive">
+                            <svg stroke-width="2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                            </svg>
+                        </div>
                         <span class="nav-label inactive">Progress</span>
                     </button>
                     
                     <button onclick="switchTab('profile')" class="nav-btn" data-tab="profile">
                         <div class="nav-indicator hidden"></div>
-                        <svg class="nav-icon inactive" stroke-width="2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                        </svg>
+                        <div class="nav-icon inactive">
+                            <svg stroke-width="2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                            </svg>
+                        </div>
                         <span class="nav-label inactive">Profile</span>
                     </button>
                 </div>
@@ -458,7 +502,7 @@
     </div>
 
     <script>
-        // Supabase Configuration (Added as requested)
+        // Supabase Configuration
         const supabaseUrl = 'https://ocdwpaefmslyidelkzde.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jZHdwYWVmbXNseWlkZWxremRlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk0NjQ1OTQsImV4cCI6MjA4NTA0MDU5NH0.OAYuCQhxrmZMLI_H8OuaJvs7dKVm82gUPgGzQDUYq-Q';
 
@@ -888,14 +932,14 @@
                     indicator.classList.remove('hidden');
                     icon.classList.remove('inactive');
                     icon.classList.add('active');
-                    icon.setAttribute('stroke-width', '2.5');
+                    icon.querySelector('svg').setAttribute('stroke-width', '2.5');
                     label.classList.remove('inactive');
                     label.classList.add('active');
                 } else {
                     indicator.classList.add('hidden');
                     icon.classList.remove('active');
                     icon.classList.add('inactive');
-                    icon.setAttribute('stroke-width', '2');
+                    icon.querySelector('svg').setAttribute('stroke-width', '2');
                     label.classList.remove('active');
                     label.classList.add('inactive');
                 }
