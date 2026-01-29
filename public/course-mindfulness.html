@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#020617">
+    <title>MPHaven - Mindfulness Mastery</title>
+
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="favicon.ico">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: fixed;
+            background: #020617;
+        }
+
+        .container {
+            width: 100%;
+            height: 100vh;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .app-wrapper {
+            width: 100%;
+            max-width: 28rem;
+            height: 100%;
+            margin: 0 auto;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(40px);
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid rgba(30, 41, 59, 0.5);
+            border-right: 1px solid rgba(30, 41, 59, 0.5);
+        }
+
+        .bg-blur-1, .bg-blur-2 {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            pointer-events: none;
+            transition: background 0.5s ease;
+        }
+        
+        .bg-blur-1 {
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 24rem;
+            height: 24rem;
+            background: rgba(147, 51, 234, 0.1); /* Default purple */
+        }
+        
+        .bg-blur-2 {
+            bottom: 0;
+            right: 0;
+            width: 20rem;
+            height: 20rem;
+            background: rgba(6, 182, 212, 0.1); /* Default cyan */
+        }
+
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+        
+        .main-content::-webkit-scrollbar { display: none; }
+
+        .nav-bar {
+            border-top: 1px solid rgba(30, 41, 59, 0.5);
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(24px);
+            padding: 0.75rem 0 calc(0.75rem + env(safe-area-inset-bottom));
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.2);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-around;
+            max-width: 28rem;
+            margin: 0 auto;
+        }
+
+        .nav-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.5rem 1rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            min-height: 60px;
+            position: relative;
+        }
+
+        .nav-indicator {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2.5rem;
+            height: 3px;
+            background: linear-gradient(to right, #a855f7, #06b6d4);
+            border-radius: 9999px;
+        }
+
+        .nav-icon {
+            width: 22px;
+            height: 22px;
+            transition: all 0.2s;
+        }
+
+        .nav-icon.active { color: white; transform: scale(1.1); }
+        .nav-icon.inactive { color: rgb(100, 116, 139); }
+
+        .nav-label {
+            font-size: 0.6875rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .nav-label.active { color: white; }
+        .nav-label.inactive { color: rgb(100, 116, 139); }
+
+        .nav-badge {
+            position: absolute;
+            top: 2px;
+            right: 6px;
+            background: linear-gradient(135deg, #dc2626, #ef4444);
+            color: white;
+            font-size: 9px;
+            font-weight: bold;
+            padding: 2px 5px;
+            border-radius: 10px;
+            border: 2px solid rgba(15, 23, 42, 0.98);
+        }
+
+        .content-wrapper {
+            padding: max(1rem, env(safe-area-inset-top)) max(1.25rem, env(safe-area-inset-left) + 0.5rem) 2rem max(1.25rem, env(safe-area-inset-right) + 0.5rem);
+        }
+
+        .card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.4), rgba(15, 23, 42, 0.2));
+            border: 1px solid rgba(51, 65, 85, 0.4);
+            border-radius: 1.25rem;
+            transition: all 0.25s;
+        }
+
+        .card:active { transform: scale(0.98); }
+
+        .skill-card {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(6, 182, 212, 0.05));
+            border: 1px solid rgba(168, 85, 247, 0.25);
+        }
+
+        .skill-card:hover {
+            border-color: rgba(168, 85, 247, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .shop-tab {
+            padding: 0.625rem 1.125rem;
+            border-radius: 1rem;
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(51, 65, 85, 0.5);
+            color: rgb(148, 163, 184);
+            font-size: 0.8125rem;
+            font-weight: 500;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .shop-tab.active {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(6, 182, 212, 0.1));
+            border-color: rgba(168, 85, 247, 0.5);
+            color: white;
+        }
+
+        .shop-category-tabs {
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            padding: 0.75rem 1.25rem;
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(30, 41, 59, 0.5);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            scrollbar-width: none;
+        }
+        
+        .shop-category-tabs::-webkit-scrollbar { display: none; }
+
+        .progress-bar-bg {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 9999px;
+            height: 0.5rem;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, #a855f7, #06b6d4);
+            border-radius: 9999px;
+            transition: width 0.8s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in { animation: fadeIn 0.35s ease-out; }
+
+        @keyframes coinPop {
+            0% { transform: scale(0) rotate(0deg); opacity: 0; }
+            50% { transform: scale(1.2) rotate(180deg); opacity: 1; }
+            100% { transform: scale(1) rotate(360deg); opacity: 1; }
+        }
+
+        .coin-animation {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            animation: coinPop 0.7s ease-out;
+            pointer-events: none;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 9998;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.25rem;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 1.5rem;
+            padding: 1.75rem;
+            max-width: 22rem;
+            width: 100%;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .stat-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.375rem 0.75rem;
+            border-radius: 0.75rem;
+            font-size: 0.8125rem;
+            font-weight: 600;
+        }
+
+        @media (min-width: 640px) {
+            .app-wrapper {
+                border-radius: 2.5rem;
+                height: 844px;
+            }
+            .container {
+                padding: 2rem;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="app-wrapper">
+            <div class="bg-blur-1"></div>
+            <div class="bg-blur-2"></div>
+
+            <div id="mainContent" class="main-content">
+                <!-- Prevent flash of wrong content -->
+                <div style="display:flex;align-items:center;justify-content:center;height:100%;color:rgba(148,163,184,0.5)">
+                    <div style="text-align:center">
+                        <div style="font-size:2rem;margin-bottom:0.5rem">🧘</div>
+                        <p style="font-size:0.875rem">Loading...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-bar">
+                <div class="nav-container">
+                    <button onclick="switchTab('home')" class="nav-btn" data-tab="home">
+                        <div class="nav-indicator"></div>
+                        <svg class="nav-icon active" stroke-width="2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                        </svg>
+                        <span class="nav-label active">Home</span>
+                    </button>
+                    
+                    <button onclick="switchTab('skills')" class="nav-btn" data-tab="skills">
+                        <div class="nav-indicator" style="display: none;"></div>
+                        <svg class="nav-icon inactive" stroke-width="2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                        </svg>
+                        <span class="nav-label inactive">Skills</span>
+                    </button>
+                    
+                    <button onclick="switchTab('shop')" class="nav-btn" data-tab="shop">
+                        <div class="nav-indicator" style="display: none;"></div>
+                        <div class="nav-badge" id="shopBadge" style="display: none;">5</div>
+                        <svg class="nav-icon inactive" stroke-width="2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                        </svg>
+                        <span class="nav-label inactive">Shop</span>
+                    </button>
+                    
+                    <button onclick="switchTab('profile')" class="nav-btn" data-tab="profile">
+                        <div class="nav-indicator" style="display: none;"></div>
+                        <svg class="nav-icon inactive" stroke-width="2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                        </svg>
+                        <span class="nav-label inactive">Profile</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
+    <script>
+        // ===== DAILY PROMPTS SYSTEM =====
+        const promptBank = {
+            observe: [
+                "Notice three things you can see without naming them.",
+                "Watch a thought arise and pass without following it.",
+                "What sensations are present in your body right now?",
+                "Notice your breath without changing it.",
+                "What sounds are happening in the background?",
+                "Observe your body as if you were curious, not critical.",
+                "What is happening right now, exactly as it is?"
+            ],
+            describe: [
+                "Describe your current emotion using neutral words.",
+                "Name what you feel without explaining why.",
+                "Describe your breath like a reporter, not a judge.",
+                "Put words to your body sensations.",
+                "Describe your mood as weather.",
+                "What facts can you name about this moment?",
+                "Describe one thought using simple language."
+            ],
+            participate: [
+                "Fully engage in what you are doing for the next minute.",
+                "Let yourself be absorbed in one simple action.",
+                "Drop awareness into the body and move naturally.",
+                "Be present without watching yourself.",
+                "Participate without trying to do it perfectly.",
+                "Let go of self-consciousness for 60 seconds.",
+                "Do this moment wholeheartedly."
+            ],
+            nonjudgment: [
+                "Notice judgments and label them as 'judging'.",
+                "Describe what is happening without good or bad.",
+                "Replace 'should' with neutral facts.",
+                "Notice self-criticism without arguing with it.",
+                "Let an experience be neither right nor wrong.",
+                "Observe without evaluating.",
+                "What happens when you drop labels?"
+            ],
+            onemindfully: [
+                "Do one thing at a time for the next minute.",
+                "Bring attention back when it wanders.",
+                "Notice when multitasking and gently stop.",
+                "Fully experience one breath.",
+                "Let distractions pass without engaging.",
+                "Focus on one sensation completely.",
+                "Stay with one experience until it ends."
+            ],
+            effectively: [
+                "What action works best right now?",
+                "Let go of what 'should' work.",
+                "Choose effectiveness over being right.",
+                "What would help this situation most?",
+                "Act in a way that supports your goals.",
+                "Do what works, not what feels familiar.",
+                "What's the next helpful step?"
+            ],
+            checkin: [
+                "Name your current emotion.",
+                "Rate your energy level from 1–10.",
+                "What does your body need right now?",
+                "Notice tension and soften it slightly.",
+                "What are you carrying emotionally?",
+                "Pause and sense your breath.",
+                "What is your mind doing right now?"
+            ]
+        };
+
+        // ===== STATE MANAGEMENT =====
+        let state = {
+            coins: 350,
+            user: {
+                name: 'Mindful Explorer',
+                avatar: '🧘',
+                level: 2,
+                xp: 280,
+                streak: 5,
+                theme: 'default'
+            },
+            completedSkills: ['observe'],
+            activeSkills: ['observe', 'describe'],
+            inventory: {
+                themes: ['default'],
+                avatars: ['🧘']
+            },
+            currentTab: 'home', // Explicitly set to home first
+            shopCategory: 'themes',
+            shopNotifications: 5,
+            philosophyExpanded: false,
+            daily: {
+                prompt: null,
+                promptDate: null,
+                skillId: 'observe'
+            }
+        };
+
+        const skills = [
+            { id: 'observe', name: 'OBSERVE', icon: '👁️', color: 'linear-gradient(135deg, #8b5cf6, #ec4899)', tagline: 'Watch thoughts like clouds', description: 'Notice without judgment', locked: false, lessons: 7 },
+            { id: 'describe', name: 'DESCRIBE', icon: '📝', color: 'linear-gradient(135deg, #3b82f6, #06b6d4)', tagline: 'Facts over stories', description: 'Stick to what\'s real', locked: false, lessons: 6 },
+            { id: 'participate', name: 'PARTICIPATE', icon: '🌿', color: 'linear-gradient(135deg, #10b981, #14b8a6)', tagline: 'Be fully present', description: 'Engage completely', locked: true, lessons: 8, prerequisite: 'describe' },
+            { id: 'nonjudgment', name: 'NONJUDGE', icon: '⚖️', color: 'linear-gradient(135deg, #f59e0b, #ef4444)', tagline: 'Drop the labels', description: 'Accept what is', locked: true, lessons: 7, prerequisite: 'participate' },
+            { id: 'onemindfully', name: 'ONE-MINDFULLY', icon: '🎯', color: 'linear-gradient(135deg, #6366f1, #8b5cf6)', tagline: 'One thing at a time', description: 'Single-point focus', locked: true, lessons: 6, prerequisite: 'nonjudgment' },
+            { id: 'effectively', name: 'EFFECTIVELY', icon: '✅', color: 'linear-gradient(135deg, #ec4899, #f43f5e)', tagline: 'Do what works', description: 'Choose wisely', locked: true, lessons: 7, prerequisite: 'onemindfully' },
+            { id: 'checkin', name: 'CHECK-IN', icon: '🧠', color: 'linear-gradient(135deg, #14b8a6, #06b6d4)', tagline: 'Know your state', description: 'Awareness first', locked: true, lessons: 5, prerequisite: 'effectively' }
+        ];
+
+        const shopItems = {
+            themes: [
+                { id: 'default', name: 'Default', cost: 0, preview: 'linear-gradient(135deg, #8b5cf6, #ec4899)', desc: 'Classic MPHaven', free: true, colors: { blur1: 'rgba(147, 51, 234, 0.1)', blur2: 'rgba(6, 182, 212, 0.1)' } },
+                { id: 'ocean', name: 'Ocean Calm', cost: 150, preview: 'linear-gradient(135deg, #0ea5e9, #06b6d4)', desc: 'Deep blue serenity', colors: { blur1: 'rgba(14, 165, 233, 0.1)', blur2: 'rgba(6, 182, 212, 0.1)' } },
+                { id: 'sunset', name: 'Sunset Glow', cost: 150, preview: 'linear-gradient(135deg, #f59e0b, #ef4444)', desc: 'Warm evening vibes', colors: { blur1: 'rgba(245, 158, 11, 0.1)', blur2: 'rgba(239, 68, 68, 0.1)' } },
+                { id: 'forest', name: 'Forest Peace', cost: 200, preview: 'linear-gradient(135deg, #10b981, #14b8a6)', desc: 'Natural harmony', colors: { blur1: 'rgba(16, 185, 129, 0.1)', blur2: 'rgba(20, 184, 166, 0.1)' } },
+                { id: 'midnight', name: 'Midnight', cost: 250, preview: 'linear-gradient(135deg, #1e1b4b, #6366f1)', desc: 'Deep focus mode', colors: { blur1: 'rgba(30, 27, 75, 0.15)', blur2: 'rgba(99, 102, 241, 0.1)' } },
+                { id: 'aurora', name: 'Aurora', cost: 300, preview: 'linear-gradient(135deg, #8b5cf6, #ec4899, #06b6d4)', desc: 'Mystical lights', colors: { blur1: 'rgba(139, 92, 246, 0.1)', blur2: 'rgba(236, 72, 153, 0.1)' } }
+            ],
+            avatars: [
+                { id: 'zen', name: 'Zen Master', cost: 75, emoji: '🧘' },
+                { id: 'star', name: 'Shining Star', cost: 75, emoji: '⭐' },
+                { id: 'fire', name: 'Inner Fire', cost: 100, emoji: '🔥' },
+                { id: 'brain', name: 'Wise Mind', cost: 100, emoji: '🧠' },
+                { id: 'heart', name: 'Open Heart', cost: 125, emoji: '💖' },
+                { id: 'lightning', name: 'Clear Focus', cost: 125, emoji: '⚡' },
+                { id: 'crown', name: 'Mastery', cost: 150, emoji: '👑' }
+            ]
+        };
+
+        // ===== DAILY PROMPT LOGIC =====
+        function getDailyPrompt() {
+            const today = new Date().toDateString();
+
+            if (state.daily?.promptDate === today && state.daily.prompt) {
+                return state.daily.prompt;
+            }
+
+            const skillId = state.daily?.skillId || 'observe';
+            const prompts = promptBank[skillId] || promptBank.observe;
+            const prompt = prompts[Math.floor(Math.random() * prompts.length)];
+
+            state.daily = {
+                ...state.daily,
+                prompt,
+                promptDate: today
+            };
+
+            saveState();
+            return prompt;
+        }
+
+        function applyTheme() {
+            const theme = shopItems.themes.find(t => t.id === state.user.theme);
+            if (theme && theme.colors) {
+                const blur1 = document.querySelector('.bg-blur-1');
+                const blur2 = document.querySelector('.bg-blur-2');
+                if (blur1) blur1.style.background = theme.colors.blur1;
+                if (blur2) blur2.style.background = theme.colors.blur2;
+            }
+        }
+
+        function saveState() { localStorage.setItem('mphaven_state', JSON.stringify(state)); }
+        
+        function loadState() {
+            const saved = localStorage.getItem('mphaven_state');
+            if (saved) {
+                const savedData = JSON.parse(saved);
+                // Always start on home tab, even if saved differently
+                savedData.currentTab = 'home';
+                state = { ...state, ...savedData };
+            }
+        }
+
+        function earnCoins(amount) {
+            state.coins += amount;
+            state.user.xp += amount * 2;
+            const anim = document.createElement('div');
+            anim.className = 'coin-animation';
+            anim.innerHTML = `<div style="text-align:center"><div style="font-size:3.5rem;margin-bottom:0.5rem">🪙</div><div style="font-size:1.75rem;font-weight:bold;color:#fbbf24">+${amount}</div></div>`;
+            document.body.appendChild(anim);
+            setTimeout(() => anim.remove(), 700);
+            saveState();
+            render();
+        }
+
+        function triggerConfetti() {
+            confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+        }
+
+        function startSkill(skillId) {
+            const skill = skills.find(s => s.id === skillId);
+            if (!skill || skill.locked) return;
+            
+            // Navigate to first lesson of this skill
+            window.location.href = `lesson-${skillId}-1.html`;
+        }
+
+        function completeSkillDemo(skillId) {
+            closeModal();
+            if (!state.completedSkills.includes(skillId)) {
+                state.completedSkills.push(skillId);
+                earnCoins(100);
+                triggerConfetti();
+                
+                const currentIndex = skills.findIndex(s => s.id === skillId);
+                if (currentIndex < skills.length - 1) {
+                    skills[currentIndex + 1].locked = false;
+                    state.activeSkills.push(skills[currentIndex + 1].id);
+                }
+                
+                saveState();
+                render();
+            }
+        }
+
+        function buyItem(type, item) {
+            // FIXED: Check if already owned before purchasing
+            if (type === 'themes') {
+                if (state.inventory.themes.includes(item.id)) {
+                    // Already owned - just equip it
+                    state.user.theme = item.id;
+                    saveState();
+                    applyTheme(); // Apply the theme colors
+                    render();
+                    return;
+                }
+            } else if (type === 'avatars') {
+                if (state.inventory.avatars.includes(item.emoji)) {
+                    // Already owned - just equip it
+                    state.user.avatar = item.emoji;
+                    saveState();
+                    render();
+                    return;
+                }
+            }
+
+            // Not owned - proceed with purchase
+            if (state.coins >= item.cost) {
+                state.coins -= item.cost;
+                
+                if (type === 'themes') {
+                    state.inventory.themes.push(item.id);
+                    state.user.theme = item.id;
+                } else if (type === 'avatars') {
+                    state.inventory.avatars.push(item.emoji);
+                    state.user.avatar = item.emoji;
+                }
+                
+                if (state.shopNotifications > 0) state.shopNotifications--;
+                
+                saveState();
+                if (type === 'themes') applyTheme(); // Apply the theme colors
+                render();
+                
+                showModal(`
+                    <div style="text-align:center">
+                        <div style="font-size:3.5rem;margin-bottom:1rem">🎉</div>
+                        <h2 style="color:white;font-size:1.375rem;font-weight:bold;margin-bottom:0.5rem">Purchase Complete!</h2>
+                        <p style="color:rgb(203,213,225);margin-bottom:1.5rem;font-size:0.9375rem">${item.desc || `You got ${item.name}`}</p>
+                        <button onclick="closeModal()" style="width:100%;padding:0.875rem;border-radius:0.75rem;background:linear-gradient(to right,#a855f7,#06b6d4);color:white;font-weight:bold;border:none;font-size:0.9375rem">Awesome!</button>
+                    </div>
+                `);
+            } else if (item.cost > 0) {
+                showModal(`
+                    <div style="text-align:center">
+                        <div style="font-size:3.5rem;margin-bottom:1rem">🪙</div>
+                        <h2 style="color:white;font-size:1.375rem;font-weight:bold;margin-bottom:0.5rem">Not Enough Coins</h2>
+                        <p style="color:rgb(203,213,225);margin-bottom:1.5rem;font-size:0.9375rem">Need ${item.cost - state.coins} more coins</p>
+                        <button onclick="closeModal();switchTab('skills')" style="width:100%;padding:0.875rem;border-radius:0.75rem;background:linear-gradient(to right,#a855f7,#06b6d4);color:white;font-weight:bold;border:none;margin-bottom:0.5rem;font-size:0.9375rem">Train Skills</button>
+                        <button onclick="closeModal()" style="width:100%;padding:0.875rem;border-radius:0.75rem;background:rgba(51,65,85,0.5);color:rgb(203,213,225);font-weight:600;border:none;font-size:0.9375rem">Later</button>
+                    </div>
+                `);
+            }
+        }
+
+        function showModal(content) {
+            const modal = document.createElement('div');
+            modal.id = 'modal';
+            modal.className = 'modal-overlay';
+            modal.innerHTML = `<div class="modal-content">${content}</div>`;
+            document.body.appendChild(modal);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('modal');
+            if (modal) modal.remove();
+        }
+
+        function switchTab(tabName) {
+            state.currentTab = tabName;
+            
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                const indicator = btn.querySelector('.nav-indicator');
+                const icon = btn.querySelector('.nav-icon');
+                const label = btn.querySelector('.nav-label');
+                
+                if (btn.dataset.tab === tabName) {
+                    indicator.style.display = 'block';
+                    icon.classList.remove('inactive');
+                    icon.classList.add('active');
+                    icon.setAttribute('stroke-width', '2.5');
+                    label.classList.remove('inactive');
+                    label.classList.add('active');
+                } else {
+                    indicator.style.display = 'none';
+                    icon.classList.remove('active');
+                    icon.classList.add('inactive');
+                    icon.setAttribute('stroke-width', '2');
+                    label.classList.remove('active');
+                    label.classList.add('inactive');
+                }
+            });
+            
+            render();
+        }
+
+        function switchShopCategory(category) {
+            state.shopCategory = category;
+            render();
+        }
+
+        function renderHome() {
+            const progress = Math.round((state.completedSkills.length / skills.length) * 100);
+            const activeSkill = skills.find(s => state.activeSkills.includes(s.id) && !state.completedSkills.includes(s.id));
+            const nextLevelXP = state.user.level * 200;
+            const levelProgress = Math.min(100, ((state.user.xp % nextLevelXP) / nextLevelXP) * 100);
+            const todayPrompt = getDailyPrompt();
+            
+            return `
+                <div class="content-wrapper fade-in">
+                    <!-- Compact Header -->
+                    <div class="card" style="padding:1rem;margin-bottom:1rem;background:linear-gradient(135deg,rgba(168,85,247,0.12),rgba(6,182,212,0.08))">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.875rem">
+                            <div style="display:flex;align-items:center;gap:0.75rem">
+                                <div style="width:2.75rem;height:2.75rem;border-radius:50%;background:linear-gradient(135deg,rgba(168,85,247,0.3),rgba(6,182,212,0.3));display:flex;align-items:center;justify-content:center;font-size:1.5rem;border:2px solid rgba(168,85,247,0.4)">${state.user.avatar}</div>
+                                <div>
+                                    <p style="color:rgb(148,163,184);font-size:0.6875rem;margin-bottom:0.125rem">Welcome back</p>
+                                    <h2 style="color:white;font-weight:bold;font-size:1rem">${state.user.name}</h2>
+                                </div>
+                            </div>
+                            <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;justify-content:flex-end">
+                                <span class="stat-pill" style="background:rgba(251,191,36,0.15);border:1px solid rgba(251,191,36,0.3);color:rgb(251,191,36)">🪙 ${state.coins}</span>
+                                <span class="stat-pill" style="background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);color:rgb(252,165,165)">🔥 ${state.user.streak}</span>
+                            </div>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem">
+                            <p style="color:rgb(203,213,225);font-size:0.8125rem;font-weight:600">${state.completedSkills.length}/${skills.length} Skills • ${progress}%</p>
+                            <p style="color:rgb(148,163,184);font-size:0.75rem">Lvl ${state.user.level} • ${state.user.xp}/${nextLevelXP} XP</p>
+                        </div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar" style="width:${progress}%"></div>
+                        </div>
+                    </div>
+
+                    <!-- DAILY PROMPT -->
+                    <div class="card" style="padding:1.125rem;margin-bottom:1rem;background:linear-gradient(135deg,rgba(168,85,247,0.12),rgba(6,182,212,0.08))">
+                        <p style="color:rgb(148,163,184);font-size:0.6875rem;text-transform:uppercase;font-weight:600;margin-bottom:0.625rem">💬 Today's Reflection</p>
+                        <p style="color:white;font-size:0.9375rem;line-height:1.5">${todayPrompt}</p>
+                    </div>
+
+                    ${activeSkill ? `
+                    <!-- FEATURED ACTIVE SKILL -->
+                    <div style="margin-bottom:1rem">
+                        <p style="color:rgb(148,163,184);font-size:0.6875rem;text-transform:uppercase;letter-spacing:0.05em;font-weight:600;margin-bottom:0.625rem">Continue Learning</p>
+                        <button onclick="startSkill('${activeSkill.id}')" class="card skill-card" style="width:100%;text-align:center;padding:1.75rem;border:none;cursor:pointer;position:relative;overflow:hidden">
+                            <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:200px;height:200px;background:${activeSkill.color};opacity:0.15;border-radius:50%;filter:blur(60px);pointer-events:none"></div>
+                            
+                            <div style="position:relative;z-index:1">
+                                <div style="width:5rem;height:5rem;margin:0 auto 1.125rem;border-radius:1.25rem;background:${activeSkill.color};display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(0,0,0,0.2)">
+                                    <span style="font-size:3rem">${activeSkill.icon}</span>
+                                </div>
+                                <h3 style="color:white;font-weight:bold;font-size:1.375rem;margin-bottom:0.5rem">${activeSkill.name}</h3>
+                                <p style="color:rgb(203,213,225);font-size:1rem;margin-bottom:0.875rem">${activeSkill.tagline}</p>
+                                <div style="background:rgba(255,255,255,0.08);padding:0.625rem 1rem;border-radius:0.875rem;display:inline-block">
+                                    <p style="color:rgb(148,163,184);font-size:0.8125rem">${activeSkill.lessons} lessons • Tap to start</p>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                    ` : ''}
+
+                    <!-- SKILL PATH -->
+                    <div style="margin-bottom:1rem">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem">
+                            <p style="color:rgb(148,163,184);font-size:0.6875rem;text-transform:uppercase;letter-spacing:0.05em;font-weight:600">Skill Path</p>
+                            <button onclick="switchTab('skills')" style="background:none;border:none;color:rgb(168,85,247);font-size:0.8125rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:0.375rem">
+                                View All 7
+                                <svg style="width:0.875rem;height:0.875rem" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div style="display:flex;gap:0.75rem;overflow-x:auto;scrollbar-width:none;padding-bottom:0.25rem;-webkit-overflow-scrolling:touch">
+                            ${skills.map((skill, index) => {
+                                const completed = state.completedSkills.includes(skill.id);
+                                const isActive = activeSkill && activeSkill.id === skill.id;
+                                const canStart = !skill.locked || completed;
+                                
+                                return `
+                                    <div style="position:relative;flex-shrink:0">
+                                        <button onclick="${canStart ? `startSkill('${skill.id}')` : ''}" class="card skill-card" style="width:7rem;padding:1.125rem;text-align:center;border:none;cursor:${canStart ? 'pointer' : 'default'};opacity:${skill.locked && !completed ? '0.5' : '1'};border:${isActive ? '2px solid rgba(168,85,247,0.5)' : '1px solid rgba(168,85,247,0.25)'}">
+                                            <div style="font-size:2.75rem;margin-bottom:0.75rem">${skill.icon}</div>
+                                            <h4 style="color:white;font-weight:bold;font-size:0.75rem;margin-bottom:0.375rem;line-height:1.2">${skill.name}</h4>
+                                            <p style="color:${completed ? 'rgb(74,222,128)' : (isActive ? 'rgb(192,132,252)' : 'rgb(148,163,184)')};font-size:0.6875rem">${completed ? '✓ Done' : (isActive ? 'Active' : skill.locked ? '🔒' : 'Ready')}</p>
+                                        </button>
+                                        ${completed ? '<div style="position:absolute;top:-6px;right:-6px;background:linear-gradient(135deg,#10b981,#14b8a6);width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid rgb(15,23,42);box-shadow:0 2px 8px rgba(16,185,129,0.4)"><span style="font-size:12px;color:white">✓</span></div>' : ''}
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+
+                    <!-- Quick Tip -->
+                    <div class="card" style="padding:1rem;background:linear-gradient(135deg,rgba(168,85,247,0.08),rgba(6,182,212,0.05))">
+                        <div style="display:flex;align-items:start;gap:0.75rem">
+                            <div style="font-size:1.5rem;flex-shrink:0">💡</div>
+                            <div>
+                                <p style="color:white;font-weight:600;font-size:0.875rem;margin-bottom:0.375rem">Daily Practice</p>
+                                <p style="color:rgb(148,163,184);font-size:0.8125rem;line-height:1.4">Complete one skill lesson today to maintain your ${state.user.streak}-day streak and earn 100 coins.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderSkills() {
+            return `
+                <div class="content-wrapper fade-in">
+                    <div style="margin-bottom:1.25rem">
+                        <h2 style="color:white;font-size:1.625rem;font-weight:bold;margin-bottom:0.375rem">7 Core Skills</h2>
+                        <p style="color:rgb(148,163,184);font-size:0.875rem">Master mindfulness step by step</p>
+                    </div>
+
+                    <div style="display:flex;flex-direction:column;gap:0.875rem">
+                        ${skills.map(skill => {
+                            const completed = state.completedSkills.includes(skill.id);
+                            const canStart = !skill.locked || completed;
+                            
+                            return `
+                                <button onclick="${canStart ? `startSkill('${skill.id}')` : ''}" class="card skill-card" style="width:100%;text-align:left;padding:1.125rem;border:none;cursor:${canStart ? 'pointer' : 'default'};opacity:${!canStart ? '0.6' : '1'}">
+                                    <div style="display:flex;align-items:center;gap:0.875rem">
+                                        <div style="width:3rem;height:3rem;border-radius:1rem;background:${skill.color};display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,0.15);flex-shrink:0">
+                                            <span style="font-size:1.5rem">${skill.icon}</span>
+                                        </div>
+                                        <div style="flex:1;min-width:0">
+                                            <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.25rem;flex-wrap:wrap">
+                                                <h4 style="color:white;font-weight:bold;font-size:0.9375rem">${skill.name}</h4>
+                                                ${completed ? '<span style="background:rgba(34,197,94,0.2);color:rgb(74,222,128);padding:0.125rem 0.5rem;border-radius:0.5rem;font-size:0.6875rem;font-weight:bold">✓ Done</span>' : ''}
+                                                ${skill.locked && !completed ? '<span style="background:rgba(100,116,139,0.2);color:rgb(148,163,184);padding:0.125rem 0.5rem;border-radius:0.5rem;font-size:0.6875rem;font-weight:bold">🔒</span>' : ''}
+                                            </div>
+                                            <p style="color:rgb(203,213,225);font-size:0.8125rem;margin-bottom:0.25rem">${skill.tagline}</p>
+                                            <p style="color:rgb(148,163,184);font-size:0.75rem">${skill.description}</p>
+                                        </div>
+                                        <svg style="width:1.125rem;height:1.125rem;color:${canStart ? 'rgb(168,85,247)' : 'rgb(100,116,139)'};flex-shrink:0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                        </svg>
+                                    </div>
+                                </button>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderShop() {
+            const currentItems = shopItems[state.shopCategory];
+            const categoryCounts = { 
+                themes: state.inventory.themes.length, 
+                avatars: state.inventory.avatars.length 
+            };
+            
+            return `
+                <div class="fade-in">
+                    <div class="shop-category-tabs">
+                        <button onclick="switchShopCategory('themes')" class="shop-tab ${state.shopCategory === 'themes' ? 'active' : ''}">🎨 Themes ${categoryCounts.themes}/${shopItems.themes.length}</button>
+                        <button onclick="switchShopCategory('avatars')" class="shop-tab ${state.shopCategory === 'avatars' ? 'active' : ''}">👤 Avatars ${categoryCounts.avatars}/${shopItems.avatars.length + 1}</button>
+                    </div>
+
+                    <div class="content-wrapper">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.125rem">
+                            <div>
+                                <h2 style="color:white;font-size:1.375rem;font-weight:bold;margin-bottom:0.25rem">Reward Shop</h2>
+                                <p style="color:rgb(148,163,184);font-size:0.75rem">Earn coins by mastering skills</p>
+                            </div>
+                            <div style="background:rgba(251,191,36,0.15);padding:0.625rem 1rem;border-radius:1rem;border:2px solid rgba(251,191,36,0.3)">
+                                <div style="display:flex;align-items:center;gap:0.5rem">
+                                    <span style="font-size:1.25rem">🪙</span>
+                                    <span style="color:white;font-weight:900;font-size:1.125rem">${state.coins}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="${state.shopCategory === 'themes' ? 'display:flex;flex-direction:column' : 'display:grid;grid-template-columns:repeat(2,1fr)'};gap:0.875rem;margin-bottom:1.25rem">
+                            ${currentItems.map(item => {
+                                let owned = false, active = false;
+                                
+                                if (state.shopCategory === 'themes') {
+                                    owned = state.inventory.themes.includes(item.id);
+                                    active = state.user.theme === item.id;
+                                } else if (state.shopCategory === 'avatars') {
+                                    owned = state.inventory.avatars.includes(item.emoji);
+                                    active = state.user.avatar === item.emoji;
+                                }
+                                
+                                const canAfford = state.coins >= item.cost;
+                                const isFree = item.cost === 0;
+                                
+                                if (state.shopCategory === 'themes') {
+                                    return `
+                                        <button onclick="buyItem('${state.shopCategory}',${JSON.stringify(item).replace(/"/g,'&quot;')})" class="card" style="padding:1rem;display:flex;align-items:center;gap:1rem;text-align:left;border:1px solid ${active ? 'rgba(251,191,36,0.6)' : (owned ? 'rgba(34,197,94,0.4)' : 'rgba(51,65,85,0.4)')};opacity:${!owned && !canAfford && !isFree ? '0.6' : '1'};cursor:pointer">
+                                            <div style="width:4.5rem;height:4.5rem;border-radius:1rem;background:${item.preview};flex-shrink:0;border:2px solid ${active ? 'rgb(251,191,36)' : 'rgba(51,65,85,0.5)'}"></div>
+                                            <div style="flex:1;min-width:0">
+                                                <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.375rem">
+                                                    <h4 style="color:white;font-weight:bold;font-size:0.875rem">${item.name}</h4>
+                                                    ${isFree ? '<span style="background:rgba(34,197,94,0.2);color:rgb(74,222,128);padding:0.125rem 0.5rem;border-radius:0.375rem;font-size:0.6875rem;font-weight:bold">FREE</span>' : ''}
+                                                    ${active ? '<span style="background:rgba(251,191,36,0.2);color:rgb(251,191,36);padding:0.125rem 0.5rem;border-radius:0.375rem;font-size:0.6875rem;font-weight:bold">ACTIVE</span>' : ''}
+                                                    ${owned && !active ? '<span style="background:rgba(34,197,94,0.2);color:rgb(74,222,128);padding:0.125rem 0.5rem;border-radius:0.375rem;font-size:0.6875rem;font-weight:bold">OWNED</span>' : ''}
+                                                </div>
+                                                <p style="color:rgb(148,163,184);font-size:0.75rem;margin-bottom:0.5rem">${item.desc}</p>
+                                                ${!owned && !isFree ? `<div style="background:${canAfford ? 'rgba(251,191,36,0.15)' : 'rgba(100,116,139,0.15)'};padding:0.375rem 0.75rem;border-radius:0.5rem;border:1px solid ${canAfford ? 'rgba(251,191,36,0.3)' : 'rgba(100,116,139,0.3)'};display:inline-block"><span style="color:${canAfford ? 'rgb(251,191,36)' : 'rgb(148,163,184)'};font-weight:bold;font-size:0.8125rem">${item.cost} 🪙</span></div>` : ''}
+                                                ${owned && !active ? '<p style="color:rgb(148,163,184);font-size:0.75rem">Tap to equip</p>' : ''}
+                                            </div>
+                                        </button>
+                                    `;
+                                } else {
+                                    return `
+                                        <button onclick="buyItem('${state.shopCategory}',${JSON.stringify(item).replace(/"/g,'&quot;')})" class="card" style="padding:1rem;text-align:center;border:1px solid ${active ? 'rgba(251,191,36,0.6)' : (owned ? 'rgba(34,197,94,0.4)' : 'rgba(51,65,85,0.4)')};opacity:${!owned && !canAfford ? '0.6' : '1'};cursor:pointer">
+                                            <div style="font-size:2.5rem;margin-bottom:0.5rem">${item.emoji || '🎨'}</div>
+                                            <h4 style="color:white;font-weight:bold;font-size:0.8125rem;margin-bottom:0.5rem">${item.name}</h4>
+                                            ${!owned ? `<div style="background:${canAfford ? 'rgba(251,191,36,0.15)' : 'rgba(100,116,139,0.15)'};padding:0.25rem 0.625rem;border-radius:0.5rem;border:1px solid ${canAfford ? 'rgba(251,191,36,0.3)' : 'rgba(100,116,139,0.3)'};margin-top:0.375rem"><p style="color:${canAfford ? 'rgb(251,191,36)' : 'rgb(148,163,184)'};font-weight:bold;font-size:0.75rem">${item.cost} 🪙</p></div>` : `<p style="color:rgb(192,132,252);font-size:0.75rem;margin-top:0.375rem">${active ? 'Active' : 'Tap to use'}</p>`}
+                                        </button>
+                                    `;
+                                }
+                            }).join('')}
+                        </div>
+
+                        <div class="card" style="padding:1.25rem;text-align:center;background:linear-gradient(135deg,rgba(168,85,247,0.12),rgba(6,182,212,0.08))">
+                            <p style="color:white;font-weight:bold;font-size:0.875rem;margin-bottom:0.5rem">Need More Coins?</p>
+                            <p style="color:rgb(148,163,184);font-size:0.75rem;margin-bottom:0.875rem">Complete skills to earn coins</p>
+                            <button onclick="switchTab('skills')" style="width:100%;padding:0.75rem;border-radius:0.75rem;background:linear-gradient(to right,#a855f7,#06b6d4);color:white;font-weight:bold;border:none;font-size:0.875rem">Train Skills →</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderProfile() {
+            return `
+                <div class="content-wrapper fade-in">
+                    <div class="card" style="padding:1.125rem;margin-bottom:1rem;background:linear-gradient(135deg,rgba(168,85,247,0.12),rgba(6,182,212,0.08))">
+                        <div style="display:flex;align-items:center;gap:0.875rem">
+                            <div style="width:3.5rem;height:3.5rem;border-radius:50%;background:linear-gradient(135deg,rgba(168,85,247,0.3),rgba(6,182,212,0.3));display:flex;align-items:center;justify-content:center;font-size:2rem;border:3px solid rgba(168,85,247,0.5)">${state.user.avatar}</div>
+                            <div style="flex:1">
+                                <h2 style="color:white;font-weight:bold;font-size:1.125rem;margin-bottom:0.375rem">${state.user.name}</h2>
+                                <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+                                    <span class="stat-pill" style="background:rgba(251,191,36,0.15);border:1px solid rgba(251,191,36,0.3);color:rgb(251,191,36);font-size:0.75rem">⭐ Lvl ${state.user.level}</span>
+                                    <span class="stat-pill" style="background:rgba(168,85,247,0.15);border:1px solid rgba(168,85,247,0.3);color:rgb(192,132,252);font-size:0.75rem">🪙 ${state.coins}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card" style="padding:1rem;margin-bottom:1rem">
+                        <h3 style="color:white;font-weight:bold;font-size:0.875rem;margin-bottom:0.875rem">Your Progress</h3>
+                        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:0.75rem">
+                            ${[
+                                { icon: '🏆', value: state.completedSkills.length, label: 'Skills', bg: 'rgba(168,85,247,0.1)', border: 'rgba(168,85,247,0.2)' },
+                                { icon: state.user.streak >= 3 ? '🔥' : '📅', value: state.user.streak, label: 'Streak', bg: 'rgba(239,68,68,0.1)', border: 'rgba(239,68,68,0.2)' },
+                                { icon: '💰', value: state.coins, label: 'Coins', bg: 'rgba(251,191,36,0.1)', border: 'rgba(251,191,36,0.2)' },
+                                { icon: '⚡', value: state.user.xp, label: 'XP', bg: 'rgba(34,197,94,0.1)', border: 'rgba(34,197,94,0.2)' }
+                            ].map(stat => `
+                                <div style="background:${stat.bg};border:1px solid ${stat.border};border-radius:1rem;padding:0.875rem;text-align:center">
+                                    <div style="font-size:1.5rem;margin-bottom:0.375rem">${stat.icon}</div>
+                                    <p style="color:white;font-size:1.125rem;font-weight:bold">${stat.value}</p>
+                                    <p style="color:rgb(148,163,184);font-size:0.6875rem">${stat.label}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div class="card" style="padding:1rem;margin-bottom:1rem">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem">
+                            <h3 style="color:white;font-weight:bold;font-size:0.875rem">Skill Badges</h3>
+                            <span style="color:rgb(148,163,184);font-size:0.75rem">${state.completedSkills.length}/7</span>
+                        </div>
+                        ${state.completedSkills.length > 0 ? `
+                            <div style="display:flex;gap:0.625rem;overflow-x:auto;scrollbar-width:none">
+                                ${state.completedSkills.map(skillId => {
+                                    const skill = skills.find(s => s.id === skillId);
+                                    return `<div style="background:rgba(168,85,247,0.1);border:1px solid rgba(168,85,247,0.3);border-radius:0.875rem;padding:0.75rem;min-width:4.5rem;text-align:center"><div style="font-size:1.5rem;margin-bottom:0.375rem">${skill.icon}</div><p style="color:white;font-weight:bold;font-size:0.6875rem">${skill.name}</p></div>`;
+                                }).join('')}
+                            </div>
+                        ` : `
+                            <div style="text-align:center;padding:1.5rem 0">
+                                <div style="font-size:2.5rem;margin-bottom:0.75rem;opacity:0.3">🏆</div>
+                                <p style="color:rgb(148,163,184);font-size:0.75rem;margin-bottom:0.875rem">Complete skills to earn badges</p>
+                                <button onclick="switchTab('skills')" style="padding:0.5rem 1rem;border-radius:0.75rem;background:rgba(168,85,247,0.2);color:rgb(168,85,247);font-weight:bold;border:1px solid rgba(168,85,247,0.3);font-size:0.75rem">Start Training</button>
+                            </div>
+                        `}
+                    </div>
+
+                    <div class="card" style="padding:1rem;margin-bottom:1rem">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem">
+                            <h3 style="color:white;font-weight:bold;font-size:0.875rem">My Collection</h3>
+                            <button onclick="switchTab('shop')" style="color:rgb(192,132,252);font-size:0.75rem;font-weight:bold;background:none;border:none;cursor:pointer">Shop</button>
+                        </div>
+                        ${['themes','avatars'].map(type => `
+                            <div style="margin-bottom:0.875rem">
+                                <p style="color:rgb(148,163,184);font-size:0.75rem;font-weight:500;margin-bottom:0.5rem;text-transform:capitalize">${type}</p>
+                                <div style="display:flex;gap:0.5rem;overflow-x:auto;scrollbar-width:none">
+                                    ${state.inventory[type].map(item => {
+                                        const isActive = type === 'themes' ? state.user.theme === item : state.user.avatar === item;
+                                        const display = type === 'themes' ? (shopItems.themes.find(t => t.id === item)?.preview || 'linear-gradient(135deg,rgba(168,85,247,0.5),rgba(6,182,212,0.5))') : item;
+                                        return `<button onclick="state.user.${type === 'themes' ? 'theme' : 'avatar'}='${item}';saveState();${type === 'themes' ? 'applyTheme();' : ''}render()" style="width:3.25rem;height:3.25rem;border-radius:0.75rem;${type === 'themes' ? `background:${display}` : `background:${isActive ? 'rgba(168,85,247,0.2)' : 'rgba(30,41,59,0.5)'};display:flex;align-items:center;justify-content:center;font-size:1.5rem`};flex-shrink:0;border:2px solid ${isActive ? 'rgb(251,191,36)' : 'rgba(51,65,85,0.5)'};position:relative;cursor:pointer">${type === 'avatars' ? item : ''}${isActive ? '<div style="position:absolute;top:-3px;right:-3px;background:linear-gradient(135deg,#fbbf24,#f59e0b);width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid rgb(15,23,42)"><span style="font-size:8px">✓</span></div>' : ''}</button>`;
+                                    }).join('')}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div class="card" style="padding:1rem;background:linear-gradient(135deg,rgba(168,85,247,0.1),rgba(6,182,212,0.1))">
+                        <button onclick="state.philosophyExpanded=!state.philosophyExpanded;render()" style="width:100%;display:flex;align-items:center;justify-content:space-between;background:none;border:none;cursor:pointer;margin-bottom:${state.philosophyExpanded ? '0.75rem' : '0'}">
+                            <div style="display:flex;align-items:center;gap:0.5rem">
+                                <span style="font-size:1.125rem">💫</span>
+                                <h3 style="color:white;font-weight:bold;font-size:0.875rem">Our Mission</h3>
+                            </div>
+                            <span style="color:rgb(148,163,184);font-size:0.875rem">${state.philosophyExpanded ? '▼' : '▶'}</span>
+                        </button>
+                        ${state.philosophyExpanded ? `
+                            <p style="color:rgb(203,213,225);font-size:0.8125rem;line-height:1.5;margin-bottom:0.625rem">True wellbeing comes from being who you really are, connecting deeply, and having inner resources to navigate life.</p>
+                            <p style="color:rgb(148,163,184);font-style:italic;font-size:0.75rem;line-height:1.4">Take your time. You are exactly where you need to be.</p>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        function render() {
+            const content = document.getElementById('mainContent');
+            const shopBadge = document.getElementById('shopBadge');
+            
+            shopBadge.style.display = state.shopNotifications > 0 ? 'block' : 'none';
+            if (state.shopNotifications > 0) shopBadge.textContent = state.shopNotifications;
+            
+            content.innerHTML = state.currentTab === 'home' ? renderHome() : 
+                               state.currentTab === 'skills' ? renderSkills() :
+                               state.currentTab === 'shop' ? renderShop() : renderProfile();
+            
+            content.scrollTop = 0;
+        }
+
+        loadState();
+        applyTheme(); // Apply saved theme FIRST
+        render();    // Then render content
+
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js').catch(() => {});
+        }
+    </script>
+</body>
+</html>
