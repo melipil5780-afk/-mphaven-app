@@ -544,8 +544,8 @@
             const skill = skills.find(s => s.id === skillId);
             if (!skill || skill.locked) return;
             
-            // Navigate to first lesson of this skill
-            window.location.href = `lesson-${skillId}-1.html`;
+            // Navigate to first lesson of this skill in mindfulness course
+            window.location.href = `lesson-mindfulness-${skillId}-1.html`;
         }
 
         function completeSkillDemo(skillId) {
