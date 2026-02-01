@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#0f172a">
+    <title>OBSERVE - MPHaven</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+```
+    html, body { 
+        width: 100%; 
+        height: 100%; 
+        overflow: hidden; 
+        background: #0f172a; /* Softer dark background (Slate 900) */
+    }
+    
+    .container { 
+        width: 100%; 
+        height: 100vh; 
+        display: flex; 
+        flex-direction: column; 
+    }
+    
+    .app-wrapper { 
+        width: 100%; 
+        max-width: 28rem; 
+        height: 100%; 
+        margin: 0 auto; 
+        background: rgba(15, 23, 42, 0.98); 
+        display: flex; 
+        flex-direction: column; 
+        border-left: 1px solid rgba(30, 41, 59, 0.5); 
+        border-right: 1px solid rgba(30, 41, 59, 0.5); 
+    }
+    
+    .bg-blur-1, .bg-blur-2 { 
+        position: absolute; 
+        border-radius: 50%; 
+        filter: blur(140px); /* Increased blur for softer effect */
+        pointer-events: none; 
+        z-index: 0;
+        opacity: 0.6; /* Reduced opacity for gentler glow */
+    }
+    
+    .bg-blur-1 { 
+        top: -5%; 
+        left: 50%; 
+        transform: translateX(-50%); 
+        width: 22rem; 
+        height: 22rem; 
+        background: rgba(14, 116, 144, 0.08); /* Softer Teal */
+    }
+    
+    .bg-blur-2 { 
+        bottom: -5%; 
+        right: -5%; 
+        width: 18rem; 
+        height: 18rem; 
+        background: rgba(217, 119, 6, 0.08); /* Softer Amber */
+    }
+    
+    .main-content { 
+        flex: 1; 
+        overflow-y: auto; 
+        -webkit-overflow-scrolling: touch; 
+        scrollbar-width: none; 
+        position: relative;
+        z-index: 1;
+    }
+    
+    .main-content::-webkit-scrollbar { 
+        display: none; 
+    }
+    
+    .content-wrapper { 
+        padding: 1rem 1.25rem 2rem; 
+    }
+    
+    .card { 
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.65), rgba(15, 23, 42, 0.45)); 
+        border: 1px solid rgba(51, 65, 85, 0.4); 
+        border-radius: 1.25rem; 
+    }
+    
+    .skill-header { 
+        background: linear-gradient(135deg, #0e7490, #d97706); /* Softer Teal to Softer Amber */
+    }
+    
+    .btn-primary { 
+        background: linear-gradient(to right, #0e7490, #d97706); 
+        color: white; 
+        font-weight: 600; 
+        border: none; 
+        padding: 1rem; 
+        border-radius: 1rem; 
+        cursor: pointer; 
+        width: 100%; 
+        font-size: 1rem; 
+        transition: all 0.3s ease; 
+        box-shadow: 0 4px 16px rgba(14, 116, 144, 0.2);
+    }
+    
+    .btn-primary:hover, .btn-primary:active { 
+        opacity: 0.92; 
+        transform: translateY(-2px); 
+        box-shadow: 0 6px 20px rgba(14, 116, 144, 0.25);
+    }
+    
+    .btn-solid-teal {
+        background: #0e7490; /* Softer Teal (Teal 700) */
+        color: white;
+        font-weight: 600;
+        border: none;
+        padding: 1rem;
+        border-radius: 1rem;
+        cursor: pointer;
+        width: 100%;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 16px rgba(14, 116, 144, 0.2);
+    }
+    
+    .btn-solid-teal:hover, .btn-solid-teal:active {
+        background: #0c627a;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(14, 116, 144, 0.25);
+    }
+    
+    .btn-solid-amber {
+        background: #d97706; /* Softer Amber (Amber 600) */
+        color: white;
+        font-weight: 600;
+        border: none;
+        padding: 1rem;
+        border-radius: 1rem;
+        cursor: pointer;
+        width: 100%;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 16px rgba(217, 119, 6, 0.2);
+    }
+    
+    .btn-solid-amber:hover, .btn-solid-amber:active {
+        background: #b45309;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(217, 119, 6, 0.25);
+    }
+    
+    .progress-dots { 
+        display: flex; 
+        gap: 0.25rem; 
+    }
+    
+    .progress-dot { 
+        flex: 1; 
+        height: 0.5rem; 
+        background: rgba(148, 163, 184, 0.25); 
+        border-radius: 9999px; 
+    }
+    
+    .progress-dot.active { 
+        background: linear-gradient(to right, #0e7490, #d97706); 
+    }
+    
+    .fade-in { 
+        animation: fadeIn 0.35s ease-out; 
+    }
+    
+    .hidden { 
+        display: none !important; 
+    }
+    
+    @keyframes fadeIn { 
+        from { 
+            opacity: 0; 
+            transform: translateY(15px); 
+        } 
+        to { 
+            opacity: 1; 
+            transform: translateY(0); 
+        } 
+    }
+    
+    @keyframes pulse { 
+        0%, 100% { 
+            transform: scale(1); 
+        } 
+        50% { 
+            transform: scale(1.05); 
+        } 
+    }
+    
+    @keyframes slideUp {
+        from { 
+            transform: translateY(20px); 
+            opacity: 0; 
+        }
+        to { 
+            transform: translateY(0); 
+            opacity: 1; 
+        }
+    }
+    
+    .timer-display { 
+        font-size: 4rem; 
+        font-weight: 700; 
+        background: linear-gradient(to right, #0e7490, #d97706); 
+        -webkit-background-clip: text; 
+        -webkit-text-fill-color: transparent; 
+        background-clip: text;
+    }
+    
+    .checkbox-grid { 
+        display: grid; 
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 0.5rem; 
+    }
+    
+    .checkbox-label { 
+        display: flex; 
+        align-items: center; 
+        gap: 0.5rem; 
+        padding: 0.75rem; 
+        background: rgba(30, 41, 59, 0.5); 
+        border: 1px solid rgba(51, 65, 85, 0.4); 
+        border-radius: 0.75rem; 
+        cursor: pointer; 
+        transition: all 0.2s; 
+    }
+    
+    .checkbox-label:hover, .checkbox-label:active { 
+        border-color: rgba(14, 116, 144, 0.5); 
+        background: rgba(14, 116, 144, 0.12); 
+    }
+    
+    input[type="checkbox"] { 
+        width: 1.25rem; 
+        height: 1.25rem; 
+        cursor: pointer; 
+        accent-color: #0e7490;
+    }
+    
+    input[type="text"], input[type="range"], textarea { 
+        width: 100%; 
+        padding: 0.75rem; 
+        border-radius: 0.75rem; 
+        border: 1px solid rgba(51, 65, 85, 0.4); 
+        background: rgba(30, 41, 59, 0.5); 
+        color: white; 
+        font-size: 1rem; 
+    }
+    
+    input[type="text"]:focus, textarea:focus { 
+        outline: none; 
+        border-color: rgba(14, 116, 144, 0.5); 
+        background: rgba(30, 41, 59, 0.7);
+    }
+    
+    input[type="range"] { 
+        padding: 0; 
+        accent-color: #0e7490;
+    }
+    
+    textarea { 
+        resize: vertical; 
+        min-height: 80px; 
+    }
+    
+    .step-transition { 
+        animation: slideUp 0.4s ease-out; 
+    }
+    
+    .insight-badge { 
+        background: rgba(14, 116, 144, 0.18); 
+        border: 1px solid rgba(14, 116, 144, 0.35); 
+        padding: 0.5rem 1rem; 
+        border-radius: 2rem; 
+        font-size: 0.875rem; 
+        color: rgb(165, 243, 252); /* Softer cyan text */
+        font-weight: 500;
+    }
+    
+    .success-message { 
+        background: linear-gradient(135deg, rgba(34, 197, 94, 0.12), rgba(21, 128, 61, 0.08)); 
+        border: 1px solid rgba(34, 197, 94, 0.35); 
+    }
+    
+    .completion-badge { 
+        animation: pulse 2s infinite; 
+    }
+    
+    .exercise-complete { 
+        animation: fadeIn 0.6s ease-out; 
+    }
+    
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(8px);
+        z-index: 9998;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        padding: 1.25rem;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        opacity: 0;
+        animation: fadeIn 0.2s ease-out forwards;
+    }
+
+    .modal-content {
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
+        border: 1px solid rgba(14, 116, 144, 0.3);
+        border-radius: 1.5rem;
+        padding: 2rem;
+        max-width: 28rem;
+        width: 100%;
+        backdrop-filter: blur(10px);
+        animation: slideUp 0.3s ease-out;
+        margin: auto;
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+        max-height: 85vh;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .journal-invite-card {
+        background: linear-gradient(135deg, rgba(14, 116, 144, 0.1), rgba(217, 119, 6, 0.07));
+        border: 1px solid rgba(14, 116, 144, 0.25);
+        border-radius: 1.25rem;
+        padding: 1.75rem;
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+    
+    .wisdom-quote {
+        font-style: italic;
+        color: rgb(226, 232, 240);
+        line-height: 1.7;
+        padding: 1.5rem;
+        background: rgba(30, 41, 59, 0.4);
+        border-radius: 1rem;
+        border-left: 3px solid rgba(14, 116, 144, 0.4);
+        margin: 1.5rem 0;
+    }
+    
+    /* Better text contrast for readability */
+    .text-primary {
+        color: rgb(241, 245, 249);
+    }
+    
+    .text-secondary {
+        color: rgb(203, 213, 225);
+    }
+    
+    .text-muted {
+        color: rgb(148, 163, 184);
+    }
+    
+    /* Softer teal color variations */
+    .text-teal-light {
+        color: rgb(165, 243, 252); /* Softer cyan */
+    }
+    
+    .text-teal {
+        color: rgb(94, 234, 212); /* Softer teal */
+    }
+    
+    .text-teal-dark {
+        color: rgb(14, 116, 144); /* Teal 700 */
+    }
+    
+    /* Softer amber color variations */
+    .text-amber-light {
+        color: rgb(253, 230, 138); /* Softer yellow */
+    }
+    
+    .text-amber {
+        color: rgb(251, 191, 36); /* Amber 400 */
+    }
+    
+    .text-amber-dark {
+        color: rgb(217, 119, 6); /* Amber 600 */
+    }
+    
+    /* Spacing improvements */
+    p + p {
+        margin-top: 1rem;
+    }
+</style>
+```
+
+</head>
+<body>
+    <div class="container">
+        <div class="app-wrapper">
+            <div class="bg-blur-1"></div>
+            <div class="bg-blur-2"></div>
+            <div class="main-content">
+                <div class="content-wrapper" id="content"></div>
+            </div>
+        </div>
+    </div>
+
+```
+<script>
+    let step = 1;
+    let timerInterval = null;
+    
+    const steps = {
+        1: { title: 'The Thought Trap', total: 7 },
+        2: { title: 'The Challenge', total: 7 },
+        3: { title: "The Brain's Secret", total: 7 },
+        4: { title: 'Two Ways', total: 7 },
+        5: { title: 'Practice Now', total: 7 },
+        6: { title: 'Use It Today', total: 7 },
+        7: { title: 'Your Practice Begins', total: 7 }
+    };
+    
+    function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        document.querySelector('.main-content').scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    
+    function nextStep() {
+        if (step < 7) {
+            step++;
+            render();
+            setTimeout(scrollToTop, 50);
+        }
+    }
+    
+    function startTimer(seconds) {
+        let timeLeft = seconds;
+        const display = document.getElementById('timerDisplay');
+        const button = document.getElementById('timerButton');
+        
+        button.disabled = true;
+        button.textContent = 'Focus...';
+        button.style.opacity = '0.5';
+        
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            display.textContent = timeLeft;
+            
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                document.getElementById('postTimer').classList.remove('hidden');
+                document.getElementById('timerSection').style.display = 'none';
+            }
+        }, 1000);
+    }
+    
+    function showJournalInvite() {
+        const modal = document.createElement('div');
+        modal.className = 'modal-overlay';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <div style="text-align:center">
+                    <div style="font-size:3rem;margin-bottom:1rem">📝</div>
+                    <h3 class="text-primary" style="font-size:1.25rem;margin-bottom:1rem;font-weight:600">
+                        Would you like to capture your insights?
+                    </h3>
+                    
+                    <div class="wisdom-quote" style="margin:1.5rem 0;font-size:0.9375rem">
+                        "Writing is how fleeting awareness becomes lasting wisdom."
+                    </div>
+                    
+                    <p class="text-secondary" style="margin-bottom:1.5rem;line-height:1.7;font-size:0.9375rem">
+                        Taking 2 minutes to reflect will:<br><br>
+                        • Help this understanding stick<br>
+                        • Create a reference for when thoughts get sticky<br>
+                        • Turn insight into embodied wisdom
+                    </p>
+                    
+                    <div style="display:grid;gap:0.75rem">
+                        <button onclick="goToJournal()" class="btn-primary">
+                            ✨ Yes, capture this insight
+                        </button>
+                        
+                        <button onclick="closeModal(this)" style="width:100%;padding:1rem;border-radius:1rem;
+                                background:rgba(14,116,144,0.12);border:1px solid rgba(14,116,144,0.35);
+                                color:rgb(165,243,252);font-weight:600;cursor:pointer">
+                            Maybe later
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(modal);
+        
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal(modal);
+            }
+        });
+    }
+    
+    function closeModal(element) {
+        if (element.closest) {
+            const modal = element.closest('.modal-overlay');
+            if (modal) {
+                modal.style.animation = 'fadeIn 0.2s ease-out reverse';
+                setTimeout(() => {
+                    if (modal.parentNode) modal.remove();
+                }, 200);
+            }
+        }
+    }
+    
+    function goToJournal() {
+        localStorage.setItem('pendingJournalPrompt', 'observe_structured');
+        document.querySelectorAll('.modal-overlay').forEach(modal => modal.remove());
+        window.location.href = 'course-mindfulness.html#journal';
+    }
+    
+    function startPracticeAgain() {
+        localStorage.setItem('practiceSkill', 'observe');
+        window.location.href = 'course-mindfulness.html#practice';
+    }
+    
+    function renderStep1() {
+        return `
+            <div class="step-transition">
+                <div class="card" style="padding:1rem;margin-bottom:1rem">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem">
+                        <button onclick="window.location.href='course-mindfulness.html'" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;padding:0.25rem">←</button>
+                        <h1 class="text-primary" style="font-weight:600;font-size:1.125rem">${steps[step].title}</h1>
+                        <div class="text-muted" style="font-size:0.875rem">${step}/${steps[step].total}</div>
+                    </div>
+                    <div class="progress-dots">
+                        ${Array(7).fill().map((_, i) => `<div class="progress-dot ${i < step ? 'active' : ''}"></div>`).join('')}
+                    </div>
+                </div>
+                
+                <div class="card skill-header" style="padding:2rem;text-align:center;margin-bottom:1rem">
+                    <div style="font-size:4rem;margin-bottom:1rem;animation:pulse 2s infinite">🌀</div>
+                    <h2 style="color:white;font-size:1.75rem;font-weight:700;margin-bottom:1rem">Quick Question</h2>
+                    <p style="color:rgba(255,255,255,0.95);font-size:1.125rem;line-height:1.6;margin-bottom:1.25rem">Right now, in this exact moment...</p>
+                    <p style="color:white;font-size:1.375rem;font-weight:600;line-height:1.6;margin-bottom:1.5rem">Can you stop your thoughts?</p>
+                    <p class="text-primary" style="font-size:1.05rem;line-height:1.7;margin-bottom:1.5rem">Not "think less" or "think calmer."<br/>Completely. Stop. Thinking.</p>
+                    <p class="text-secondary" style="font-size:1rem;line-height:1.7;margin-bottom:1.5rem">Most people say "yes." But they've never actually tried...</p>
+                    <div class="insight-badge" style="display:inline-block;margin-top:0.5rem">Discover a key insight</div>
+                </div>
+                
+                <button onclick="nextStep()" class="btn-primary" style="margin-bottom:1rem">I Want to Try →</button>
+                
+                <div class="card" style="padding:1rem;margin-top:0.5rem;text-align:center">
+                    <p class="text-muted" style="font-size:0.875rem">⏱️ This will take 30 seconds</p>
+                </div>
+            </div>
+        `;
+    }
+    
+    function renderStep2() {
+        return `
+            <div class="step-transition">
+                <div class="card" style="padding:1rem;margin-bottom:1rem">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem">
+                        <button onclick="window.location.href='course-mindfulness.html'" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;padding:0.25rem">←</button>
+                        <h1 class="text-primary" style="font-weight:600;font-size:1.125rem">${steps[step].title}</h1>
+                        <div class="text-muted" style="font-size:0.875rem">${step}/${steps[step].total}</div>
+                    </div>
+                    <div class="progress-dots">
+                        ${Array(7).fill().map((_, i) => `<div class="progress-dot ${i < step ? 'active' : ''}"></div>`).join('')}
+                    </div>
+                </div>
+                
+                <div class="card" style="padding:1.5rem;margin-bottom:1rem;background:linear-gradient(135deg,rgba(239,68,68,0.18),rgba(220,38,38,0.12));border:1px solid rgba(239,68,68,0.35)">
+                    <div style="font-size:3rem;margin-bottom:0.75rem;text-align:center">⚠️</div>
+                    <h2 class="text-primary" style="font-size:1.5rem;font-weight:600;margin-bottom:1rem;text-align:center">The Challenge</h2>
+                    <p class="text-primary" style="text-align:center;font-size:1.05rem;line-height:1.7">For the next 30 seconds, your job is to <strong style="color:rgb(252,165,165)">completely stop thinking</strong>.</p>
+                </div>
+                
+                <div class="card" style="padding:1.5rem;margin-bottom:1rem">
+                    <p class="text-primary" style="font-size:1.05rem;font-weight:600;margin-bottom:1.5rem">Here's what to do:</p>
+                    <div>
+                        ${[
+                            'Close your eyes (or keep them softly focused)',
+                            'Make your mind go totally blank',
+                            'When a thought appears, <strong>fight it</strong>',
+                            'Push it away with mental force',
+                            'Don\'t let ANY thoughts in',
+                            'Use all your willpower to stop thinking'
+                        ].map((inst, i) => `
+                            <div style="display:flex;gap:1rem;margin-bottom:1.5rem;align-items:start">
+                                <div style="width:2.25rem;height:2.25rem;background:linear-gradient(135deg,#0e7490,#d97706);border-radius:0.5rem;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;flex-shrink:0;font-size:0.875rem">${i+1}</div>
+                                <p class="text-secondary" style="padding-top:0.375rem;line-height:1.6;font-size:1rem">${inst}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                
+                <div class="card" style="padding:1rem;margin-bottom:1rem;background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.35)">
+                    <p style="color:rgb(253,224,71);text-align:center;font-size:0.9375rem;line-height:1.6">💡 <strong>Important:</strong> Really try to stop your thoughts. Give it your full effort!</p>
+                </div>
+                
+                <div id="timerSection" class="card" style="padding:2rem;margin-bottom:1rem;text-align:center">
+                    <div class="timer-display" id="timerDisplay" style="margin-bottom:1rem">30</div>
+                    <p class="text-secondary" style="margin-bottom:1.5rem;font-size:1rem">Ready? Take a breath...</p>
+                    <button id="timerButton" onclick="startTimer(30)" class="btn-primary" style="font-size:1.125rem">Start Challenge</button>
+                </div>
+                
+                <div id="postTimer" class="hidden exercise-complete">
+                    <div class="card" style="padding:1.75rem;margin-bottom:1rem;background:rgba(14,116,144,0.08)">
+                        <h3 class="text-primary" style="font-weight:600;font-size:1.25rem;margin-bottom:1.75rem;text-align:center">How did that go?</h3>
+                        <p class="text-primary" style="font-weight:600;margin-bottom:1rem;font-size:1rem">Check everything that happened:</p>
+                        <div class="checkbox-grid" style="margin-bottom:1.75rem">
+                            ${[
+                                'More thoughts came',
+                                'Thoughts got louder',
+                                'Felt frustrated',
+                                'Wanted to give up',
+                                'Felt like failing',
+                                'Mind got busier'
+                            ].map(item => `
+                                <label class="checkbox-label">
+                                    <input type="checkbox">
+                                    <span class="text-secondary" style="font-size:0.9375rem">${item}</span>
+                                </label>
+                            `).join('')}
+                        </div>
+                        
+                        <p class="text-primary" style="font-weight:600;margin-bottom:0.75rem;font-size:1rem">Describe what fighting your thoughts felt like:</p>
+                        <textarea id="reflection" placeholder="Type what you noticed... (e.g., 'exhausting', 'impossible', 'frustrating')" style="margin-bottom:0"></textarea>
+                    </div>
+                    
+                    <button onclick="nextStep()" class="btn-solid-teal" style="margin-bottom:1rem">I'm Ready to Learn Why →</button>
+                    
+                    <div class="card success-message" style="padding:1rem;margin-top:0.5rem;text-align:center">
+                        <p style="color:rgb(74,222,128);font-size:0.875rem;font-weight:500">🎯 You've discovered something important about your mind</p>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+    
+    function renderStep3() {
+        return `
+            <div class="step-transition">
+                <div class="card" style="padding:1rem;margin-bottom:1rem">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem">
+                        <button onclick="window.location.href='course-mindfulness.html'" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;padding:0.25rem">←</button>
+                        <h1 class="text-primary" style="font-weight:600;font-size:1.125rem">${steps[step].title}</h1>
+                        <div class="text-muted" style="font-size:0.875rem">${step}/${steps[step].total}</div>
+                    </div>
+                    <div class="progress-dots">
+                        ${Array(7).fill().map((_, i) => `<div class="progress-dot ${i < step ? 'active' : ''}"></div>`).join('')}
+                    </div>
+                </div>
+                
+                <div class="card" style="padding:2rem;margin-bottom:1rem;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.35)">
+                    <div style="font-size:3.5rem;margin-bottom:1rem;text-align:center">🧠</div>
+                    <h2 style="color:white;font-size:1.75rem;font-weight:700;text-align:center;margin-bottom:1rem">You Didn't Fail</h2>
+                    <p style="color:rgb(134,239,172);text-align:center;font-size:1.125rem;font-weight:600">The challenge was impossible.</p>
+                </div>
+                
+                <div class="card" style="padding:1.75rem;margin-bottom:1rem">
+                    <h3 class="text-primary" style="font-weight:600;font-size:1.25rem;margin-bottom:1.75rem">Here's Why:</h3>
+                    
+                    <div style="margin-bottom:2rem">
+                        <div style="background:rgba(14,116,144,0.12);padding:1.25rem;border-radius:1rem;border-left:4px solid rgb(14,116,144);margin-bottom:1.25rem">
+                            <p style="color:rgb(165,243,252);font-weight:600;font-size:1.125rem;margin-bottom:0.75rem">Your brain produces 6,000+ thoughts per day</p>
+                            <p class="text-secondary" style="font-size:1rem">Automatically. Without your permission.</p>
+                        </div>
+                        
+                        <div style="background:rgba(217,119,6,0.12);padding:1.25rem;border-radius:1rem;border-left:4px solid rgb(217,119,6);margin-bottom:1.25rem">
+                            <p style="color:rgb(253,230,138);font-weight:600;font-size:1.125rem;margin-bottom:0.75rem">Trying to stop thoughts = trying to stop your heart</p>
+                            <p class="text-secondary" style="font-size:1rem">It's not under your conscious control.</p>
+                        </div>
+                        
+                        <div style="background:rgba(94,234,212,0.12);padding:1.25rem;border-radius:1rem;border-left:4px solid rgb(94,234,212)">
+                            <p style="color:rgb(165,243,252);font-weight:600;font-size:1.125rem;margin-bottom:0.75rem">The harder you fight → The stronger they become</p>
+                            <p class="text-secondary" style="font-size:1rem">This is called the "White Bear Effect"</p>
+                        </div>
+                    </div>
+                    
+                    <div style="background:rgba(251,191,36,0.1);padding:1.5rem;border-radius:1rem;border:1px dashed rgba(251,191,36,0.4);margin-bottom:1.75rem">
+                        <p style="color:rgb(253,224,71);font-weight:600;margin-bottom:1rem;font-size:1.05rem">🧪 Try this right now:</p>
+                        <p style="color:rgb(253,224,71);font-size:1.25rem;margin-bottom:1rem;font-weight:600">Do NOT think of a white bear.</p>
+                        <p class="text-secondary" style="font-size:1rem;line-height:1.6">What happened? You just thought of a white bear, right?<br>That's your brain proving the point.</p>
+                    </div>
+                    
+                    <h3 class="text-primary" style="font-weight:600;font-size:1.125rem;margin-bottom:1.25rem">🎬 Think of it like this:</h3>
+                    <div style="background:linear-gradient(135deg,rgba(14,116,144,0.15),rgba(217,119,6,0.12));padding:1.5rem;border-radius:1rem;border:1px solid rgba(14,116,144,0.25)">
+                        <p class="text-primary" style="font-size:1.125rem;margin-bottom:1.5rem;line-height:1.6;font-weight:600"><strong>Your Mind = A Movie Theater</strong></p>
+                        
+                        <div style="margin-bottom:1.25rem">
+                            <p style="color:rgb(248,113,113);font-weight:600;margin-bottom:0.75rem;font-size:1rem">❌ Bad Strategy:</p>
+                            <p class="text-secondary" style="font-size:1rem;line-height:1.6">Jump onto the screen and wrestle the characters</p>
+                        </div>
+                        
+                        <div>
+                            <p style="color:rgb(134,239,172);font-weight:600;margin-bottom:0.75rem;font-size:1rem">✅ Smart Strategy:</p>
+                            <p class="text-secondary" style="font-size:1rem;line-height:1.6">Sit back and watch the show</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card" style="padding:1.5rem;margin-bottom:1rem;background:rgba(14,116,144,0.1);border:1px solid rgba(14,116,144,0.25)">
+                    <p class="text-primary" style="font-size:1.125rem;font-weight:600;text-align:center;line-height:1.7">Thoughts aren't the enemy.<br/><span style="color:rgb(165,243,252)">Fighting them is.</span></p>
+                </div>
+                
+                <button onclick="nextStep()" class="btn-solid-amber" style="margin-bottom:1rem">This Makes Sense →</button>
+                
+                <div class="card success-message" style="padding:1rem;margin-top:0.5rem;text-align:center">
+                    <p style="color:rgb(74,222,128);font-size:0.875rem;font-weight:500">💡 Key insight unlocked: Thoughts are automatic, like breathing</p>
+                </div>
+            </div>
+        `;
+    }
+    
+    function renderStep4() {
+        return `
+            <div class="step-transition">
+                <div class="card" style="padding:1rem;margin-bottom:1rem">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem">
+                        <button onclick="window.location.href='course-mindfulness.html'" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;padding:0.25rem">←</button>
+                        <h1 class="text-primary" style="font-weight:600;font-size:1.125rem">${steps[step].title}</h1>
+                        <div class="text-muted" style="font-size:0.875rem">${step}/${steps[step].total}</div>
+                    </div>
+                    <div class="progress-dots">
+                        ${Array(7).fill().map((_, i) => `<div class="progress-dot ${i < step ? 'active' : ''}"></div>`).join('')}
+                    </div>
+                </div>
+                
+                <div class="card skill-header" style="padding:1.5rem;margin-bottom:1rem">
+                    <h2 style="color:white;font-size:1.5rem;font-weight:700;text-align:center">Two Ways to Handle Thoughts</h2>
+                    <p style="color:rgba(255,255,255,0.9);text-align:center;font-size:0.9375rem;margin-top:0.5rem">Side-by-side comparison</p>
+                </div>
+                
+                <div class="card" style="padding:1.5rem;margin-bottom:1rem;border:2px solid rgba(239,68,68,0.45);background:rgba(239,68,68,0.08)">
+                    <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.25rem">
+                        <div style="font-size:2rem">❌</div>
+                        <div>
+                            <h3 style="color:rgb(248,113,113);font-weight:600;font-size:1.25rem">FIGHTER MODE</h3>
+                            <p style="color:rgb(252,165,165);font-size:0.875rem;font-weight:500">The painful default</p>
+                        </div>
+                    </div>
+                    
+                    <div class="text-secondary" style="margin-bottom:1.25rem">
+                        ${['Anxious thought appears', '"Stop thinking that!"', 'Try to suppress it', 'Thought gets stronger', 'Fight harder', 'Exhaustion + overwhelm'].map((step, i) => `
+                            <div style="display:flex;gap:0.75rem;margin-bottom:1rem">
+                                <div style="width:1.75rem;height:1.75rem;background:rgba(239,68,68,0.25);border-radius:50%;display:flex;align-items:center;justify-content:center;color:rgb(248,113,113);font-size:0.8125rem;font-weight:700;flex-shrink:0">${i+1}</div>
+                                <p style="padding-top:0.125rem;font-size:1rem">${step}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    <div style="background:rgba(239,68,68,0.12);padding:1rem;border-radius:0.75rem;border:1px solid rgba(239,68,68,0.25)">
+                        <p style="color:rgb(248,113,113);font-weight:600;margin-bottom:0.5rem;font-size:1rem">Feels like:</p>
+                        <p style="color:rgb(252,165,165);font-size:1.125rem">😫 Drowning in quicksand</p>
+                    </div>
+                </div>
+                
+                <div class="card" style="padding:1.5rem;margin-bottom:1rem;border:2px solid rgba(34,197,94,0.45);background:rgba(34,197,94,0.08)">
+                    <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.25rem">
+                        <div style="font-size:2rem">✅</div>
+                        <div>
+                            <h3 style="color:rgb(134,239,172);font-weight:600;font-size:1.25rem">OBSERVER MODE</h3>
+                            <p style="color:rgb(74,222,128);font-size:0.875rem;font-weight:500">The skillful choice</p>
+                        </div>
+                    </div>
+                    
+                    <div class="text-secondary" style="margin-bottom:1.25rem">
+                        ${['Anxious thought appears', '"Hmm, there\'s anxiety"', 'Watch it like a cloud', 'It drifts and fades', 'Return to now', 'Calm + spacious'].map((step, i) => `
+                            <div style="display:flex;gap:0.75rem;margin-bottom:1rem">
+                                <div style="width:1.75rem;height:1.75rem;background:rgba(34,197,94,0.25);border-radius:50%;display:flex;align-items:center;justify-content:center;color:rgb(134,239,172);font-size:0.8125rem;font-weight:700;flex-shrink:0">${i+1}</div>
+                                <p style="padding-top:0.125rem;font-size:1rem">${step}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    <div style="background:rgba(34,197,94,0.12);padding:1rem;border-radius:0.75rem;border:1px solid rgba(34,197,94,0.25)">
+                        <p style="color:rgb(134,239,172);font-weight:600;margin-bottom:0.5rem;font-size:1rem">Feels like:</p>
+                        <p style="color:rgb(74,222,128);font-size:1.125rem">😌 Floating on water</p>
+                    </div>
+                </div>
+                
+                <button onclick="nextStep()" class="btn-primary" style="margin-bottom:1rem">Practice Skillful Mode →</button>
+                
+                <div class="card success-message" style="padding:1rem;margin-top:0.5rem;text-align:center">
+                    <p style="color:rgb(74,222,128);font-size:0.875rem;font-weight:500">🌟 You now understand the two modes of the mind</p>
+                </div>
+            </div>
+        `;
+    }
+    
+    function renderStep5() {
+        return `
+            <div class="step-transition">
+                <div class="card" style="padding:1rem;margin-bottom:1rem">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem">
+                        <button onclick="window.location.href='course-mindfulness.html'" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;padding:0.25rem">←</button>
+                        <h1 class="text-primary" style="font-weight:600;font-size:1.125rem">${steps[step].title}</h1>
+                        <div class="text-muted" style="font-size:0.875rem">${step}/${steps[step].total}</div>
+                    </div>
+                    <div class="progress-dots">
+                        ${Array(7).fill().map((_, i) => `<div class="progress-dot ${i < step ? 'active' : ''}"></div>`).join('')}
+                    </div>
+                </div>
+                
+                <div class="card skill-header" style="padding:1.75rem;margin-bottom:1rem">
+                    <div style="font-size:3rem;margin-bottom:0.75rem;text-align:center">🧘</div>
+                    <h2 style="color:white;font-size:1.5rem;font-weight:700;text-align:center;margin-bottom:0.5rem">Now, Try the Right Way</h2>
+                    <p style="color:rgba(255,255,255,0.9);text-align:center;font-size:1rem">60 seconds of Observer Mode</p>
+                </div>
+                
+                <div class="card" style="padding:1.5rem;margin-bottom:1rem">
+                    <h3 class="text-primary" style="font-weight:600;margin-bottom:1.25rem;font-size:1.125rem">This time, DON'T fight:</h3>
+                    <div class="text-secondary" style="line-height:1.7">
+                        <p style="margin-bottom:1.25rem;font-size:1.05rem">Instead of fighting thoughts, just <strong style="color:rgb(165,243,252)">label them</strong> like this:</p>
+                        
+                        <div style="background:rgba(14,116,144,0.12);padding:1rem;border-radius:0.75rem;margin-bottom:1rem;border-left:3px solid rgb(14,116,144)">
+                            <p style="color:rgb(165,243,252);font-size:1rem">"Planning thought"</p>
+                        </div>
+                        
+                        <div style="background:rgba(217,119,6,0.12);padding:1rem;border-radius:0.75rem;margin-bottom:1rem;border-left:3px solid rgb(217,119,6)">
+                            <p style="color:rgb(253,230,138);font-size:1rem">"Worry thought"</p>
+                        </div>
+                        
+                        <div style="background:rgba(94,234,212,0.12);padding:1rem;border-radius:0.75rem;margin-bottom:1.5rem;border-left:3px solid rgb(94,234,212)">
+                            <p style="color:rgb(165,243,252);font-size:1rem">"Memory thought"</p>
+                        </div>
+                        
+                        <p class="text-primary" style="font-size:1.05rem;margin-bottom:1rem">Then... <strong>let it drift away</strong>.</p>
+                        <p class="text-secondary" style="font-size:1rem">Like clouds passing in the sky.</p>
+                    </div>
+                </div>
+                
+                <div class="card" style="padding:1rem;margin-bottom:1rem;background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.35)">
+                    <p style="color:rgb(253,224,71);text-align:center;font-size:0.9375rem;line-height:1.6">💡 <strong>Key:</strong> You're not trying to stop thoughts. You're watching them pass by.</p>
+                </div>
+                
+                <div id="practiceTimer" class="card" style="padding:2rem;margin-bottom:1rem;text-align:center;background:linear-gradient(135deg,rgba(14,116,144,0.08),rgba(217,119,6,0.08))">
+                    <div class="timer-display" id="practiceDisplay" style="margin-bottom:1rem">60</div>
+                    <div id="practicePrompt" style="min-height:3.5rem;display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem">
+                        <p style="color:rgb(165,243,252);font-style:italic;font-size:1.05rem;font-weight:500">Find a comfortable position...</p>
+                    </div>
+                    <button id="practiceButton" onclick="startPracticeTimer()" class="btn-primary" style="font-size:1.125rem">Begin Practice</button>
+                </div>
+                
+                <div id="postPractice" class="hidden exercise-complete">
+                    <div class="card" style="padding:1.75rem;margin-bottom:1rem">
+                        <h3 class="text-primary" style="font-weight:600;margin-bottom:1.75rem;font-size:1.125rem;text-align:center">How was that experience?</h3>
+                        
+                        <p class="text-primary" style="font-weight:600;margin-bottom:1rem;font-size:1rem">How calm/peaceful did this feel?</p>
+                        <div style="margin-bottom:2rem">
+                            <input type="range" min="1" max="10" value="5" id="rating" style="margin-bottom:1rem" oninput="document.getElementById('ratingVal').textContent = this.value">
+                            <div style="display:flex;justify-content:space-between;align-items:center">
+                                <span class="text-muted" style="font-size:0.875rem">Not at all</span>
+                                <div style="background:rgba(14,116,144,0.2);padding:0.5rem 1rem;border-radius:0.75rem;min-width:3rem;text-align:center">
+                                    <span id="ratingVal" style="color:rgb(165,243,252);font-weight:700;font-size:1.5rem">5</span>
+                                </div>
+                                <span class="text-muted" style="font-size:0.875rem">Very calm</span>
+                            </div>
+                        </div>
+                        
+                        <p class="text-primary" style="font-weight:600;margin-bottom:1rem;font-size:1rem">In one word, how did observing (not fighting) feel?</p>
+                        <input type="text" id="word" placeholder="e.g., peaceful, spacious, easier..." style="margin-bottom:0;font-size:1rem">
+                    </div>
+                    
+                    <button onclick="nextStep()" class="btn-solid-teal" style="margin-bottom:1rem">Continue →</button>
+                    
+                    <div class="card success-message" style="padding:1rem;margin-top:0.5rem;text-align:center">
+                        <p style="color:rgb(74,222,128);font-size:0.875rem;font-weight:500">🎯 Great job! You've experienced Observer Mode firsthand</p>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+    
+    function startPracticeTimer() {
+        const prompts = [
+            'Take a breath... settle in...',
+            'Notice what thoughts are here...',
+            'Label them gently... "thinking"...',
+            'Watch thoughts like clouds drifting...',
+            'No need to fight or fix...',
+            'Just watching... just noticing...',
+            'You\'re the sky, not the clouds...',
+            'Let them pass by...'
+        ];
+        let timeLeft = 60;
+        let promptIndex = 0;
+        const display = document.getElementById('practiceDisplay');
+        const promptEl = document.getElementById('practicePrompt');
+        const button = document.getElementById('practiceButton');
+        
+        button.disabled = true;
+        button.textContent = 'Practicing...';
+        button.style.opacity = '0.5';
+        promptEl.innerHTML = `<p style="color:rgb(165,243,252);font-style:italic;font-size:1.125rem;font-weight:500">${prompts[0]}</p>`;
+        
+        const interval = setInterval(() => {
+            timeLeft--;
+            display.textContent = timeLeft;
+            
+            if (timeLeft % 8 === 0 && promptIndex < prompts.length - 1) {
+                promptIndex++;
+                promptEl.innerHTML = `<p style="color:rgb(165,243,252);font-style:italic;font-size:1.125rem;font-weight:500">${prompts[promptIndex]}</p>`;
+            }
+            
+            if (timeLeft <= 0) {
+                clearInterval(interval);
+                promptEl.innerHTML = `<p style="color:rgb(134,239,172);font-weight:600;font-size:1.125rem">✨ Beautiful. Take a moment...</p>`;
+                setTimeout(() => {
+                    document.getElementById('postPractice').classList.remove('hidden');
+                    document.getElementById('practiceTimer').style.display = 'none';
+                }, 2000);
+            }
+        }, 1000);
+    }
+    
+    function renderStep6() {
+        return `
+            <div class="step-transition">
+                <div class="card" style="padding:1rem;margin-bottom:1rem">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem">
+                        <button onclick="window.location.href='course-mindfulness.html'" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;padding:0.25rem">←</button>
+                        <h1 class="text-primary" style="font-weight:600;font-size:1.125rem">${steps[step].title}</h1>
+                        <div class="text-muted" style="font-size:0.875rem">${step}/${steps[step].total}</div>
+                    </div>
+                    <div class="progress-dots">
+                        ${Array(7).fill().map((_, i) => `<div class="progress-dot ${i < step ? 'active' : ''}"></div>`).join('')}
+                    </div>
+                </div>
+                
+                <div class="card skill-header" style="padding:1.75rem;margin-bottom:1rem">
+                    <div style="font-size:3rem;margin-bottom:0.75rem;text-align:center">🎯</div>
+                    <h2 style="color:white;font-size:1.5rem;font-weight:700;text-align:center;margin-bottom:0.5rem">Use It in Real Life</h2>
+                    <p style="color:rgba(255,255,255,0.9);text-align:center;font-size:1rem">Your mission for today</p>
+                </div>
+                
+                <div class="card" style="padding:1.75rem;margin-bottom:1rem;background:linear-gradient(to right,rgba(251,191,36,0.12),rgba(245,158,11,0.12));border:2px solid rgba(251,191,36,0.4)">
+                    <div style="text-align:center;margin-bottom:1.5rem">
+                        <div style="font-size:3rem;margin-bottom:0.75rem">📋</div>
+                        <h3 class="text-primary" style="font-weight:600;font-size:1.25rem;margin-bottom:1rem">Your One-Word Tool</h3>
+                        <p style="color:rgb(253,224,71);font-size:1.05rem;line-height:1.7">Every time you notice an emotion today, say one word:</p>
+                    </div>
+                    
+                    <div style="background:rgba(255,255,255,0.12);padding:1.5rem;border-radius:1rem;text-align:center;margin-bottom:1rem;border:1px solid rgba(255,255,255,0.15)">
+                        <p style="color:white;font-size:1.75rem;font-weight:700">"Noticing"</p>
+                    </div>
+                    
+                    <p style="color:rgb(253,224,71);text-align:center;font-size:1rem;font-style:italic">That's it. Just that one word.</p>
+                </div>
+                
+                <div class="card" style="padding:1.5rem;margin-bottom:1rem">
+                    <p class="text-primary" style="font-weight:600;margin-bottom:1.5rem;font-size:1.125rem">Here's how it works:</p>
+                    
+                    ${[
+                        { emotion: '😠 Irritated', example: '"Noticing irritation"', color: 'rgba(239,68,68,0.15)', border: 'rgb(248,113,113)' },
+                        { emotion: '😰 Anxious', example: '"Noticing anxiety"', color: 'rgba(245,158,11,0.15)', border: 'rgb(251,191,36)' },
+                        { emotion: '😊 Happy', example: '"Noticing joy"', color: 'rgba(34,197,94,0.15)', border: 'rgb(74,222,128)' }
+                    ].map(item => `
+                        <div style="padding:1.25rem;background:${item.color};border-radius:0.875rem;margin-bottom:1rem;border-left:3px solid ${item.border}">
+                            <div style="display:flex;justify-content:space-between;align-items:center">
+                                <div>
+                                    <p class="text-primary" style="font-weight:600;margin-bottom:0.5rem;font-size:1.05rem">${item.emotion}</p>
+                                    <p class="text-secondary" style="font-size:1rem">→ ${item.example}</p>
+                                </div>
+                                <div style="font-size:1.75rem">👁️</div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+                
+                <div class="card" style="padding:1.5rem;margin-bottom:1rem;background:rgba(14,116,144,0.1);border:1px solid rgba(14,116,144,0.3)">
+                    <h3 style="color:rgb(165,243,252);font-weight:600;margin-bottom:1.25rem;font-size:1.05rem">✨ Why this works:</h3>
+                    <div class="text-secondary" style="line-height:1.7;font-size:1rem">
+                        <p style="margin-bottom:1rem">The word <strong class="text-primary">"noticing"</strong> creates instant distance.</p>
+                        <p style="margin-bottom:1rem">You shift from <span style="color:rgb(248,113,113)">inside the emotion</span> to <span style="color:rgb(134,239,172)">observing it</span>.</p>
+                        <p>It's like pressing pause on your emotional reactions.</p>
+                    </div>
+                </div>
+                
+                <div class="card" style="padding:1.25rem;margin-bottom:1rem;background:rgba(217,119,6,0.1);border:1px solid rgba(217,119,6,0.25)">
+                    <div style="display:flex;gap:1rem;align-items:start">
+                        <div style="font-size:2rem;flex-shrink:0">💡</div>
+                        <div>
+                            <p class="text-primary" style="font-weight:600;font-size:1rem;margin-bottom:0.5rem">Pro Tip:</p>
+                            <p class="text-secondary" style="font-size:0.9375rem;line-height:1.6">You can even whisper it to yourself. No one will notice, but you'll feel the shift.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <button onclick="nextStep()" class="btn-solid-amber" style="font-size:1.125rem;margin-bottom:1rem">I'll Try This Today →</button>
+                
+                <div class="card success-message" style="padding:1rem;margin-top:0.5rem;text-align:center">
+                    <p style="color:rgb(74,222,128);font-size:0.875rem;font-weight:500">🚀 You're ready to apply this skill in your daily life</p>
+                </div>
+            </div>
+        `;
+    }
+    
+    function renderStep7() {
+        return `
+            <div class="step-transition">
+                <div class="card" style="padding:1rem;margin-bottom:1rem">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem">
+                        <button onclick="window.location.href='course-mindfulness.html'" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;padding:0.25rem">←</button>
+                        <h1 class="text-primary" style="font-weight:600;font-size:1.125rem">Your Practice Begins</h1>
+                        <div class="text-muted" style="font-size:0.875rem">${step}/${steps[step].total}</div>
+                    </div>
+                    <div class="progress-dots">
+                        ${Array(7).fill().map((_, i) => `<div class="progress-dot active"></div>`).join('')}
+                    </div>
+                </div>
+                
+                <div class="journal-invite-card">
+                    <div style="font-size:3rem;margin-bottom:1rem;text-align:center">🌤️</div>
+                    <h2 class="text-primary" style="font-size:1.5rem;font-weight:600;text-align:center;margin-bottom:1rem">The Understanding You've Gained</h2>
+                    
+                    <div class="text-secondary" style="margin-bottom:1.5rem">
+                        ${[
+                            '• Fighting thoughts makes them stronger',
+                            '• Observing creates space and calm', 
+                            '• You are the sky, not the clouds',
+                            '• "Noticing" is your new mindfulness tool'
+                        ].map(item => `
+                            <div style="display:flex;gap:1rem;margin-bottom:1rem;align-items:start">
+                                <span style="color:rgb(134,239,172);font-weight:700;margin-top:0.125rem;flex-shrink:0">✓</span>
+                                <span style="font-size:1rem">${item}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    <div class="wisdom-quote">
+                        "Observing thoughts is like watching clouds — they appear, they drift, they dissolve. You remain."
+                    </div>
+                    
+                    <p class="text-secondary" style="text-align:center;font-size:1rem;margin:1.5rem 0;line-height:1.7">
+                        Writing helps anchor this understanding.<br>
+                        Would you like to capture your insights?
+                    </p>
+                </div>
+                
+                <div class="card" style="padding:1.5rem;margin-bottom:1rem">
+                    <h3 class="text-primary" style="font-weight:600;font-size:1.125rem;margin-bottom:1.5rem;text-align:center">Continue Your Practice</h3>
+                    
+                    <div style="display:grid;gap:0.75rem">
+                        <button onclick="showJournalInvite()" style="width:100%;padding:1.25rem;border-radius:1rem;
+                                background:rgba(14,116,144,0.12);border:2px solid rgba(14,116,144,0.35);
+                                color:rgb(165,243,252);font-weight:600;font-size:1rem;
+                                display:flex;align-items:center;justify-content:center;gap:0.75rem;cursor:pointer">
+                            <span style="font-size:1.5rem">📝</span>
+                            <span>Reflect on This Learning</span>
+                        </button>
+                        
+                        <button onclick="startPracticeAgain()" style="width:100%;padding:1.25rem;border-radius:1rem;
+                                background:linear-gradient(to right,rgba(14,116,144,0.15),rgba(217,119,6,0.15));
+                                border:2px solid rgba(14,116,144,0.35);color:rgb(165,243,252);font-weight:600;
+                                font-size:1rem;display:flex;align-items:center;
+                                justify-content:center;gap:0.75rem;cursor:pointer">
+                            <span style="font-size:1.5rem">🔄</span>
+                            <span>Try 30-Second Practice Now</span>
+                        </button>
+                        
+                        <button onclick="window.location.href='course-mindfulness.html'" style="width:100%;padding:1.25rem;border-radius:1rem;
+                                background:transparent;border:2px solid rgba(148,163,184,0.4);
+                                color:rgb(203,213,225);font-weight:600;font-size:1rem;
+                                display:flex;align-items:center;justify-content:center;gap:0.75rem;cursor:pointer">
+                            <span style="font-size:1.5rem">←</span>
+                            <span>Return to Mindfulness App</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="card success-message" style="padding:1rem;margin-top:1rem;text-align:center">
+                    <p style="color:rgb(74,222,128);font-size:0.875rem;font-weight:500">🌱 This skill becomes real when you use it in your day</p>
+                </div>
+            </div>
+        `;
+    }
+    
+    function render() {
+        const content = document.getElementById('content');
+        const stepFunctions = [null, renderStep1, renderStep2, renderStep3, renderStep4, renderStep5, renderStep6, renderStep7];
+        content.innerHTML = stepFunctions[step]();
+        
+        if (!document.querySelector('.exercise-complete')) {
+            setTimeout(() => {
+                const mainContent = document.querySelector('.main-content');
+                if (mainContent) {
+                    mainContent.scrollTop = 0;
+                }
+                window.scrollTo(0, 0);
+            }, 10);
+        }
+    }
+    
+    // Initialize
+    render();
+    
+    // Confetti at the very end if desired
+    if (step === 7) {
+        setTimeout(() => {
+            confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 } });
+        }, 500);
+    }
+</script>
+```
+
+</body>
+</html>
