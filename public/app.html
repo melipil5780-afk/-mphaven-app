@@ -76,7 +76,7 @@
             transform: translateX(-50%);
             width: 24rem;
             height: 24rem;
-            background: rgba(147, 51, 234, 0.1);
+            background: rgba(168, 85, 247, 0.1); /* Changed from rgba(147, 51, 234, 0.1) */
             border-radius: 50%;
             filter: blur(120px);
             pointer-events: none;
@@ -231,8 +231,8 @@
         .text-slate-400 { color: rgb(148, 163, 184); }
         .text-slate-500 { color: rgb(100, 116, 139); }
         .text-purple-400 { color: rgb(192, 132, 252); }
-        .text-blue-300 { color: rgb(147, 197, 253); }
-        .text-pink-300 { color: rgb(249, 168, 212); }
+        .text-cyan-300 { color: rgb(103, 232, 249); } /* Changed from text-blue-300 */
+        .text-cyan-400 { color: rgb(34, 211, 238); } /* New cyan accent */
         .text-emerald-300 { color: rgb(110, 231, 183); }
         
         /* Improved line heights for readability */
@@ -350,15 +350,15 @@
         }
         
         .feeling-emoji.selected {
-            border-color: rgba(255, 255, 255, 0.5);
-            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(103, 232, 249, 0.5); /* Changed from white to cyan */
+            background: rgba(103, 232, 249, 0.1); /* Changed from white to cyan */
         }
         
         .loading-spinner {
             width: 3rem;
             height: 3rem;
             border: 3px solid rgba(100, 116, 139, 0.3);
-            border-top: 3px solid #9333EA;
+            border-top: 3px solid #a855f7; /* Changed from #9333EA to main purple */
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
@@ -435,15 +435,15 @@
                 title: "Understanding Feelings",
                 description: "Learn to recognize and be with your emotions",
                 icon: 'brain',
-                color: "#9333EA",
+                color: "#a855f7", // Changed from #9333EA to main purple
                 started: true
             },
             {
-                id: 'mindfulness',  // Changed from 'mindfulness' to match your file
+                id: 'mindfulness',
                 title: "Mindfulness",
                 description: "Cultivate awareness of the here and now",
                 icon: 'sparkles',
-                color: "#059669",
+                color: "#06b6d4", // Changed from #059669 to cyan
                 started: false
             },
             {
@@ -451,7 +451,7 @@
                 title: "Meaningful Relationships",
                 description: "Build deeper connections with others",
                 icon: 'heart',
-                color: "#DC2626",
+                color: "#dc2626", // Keeping red for emotional warmth
                 started: false
             },
             {
@@ -459,7 +459,7 @@
                 title: "Finding What Matters",
                 description: "Discover what gives your life meaning",
                 icon: 'compass',
-                color: "#0891B2",
+                color: "#0891b2", // Changed to blue-cyan
                 started: false
             }
         ];
@@ -526,7 +526,7 @@
                 <div class="content-wrapper">
                     ${showCheckIn ? `
                     <div class="relative px-6 pt-8 pb-6">
-                        <div class="relative z-10 rounded-3xl shadow-2xl" style="padding: 1.75rem; background: linear-gradient(135deg, rgba(147, 51, 234, 0.15) 0%, rgba(6, 182, 212, 0.1) 100%); border: 1px solid rgba(168, 85, 247, 0.3);">
+                        <div class="relative z-10 rounded-3xl shadow-2xl" style="padding: 1.75rem; background: linear-gradient(135deg, rgba(168, 85, 247, 0.15) 0%, rgba(6, 182, 212, 0.1) 100%); border: 1px solid rgba(168, 85, 247, 0.3);">
                             <h3 class="text-white text-lg font-bold mb-4 text-center">
                                 How are you feeling?
                             </h3>
@@ -637,8 +637,8 @@
                             
                             <div class="space-y-4">
                                 <div class="flex items-start gap-3">
-                                    <div class="w-8 h-8 rounded-full flex items-center justify-center" style="background: rgba(147, 197, 253, 0.2); flex-shrink: 0;">
-                                        <div style="width: 0.875rem; height: 0.875rem; color: rgb(147, 197, 253);">${getIcon('check', '2.5')}</div>
+                                    <div class="w-8 h-8 rounded-full flex items-center justify-center" style="background: rgba(103, 232, 249, 0.2); flex-shrink: 0;">
+                                        <div style="width: 0.875rem; height: 0.875rem; color: rgb(103, 232, 249);">${getIcon('check', '2.5')}</div>
                                     </div>
                                     <div>
                                         <div class="text-white text-sm font-semibold mb-1">Find quiet space</div>
@@ -647,8 +647,8 @@
                                 </div>
                                 
                                 <div class="flex items-start gap-3">
-                                    <div class="w-8 h-8 rounded-full flex items-center justify-center" style="background: rgba(249, 168, 212, 0.2); flex-shrink: 0;">
-                                        <div style="width: 0.875rem; height: 0.875rem; color: rgb(249, 168, 212);">${getIcon('check', '2.5')}</div>
+                                    <div class="w-8 h-8 rounded-full flex items-center justify-center" style="background: rgba(103, 232, 249, 0.2); flex-shrink: 0;">
+                                        <div style="width: 0.875rem; height: 0.875rem; color: rgb(103, 232, 249);">${getIcon('check', '2.5')}</div>
                                     </div>
                                     <div>
                                         <div class="text-white text-sm font-semibold mb-1">Be gentle</div>
@@ -717,8 +717,8 @@
                 <div class="content-wrapper px-6 pb-8 pt-8">
                     <div class="text-center mb-12">
                         <div class="relative w-28 h-28 mx-auto mb-6">
-                            <div class="absolute" style="inset: 0; background: linear-gradient(to bottom right, rgb(168, 85, 247), rgb(236, 72, 153)); border-radius: 50%; filter: blur(16px); opacity: 0.5;"></div>
-                            <div class="relative w-28 h-28 rounded-full flex items-center justify-center shadow-2xl border-4" style="background: linear-gradient(to bottom right, rgb(168, 85, 247), rgb(236, 72, 153)); border-color: rgb(15, 23, 42);">
+                            <div class="absolute" style="inset: 0; background: linear-gradient(to bottom right, rgb(168, 85, 247), rgb(6, 182, 212)); border-radius: 50%; filter: blur(16px); opacity: 0.5;"></div>
+                            <div class="relative w-28 h-28 rounded-full flex items-center justify-center shadow-2xl border-4" style="background: linear-gradient(to bottom right, rgb(168, 85, 247), rgb(6, 182, 212)); border-color: rgb(15, 23, 42);">
                                 <svg style="width: 3.5rem; height: 3.5rem; color: white;" stroke-width="2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     ${icons.heart}
                                 </svg>
