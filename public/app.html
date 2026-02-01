@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#0f172a">
     <title>MPHaven - Your Sanctuary</title>
     <style>
         * {
@@ -30,7 +31,7 @@
         }
         
         body {
-            background: #020617;
+            background: #0f172a;
             margin: 0;
             touch-action: pan-y;
         }
@@ -60,7 +61,7 @@
             max-width: 28rem;
             height: 100%;
             margin: 0 auto;
-            background: rgba(15, 23, 42, 0.95);
+            background: rgba(15, 23, 42, 0.98);
             backdrop-filter: blur(40px);
             display: flex;
             flex-direction: column;
@@ -71,30 +72,32 @@
         
         .bg-blur-1 {
             position: absolute;
-            top: 0;
+            top: -5%;
             left: 50%;
             transform: translateX(-50%);
-            width: 24rem;
-            height: 24rem;
-            background: rgba(168, 85, 247, 0.1); /* Changed from rgba(147, 51, 234, 0.1) */
+            width: 22rem;
+            height: 22rem;
+            background: rgba(14, 116, 144, 0.08);
             border-radius: 50%;
-            filter: blur(120px);
+            filter: blur(140px);
             pointer-events: none;
             z-index: 0;
+            opacity: 0.6;
             transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         .bg-blur-2 {
             position: absolute;
-            bottom: 0;
-            right: 0;
-            width: 20rem;
-            height: 20rem;
-            background: rgba(6, 182, 212, 0.1);
+            bottom: -5%;
+            right: -5%;
+            width: 18rem;
+            height: 18rem;
+            background: rgba(217, 119, 6, 0.08);
             border-radius: 50%;
-            filter: blur(100px);
+            filter: blur(140px);
             pointer-events: none;
             z-index: 0;
+            opacity: 0.6;
             transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -156,7 +159,7 @@
             transform: translateX(-50%);
             width: 2.5rem;
             height: 3px;
-            background: linear-gradient(to right, rgb(168, 85, 247), rgb(6, 182, 212));
+            background: linear-gradient(to right, #0e7490, #d97706);
             border-radius: 9999px;
         }
         
@@ -200,7 +203,6 @@
             min-height: 100%;
         }
         
-        /* Improved spacing with better line heights */
         .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
         .pb-6 { padding-bottom: 1.5rem; }
         .pb-8 { padding-bottom: 2rem; }
@@ -230,12 +232,14 @@
         .text-slate-300 { color: rgb(203, 213, 225); }
         .text-slate-400 { color: rgb(148, 163, 184); }
         .text-slate-500 { color: rgb(100, 116, 139); }
-        .text-purple-400 { color: rgb(192, 132, 252); }
-        .text-cyan-300 { color: rgb(103, 232, 249); } /* Changed from text-blue-300 */
-        .text-cyan-400 { color: rgb(34, 211, 238); } /* New cyan accent */
-        .text-emerald-300 { color: rgb(110, 231, 183); }
+        .text-teal-light { color: rgb(165, 243, 252); }
+        .text-teal { color: rgb(94, 234, 212); }
+        .text-teal-dark { color: rgb(14, 116, 144); }
+        .text-amber-light { color: rgb(253, 230, 138); }
+        .text-amber { color: rgb(251, 191, 36); }
+        .text-amber-dark { color: rgb(217, 119, 6); }
+        .text-emerald { color: rgb(110, 231, 183); }
         
-        /* Improved line heights for readability */
         .text-xs { font-size: 0.75rem; line-height: 1.125rem; }
         .text-sm { font-size: 0.875rem; line-height: 1.375rem; }
         .text-base { font-size: 1rem; line-height: 1.625rem; }
@@ -331,7 +335,6 @@
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
         
-        /* Feeling Check-in */
         .feeling-emoji {
             width: 2.5rem;
             height: 2.5rem;
@@ -350,15 +353,15 @@
         }
         
         .feeling-emoji.selected {
-            border-color: rgba(103, 232, 249, 0.5); /* Changed from white to cyan */
-            background: rgba(103, 232, 249, 0.1); /* Changed from white to cyan */
+            border-color: rgba(165, 243, 252, 0.5);
+            background: rgba(165, 243, 252, 0.1);
         }
         
         .loading-spinner {
             width: 3rem;
             height: 3rem;
             border: 3px solid rgba(100, 116, 139, 0.3);
-            border-top: 3px solid #a855f7; /* Changed from #9333EA to main purple */
+            border-top: 3px solid #0e7490;
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
@@ -422,7 +425,6 @@
     </div>
 
     <script>
-        // State - NO counters, NO gamification
         const userState = {
             pathsStarted: 1,
             currentFeeling: null,
@@ -435,7 +437,7 @@
                 title: "Understanding Feelings",
                 description: "Learn to recognize and be with your emotions",
                 icon: 'brain',
-                color: "#a855f7", // Changed from #9333EA to main purple
+                color: "#0e7490",
                 started: true
             },
             {
@@ -443,7 +445,7 @@
                 title: "Mindfulness",
                 description: "Cultivate awareness of the here and now",
                 icon: 'sparkles',
-                color: "#06b6d4", // Changed from #059669 to cyan
+                color: "#d97706",
                 started: false
             },
             {
@@ -451,7 +453,7 @@
                 title: "Meaningful Relationships",
                 description: "Build deeper connections with others",
                 icon: 'heart',
-                color: "#dc2626", // Keeping red for emotional warmth
+                color: "#dc2626",
                 started: false
             },
             {
@@ -459,7 +461,7 @@
                 title: "Finding What Matters",
                 description: "Discover what gives your life meaning",
                 icon: 'compass',
-                color: "#0891b2", // Changed to blue-cyan
+                color: "#0891b2",
                 started: false
             }
         ];
@@ -526,7 +528,7 @@
                 <div class="content-wrapper">
                     ${showCheckIn ? `
                     <div class="relative px-6 pt-8 pb-6">
-                        <div class="relative z-10 rounded-3xl shadow-2xl" style="padding: 1.75rem; background: linear-gradient(135deg, rgba(168, 85, 247, 0.15) 0%, rgba(6, 182, 212, 0.1) 100%); border: 1px solid rgba(168, 85, 247, 0.3);">
+                        <div class="relative z-10 rounded-3xl shadow-2xl" style="padding: 1.75rem; background: linear-gradient(135deg, rgba(14, 116, 144, 0.15) 0%, rgba(217, 119, 6, 0.1) 100%); border: 1px solid rgba(14, 116, 144, 0.3);">
                             <h3 class="text-white text-lg font-bold mb-4 text-center">
                                 How are you feeling?
                             </h3>
@@ -555,7 +557,7 @@
                     ` : ''}
                     
                     <div class="relative px-6 ${showCheckIn ? 'pt-8' : 'pt-16'} pb-10">
-                        <div class="absolute" style="top: 0; right: 0; width: 16rem; height: 16rem; background: rgba(168, 85, 247, 0.2); border-radius: 50%; filter: blur(48px); animation: pulse-glow 3s ease-in-out infinite;"></div>
+                        <div class="absolute" style="top: 0; right: 0; width: 16rem; height: 16rem; background: rgba(14, 116, 144, 0.2); border-radius: 50%; filter: blur(48px); animation: pulse-glow 3s ease-in-out infinite;"></div>
                         
                         <div class="relative z-10">
                             <h1 class="text-white text-5xl font-bold mb-4 leading-tight tracking-tight">
@@ -588,8 +590,8 @@
                                     </p>
                                 </div>
                                 
-                                <div class="w-12 h-12 rounded-full flex items-center justify-center" style="background: rgba(168, 85, 247, 0.3);">
-                                    <div style="width: 1.5rem; height: 1.5rem; color: rgb(192, 132, 252);">${getIcon('arrowright', '2.5')}</div>
+                                <div class="w-12 h-12 rounded-full flex items-center justify-center" style="background: rgba(14, 116, 144, 0.3);">
+                                    <div style="width: 1.5rem; height: 1.5rem; color: rgb(165, 243, 252);">${getIcon('arrowright', '2.5')}</div>
                                 </div>
                             </div>
                         </button>
@@ -637,8 +639,8 @@
                             
                             <div class="space-y-4">
                                 <div class="flex items-start gap-3">
-                                    <div class="w-8 h-8 rounded-full flex items-center justify-center" style="background: rgba(103, 232, 249, 0.2); flex-shrink: 0;">
-                                        <div style="width: 0.875rem; height: 0.875rem; color: rgb(103, 232, 249);">${getIcon('check', '2.5')}</div>
+                                    <div class="w-8 h-8 rounded-full flex items-center justify-center" style="background: rgba(165, 243, 252, 0.2); flex-shrink: 0;">
+                                        <div style="width: 0.875rem; height: 0.875rem; color: rgb(165, 243, 252);">${getIcon('check', '2.5')}</div>
                                     </div>
                                     <div>
                                         <div class="text-white text-sm font-semibold mb-1">Find quiet space</div>
@@ -647,8 +649,8 @@
                                 </div>
                                 
                                 <div class="flex items-start gap-3">
-                                    <div class="w-8 h-8 rounded-full flex items-center justify-center" style="background: rgba(103, 232, 249, 0.2); flex-shrink: 0;">
-                                        <div style="width: 0.875rem; height: 0.875rem; color: rgb(103, 232, 249);">${getIcon('check', '2.5')}</div>
+                                    <div class="w-8 h-8 rounded-full flex items-center justify-center" style="background: rgba(165, 243, 252, 0.2); flex-shrink: 0;">
+                                        <div style="width: 0.875rem; height: 0.875rem; color: rgb(165, 243, 252);">${getIcon('check', '2.5')}</div>
                                     </div>
                                     <div>
                                         <div class="text-white text-sm font-semibold mb-1">Be gentle</div>
@@ -657,8 +659,8 @@
                                 </div>
                                 
                                 <div class="flex items-start gap-3">
-                                    <div class="w-8 h-8 rounded-full flex items-center justify-center" style="background: rgba(110, 231, 183, 0.2); flex-shrink: 0;">
-                                        <div style="width: 0.875rem; height: 0.875rem; color: rgb(110, 231, 183);">${getIcon('check', '2.5')}</div>
+                                    <div class="w-8 h-8 rounded-full flex items-center justify-center" style="background: rgba(165, 243, 252, 0.2); flex-shrink: 0;">
+                                        <div style="width: 0.875rem; height: 0.875rem; color: rgb(165, 243, 252);">${getIcon('check', '2.5')}</div>
                                     </div>
                                     <div>
                                         <div class="text-white text-sm font-semibold mb-1">Take your time</div>
@@ -717,8 +719,8 @@
                 <div class="content-wrapper px-6 pb-8 pt-8">
                     <div class="text-center mb-12">
                         <div class="relative w-28 h-28 mx-auto mb-6">
-                            <div class="absolute" style="inset: 0; background: linear-gradient(to bottom right, rgb(168, 85, 247), rgb(6, 182, 212)); border-radius: 50%; filter: blur(16px); opacity: 0.5;"></div>
-                            <div class="relative w-28 h-28 rounded-full flex items-center justify-center shadow-2xl border-4" style="background: linear-gradient(to bottom right, rgb(168, 85, 247), rgb(6, 182, 212)); border-color: rgb(15, 23, 42);">
+                            <div class="absolute" style="inset: 0; background: linear-gradient(to bottom right, #0e7490, #d97706); border-radius: 50%; filter: blur(16px); opacity: 0.5;"></div>
+                            <div class="relative w-28 h-28 rounded-full flex items-center justify-center shadow-2xl border-4" style="background: linear-gradient(to bottom right, #0e7490, #d97706); border-color: rgb(15, 23, 42);">
                                 <svg style="width: 3.5rem; height: 3.5rem; color: white;" stroke-width="2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     ${icons.heart}
                                 </svg>
@@ -729,7 +731,7 @@
                     </div>
 
                     <div class="space-y-3 mb-8">
-                        <button class="w-full rounded-3xl shadow-xl" style="padding: 1.5rem; background: linear-gradient(135deg, rgba(168,85,247,0.15) 0%, rgba(168,85,247,0.05) 100%); border: 1px solid rgba(168,85,247,0.3); text-align: left;">
+                        <button class="w-full rounded-3xl shadow-xl" style="padding: 1.5rem; background: linear-gradient(135deg, rgba(14,116,144,0.15) 0%, rgba(14,116,144,0.05) 100%); border: 1px solid rgba(14,116,144,0.3); text-align: left;">
                             <div class="flex items-center justify-between">
                                 <div>
                                     <div class="text-white text-base font-bold mb-1">Your Preferences</div>
@@ -771,15 +773,11 @@
                 path.started = true;
                 updateAmbientWarmth();
                 
-                // Save the state
                 localStorage.setItem('mphaven_state', JSON.stringify(userState));
                 
-                // Navigate to the appropriate course file
                 if (pathId === 'mindfulness') {
-                    // Goes to public/course-mindfulness.html
                     window.location.href = 'public/course-mindfulness.html';
                 } else {
-                    // Other paths go to their lesson files
                     window.location.href = `lesson-${pathId}-1.html`;
                 }
             }
@@ -843,7 +841,6 @@
             }
         }
 
-        // Load state and initialize
         const saved = localStorage.getItem('mphaven_state');
         if (saved) {
             const savedState = JSON.parse(saved);
@@ -854,4 +851,4 @@
         switchTab('home');
     </script>
 </body>
-</html>
+</html> 
