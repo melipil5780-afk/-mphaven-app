@@ -63,7 +63,7 @@
             transform: translateX(-50%);
             width: 24rem;
             height: 24rem;
-            background: rgba(147, 51, 234, 0.1);
+            background: rgba(168, 85, 247, 0.1);
         }
         
         .bg-blur-2 {
@@ -82,6 +82,7 @@
             scrollbar-width: none;
             position: relative;
             z-index: 1;
+            scroll-behavior: smooth;
         }
         
         .main-content::-webkit-scrollbar {
@@ -132,7 +133,7 @@
             transform: translateX(-50%);
             width: 2.5rem;
             height: 3px;
-            background: linear-gradient(to right, #9333EA, #06b6d4);
+            background: linear-gradient(to right, #a855f7, #06b6d4);
             border-radius: 9999px;
             opacity: 0;
             transition: opacity 0.2s ease;
@@ -190,10 +191,10 @@
 
         @keyframes pulseGlow {
             0%, 100% { 
-                text-shadow: 0 4px 20px rgba(147, 51, 234, 0.3); 
+                text-shadow: 0 4px 20px rgba(168, 85, 247, 0.3); 
             }
             50% { 
-                text-shadow: 0 4px 25px rgba(147, 51, 234, 0.5); 
+                text-shadow: 0 4px 25px rgba(168, 85, 247, 0.5); 
             }
         }
 
@@ -235,8 +236,8 @@
         }
 
         .skill-card {
-            background: linear-gradient(135deg, rgba(147, 51, 234, 0.1), rgba(6, 182, 212, 0.05));
-            border: 1px solid rgba(147, 51, 234, 0.25);
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(6, 182, 212, 0.05));
+            border: 1px solid rgba(168, 85, 247, 0.25);
         }
 
         .practice-timer {
@@ -248,14 +249,14 @@
             letter-spacing: 0.05em;
             line-height: 1.1;
             margin: 2rem 0;
-            text-shadow: 0 4px 20px rgba(147, 51, 234, 0.3);
+            text-shadow: 0 4px 20px rgba(168, 85, 247, 0.3);
         }
 
         .prompt-chip {
             display: inline-block;
             padding: 0.75rem 1.25rem;
-            background: rgba(147, 51, 234, 0.1);
-            border: 1px solid rgba(147, 51, 234, 0.3);
+            background: rgba(168, 85, 247, 0.1);
+            border: 1px solid rgba(168, 85, 247, 0.3);
             border-radius: 9999px;
             color: rgb(192, 132, 252);
             font-size: 0.875rem;
@@ -267,7 +268,7 @@
         }
 
         .prompt-chip:active {
-            background: rgba(147, 51, 234, 0.2);
+            background: rgba(168, 85, 247, 0.2);
             transform: translateY(-1px);
         }
 
@@ -290,9 +291,9 @@
         }
 
         .practice-button-start {
-            background: linear-gradient(to right, #9333EA, #06b6d4);
+            background: linear-gradient(to right, #a855f7, #06b6d4);
             color: white;
-            box-shadow: 0 8px 25px rgba(147, 51, 234, 0.3);
+            box-shadow: 0 8px 25px rgba(168, 85, 247, 0.3);
         }
 
         .practice-button-stop {
@@ -315,12 +316,13 @@
             margin-bottom: 1rem;
             resize: none;
             font-family: inherit;
+            scroll-margin-top: 150px;
         }
 
         .journal-textarea:focus {
             outline: none;
-            border-color: rgba(147, 51, 234, 0.5);
-            box-shadow: 0 0 0 2px rgba(147, 51, 234, 0.1);
+            border-color: rgba(168, 85, 247, 0.5);
+            box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.1);
         }
 
         /* ===== MODALS & TOAST ===== */
@@ -330,7 +332,7 @@
             left: 50%;
             transform: translateX(-50%) translateY(100px);
             background: rgba(30, 41, 59, 0.95);
-            border: 1px solid rgba(147, 51, 234, 0.3);
+            border: 1px solid rgba(168, 85, 247, 0.3);
             border-radius: 0.75rem;
             padding: 1rem 1.5rem;
             color: white;
@@ -371,7 +373,7 @@
 
         .modal-content {
             background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
-            border: 1px solid rgba(147, 51, 234, 0.3);
+            border: 1px solid rgba(168, 85, 247, 0.3);
             border-radius: 1.5rem;
             padding: 2rem;
             max-width: 28rem;
@@ -576,6 +578,10 @@
                 padding: 1.5rem;
                 margin-top: 1rem;
             }
+            
+            .journal-textarea {
+                scroll-margin-top: 120px;
+            }
         }
 
         @media (min-width: 768px) {
@@ -597,6 +603,10 @@
             
             .practice-timer {
                 font-size: 5rem;
+            }
+            
+            .journal-textarea {
+                scroll-margin-top: 100px;
             }
         }
     </style>
@@ -876,7 +886,7 @@
                     
                     <div style="display:flex;flex-direction:column;gap:0.75rem;margin-bottom:1.5rem">
                         <button onclick="journalAfterPractice()" class="post-practice-option">
-                            <div class="option-icon" style="background:rgba(147,51,234,0.2);color:rgb(192,132,252)">📝</div>
+                            <div class="option-icon" style="background:rgba(168,85,247,0.2);color:rgb(192,132,252)">📝</div>
                             <div class="option-content">
                                 <div class="option-title">Journal About It</div>
                                 <div class="option-description">Capture what you noticed</div>
@@ -931,6 +941,33 @@
                 textarea.value = question + '\n\n';
                 textarea.focus();
                 showToast("Prompt added 💭");
+                
+                // FIX: Scroll textarea into view after adding prompt (keyboard visibility fix)
+                setTimeout(() => {
+                    // Scroll the textarea into view
+                    textarea.scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'center' // Centers the textarea
+                    });
+                    
+                    // Also manually adjust scroll position for better mobile UX
+                    const mainContent = document.querySelector('.main-content');
+                    if (mainContent) {
+                        // Get the textarea position
+                        const textareaRect = textarea.getBoundingClientRect();
+                        const mainContentRect = mainContent.getBoundingClientRect();
+                        
+                        // Estimate keyboard height (approx 300px on mobile)
+                        const estimatedKeyboardHeight = 300;
+                        
+                        // Check if textarea would be covered by keyboard
+                        if (textareaRect.bottom > window.innerHeight - estimatedKeyboardHeight) {
+                            // Calculate how much to scroll to make textarea visible above keyboard
+                            const scrollAmount = (textareaRect.bottom - (window.innerHeight - estimatedKeyboardHeight)) + 50;
+                            mainContent.scrollTop += scrollAmount;
+                        }
+                    }
+                }, 150); // Slightly longer delay to ensure keyboard is open
             }
         }
 
@@ -1037,7 +1074,7 @@
                     </p>
                     
                     <div style="display:grid;gap:0.75rem">
-                        <button onclick="backupJournal();closeModal()" style="width:100%;padding:0.875rem;border-radius:0.75rem;background:linear-gradient(to right,#9333EA,#06b6d4);color:white;font-weight:bold;border:none;font-size:0.9375rem">
+                        <button onclick="backupJournal();closeModal()" style="width:100%;padding:0.875rem;border-radius:0.75rem;background:linear-gradient(to right,#a855f7,#06b6d4);color:white;font-weight:bold;border:none;font-size:0.9375rem">
                             Save a Copy Now
                         </button>
                         
@@ -1071,7 +1108,7 @@
                     
                     <div style="display:grid;gap:0.75rem">
                         <!-- LEARN FIRST (Primary action) -->
-                        <button onclick="learnSkill('${skill.id}')" style="width:100%;padding:1rem;border-radius:1rem;background:linear-gradient(to right,#9333EA,#06b6d4);color:white;font-weight:bold;border:none;font-size:0.9375rem;display:flex;align-items:center;justify-content:center;gap:0.5rem">
+                        <button onclick="learnSkill('${skill.id}')" style="width:100%;padding:1rem;border-radius:1rem;background:linear-gradient(to right,#a855f7,#06b6d4);color:white;font-weight:bold;border:none;font-size:0.9375rem;display:flex;align-items:center;justify-content:center;gap:0.5rem">
                             <svg style="width:1.25rem;height:1.25rem" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
                             </svg>
@@ -1079,7 +1116,7 @@
                         </button>
                         
                         <!-- PRACTICE SECOND (Secondary action) -->
-                        <button onclick="practiceSkill('${skill.id}')" style="width:100%;padding:1rem;border-radius:1rem;background:rgba(147,51,234,0.1);border:1px solid rgba(147,51,234,0.3);color:rgb(192,132,252);font-weight:600;border:none;font-size:0.9375rem;display:flex;align-items:center;justify-content:center;gap:0.5rem">
+                        <button onclick="practiceSkill('${skill.id}')" style="width:100%;padding:1rem;border-radius:1rem;background:rgba(168,85,247,0.1);border:1px solid rgba(168,85,247,0.3);color:rgb(192,132,252);font-weight:600;border:none;font-size:0.9375rem;display:flex;align-items:center;justify-content:center;gap:0.5rem">
                             <svg style="width:1.25rem;height:1.25rem" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -1310,7 +1347,7 @@
                         ${skills.map(skill => `
                             <button onclick="showSkillOptions('${skill.id}')" class="card skill-card" style="width:100%;text-align:left;padding:1.25rem;border:none;cursor:pointer;">
                                 <div style="display:flex;align-items:start;gap:1rem">
-                                    <div style="width:3.5rem;height:3.5rem;border-radius:1rem;background:linear-gradient(135deg,rgba(147,51,234,0.2),rgba(6,182,212,0.1));display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                                    <div style="width:3.5rem;height:3.5rem;border-radius:1rem;background:linear-gradient(135deg,rgba(168,85,247,0.2),rgba(6,182,212,0.1));display:flex;align-items:center;justify-content:center;flex-shrink:0">
                                         <span style="font-size:1.75rem">${skill.icon}</span>
                                     </div>
                                     <div style="flex:1;min-width:0">
@@ -1333,7 +1370,7 @@
                 <div class="content-wrapper fade-in">
                     <div style="margin-bottom:1.5rem">
                         <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem">
-                            <div style="width:3rem;height:3rem;border-radius:0.875rem;background:linear-gradient(135deg,rgba(147,51,234,0.2),rgba(6,182,212,0.1));display:flex;align-items:center;justify-content:center">
+                            <div style="width:3rem;height:3rem;border-radius:0.875rem;background:linear-gradient(135deg,rgba(168,85,247,0.2),rgba(6,182,212,0.1));display:flex;align-items:center;justify-content:center">
                                 <span style="font-size:1.5rem">${skill.icon}</span>
                             </div>
                             <div>
@@ -1348,7 +1385,7 @@
                         </div>
                     </div>
 
-                    <div class="card" style="padding:2rem 1.5rem;margin-bottom:1.5rem;text-align:center;background:linear-gradient(135deg,rgba(147,51,234,0.12),rgba(6,182,212,0.08))">
+                    <div class="card" style="padding:2rem 1.5rem;margin-bottom:1.5rem;text-align:center;background:linear-gradient(135deg,rgba(168,85,247,0.12),rgba(6,182,212,0.08))">
                         <div id="timerDisplay" class="practice-timer ${state.timerRunning ? 'timer-pulse' : ''}">${formatTime(state.timerSeconds)}</div>
                         
                         <div class="timer-button-container">
@@ -1381,7 +1418,7 @@
                         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem">
                             <h2 style="color:white;font-size:1.625rem;font-weight:bold">Your Journal</h2>
                             ${state.journalEntries.length > 0 ? `
-                                <button onclick="backupJournal()" style="padding:0.5rem 1rem;border-radius:0.75rem;background:rgba(147,51,234,0.1);border:1px solid rgba(147,51,234,0.3);color:rgb(192,132,252);font-size:0.8125rem;font-weight:600;border:none">
+                                <button onclick="backupJournal()" style="padding:0.5rem 1rem;border-radius:0.75rem;background:rgba(168,85,247,0.1);border:1px solid rgba(168,85,247,0.3);color:rgb(192,132,252);font-size:0.8125rem;font-weight:600;border:none">
                                     💾 Save Copy
                                 </button>
                             ` : ''}
@@ -1411,7 +1448,7 @@
                                 placeholder="What's alive in your experience right now?..."
                                 class="journal-textarea"
                             ></textarea>
-                            <button onclick="saveJournalEntry()" style="width:100%;padding:0.875rem;border-radius:0.75rem;background:linear-gradient(to right,#9333EA,#06b6d4);color:white;font-weight:bold;border:none;font-size:0.9375rem">
+                            <button onclick="saveJournalEntry()" style="width:100%;padding:0.875rem;border-radius:0.75rem;background:linear-gradient(to right,#a855f7,#06b6d4);color:white;font-weight:bold;border:none;font-size:0.9375rem">
                                 Save Reflection
                             </button>
                         </div>
@@ -1451,7 +1488,7 @@
                                         <div class="entry-card" style="background:rgba(30,41,59,0.3);border:1px solid rgba(51,65,85,0.3);border-radius:1rem;padding:1.25rem;margin-bottom:1rem">
                                             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem">
                                                 <div style="color:rgb(148,163,184);font-size:0.8125rem;font-weight:500">${formattedDate}</div>
-                                                <div style="background:rgba(147,51,234,0.15);color:rgb(192,132,252);padding:0.25rem 0.75rem;border-radius:9999px;font-size:0.75rem;font-weight:600">
+                                                <div style="background:rgba(168,85,247,0.15);color:rgb(192,132,252);padding:0.25rem 0.75rem;border-radius:9999px;font-size:0.75rem;font-weight:600">
                                                     ${skill ? skill.name : entry.skill}
                                                 </div>
                                             </div>
