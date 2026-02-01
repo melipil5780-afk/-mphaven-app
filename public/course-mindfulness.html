@@ -7,43 +7,46 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#020617">
     <title>MPHaven</title>
-
     <style>
+        /* ===== BASE STYLES ===== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
             -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
-        html, body {
+        html {
+            -webkit-text-size-adjust: 100%;
+            height: -webkit-fill-available;
+        }
+
+        body {
             width: 100%;
-            height: 100%;
+            height: 100vh;
+            height: -webkit-fill-available;
+            background: #020617;
             overflow: hidden;
             position: fixed;
-            background: #020617;
+            touch-action: manipulation;
         }
 
         .container {
             width: 100%;
-            height: 100vh;
-            height: 100dvh;
+            height: 100%;
             display: flex;
             flex-direction: column;
         }
 
         .app-wrapper {
             width: 100%;
-            max-width: 28rem;
             height: 100%;
-            margin: 0 auto;
             background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(40px);
             display: flex;
             flex-direction: column;
-            border-left: 1px solid rgba(30, 41, 59, 0.5);
-            border-right: 1px solid rgba(30, 41, 59, 0.5);
+            position: relative;
         }
 
         .bg-blur-1, .bg-blur-2 {
@@ -51,10 +54,11 @@
             border-radius: 50%;
             filter: blur(120px);
             pointer-events: none;
+            z-index: 0;
         }
         
         .bg-blur-1 {
-            top: 0;
+            top: -10rem;
             left: 50%;
             transform: translateX(-50%);
             width: 24rem;
@@ -63,8 +67,8 @@
         }
         
         .bg-blur-2 {
-            bottom: 0;
-            right: 0;
+            bottom: -10rem;
+            right: -5rem;
             width: 20rem;
             height: 20rem;
             background: rgba(6, 182, 212, 0.1);
@@ -76,21 +80,27 @@
             overflow-x: hidden;
             -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
+            position: relative;
+            z-index: 1;
         }
         
-        .main-content::-webkit-scrollbar { display: none; }
+        .main-content::-webkit-scrollbar {
+            display: none;
+        }
 
         .nav-bar {
             border-top: 1px solid rgba(30, 41, 59, 0.5);
             background: rgba(15, 23, 42, 0.98);
             padding: 0.75rem 0 calc(0.75rem + env(safe-area-inset-bottom));
+            flex-shrink: 0;
+            position: relative;
+            z-index: 2;
         }
 
         .nav-container {
             display: flex;
             justify-content: space-around;
-            max-width: 28rem;
-            margin: 0 auto;
+            padding: 0 0.5rem;
         }
 
         .nav-btn {
@@ -98,12 +108,21 @@
             flex-direction: column;
             align-items: center;
             gap: 0.25rem;
-            padding: 0.5rem 1rem;
+            padding: 0.5rem;
             background: none;
             border: none;
             cursor: pointer;
             min-height: 60px;
+            min-width: 70px;
             position: relative;
+            -webkit-tap-highlight-color: transparent;
+            outline: none;
+        }
+
+        .nav-btn:active {
+            opacity: 0.7;
+            transform: scale(0.96);
+            transition: transform 0.1s ease;
         }
 
         .nav-indicator {
@@ -113,8 +132,9 @@
             transform: translateX(-50%);
             width: 2.5rem;
             height: 3px;
-            background: linear-gradient(to right, #a855f7, #06b6d4);
+            background: linear-gradient(to right, #9333EA, #06b6d4);
             border-radius: 9999px;
+            opacity: 0;
             transition: opacity 0.2s ease;
         }
 
@@ -125,14 +145,14 @@
             transition: all 0.2s ease;
         }
 
-        .nav-icon.active { 
-            color: white; 
+        .nav-icon.active {
+            color: white;
             opacity: 1;
             transform: translateY(-2px);
         }
 
-        .nav-icon.inactive { 
-            color: rgba(100, 116, 139, 0.7); 
+        .nav-icon.inactive {
+            color: rgba(100, 116, 139, 0.7);
             opacity: 0.7;
         }
 
@@ -142,13 +162,13 @@
             transition: all 0.2s ease;
         }
 
-        .nav-label.active { 
-            color: white; 
+        .nav-label.active {
+            color: white;
             opacity: 1;
         }
 
-        .nav-label.inactive { 
-            color: rgba(100, 116, 139, 0.7); 
+        .nav-label.inactive {
+            color: rgba(100, 116, 139, 0.7);
             opacity: 0.7;
         }
 
@@ -156,51 +176,161 @@
             padding: max(1rem, env(safe-area-inset-top)) 1.25rem 2rem 1.25rem;
         }
 
+        /* ===== ANIMATIONS ===== */
+        @keyframes gentleFadeIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(8px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { 
+                text-shadow: 0 4px 20px rgba(147, 51, 234, 0.3); 
+            }
+            50% { 
+                text-shadow: 0 4px 25px rgba(147, 51, 234, 0.5); 
+            }
+        }
+
+        @keyframes scaleIn {
+            from { 
+                opacity: 0; 
+                transform: scale(0.95); 
+            }
+            to { 
+                opacity: 1; 
+                transform: scale(1); 
+            }
+        }
+
+        .fade-in {
+            animation: gentleFadeIn 0.35s ease-out;
+        }
+
+        .scale-in {
+            animation: scaleIn 0.3s ease-out;
+        }
+
+        .timer-pulse {
+            animation: pulseGlow 2s ease-in-out infinite;
+        }
+
+        /* ===== CARDS & COMPONENTS ===== */
         .card {
             background: linear-gradient(135deg, rgba(30, 41, 59, 0.4), rgba(15, 23, 42, 0.2));
             border: 1px solid rgba(51, 65, 85, 0.4);
             border-radius: 1.25rem;
+            transition: transform 0.2s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .card:active {
+            transform: scale(0.98);
+            transition: transform 0.1s ease;
         }
 
         .skill-card {
-            background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(6, 182, 212, 0.05));
-            border: 1px solid rgba(168, 85, 247, 0.25);
+            background: linear-gradient(135deg, rgba(147, 51, 234, 0.1), rgba(6, 182, 212, 0.05));
+            border: 1px solid rgba(147, 51, 234, 0.25);
         }
 
         .practice-timer {
             font-family: 'SF Mono', 'Monaco', 'Cascadia Code', monospace;
-            font-size: 3rem;
+            font-size: 4rem;
             font-weight: 300;
             color: white;
             text-align: center;
             letter-spacing: 0.05em;
+            line-height: 1.1;
+            margin: 2rem 0;
+            text-shadow: 0 4px 20px rgba(147, 51, 234, 0.3);
         }
 
         .prompt-chip {
             display: inline-block;
-            padding: 0.5rem 1rem;
-            background: rgba(168, 85, 247, 0.1);
-            border: 1px solid rgba(168, 85, 247, 0.3);
+            padding: 0.75rem 1.25rem;
+            background: rgba(147, 51, 234, 0.1);
+            border: 1px solid rgba(147, 51, 234, 0.3);
             border-radius: 9999px;
-            color: rgb(216, 180, 254);
+            color: rgb(192, 132, 252);
             font-size: 0.875rem;
             margin: 0.25rem;
             cursor: pointer;
             transition: all 0.2s ease;
+            min-height: 44px;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .prompt-chip:hover {
-            background: rgba(168, 85, 247, 0.2);
+        .prompt-chip:active {
+            background: rgba(147, 51, 234, 0.2);
             transform: translateY(-1px);
         }
 
+        .practice-button {
+            width: 100%;
+            padding: 1.25rem;
+            border-radius: 1rem;
+            font-weight: 600;
+            font-size: 1.125rem;
+            border: none;
+            cursor: pointer;
+            margin: 1rem 0;
+            -webkit-tap-highlight-color: transparent;
+            transition: transform 0.2s ease;
+        }
+
+        .practice-button:active {
+            transform: scale(0.98);
+            transition: transform 0.1s ease;
+        }
+
+        .practice-button-start {
+            background: linear-gradient(to right, #9333EA, #06b6d4);
+            color: white;
+            box-shadow: 0 8px 25px rgba(147, 51, 234, 0.3);
+        }
+
+        .practice-button-stop {
+            background: rgba(239, 68, 68, 0.2);
+            border: 2px solid rgba(239, 68, 68, 0.4);
+            color: rgb(252, 165, 165);
+            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.2);
+        }
+
+        .journal-textarea {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(51, 65, 85, 0.5);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            color: white;
+            font-size: 16px;
+            min-height: 140px;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            resize: none;
+            font-family: inherit;
+        }
+
+        .journal-textarea:focus {
+            outline: none;
+            border-color: rgba(147, 51, 234, 0.5);
+            box-shadow: 0 0 0 2px rgba(147, 51, 234, 0.1);
+        }
+
+        /* ===== MODALS & TOAST ===== */
         .toast {
             position: fixed;
             bottom: 100px;
             left: 50%;
             transform: translateX(-50%) translateY(100px);
             background: rgba(30, 41, 59, 0.95);
-            border: 1px solid rgba(168, 85, 247, 0.3);
+            border: 1px solid rgba(147, 51, 234, 0.3);
             border-radius: 0.75rem;
             padding: 1rem 1.5rem;
             color: white;
@@ -210,6 +340,9 @@
             transition: all 0.3s ease;
             backdrop-filter: blur(10px);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            max-width: 90%;
+            word-break: break-word;
+            pointer-events: none;
         }
 
         .toast.show {
@@ -217,47 +350,253 @@
             opacity: 1;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .fade-in { animation: fadeIn 0.35s ease-out; }
-
         .modal-overlay {
             position: fixed;
-            inset: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             background: rgba(0, 0, 0, 0.85);
             backdrop-filter: blur(8px);
             z-index: 9998;
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: center;
             padding: 1.25rem;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            opacity: 0;
+            animation: fadeIn 0.2s ease-out forwards;
         }
 
         .modal-content {
             background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
-            border: 1px solid rgba(168, 85, 247, 0.3);
+            border: 1px solid rgba(147, 51, 234, 0.3);
             border-radius: 1.5rem;
-            padding: 1.75rem;
-            max-width: 22rem;
+            padding: 2rem;
+            max-width: 28rem;
             width: 100%;
-            animation: fadeIn 0.3s ease-out;
             backdrop-filter: blur(10px);
+            animation: slideUp 0.3s ease-out;
+            margin: auto;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            max-height: 85vh;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
-        @media (min-width: 640px) {
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== POST-PRACTICE OPTIONS ===== */
+        .post-practice-option {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: rgba(30, 41, 59, 0.4);
+            border: 1px solid rgba(51, 65, 85, 0.4);
+            border-radius: 1rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+            width: 100%;
+            border: none;
+            color: inherit;
+            font: inherit;
+            outline: none;
+        }
+
+        .post-practice-option:active {
+            background: rgba(30, 41, 59, 0.6);
+            transform: translateY(-1px);
+        }
+
+        .option-icon {
+            font-size: 2rem;
+            width: 3rem;
+            height: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.75rem;
+            flex-shrink: 0;
+        }
+
+        .option-content {
+            flex: 1;
+        }
+
+        .option-title {
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .option-description {
+            color: rgb(148, 163, 184);
+            font-size: 0.875rem;
+            line-height: 1.4;
+        }
+
+        /* ===== DATA INFO BOX ===== */
+        .data-info-box {
+            background: rgba(6, 182, 212, 0.08);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            border-radius: 1rem;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            animation: gentleFadeIn 0.4s ease-out;
+        }
+
+        .data-info-icon {
+            font-size: 1.25rem;
+            margin-top: 0.125rem;
+        }
+
+        .data-info-content {
+            flex: 1;
+        }
+
+        .data-info-title {
+            color: rgb(103, 232, 249);
+            font-weight: 600;
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .data-info-text {
+            color: rgb(148, 163, 184);
+            font-size: 0.8125rem;
+            line-height: 1.4;
+        }
+
+        /* ===== COLLAPSIBLE PROMPTS ===== */
+        .prompts-toggle {
+            background: none;
+            border: none;
+            color: rgb(148, 163, 184);
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0;
+            cursor: pointer;
+            width: 100%;
+            text-align: left;
+            margin-bottom: 0.5rem;
+        }
+
+        .prompts-toggle:active {
+            opacity: 0.7;
+        }
+
+        .toggle-icon {
+            transition: transform 0.2s ease;
+        }
+
+        .toggle-icon.expanded {
+            transform: rotate(90deg);
+        }
+
+        .prompts-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .prompts-container.collapsed {
+            max-height: 0;
+            margin-bottom: 0;
+            opacity: 0;
+        }
+
+        .prompts-container.expanded {
+            max-height: 200px;
+            opacity: 1;
+        }
+
+        /* ===== TIMER STATUS IN NAV ===== */
+        .timer-badge {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #06b6d4;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .timer-badge.active {
+            opacity: 1;
+            animation: pulseGlow 1.5s ease-in-out infinite;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 380px) {
+            .content-wrapper {
+                padding: max(0.75rem, env(safe-area-inset-top)) 1rem 1.5rem 1rem;
+            }
+            
+            .practice-timer {
+                font-size: 3.5rem;
+                margin: 1.5rem 0;
+            }
+            
+            .practice-button {
+                padding: 1rem;
+                font-size: 1rem;
+            }
+            
+            .modal-content {
+                padding: 1.5rem;
+                margin-top: 1rem;
+            }
+        }
+
+        @media (min-width: 768px) {
             .app-wrapper {
-                border-radius: 2.5rem;
-                height: 844px;
+                max-width: 40rem;
+                margin: 0 auto;
+                height: auto;
+                min-height: 100%;
+                border-radius: 2rem;
+                overflow: hidden;
                 margin-top: 2rem;
                 margin-bottom: 2rem;
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
             }
-            .container {
-                padding: 0 1rem;
-                align-items: center;
-                justify-content: center;
+            
+            .content-wrapper {
+                padding: max(1.5rem, env(safe-area-inset-top)) 2rem 2rem 2rem;
+            }
+            
+            .practice-timer {
+                font-size: 5rem;
             }
         }
     </style>
@@ -272,16 +611,18 @@
 
             <div class="nav-bar">
                 <div class="nav-container">
-                    <button onclick="switchTab('learn')" class="nav-btn" data-tab="learn">
-                        <div class="nav-indicator" style="opacity: 1;"></div>
+                    <button id="learnBtn" class="nav-btn" data-tab="learn">
+                        <div class="nav-indicator"></div>
+                        <div class="timer-badge"></div>
                         <svg class="nav-icon active" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
                         </svg>
                         <span class="nav-label active">Learn</span>
                     </button>
                     
-                    <button onclick="switchTab('practice')" class="nav-btn" data-tab="practice">
-                        <div class="nav-indicator" style="opacity: 0;"></div>
+                    <button id="practiceBtn" class="nav-btn" data-tab="practice">
+                        <div class="nav-indicator"></div>
+                        <div class="timer-badge"></div>
                         <svg class="nav-icon inactive" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
                             <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -289,12 +630,13 @@
                         <span class="nav-label inactive">Practice</span>
                     </button>
                     
-                    <button onclick="switchTab('notes')" class="nav-btn" data-tab="notes">
-                        <div class="nav-indicator" style="opacity: 0;"></div>
+                    <button id="journalBtn" class="nav-btn" data-tab="journal">
+                        <div class="nav-indicator"></div>
+                        <div class="timer-badge"></div>
                         <svg class="nav-icon inactive" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                         </svg>
-                        <span class="nav-label inactive">Notes</span>
+                        <span class="nav-label inactive">Journal</span>
                     </button>
                 </div>
             </div>
@@ -308,7 +650,12 @@
         let state = {
             currentTab: 'learn',
             currentSkill: 'observe',
-            sessionNotes: ''
+            journalEntries: [],
+            hasSeenWelcome: false,
+            promptsExpanded: false,
+            timerRunning: false,
+            timerSeconds: 0,
+            timerStartedAt: null
         };
 
         const skills = [
@@ -318,7 +665,8 @@
                 icon: '👁️', 
                 tagline: 'Watch thoughts like clouds', 
                 description: 'Notice sensations, thoughts, and emotions without getting caught in them.',
-                why: 'Awareness is the foundation of choice.'
+                why: 'Awareness is the foundation of choice.',
+                learnUrl: 'lesson-observe-1.html'
             },
             { 
                 id: 'describe', 
@@ -326,7 +674,8 @@
                 icon: '📝', 
                 tagline: 'Facts over stories', 
                 description: 'Put words to what you observe using only facts, not interpretations.',
-                why: 'Language shapes how we experience reality.'
+                why: 'Language shapes how we experience reality.',
+                learnUrl: 'lesson-describe-1.html'
             },
             { 
                 id: 'participate', 
@@ -334,7 +683,8 @@
                 icon: '🌿', 
                 tagline: 'Be fully present', 
                 description: 'Engage completely in what you\'re doing. Drop self-consciousness.',
-                why: 'Life happens when you\'re not watching yourself.'
+                why: 'Life happens when you\'re not watching yourself.',
+                learnUrl: 'lesson-participate-1.html'
             },
             { 
                 id: 'nonjudgment', 
@@ -342,7 +692,8 @@
                 icon: '⚖️', 
                 tagline: 'Drop the labels', 
                 description: 'Let go of evaluating things as good/bad, right/wrong.',
-                why: 'Judgment creates unnecessary suffering.'
+                why: 'Judgment creates unnecessary suffering.',
+                learnUrl: 'lesson-nonjudge-1.html'
             },
             { 
                 id: 'onemindfully', 
@@ -350,7 +701,8 @@
                 icon: '🎯', 
                 tagline: 'One thing at a time', 
                 description: 'Focus on one thing completely. When your mind wanders, gently bring it back.',
-                why: 'Presence deepens everything.'
+                why: 'Presence deepens everything.',
+                learnUrl: 'lesson-onemindfully-1.html'
             },
             { 
                 id: 'effectively', 
@@ -358,7 +710,8 @@
                 icon: '✅', 
                 tagline: 'Do what works', 
                 description: 'Focus on what actually works, not what should work or what feels fair.',
-                why: 'Being right doesn\'t always help.'
+                why: 'Being right doesn\'t always help.',
+                learnUrl: 'lesson-effectively-1.html'
             },
             { 
                 id: 'checkin', 
@@ -366,98 +719,103 @@
                 icon: '🧠', 
                 tagline: 'Know your state', 
                 description: 'Pause and notice your current emotional, mental, and physical state.',
-                why: 'You can\'t shift what you don\'t notice.'
+                why: 'You can\'t shift what you don\'t notice.',
+                learnUrl: 'lesson-checkin-1.html'
             }
         ];
 
-        // Practice prompts
-        const practicePrompts = [
-            "Notice three things you can see without naming them.",
-            "Watch a thought arise and pass without following it.",
-            "What sensations are present in your body right now?",
-            "Notice your breath without changing it.",
-            "What sounds are happening in the background?",
-            "Describe your current emotion using neutral words.",
-            "Name what you feel without explaining why.",
-            "Put words to your body sensations.",
-            "Fully engage in what you are doing for the next minute.",
-            "Drop awareness into the body and move naturally.",
-            "Notice judgments and label them as 'judging'.",
-            "Describe what is happening without good or bad.",
-            "Do one thing at a time for the next minute.",
-            "Bring attention back when it wanders.",
-            "What action works best right now?",
-            "Choose effectiveness over being right."
-        ];
-
-        // Reflection prompts (for after practice journaling)
-        const reflectionPrompts = [
-            "What did you notice during your practice?",
-            "What emotions or thoughts came up?",
-            "How did your body feel during the practice?",
-            "What was challenging? What was easy?",
-            "How do you feel now compared to before?",
-            "What insights emerged?",
-            "What patterns did you observe?",
-            "How can you bring this awareness into your day?",
-            "What would help you practice more consistently?",
-            "What resistance did you feel, if any?",
-            "What moment felt most present?",
-            "How did your mind respond to the practice?",
-            "What would you like to explore next time?",
-            "What feels different in your body now?",
-            "What thought patterns repeated?",
-            "What felt new or surprising?"
+        const journalPrompts = [
+            {
+                title: "Reflection",
+                question: "What did you notice during your practice?",
+                icon: "💭"
+            },
+            {
+                title: "Body Awareness",
+                question: "Where did you feel sensations in your body?",
+                icon: "🌡️"
+            },
+            {
+                title: "Emotional Weather",
+                question: "What emotions visited you, and how did they feel?",
+                icon: "🌤️"
+            },
+            {
+                title: "Mind Patterns",
+                question: "What thoughts kept returning?",
+                icon: "🌀"
+            },
+            {
+                title: "Presence",
+                question: "When did you feel most here, not lost in thought?",
+                icon: "📍"
+            },
+            {
+                title: "Resistance",
+                question: "What was difficult, and how did you meet it?",
+                icon: "🛡️"
+            }
         ];
 
         // ===== TIMER =====
         let timerInterval = null;
-        let timerSeconds = 0;
-        let timerRunning = false;
+        const targetTime = 30;
 
         function startTimer() {
-            if (timerRunning) return;
-            timerRunning = true;
-            timerSeconds = 0;
-            timerInterval = setInterval(() => {
-                timerSeconds++;
-                updateTimerDisplay();
-            }, 1000);
-            render();
+            if (state.timerRunning) return;
+            
+            state.timerRunning = true;
+            state.timerStartedAt = Date.now();
+            state.timerSeconds = 0;
+            
+            // Update UI immediately
+            updateTimerUI();
+            updateTimerBadge();
+            updateTimerButton();
+            
+            // Start interval
+            timerInterval = setInterval(updateTimer, 1000);
+            
+            showToast("Practice started 🌱");
+            saveState();
+        }
+
+        function updateTimer() {
+            if (!state.timerRunning) return;
+            
+            const now = Date.now();
+            const elapsedSeconds = Math.floor((now - state.timerStartedAt) / 1000);
+            state.timerSeconds = elapsedSeconds;
+            
+            updateTimerUI();
+            
+            // Check if finished
+            if (state.timerSeconds >= targetTime) {
+                stopTimer();
+            }
         }
 
         function stopTimer() {
-            if (!timerRunning) return;
-            timerRunning = false;
+            if (!state.timerRunning) return;
+            
+            state.timerRunning = false;
+            state.timerSeconds = Math.min(state.timerSeconds, targetTime);
+            
             if (timerInterval) {
                 clearInterval(timerInterval);
                 timerInterval = null;
             }
             
-            const finalTime = timerSeconds;
-            timerSeconds = 0;
-            updateTimerDisplay();
+            updateTimerBadge();
+            updateTimerButton();
             
-            // Show option to go to journal AFTER stopping
-            if (finalTime >= 30) {
-                showModal(`
-                    <div style="text-align:center">
-                        <div style="font-size:3rem;margin-bottom:1rem">✨</div>
-                        <h2 style="color:white;font-size:1.25rem;font-weight:bold;margin-bottom:0.75rem">${formatTime(finalTime)} of mindfulness</h2>
-                        <p style="color:rgb(148,163,184);font-size:0.875rem;margin-bottom:1.25rem">Ready to reflect on your practice?</p>
-                        <button onclick="closeModal();switchTab('notes')" style="width:100%;padding:0.875rem;border-radius:0.75rem;background:linear-gradient(to right,#a855f7,#06b6d4);color:white;font-weight:bold;border:none;font-size:0.9375rem;margin-bottom:0.5rem">Go to Journal</button>
-                        <button onclick="closeModal()" style="width:100%;padding:0.75rem;border-radius:0.75rem;background:rgba(51,65,85,0.5);color:rgb(203,213,225);font-weight:600;border:none;font-size:0.875rem">Stay Here</button>
-                    </div>
-                `);
-            } else {
-                showToast("Practice ended");
-            }
-            render();
-        }
-
-        function updateTimerDisplay() {
-            const display = document.getElementById('timerDisplay');
-            if (display) display.textContent = formatTime(timerSeconds);
+            // Show completion options
+            setTimeout(() => {
+                showPostPracticeOptions();
+            }, 500);
+            
+            showToast("Practice complete ✨");
+            saveState();
         }
 
         function formatTime(seconds) {
@@ -466,172 +824,386 @@
             return `${mins}:${secs.toString().padStart(2, '0')}`;
         }
 
-        // ===== TOAST NOTIFICATION =====
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.classList.add('show');
+        function updateTimerUI() {
+            const timerDisplay = document.getElementById('timerDisplay');
+            if (timerDisplay) {
+                timerDisplay.textContent = formatTime(state.timerSeconds);
+                if (state.timerRunning) {
+                    timerDisplay.classList.add('timer-pulse');
+                } else {
+                    timerDisplay.classList.remove('timer-pulse');
+                }
+            }
+        }
+
+        function updateTimerButton() {
+            const buttonContainer = document.querySelector('.timer-button-container');
+            if (buttonContainer) {
+                buttonContainer.innerHTML = state.timerRunning ? `
+                    <button onclick="stopTimer()" class="practice-button practice-button-stop">
+                        ⏹️ Stop Practice
+                    </button>
+                ` : `
+                    <button onclick="startTimer()" class="practice-button practice-button-start">
+                        Start 30-Second Practice
+                    </button>
+                `;
+            }
+        }
+
+        function updateTimerBadge() {
+            const badges = document.querySelectorAll('.timer-badge');
+            badges.forEach(badge => {
+                if (state.timerRunning) {
+                    badge.classList.add('active');
+                } else {
+                    badge.classList.remove('active');
+                }
+            });
+        }
+
+        // ===== POST-PRACTICE OPTIONS =====
+        function showPostPracticeOptions() {
+            const skill = skills.find(s => s.id === state.currentSkill);
+            
+            showModal(`
+                <div style="text-align:center" class="scale-in">
+                    <div style="font-size:3rem;margin-bottom:1rem">✨</div>
+                    <h2 style="color:white;font-size:1.5rem;font-weight:bold;margin-bottom:0.5rem">Practice Complete!</h2>
+                    <p style="color:rgb(148,163,184);font-size:0.9375rem;margin-bottom:1.5rem">
+                        You practiced <strong>${skill.name}</strong> for ${formatTime(targetTime)}
+                    </p>
+                    
+                    <div style="display:flex;flex-direction:column;gap:0.75rem;margin-bottom:1.5rem">
+                        <button onclick="journalAfterPractice()" class="post-practice-option">
+                            <div class="option-icon" style="background:rgba(147,51,234,0.2);color:rgb(192,132,252)">📝</div>
+                            <div class="option-content">
+                                <div class="option-title">Journal About It</div>
+                                <div class="option-description">Capture what you noticed</div>
+                            </div>
+                        </button>
+                        
+                        <button onclick="practiceAgain()" class="post-practice-option">
+                            <div class="option-icon" style="background:rgba(6,182,212,0.2);color:rgb(103,232,249)">🔄</div>
+                            <div class="option-content">
+                                <div class="option-title">Practice Again</div>
+                                <div class="option-description">Build consistency</div>
+                            </div>
+                        </button>
+                        
+                        <button onclick="learnMoreSkills()" class="post-practice-option">
+                            <div class="option-icon" style="background:rgba(34,197,94,0.2);color:rgb(134,239,172)">📚</div>
+                            <div class="option-content">
+                                <div class="option-title">Learn More Skills</div>
+                                <div class="option-description">Explore another technique</div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            `);
+        }
+
+        function journalAfterPractice() {
+            closeModal();
+            switchTab('journal');
+            showToast("Ready to reflect 📝");
+        }
+
+        function practiceAgain() {
+            closeModal();
+            // Reset timer and restart
+            state.timerSeconds = 0;
+            updateTimerUI();
+            updateTimerButton();
+            startTimer();
+        }
+
+        function learnMoreSkills() {
+            closeModal();
+            switchTab('learn');
+            showToast("Explore new skills 📚");
+        }
+
+        // ===== JOURNAL FUNCTIONS =====
+        function addPromptToJournal(question) {
+            const textarea = document.getElementById('newEntryText');
+            if (textarea) {
+                textarea.value = question + '\n\n';
+                textarea.focus();
+                showToast("Prompt added 💭");
+            }
+        }
+
+        function saveJournalEntry() {
+            const textarea = document.getElementById('newEntryText');
+            const content = textarea.value.trim();
+            
+            if (!content) {
+                showToast("Write something first");
+                return false;
+            }
+
+            const skill = skills.find(s => s.id === state.currentSkill);
+            const entry = {
+                id: Date.now(),
+                date: new Date().toISOString(),
+                skill: skill ? skill.name : 'Mindfulness',
+                skillId: state.currentSkill,
+                duration: targetTime,
+                content: content,
+                promptUsed: null
+            };
+
+            state.journalEntries.unshift(entry);
+            saveState();
+            
+            textarea.value = '';
+            showToast("✨ Entry saved");
+            
+            // Scroll to top to show new entry
             setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
+                const mainContent = document.querySelector('.main-content');
+                if (mainContent) mainContent.scrollTop = 0;
+            }, 100);
+            
+            return true;
         }
 
-        // ===== EMAIL & COPY =====
-        async function emailNotes() {
-            const notes = state.sessionNotes.trim();
-            if (!notes) {
-                showToast("Write some reflections first");
-                return;
-            }
-
-            const skill = skills.find(s => s.id === state.currentSkill);
-            const date = new Date().toLocaleDateString('en-US', { 
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
-            });
-            const time = new Date().toLocaleTimeString('en-US', { 
-                hour: 'numeric', 
-                minute: '2-digit',
-                hour12: true
-            });
-            
-            const subject = `Mindfulness Reflections - ${date}`;
-            
-            const body = `MINDFULNESS REFLECTIONS
-${date} at ${time}
-Practice: ${skill?.name || 'Mindfulness'}
-
-────────────────────────────
-
-${notes}
-
-────────────────────────────
-
-From MPHaven - Simple Mindfulness Journal`;
-
-            // Method 1: Direct mailto link
-            const mailtoLink = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-            
-            // Try to open email client
-            window.location.href = mailtoLink;
-            
-            // Show toast notification
-            setTimeout(() => {
-                showToast("Email app opened");
-            }, 500);
-        }
-
-        async function copyNotes() {
-            const notes = state.sessionNotes.trim();
-            if (!notes) {
-                showToast("Write some reflections first");
-                return;
-            }
-
-            const skill = skills.find(s => s.id === state.currentSkill);
-            const date = new Date().toLocaleDateString('en-US', { 
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
-            });
-            const time = new Date().toLocaleTimeString('en-US', { 
-                hour: 'numeric', 
-                minute: '2-digit',
-                hour12: true
-            });
-            
-            const fullText = `MINDFULNESS REFLECTIONS
-${date} at ${time}
-Practice: ${skill?.name || 'Mindfulness'}
-
-────────────────────────────
-
-${notes}
-
-────────────────────────────
-
-From MPHaven - Simple Mindfulness Journal`;
-
-            try {
-                await navigator.clipboard.writeText(fullText);
-                showToast("Copied to clipboard!");
-            } catch (err) {
-                // Fallback method
-                const textarea = document.createElement('textarea');
-                textarea.value = fullText;
-                document.body.appendChild(textarea);
-                textarea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textarea);
-                showToast("Copied to clipboard!");
+        function deleteJournalEntry(entryId) {
+            if (confirm('Delete this reflection?')) {
+                state.journalEntries = state.journalEntries.filter(entry => entry.id !== entryId);
+                saveState();
+                render();
+                showToast("Entry deleted");
             }
         }
 
-        function downloadNotes() {
-            const notes = state.sessionNotes.trim();
-            if (!notes) {
-                showToast("Write some reflections first");
+        function togglePrompts() {
+            state.promptsExpanded = !state.promptsExpanded;
+            saveState();
+            
+            const container = document.querySelector('.prompts-container');
+            const icon = document.querySelector('.toggle-icon');
+            
+            if (container) {
+                container.classList.toggle('expanded', state.promptsExpanded);
+                container.classList.toggle('collapsed', !state.promptsExpanded);
+            }
+            
+            if (icon) {
+                icon.classList.toggle('expanded', state.promptsExpanded);
+            }
+        }
+
+        function backupJournal() {
+            if (state.journalEntries.length === 0) {
+                showToast("Nothing to backup yet");
                 return;
             }
 
-            const skill = skills.find(s => s.id === state.currentSkill);
-            const date = new Date();
-            const formattedDate = date.toISOString().split('T')[0];
-            
-            const fullText = `MINDFULNESS REFLECTIONS
-Date: ${formattedDate}
-Time: ${date.toLocaleTimeString()}
-Practice: ${skill?.name || 'Mindfulness'}
+            const data = {
+                app: "MPHaven",
+                version: "1.0",
+                exportedAt: new Date().toISOString(),
+                totalEntries: state.journalEntries.length,
+                entries: state.journalEntries
+            };
 
-────────────────────────────
-
-${notes}
-
-────────────────────────────
-
-From MPHaven - Simple Mindfulness Journal
-Generated on: ${new Date().toLocaleString()}`;
-
-            // Create download link
-            const blob = new Blob([fullText], { type: 'text/plain' });
+            const jsonString = JSON.stringify(data, null, 2);
+            const blob = new Blob([jsonString], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
+            
+            const date = new Date().toISOString().split('T')[0];
             const link = document.createElement('a');
             link.href = url;
-            link.download = `mindfulness-reflections-${formattedDate}.txt`;
+            link.download = `mphaven-journal-${date}.json`;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
             URL.revokeObjectURL(url);
             
-            showToast("Saved as text file!");
+            showToast("✅ Journal backed up!");
         }
 
-        function addPromptToNotes(prompt) {
-            const textarea = document.getElementById('sessionNotes');
-            if (textarea) {
-                const current = textarea.value.trim();
-                textarea.value = current + (current ? '\n\n' : '') + prompt + '\n';
-                textarea.focus();
-                // Move cursor to end
-                textarea.selectionStart = textarea.value.length;
-                textarea.selectionEnd = textarea.value.length;
-                state.sessionNotes = textarea.value;
-                saveState();
+        function showDataReminder() {
+            showModal(`
+                <div style="text-align:center" class="scale-in">
+                    <div style="font-size:2.5rem;margin-bottom:1rem">💾</div>
+                    <h2 style="color:white;font-size:1.25rem;font-weight:bold;margin-bottom:0.75rem">Keep Your Journey Safe</h2>
+                    
+                    <p style="color:rgb(203,213,225);font-size:0.875rem;line-height:1.5;margin-bottom:1.5rem">
+                        ✨ Your reflections stay private on this device.<br>
+                        <strong>Save a copy before switching devices</strong> to preserve your mindfulness journey.
+                    </p>
+                    
+                    <div style="display:grid;gap:0.75rem">
+                        <button onclick="backupJournal();closeModal()" style="width:100%;padding:0.875rem;border-radius:0.75rem;background:linear-gradient(to right,#9333EA,#06b6d4);color:white;font-weight:bold;border:none;font-size:0.9375rem">
+                            Save a Copy Now
+                        </button>
+                        
+                        <button onclick="closeModal()" style="width:100%;padding:0.75rem;border-radius:0.75rem;background:transparent;color:rgb(148,163,184);font-weight:500;border:none;font-size:0.875rem">
+                            I'll do it later
+                        </button>
+                    </div>
+                    
+                    <p style="color:rgb(100,116,139);font-size:0.75rem;margin-top:1.5rem;line-height:1.4">
+                        🔒 Your privacy matters.<br>
+                        Your journal never leaves your device unless you choose to save it.
+                    </p>
+                </div>
+            `);
+        }
+
+        // ===== SKILL SELECTION =====
+        function showSkillOptions(skillId) {
+            const skill = skills.find(s => s.id === skillId);
+            if (!skill) return;
+            
+            showModal(`
+                <div style="text-align:center" class="scale-in">
+                    <div style="font-size:3rem;margin-bottom:1rem">${skill.icon}</div>
+                    <h2 style="color:white;font-size:1.75rem;font-weight:bold;margin-bottom:0.5rem">${skill.name}</h2>
+                    <p style="color:rgb(148,163,184);font-size:0.875rem;margin-bottom:1.5rem">${skill.tagline}</p>
+                    
+                    <div style="text-align:center;margin-bottom:1.5rem">
+                        <p style="color:rgb(203,213,225);font-size:0.9375rem;line-height:1.6">${skill.description}</p>
+                    </div>
+                    
+                    <div style="display:grid;gap:0.75rem">
+                        <!-- LEARN FIRST (Primary action) -->
+                        <button onclick="learnSkill('${skill.id}')" style="width:100%;padding:1rem;border-radius:1rem;background:linear-gradient(to right,#9333EA,#06b6d4);color:white;font-weight:bold;border:none;font-size:0.9375rem;display:flex;align-items:center;justify-content:center;gap:0.5rem">
+                            <svg style="width:1.25rem;height:1.25rem" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                            </svg>
+                            Learn This Skill
+                        </button>
+                        
+                        <!-- PRACTICE SECOND (Secondary action) -->
+                        <button onclick="practiceSkill('${skill.id}')" style="width:100%;padding:1rem;border-radius:1rem;background:rgba(147,51,234,0.1);border:1px solid rgba(147,51,234,0.3);color:rgb(192,132,252);font-weight:600;border:none;font-size:0.9375rem;display:flex;align-items:center;justify-content:center;gap:0.5rem">
+                            <svg style="width:1.25rem;height:1.25rem" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            Practice Now
+                        </button>
+                    </div>
+                    
+                    <button onclick="closeModal()" style="width:100%;margin-top:1rem;padding:0.75rem;border-radius:0.75rem;background:transparent;color:rgb(148,163,184);font-weight:500;border:none;font-size:0.875rem">
+                        Cancel
+                    </button>
+                </div>
+            `);
+        }
+
+        function practiceSkill(skillId) {
+            state.currentSkill = skillId;
+            saveState();
+            closeModal();
+            switchTab('practice');
+            showToast(`Practicing ${skills.find(s => s.id === skillId).name}`);
+        }
+
+        function learnSkill(skillId) {
+            const skill = skills.find(s => s.id === skillId);
+            if (skill && skill.learnUrl) {
+                closeModal();
+                window.location.href = skill.learnUrl;
+            } else {
+                showToast("Lesson coming soon!");
+                closeModal();
             }
         }
 
-        function clearNotes() {
-            if (state.sessionNotes.trim() && confirm('Clear all reflections?')) {
-                state.sessionNotes = '';
-                saveState();
-                render();
-                showToast("Cleared all notes");
-            } else if (!state.sessionNotes.trim()) {
-                showToast("Nothing to clear");
+        // ===== UI UTILITIES =====
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            if (!toast) return;
+            
+            toast.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        let modalStack = [];
+
+        function showModal(content) {
+            // Store current focus
+            const previousFocus = document.activeElement;
+            
+            // Create new modal
+            const modal = document.createElement('div');
+            modal.id = 'modal';
+            modal.className = 'modal-overlay';
+            modal.innerHTML = `<div class="modal-content">${content}</div>`;
+            modal.setAttribute('role', 'dialog');
+            modal.setAttribute('aria-modal', 'true');
+            
+            // Add to body
+            document.body.appendChild(modal);
+            
+            // Prevent body scrolling
+            document.body.style.overflow = 'hidden';
+            
+            // Store in stack
+            modalStack.push({
+                element: modal,
+                previousFocus: previousFocus
+            });
+            
+            // Close on backdrop click
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+            
+            // Focus first focusable element
+            setTimeout(() => {
+                const focusable = modal.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+                if (focusable) focusable.focus();
+            }, 100);
+            
+            // Handle escape key
+            const handleEscape = (e) => {
+                if (e.key === 'Escape' && modalStack.length > 0) {
+                    closeModal();
+                }
+            };
+            document.addEventListener('keydown', handleEscape);
+            modal._escapeHandler = handleEscape;
+        }
+
+        function closeModal() {
+            if (modalStack.length === 0) return;
+            
+            const { element: modal, previousFocus } = modalStack.pop();
+            
+            // Remove escape handler
+            if (modal._escapeHandler) {
+                document.removeEventListener('keydown', modal._escapeHandler);
             }
+            
+            // Animate out
+            modal.style.animation = 'fadeIn 0.2s ease-out reverse';
+            
+            setTimeout(() => {
+                if (modal.parentNode) {
+                    modal.remove();
+                }
+                
+                // Restore body scrolling if no modals left
+                if (modalStack.length === 0) {
+                    document.body.style.overflow = '';
+                }
+                
+                // Restore focus
+                if (previousFocus && previousFocus.focus) {
+                    previousFocus.focus();
+                }
+            }, 200);
         }
 
         // ===== STATE MANAGEMENT =====
@@ -639,24 +1211,60 @@ Generated on: ${new Date().toLocaleString()}`;
             localStorage.setItem('mphaven_state', JSON.stringify({
                 currentTab: state.currentTab,
                 currentSkill: state.currentSkill,
-                sessionNotes: state.sessionNotes
+                journalEntries: state.journalEntries,
+                hasSeenWelcome: state.hasSeenWelcome,
+                promptsExpanded: state.promptsExpanded,
+                timerRunning: state.timerRunning,
+                timerSeconds: state.timerSeconds,
+                timerStartedAt: state.timerStartedAt
             })); 
         }
         
         function loadState() {
-            const saved = localStorage.getItem('mphaven_state');
-            if (saved) {
-                const data = JSON.parse(saved);
-                state.currentTab = data.currentTab || 'learn';
-                state.currentSkill = data.currentSkill || 'observe';
-                state.sessionNotes = data.sessionNotes || '';
+            try {
+                const saved = localStorage.getItem('mphaven_state');
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    state.currentTab = data.currentTab || 'learn';
+                    state.currentSkill = data.currentSkill || 'observe';
+                    state.journalEntries = data.journalEntries || [];
+                    state.hasSeenWelcome = data.hasSeenWelcome || false;
+                    state.promptsExpanded = data.promptsExpanded || false;
+                    state.timerRunning = data.timerRunning || false;
+                    state.timerSeconds = data.timerSeconds || 0;
+                    state.timerStartedAt = data.timerStartedAt || null;
+                    
+                    // Restore timer if it was running
+                    if (state.timerRunning && state.timerStartedAt) {
+                        const now = Date.now();
+                        const elapsedSeconds = Math.floor((now - state.timerStartedAt) / 1000);
+                        state.timerSeconds = Math.min(elapsedSeconds, targetTime);
+                        
+                        if (state.timerSeconds >= targetTime) {
+                            // Timer completed while app was closed
+                            state.timerRunning = false;
+                            state.timerSeconds = targetTime;
+                        } else {
+                            // Resume timer
+                            setTimeout(() => {
+                                startTimer();
+                            }, 100);
+                        }
+                    }
+                }
+            } catch (e) {
+                console.log('Starting fresh');
             }
         }
 
         function switchTab(tabName) {
+            // Prevent multiple clicks
+            if (state.currentTab === tabName) return;
+            
             state.currentTab = tabName;
             saveState();
             
+            // Update nav indicators
             document.querySelectorAll('.nav-btn').forEach(btn => {
                 const indicator = btn.querySelector('.nav-indicator');
                 const icon = btn.querySelector('.nav-icon');
@@ -677,26 +1285,16 @@ Generated on: ${new Date().toLocaleString()}`;
                 }
             });
             
-            render();
-        }
-
-        function showModal(content) {
-            const modal = document.createElement('div');
-            modal.id = 'modal';
-            modal.className = 'modal-overlay';
-            modal.innerHTML = `<div class="modal-content">${content}</div>`;
-            document.body.appendChild(modal);
-        }
-
-        function closeModal() {
-            const modal = document.getElementById('modal');
-            if (modal) modal.remove();
-        }
-
-        function selectSkill(skillId) {
-            state.currentSkill = skillId;
-            saveState();
-            switchTab('practice');
+            // Scroll to top
+            const mainContent = document.querySelector('.main-content');
+            if (mainContent) {
+                mainContent.scrollTop = 0;
+            }
+            
+            // Smooth render
+            requestAnimationFrame(() => {
+                render();
+            });
         }
 
         // ===== RENDER FUNCTIONS =====
@@ -705,14 +1303,14 @@ Generated on: ${new Date().toLocaleString()}`;
                 <div class="content-wrapper fade-in">
                     <div style="margin-bottom:1.5rem">
                         <h2 style="color:white;font-size:1.75rem;font-weight:300;margin-bottom:0.5rem">Mindfulness Skills</h2>
-                        <p style="color:rgb(148,163,184);font-size:0.9375rem">Choose a skill to practice</p>
+                        <p style="color:rgb(148,163,184);font-size:0.9375rem">Choose a skill to explore</p>
                     </div>
 
                     <div style="display:flex;flex-direction:column;gap:1rem">
                         ${skills.map(skill => `
-                            <button onclick="selectSkill('${skill.id}')" class="card skill-card" style="width:100%;text-align:left;padding:1.25rem;border:none;cursor:pointer;transition:transform 0.2s ease">
+                            <button onclick="showSkillOptions('${skill.id}')" class="card skill-card" style="width:100%;text-align:left;padding:1.25rem;border:none;cursor:pointer;">
                                 <div style="display:flex;align-items:start;gap:1rem">
-                                    <div style="width:3.5rem;height:3.5rem;border-radius:1rem;background:linear-gradient(135deg,rgba(168,85,247,0.2),rgba(6,182,212,0.1));display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                                    <div style="width:3.5rem;height:3.5rem;border-radius:1rem;background:linear-gradient(135deg,rgba(147,51,234,0.2),rgba(6,182,212,0.1));display:flex;align-items:center;justify-content:center;flex-shrink:0">
                                         <span style="font-size:1.75rem">${skill.icon}</span>
                                     </div>
                                     <div style="flex:1;min-width:0">
@@ -730,13 +1328,12 @@ Generated on: ${new Date().toLocaleString()}`;
 
         function renderPractice() {
             const skill = skills.find(s => s.id === state.currentSkill);
-            const todayPrompt = practicePrompts[Math.floor(Math.random() * practicePrompts.length)];
             
             return `
                 <div class="content-wrapper fade-in">
-                    <div style="margin-bottom:1.25rem">
-                        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem">
-                            <div style="width:3rem;height:3rem;border-radius:0.875rem;background:linear-gradient(135deg,rgba(168,85,247,0.2),rgba(6,182,212,0.1));display:flex;align-items:center;justify-content:center">
+                    <div style="margin-bottom:1.5rem">
+                        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem">
+                            <div style="width:3rem;height:3rem;border-radius:0.875rem;background:linear-gradient(135deg,rgba(147,51,234,0.2),rgba(6,182,212,0.1));display:flex;align-items:center;justify-content:center">
                                 <span style="font-size:1.5rem">${skill.icon}</span>
                             </div>
                             <div>
@@ -744,95 +1341,147 @@ Generated on: ${new Date().toLocaleString()}`;
                                 <button onclick="switchTab('learn')" style="background:none;border:none;color:rgb(148,163,184);font-size:0.8125rem;cursor:pointer;padding:0;text-decoration:underline">Change skill</button>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="card" style="padding:1.25rem;margin-bottom:1.5rem;background:linear-gradient(135deg,rgba(168,85,247,0.12),rgba(6,182,212,0.08))">
-                        <p style="color:white;font-size:1rem;line-height:1.6">${todayPrompt}</p>
-                    </div>
-
-                    <div class="card" style="padding:2.5rem 1.5rem;margin-bottom:1.25rem;text-align:center">
-                        <div id="timerDisplay" class="practice-timer" style="margin-bottom:1.5rem">${formatTime(timerSeconds)}</div>
-                        <div style="display:flex;gap:0.75rem">
-                            ${!timerRunning ? `
-                                <button onclick="startTimer()" style="flex:1;padding:1rem;border-radius:0.875rem;background:linear-gradient(to right,#a855f7,#06b6d4);color:white;font-weight:bold;border:none;font-size:1rem;transition:transform 0.2s ease">
-                                    Start Practice
-                                </button>
-                            ` : `
-                                <button onclick="stopTimer()" style="flex:1;padding:1rem;border-radius:0.875rem;background:rgba(239,68,68,0.2);border:2px solid rgba(239,68,68,0.4);color:rgb(252,165,165);font-weight:bold;font-size:1rem;transition:transform 0.2s ease">
-                                    Stop Practice
-                                </button>
-                            `}
+                        
+                        <div class="card" style="padding:1.25rem;margin-bottom:1.5rem;">
+                            <p style="color:white;font-size:1rem;line-height:1.6;margin-bottom:0.75rem">${skill.description}</p>
+                            <p style="color:rgb(148,163,184);font-size:0.875rem;font-style:italic">${skill.why}</p>
                         </div>
                     </div>
 
-                    <div class="card" style="padding:1rem;background:linear-gradient(135deg,rgba(168,85,247,0.08),rgba(6,182,212,0.05))">
-                        <p style="color:rgb(203,213,225);font-size:0.875rem;line-height:1.5">${skill.description}</p>
+                    <div class="card" style="padding:2rem 1.5rem;margin-bottom:1.5rem;text-align:center;background:linear-gradient(135deg,rgba(147,51,234,0.12),rgba(6,182,212,0.08))">
+                        <div id="timerDisplay" class="practice-timer ${state.timerRunning ? 'timer-pulse' : ''}">${formatTime(state.timerSeconds)}</div>
+                        
+                        <div class="timer-button-container">
+                            ${!state.timerRunning ? `
+                                <button onclick="startTimer()" class="practice-button practice-button-start">
+                                    Start 30-Second Practice
+                                </button>
+                            ` : `
+                                <button onclick="stopTimer()" class="practice-button practice-button-stop">
+                                    ⏹️ Stop Practice
+                                </button>
+                            `}
+                        </div>
+                        
+                        <p style="color:rgb(148,163,184);font-size:0.875rem;margin-top:1rem">
+                            After practice, choose what to do next
+                        </p>
                     </div>
                 </div>
             `;
         }
 
-        function renderNotes() {
-            const randomPrompts = [...reflectionPrompts]
-                .sort(() => 0.5 - Math.random())
-                .slice(0, 6);
+        function renderJournal() {
+            const randomPrompts = [...journalPrompts].sort(() => Math.random() - 0.5).slice(0, 4);
+            const promptsState = state.promptsExpanded ? 'expanded' : 'collapsed';
             
             return `
                 <div class="content-wrapper fade-in">
                     <div style="margin-bottom:1.25rem">
-                        <h2 style="color:white;font-size:1.625rem;font-weight:bold;margin-bottom:0.5rem">Practice Reflections</h2>
-                        <p style="color:rgb(148,163,184);font-size:0.875rem">Journal what you noticed</p>
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem">
+                            <h2 style="color:white;font-size:1.625rem;font-weight:bold">Your Journal</h2>
+                            ${state.journalEntries.length > 0 ? `
+                                <button onclick="backupJournal()" style="padding:0.5rem 1rem;border-radius:0.75rem;background:rgba(147,51,234,0.1);border:1px solid rgba(147,51,234,0.3);color:rgb(192,132,252);font-size:0.8125rem;font-weight:600;border:none">
+                                    💾 Save Copy
+                                </button>
+                            ` : ''}
+                        </div>
+                        <p style="color:rgb(148,163,184);font-size:0.875rem">${state.journalEntries.length} thoughtful reflections</p>
                     </div>
 
-                    <div style="margin-bottom:1rem">
-                        <p style="color:rgb(148,163,184);font-size:0.875rem;margin-bottom:0.75rem">Reflection prompts:</p>
-                        <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1rem">
+                    ${state.journalEntries.length >= 3 && !state.hasSeenWelcome ? `
+                        <div class="data-info-box">
+                            <div class="data-info-icon">💡</div>
+                            <div class="data-info-content">
+                                <div class="data-info-title">Your Private Space</div>
+                                <div class="data-info-text">
+                                    Your reflections stay on this device. Save a copy before switching devices to preserve your mindfulness journey.
+                                </div>
+                            </div>
+                            <button onclick="state.hasSeenWelcome=true;saveState();render()" style="background:none;border:none;color:rgb(148,163,184);font-size:1.25rem;cursor:pointer">
+                                ×
+                            </button>
+                        </div>
+                    ` : ''}
+
+                    <div style="margin-bottom:2rem">
+                        <div class="card" style="padding:1rem;margin-bottom:1rem;">
+                            <textarea 
+                                id="newEntryText"
+                                placeholder="What's alive in your experience right now?..."
+                                class="journal-textarea"
+                            ></textarea>
+                            <button onclick="saveJournalEntry()" style="width:100%;padding:0.875rem;border-radius:0.75rem;background:linear-gradient(to right,#9333EA,#06b6d4);color:white;font-weight:bold;border:none;font-size:0.9375rem">
+                                Save Reflection
+                            </button>
+                        </div>
+
+                        <!-- PROMPTS MOVED BELOW TEXTAREA -->
+                        <button onclick="togglePrompts()" class="prompts-toggle">
+                            <svg class="toggle-icon ${state.promptsExpanded ? 'expanded' : ''}" style="width:1rem;height:1rem" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                            </svg>
+                            ▶️ Thinking prompts
+                        </button>
+                        
+                        <div class="prompts-container ${promptsState}">
                             ${randomPrompts.map(prompt => `
-                                <div onclick="addPromptToNotes('${prompt}')" class="prompt-chip">
-                                    ${prompt}
+                                <div onclick="addPromptToJournal('${prompt.question}')" class="prompt-chip">
+                                    ${prompt.icon} ${prompt.title}
                                 </div>
                             `).join('')}
                         </div>
                     </div>
 
-                    <div class="card" style="padding:1rem;margin-bottom:1rem">
-                        <textarea 
-                            id="sessionNotes" 
-                            placeholder="Write your reflections here...
+                    ${state.journalEntries.length > 0 ? `
+                        <div style="margin-bottom:1rem">
+                            <h3 style="color:white;font-size:1rem;font-weight:600;margin-bottom:1rem">Past Reflections</h3>
                             
-Or click a prompt above to start."
-                            style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(51,65,85,0.5);border-radius:0.75rem;padding:1rem;color:white;font-size:0.9375rem;resize:vertical;min-height:300px;line-height:1.6"
-                            oninput="state.sessionNotes=this.value;saveState()"
-                        >${state.sessionNotes}</textarea>
-                    </div>
+                            <div style="max-height:400px;overflow-y:auto;padding-right:0.25rem">
+                                ${state.journalEntries.map(entry => {
+                                    const skill = skills.find(s => s.id === entry.skillId);
+                                    const date = new Date(entry.date);
+                                    const formattedDate = date.toLocaleDateString('en-US', { 
+                                        weekday: 'short', 
+                                        month: 'short', 
+                                        day: 'numeric' 
+                                    });
+                                    
+                                    return `
+                                        <div class="entry-card" style="background:rgba(30,41,59,0.3);border:1px solid rgba(51,65,85,0.3);border-radius:1rem;padding:1.25rem;margin-bottom:1rem">
+                                            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem">
+                                                <div style="color:rgb(148,163,184);font-size:0.8125rem;font-weight:500">${formattedDate}</div>
+                                                <div style="background:rgba(147,51,234,0.15);color:rgb(192,132,252);padding:0.25rem 0.75rem;border-radius:9999px;font-size:0.75rem;font-weight:600">
+                                                    ${skill ? skill.name : entry.skill}
+                                                </div>
+                                            </div>
+                                            <div style="color:rgb(203,213,225);font-size:0.9375rem;line-height:1.6;white-space:pre-wrap;word-break:break-word">
+                                                ${entry.content}
+                                            </div>
+                                            <div style="margin-top:0.75rem;text-align:right">
+                                                <button onclick="deleteJournalEntry(${entry.id})" style="background:none;border:none;color:rgb(148,163,184);font-size:0.75rem;cursor:pointer;padding:0.5rem">
+                                                    Delete
+                                                </button>
+                                            </div>
+                                        </div>
+                                    `;
+                                }).join('')}
+                            </div>
+                        </div>
+                    ` : `
+                        <div class="empty-state" style="text-align:center;padding:3rem 1rem;color:rgb(100,116,139)">
+                            <div style="font-size:3rem;margin-bottom:1rem;opacity:0.5">📓</div>
+                            <p style="font-size:0.875rem;margin-bottom:0.5rem">Your mindfulness journey begins here</p>
+                            <p style="font-size:0.8125rem">Practice a skill, then capture what you notice</p>
+                        </div>
+                    `}
 
-                    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-bottom:1rem">
-                        <button onclick="emailNotes()" style="padding:0.875rem;border-radius:0.75rem;background:rgba(168,85,247,0.2);border:1px solid rgba(168,85,247,0.3);color:rgb(192,132,252);font-weight:600;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:0.375rem;transition:transform 0.2s ease">
-                            <svg style="width:1.5rem;height:1.5rem" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                            </svg>
-                            <span style="font-size:0.75rem">Email</span>
-                        </button>
-                        
-                        <button onclick="copyNotes()" style="padding:0.875rem;border-radius:0.75rem;background:rgba(6,182,212,0.2);border:1px solid rgba(6,182,212,0.3);color:rgb(103,232,249);font-weight:600;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:0.375rem;transition:transform 0.2s ease">
-                            <svg style="width:1.5rem;height:1.5rem" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
-                            </svg>
-                            <span style="font-size:0.75rem">Copy</span>
-                        </button>
-                        
-                        <button onclick="downloadNotes()" style="padding:0.875rem;border-radius:0.75rem;background:rgba(51,65,85,0.5);border:1px solid rgba(51,65,85,0.8);color:rgb(203,213,225);font-weight:600;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:0.375rem;transition:transform 0.2s ease">
-                            <svg style="width:1.5rem;height:1.5rem" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                            </svg>
-                            <span style="font-size:0.75rem">Save</span>
-                        </button>
-                    </div>
-
-                    ${state.sessionNotes.trim() ? `
-                        <button onclick="clearNotes()" style="width:100%;padding:0.75rem;border-radius:0.75rem;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);color:rgb(252,165,165);font-weight:600;font-size:0.875rem;transition:transform 0.2s ease">
-                            Clear All
-                        </button>
+                    ${state.journalEntries.length > 0 ? `
+                        <div style="text-align:center;margin-top:1.5rem">
+                            <button onclick="showDataReminder()" style="padding:0.75rem 1.5rem;border-radius:0.75rem;background:rgba(6,182,212,0.1);border:1px solid rgba(6,182,212,0.3);color:rgb(103,232,249);font-size:0.8125rem;font-weight:500;border:none">
+                                💾 About keeping your journal safe
+                            </button>
+                        </div>
                     ` : ''}
                 </div>
             `;
@@ -841,26 +1490,75 @@ Or click a prompt above to start."
         function render() {
             const content = document.getElementById('mainContent');
             
-            content.innerHTML = state.currentTab === 'learn' ? renderLearn() : 
-                               state.currentTab === 'practice' ? renderPractice() : renderNotes();
+            if (!content) return;
             
-            if (state.currentTab === 'notes') {
-                const textarea = document.getElementById('sessionNotes');
-                if (textarea) {
-                    textarea.value = state.sessionNotes;
-                }
+            if (state.currentTab === 'learn') {
+                content.innerHTML = renderLearn();
+            } else if (state.currentTab === 'practice') {
+                content.innerHTML = renderPractice();
+                // Update timer UI after render
+                setTimeout(() => {
+                    updateTimerUI();
+                    updateTimerButton();
+                }, 0);
+            } else if (state.currentTab === 'journal') {
+                content.innerHTML = renderJournal();
             }
             
-            content.scrollTop = 0;
+            // Update timer badge
+            updateTimerBadge();
+            
+            // Always scroll to top after render
+            setTimeout(() => {
+                if (content) content.scrollTop = 0;
+            }, 10);
+        }
+
+        // ===== EVENT LISTENERS =====
+        function setupEventListeners() {
+            // Set up nav button click handlers
+            document.getElementById('learnBtn').addEventListener('click', () => switchTab('learn'));
+            document.getElementById('practiceBtn').addEventListener('click', () => switchTab('practice'));
+            document.getElementById('journalBtn').addEventListener('click', () => switchTab('journal'));
+            
+            // Also add data-tab attributes for the switchTab function
+            document.getElementById('learnBtn').setAttribute('data-tab', 'learn');
+            document.getElementById('practiceBtn').setAttribute('data-tab', 'practice');
+            document.getElementById('journalBtn').setAttribute('data-tab', 'journal');
+            
+            // Handle Android back button
+            window.addEventListener('popstate', (e) => {
+                if (modalStack.length > 0) {
+                    e.preventDefault();
+                    closeModal();
+                }
+            });
         }
 
         // ===== INITIALIZE =====
-        loadState();
-        render();
+        function init() {
+            loadState();
+            
+            // Set up event listeners
+            setupEventListeners();
+            
+            // Initial render
+            setTimeout(() => {
+                render();
+                switchTab(state.currentTab);
+            }, 0);
 
-        setInterval(() => {
-            if (timerRunning) updateTimerDisplay();
-        }, 100);
+            // Add beforeunload to save state
+            window.addEventListener('beforeunload', () => {
+                saveState();
+            });
+
+            // Auto-save every 30 seconds
+            setInterval(saveState, 30000);
+        }
+
+        // Start the app
+        init();
     </script>
 </body>
 </html>
