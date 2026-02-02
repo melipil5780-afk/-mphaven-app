@@ -47,7 +47,661 @@
     </div>
     <div id="toast" class="toast"></div>
     <script>
-const state={currentTab:'home',journalEntries:[],timerRunning:false,timerSeconds:0,currentPractice:'gratitude',currentFeeling:null,lastCheckIn:null,promptsOpen:false};const paths=[{id:'emotional',title:"Understanding Feelings",description:"Learn to recognize and be with your emotions",color:"#0e7490",icon:'M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23-.693L5 14.5m14.8.8l1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0112 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5',started:true},{id:'mindfulness',title:"Mindfulness",description:"Cultivate awareness of the here and now",color:"#d97706",icon:'M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z',started:false},{id:'connection',title:"Meaningful Relationships",description:"Build deeper connections with others",color:"#dc2626",icon:'M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z',started:false},{id:'purpose',title:"Finding What Matters",description:"Discover what gives your life meaning",color:"#0891b2",icon:'M15 10.5a3 3 0 11-6 0 3 3 0 016 0z M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z',started:false}];let journalPrompts=["What are you grateful for today? 🙏","Notice your breath for a moment 🌬️","How does your body feel right now? 👁️","What's one small joy you noticed today? ✨"];const practiceContent={gratitude:{instruction:"Take a moment to think of 3 things you're grateful for:",steps:["One person in your life","One experience recently","One thing about yourself"],emoji:"🙏",affirmation:"Gratitude turns what we have into enough."},breathing:{instruction:"Follow this breathing pattern:",steps:["Breathe in for 4 seconds","Hold for 4 seconds","Breathe out for 6 seconds","Repeat 5 times"],emoji:"🌬️",affirmation:"Your breath is always there to bring you back to the present."}};let timerInterval=null;const PRACTICE_TIME=30;function loadModulePrompts(){const mp=localStorage.getItem('modulePrompts');if(mp){try{const prompts=JSON.parse(mp);if(Array.isArray(prompts)&&prompts.length>0){journalPrompts=prompts;localStorage.removeItem('modulePrompts')}}catch(e){console.error('Failed to load module prompts:',e)}}}function getIcon(i,sw='2'){return`<svg class="w-full h-full" stroke-width="${sw}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="${i}"/></svg>`}function scrollToTop(){document.getElementById('mainContent').scrollTop=0}function shouldShowCheckIn(){return state.lastCheckIn!==new Date().toDateString()}function handleFeelingSelect(f){state.currentFeeling=f;state.lastCheckIn=new Date().toDateString();saveState();document.querySelectorAll('.feeling-emoji').forEach(e=>e.classList.toggle('selected',e.dataset.feeling===f));setTimeout(()=>render(),600)}function updateWarmth(){const w=document.getElementById('appWrapper'),c=paths.filter(p=>p.started).length;w.className=c>=3?'app-wrapper warmth-3':c>=2?'app-wrapper warmth-2':c>=1?'app-wrapper warmth-1':'app-wrapper'}function switchTab(t){state.currentTab=t;render();document.querySelectorAll('.nav-btn').forEach(b=>{const ind=b.querySelector('.nav-indicator'),ic=b.querySelector('.nav-icon'),l=b.querySelector('.nav-label'),a=b.dataset.tab===t;ind.classList.toggle('active',a);ic.classList.toggle('active',a);ic.classList.toggle('inactive',!a);ic.setAttribute('stroke-width',a?'2.5':'2');l.classList.toggle('active',a);l.classList.toggle('inactive',!a)});updateTimerBadge();scrollToTop()}function updateTimerBadge(){document.querySelectorAll('.timer-badge').forEach(b=>b.classList.toggle('active',state.timerRunning))}function togglePrompts(){state.promptsOpen=!state.promptsOpen;const pc=document.getElementById('promptsContent');if(pc)pc.classList.toggle('open',state.promptsOpen);const ti=document.querySelector('.toggle-icon');if(ti)ti.classList.toggle('expanded',state.promptsOpen)}function addPrompt(p){const t=document.getElementById('newEntryText');if(t){const v=t.value.trim();t.value=v+(v?'\n\n':'')+p+'\n\n';t.focus();showToast("Prompt added 💭")}}function startTimer(){if(state.timerRunning)return;state.timerRunning=true;state.timerSeconds=0;updateTimerBadge();timerInterval=setInterval(()=>{state.timerSeconds++;updateTimerUI();if(state.timerSeconds>=PRACTICE_TIME){stopTimer()}},1000);render();showToast("Practice started 🌱")}function stopTimer(){state.timerRunning=false;clearInterval(timerInterval);updateTimerBadge();render();setTimeout(()=>showPostPracticeModal(),500)}function showPostPracticeModal(){showModal(`<div style="text-align:center" class="scale-in"><div style="font-size:3rem;margin-bottom:1rem">✨</div><h2 style="color:white;font-size:1.5rem;font-weight:700;margin-bottom:0.5rem">Practice Complete!</h2><p style="color:rgb(148,163,184);font-size:0.9375rem;margin-bottom:1.5rem">You practiced for 30 seconds</p><div style="display:flex;flex-direction:column;gap:0.75rem;margin-bottom:1rem"><button onclick="journalAfterPractice()" class="post-practice-option"><div class="option-icon" style="background:rgba(14,116,144,0.2);color:rgb(165,243,252)">📝</div><div class="option-content"><div class="option-title">Journal About It</div><div class="option-description">Capture what you noticed</div></div></button><button onclick="practiceAgain()" class="post-practice-option"><div class="option-icon" style="background:rgba(217,119,6,0.2);color:rgb(253,230,138)">🔄</div><div class="option-content"><div class="option-title">Practice Again</div><div class="option-description">Build consistency</div></div></button><button onclick="learnMoreSkills()" class="post-practice-option"><div class="option-icon" style="background:rgba(34,197,94,0.2);color:rgb(134,239,172)">📚</div><div class="option-content"><div class="option-title">Learn More Skills</div><div class="option-description">Explore another technique</div></div></button></div></div>`)}function journalAfterPractice(){closeModal();switchTab('journal');showToast("Ready to reflect 📝")}function practiceAgain(){closeModal();state.timerSeconds=0;updateTimerUI();startTimer()}function learnMoreSkills(){closeModal();switchTab('paths');showToast("Explore new skills 📚")}function updateTimerUI(){const d=document.getElementById('timerDisplay');if(d){const m=Math.floor(state.timerSeconds/60),s=state.timerSeconds%60;d.textContent=`${m}:${s.toString().padStart(2,'0')}`}}function saveJournalEntry(){const t=document.getElementById('newEntryText');if(!t)return;const c=t.value.trim();if(!c){showToast("Write something first");return}state.journalEntries.unshift({id:Date.now(),date:new Date().toISOString(),content:c});saveState();t.value='';render();showToast("Entry saved ✨")}function deleteEntry(id){if(confirm("Delete this entry?")){state.journalEntries=state.journalEntries.filter(e=>e.id!==id);saveState();render();showToast("Entry deleted")}}function exportJournal(){if(state.journalEntries.length===0){showToast("No entries to export");return}const data={entries:state.journalEntries,exportDate:new Date().toISOString()};const json=JSON.stringify(data,null,2);const blob=new Blob([json],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`mphaven-journal-${new Date().toISOString().split('T')[0]}.json`;document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);showToast("Journal exported ✅")}function showPrivacyModal(){showModal(`<div style="text-align:center" class="scale-in"><div style="font-size:2.5rem;margin-bottom:1rem">🔒</div><h3 style="color:white;font-size:1.5rem;margin-bottom:1rem">Privacy Protected</h3><p style="color:rgb(203,213,225);font-size:0.9375rem;margin-bottom:1.5rem;line-height:1.6">All your entries are saved locally on your device. No tracking, no analytics, no cloud storage. Your reflections stay private.</p><p style="color:rgb(148,163,184);font-size:0.875rem;margin-bottom:1.5rem">Getting a new phone? Export your journal below.</p><button onclick="exportJournal()" class="modal-button modal-button-primary">Export Journal</button><button onclick="closeModal()" class="modal-button modal-button-secondary">Close</button></div>`)}function startPath(id){const p=paths.find(p=>p.id===id);if(p){p.started=true;updateWarmth();saveState();window.location.href=`public/course-mindfulness.html?skill=${id}`}}function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000)}function showModal(c){const m=document.createElement('div');m.className='modal-overlay';m.innerHTML=`<div class="modal-content">${c}</div>`;m.onclick=e=>e.target===m&&closeModal();document.body.appendChild(m)}function closeModal(){const m=document.querySelector('.modal-overlay');if(m)m.remove()}function saveState(){localStorage.setItem('mphaven_state',JSON.stringify(state));localStorage.setItem('mphaven_paths',JSON.stringify(paths))}function loadState(){const s=localStorage.getItem('mphaven_state');if(s)Object.assign(state,JSON.parse(s));const p=localStorage.getItem('mphaven_paths');if(p){const l=JSON.parse(p);l.forEach((p,i)=>paths[i].started=p.started)}}function renderHome(){const sc=shouldShowCheckIn(),fe=['😌','😔','😊','😰','😴','😐'],fl=['Calm','Heavy','Joyful','Anxious','Tired','Neutral'],ap=paths.find(p=>p.started);return`<div class="content-wrapper fade-in">${sc?`<div style="padding:1.75rem;background:linear-gradient(135deg,rgba(14,116,144,0.15),rgba(217,119,6,0.1));border:1px solid rgba(14,116,144,0.3);border-radius:1.5rem;box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);margin-bottom:2rem"><h3 style="color:white;font-size:1.125rem;font-weight:700;margin-bottom:1rem;text-align:center">How are you feeling?</h3><p style="color:rgb(203,213,225);font-size:0.875rem;text-align:center;margin-bottom:1.5rem">Take a moment to check in with yourself</p><div style="display:flex;justify-content:center;gap:0.75rem;margin-bottom:1.5rem;flex-wrap:wrap">${fe.map((e,i)=>`<button onclick="handleFeelingSelect('${fl[i].toLowerCase()}')" class="feeling-emoji" data-feeling="${fl[i].toLowerCase()}">${e}</button>`).join('')}</div><p style="color:rgb(100,116,139);font-size:0.75rem;text-align:center;font-style:italic">Just for you. Not tracked, not measured.</p></div>`:''}<div style="margin-bottom:2rem"><h1 style="color:white;font-size:3rem;font-weight:700;margin-bottom:1rem;line-height:1.2">Welcome<br/>back</h1><p style="color:rgb(203,213,225);font-size:1.125rem;line-height:1.6">Your sanctuary is here.</p></div>${ap?`<div style="margin-bottom:2rem"><h2 style="color:rgb(148,163,184);font-size:0.75rem;font-weight:700;margin-bottom:1.25rem;text-transform:uppercase;letter-spacing:0.1em">Continue</h2><button onclick="startPath('${ap.id}')" class="card" style="padding:1.75rem;background:linear-gradient(135deg,${ap.color}25,${ap.color}15);border:2px solid ${ap.color}50;text-align:left"><div style="display:flex;align-items:center;gap:1.25rem"><div class="icon-container" style="width:4rem;height:4rem;background:${ap.color}"><div style="width:2rem;height:2rem;color:white">${getIcon(ap.icon,'2')}</div></div><div style="flex:1"><h3 style="color:white;font-size:1.25rem;font-weight:700;margin-bottom:0.5rem">${ap.title}</h3><p style="color:rgb(203,213,225);font-size:0.875rem">${ap.description}</p></div><div style="width:3rem;height:3rem;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(14,116,144,0.3)"><svg style="width:1.5rem;height:1.5rem;color:rgb(165,243,252)" stroke-width="2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg></div></div></button></div>`:''}<div><h2 style="color:rgb(148,163,184);font-size:0.75rem;font-weight:700;margin-bottom:1.25rem;text-transform:uppercase;letter-spacing:0.1em">Explore</h2><div style="display:flex;flex-direction:column;gap:1rem">${paths.filter(p=>!p.started).slice(0,2).map(p=>`<button onclick="startPath('${p.id}')" class="card" style="background:linear-gradient(135deg,${p.color}15,${p.color}08);border:1px solid ${p.color}30;text-align:left"><div style="display:flex;align-items:center;gap:1rem"><div class="icon-container" style="width:3.5rem;height:3.5rem;background:${p.color}"><div style="width:1.75rem;height:1.75rem;color:white">${getIcon(p.icon,'2')}</div></div><div style="flex:1"><h3 style="color:white;font-size:1.125rem;font-weight:700;margin-bottom:0.25rem">${p.title}</h3><p style="color:rgb(148,163,184);font-size:0.875rem">${p.description}</p></div><svg style="width:1.25rem;height:1.25rem;color:rgb(100,116,139)" stroke-width="2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg></div></button>`).join('')}</div><button onclick="switchTab('paths')" style="width:100%;margin-top:1.5rem;padding:1.25rem;background:rgba(30,41,59,0.5);border:1px solid rgba(51,65,85,0.5);border-radius:1rem;color:white;font-weight:700;font-size:1rem;cursor:pointer;-webkit-tap-highlight-color:transparent" class="card">View all paths</button></div></div>`}function renderPaths(){return`<div class="content-wrapper fade-in"><div style="margin-bottom:2rem"><h2 style="color:white;font-size:2.5rem;font-weight:700;margin-bottom:0.5rem">Your Paths</h2><p style="color:rgb(148,163,184);font-size:1rem">Choose what speaks to you</p></div><div style="display:flex;flex-direction:column;gap:1rem">${paths.map(p=>`<button onclick="startPath('${p.id}')" class="path-card" style="border:1px solid ${p.color}40;background:linear-gradient(135deg,${p.color}20,${p.color}10);text-align:left"><div style="display:flex;align-items:center;gap:1.25rem"><div class="icon-container" style="width:4rem;height:4rem;background:${p.color}"><div style="width:2rem;height:2rem;color:white">${getIcon(p.icon,'2')}</div></div><div style="flex:1"><h3 style="color:white;font-size:1.25rem;font-weight:700;margin-bottom:0.5rem">${p.title}</h3><p style="color:rgb(203,213,225);font-size:0.875rem">${p.description}</p></div><div style="padding:0.5rem 0.75rem;border-radius:0.75rem;background:${p.color}40;color:white;font-size:0.75rem;font-weight:600">${p.started?'Continue':'Begin'}</div></div></button>`).join('')}</div></div>`}function renderPractice(){const pr=practiceContent[state.currentPractice];return`<div class="content-wrapper fade-in"><h2 style="color:white;font-size:2.5rem;font-weight:700;margin-bottom:0.5rem">Practice</h2><p style="color:rgb(148,163,184);font-size:1rem;margin-bottom:2rem">Build wellness habits</p><div style="text-align:center;padding:2rem 1.5rem;background:linear-gradient(135deg,rgba(14,116,144,0.08),rgba(217,119,6,0.08));border:1px solid rgba(14,116,144,0.3);border-radius:1.5rem;margin-bottom:1.5rem"><div id="timerDisplay" class="practice-timer">0:00</div>${state.timerRunning?`<button onclick="stopTimer()" class="practice-button practice-button-stop">⏹️ Stop Practice</button>`:`<button onclick="startTimer()" class="practice-button practice-button-start">Start 30-Second Practice</button>`}<p style="color:rgb(203,213,225);font-size:0.875rem;margin-top:1rem">Find a quiet space and focus on your breath</p></div><div class="practice-content"><div style="margin-bottom:1rem;font-weight:500;color:white">${pr.instruction}</div>${pr.steps.map(s=>`<div style="margin-bottom:0.75rem;color:rgb(203,213,225)">${s}</div>`).join('')}<div class="practice-emoji">${pr.emoji}</div><div class="practice-affirmation">${pr.affirmation}</div></div><div style="margin-top:2rem"><h3 style="color:rgb(148,163,184);font-size:0.75rem;font-weight:700;margin-bottom:1rem;text-transform:uppercase;letter-spacing:0.1em">Practice Types</h3><div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem"><button onclick="state.currentPractice='gratitude';render();showToast('Switched to gratitude 🙏')" class="card" style="text-align:center;padding:1.5rem;border:${state.currentPractice==='gratitude'?'2px solid rgba(14,116,144,0.5)':'1px solid rgba(51,65,85,0.4)'}"><div style="font-size:2rem;margin-bottom:0.5rem">🙏</div><div style="color:white;font-weight:600">Gratitude</div></button><button onclick="state.currentPractice='breathing';render();showToast('Switched to breathing 🌬️')" class="card" style="text-align:center;padding:1.5rem;border:${state.currentPractice==='breathing'?'2px solid rgba(14,116,144,0.5)':'1px solid rgba(51,65,85,0.4)'}"><div style="font-size:2rem;margin-bottom:0.5rem">🌬️</div><div style="color:white;font-weight:600">Breathing</div></button></div></div></div>`}function renderJournal(){loadModulePrompts();return`<div class="content-wrapper fade-in"><h2 style="color:white;font-size:2.5rem;font-weight:700;margin-bottom:0.5rem">Journal</h2><p style="color:rgb(148,163,184);font-size:1rem;margin-bottom:2rem">${state.journalEntries.length} reflections</p><div class="journal-container"><textarea id="newEntryText" class="journal-textarea" placeholder="What's alive in your experience right now?..."></textarea><button onclick="togglePrompts()" class="prompts-toggle"><svg class="toggle-icon ${state.promptsOpen?'expanded':''}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg><span style="color:rgb(203,213,225);font-size:0.875rem;font-weight:600">▶️ Reflection prompts</span></button><div id="promptsContent" class="prompts-content ${state.promptsOpen?'open':''}"><div style="padding:0.75rem 0">${journalPrompts.map(p=>`<button onclick="addPrompt('${p}')" class="prompt-chip">${p}</button>`).join('')}</div></div><button onclick="saveJournalEntry()" class="save-button">Save Reflection</button></div>${state.journalEntries.length>0?`<h3 style="color:rgb(148,163,184);font-size:0.75rem;font-weight:700;margin-bottom:1rem;text-transform:uppercase;letter-spacing:0.1em;margin-top:2rem">Past Reflections</h3>${state.journalEntries.map(e=>{const d=new Date(e.date),f=d.toLocaleDateString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});return`<div class="journal-entry"><div class="entry-date">${f}</div><div class="entry-content">${e.content}</div><div style="margin-top:0.75rem;text-align:right"><button onclick="deleteEntry(${e.id})" style="background:none;border:none;color:rgb(148,163,184);font-size:0.75rem;cursor:pointer;text-decoration:underline">Delete</button></div></div>`}).join('')}`:`<div style="text-align:center;padding:3rem 1rem;margin-top:2rem"><div style="font-size:3rem;margin-bottom:1rem;opacity:0.4">📓</div><p style="color:white;font-size:1rem;font-weight:600;margin-bottom:0.5rem">Your wellness journey begins here</p><p style="color:rgb(148,163,184);font-size:0.875rem;margin-bottom:1.5rem">Start with a reflection or explore a learning path</p><button onclick="switchTab('paths')" style="padding:0.875rem 1.5rem;border-radius:0.75rem;background:linear-gradient(to right,#0e7490,#d97706);color:white;font-weight:600;border:none;cursor:pointer">Explore Paths</button></div>`}<div style="display:flex;align-items:center;justify-content:space-between;padding:1rem;margin-top:1.5rem;background:rgba(14,116,144,0.05);border:1px solid rgba(14,116,144,0.15);border-radius:0.75rem;cursor:pointer" onclick="showPrivacyModal()"><div style="display:flex;align-items:center;gap:0.75rem"><svg style="width:1.5rem;height:1.5rem;color:rgb(165,243,252);opacity:0.7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg><div><div style="color:white;font-size:0.75rem;font-weight:600">Privacy protected</div><div style="color:rgb(148,163,184);font-size:0.75rem">Saved locally on your device</div></div></div><svg style="width:1.25rem;height:1.25rem;color:rgb(148,163,184)" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></div></div>`}function render(){const c=document.getElementById('mainContent');switch(state.currentTab){case 'home':c.innerHTML=renderHome();break;case 'paths':c.innerHTML=renderPaths();break;case 'practice':c.innerHTML=renderPractice();updateTimerUI();break;case 'journal':c.innerHTML=renderJournal();break}}loadState();updateWarmth();const urlParams=new URLSearchParams(window.location.search),tab=urlParams.get('tab');if(tab&&['home','paths','practice','journal'].includes(tab))state.currentTab=tab;render();switchTab(state.currentTab);window.addEventListener('beforeunload',saveState)
+// ========== NAVIGATION HELPER ==========
+function navigateTo(page) {
+    console.log('🔗 Navigating to:', page);
+    
+    // Don't navigate if already on the same page
+    const currentPage = window.location.pathname.split('/').pop();
+    if (currentPage === page || (currentPage === '' && page === 'index.html')) {
+        console.log('📍 Already on destination page');
+        return;
+    }
+    
+    // Show loading indicator
+    const mainContent = document.getElementById('mainContent');
+    if (mainContent) {
+        mainContent.style.opacity = '0.7';
+        mainContent.style.transition = 'opacity 0.2s';
+    }
+    
+    // Navigate after a short delay for smooth transition
+    setTimeout(() => {
+        window.location.href = page;
+    }, 200);
+}
+
+// ========== DEBUG INFO ==========
+console.log('🚀 APP LOADED');
+console.log('📁 Current page:', window.location.pathname);
+console.log('🔍 URL params:', window.location.search);
+
+// Check if we have a session
+async function checkSession() {
+    try {
+        // Check localStorage for session
+        const hasSession = localStorage.getItem('sb-ocdwpaefmslyidelkzde-auth-token');
+        if (!hasSession) {
+            console.log('⚠️ No session found, but staying in app (demo mode)');
+        } else {
+            console.log('✅ Session found');
+        }
+    } catch (error) {
+        console.log('ℹ️ Running in demo mode');
+    }
+}
+
+// ========== APP STATE ==========
+const state = {
+    currentTab: 'home',
+    journalEntries: [],
+    timerRunning: false,
+    timerSeconds: 0,
+    currentPractice: 'gratitude',
+    currentFeeling: null,
+    lastCheckIn: null,
+    promptsOpen: false
+};
+
+const paths = [
+    {
+        id: 'emotional',
+        title: "Understanding Feelings",
+        description: "Learn to recognize and be with your emotions",
+        color: "#0e7490",
+        icon: 'M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23-.693L5 14.5m14.8.8l1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0112 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5',
+        started: true
+    },
+    {
+        id: 'mindfulness',
+        title: "Mindfulness",
+        description: "Cultivate awareness of the here and now",
+        color: "#d97706",
+        icon: 'M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z',
+        started: false
+    },
+    {
+        id: 'connection',
+        title: "Meaningful Relationships",
+        description: "Build deeper connections with others",
+        color: "#dc2626",
+        icon: 'M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z',
+        started: false
+    },
+    {
+        id: 'purpose',
+        title: "Finding What Matters",
+        description: "Discover what gives your life meaning",
+        color: "#0891b2",
+        icon: 'M15 10.5a3 3 0 11-6 0 3 3 0 016 0z M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z',
+        started: false
+    }
+];
+
+let journalPrompts = [
+    "What are you grateful for today? 🙏",
+    "Notice your breath for a moment 🌬️",
+    "How does your body feel right now? 👁️",
+    "What's one small joy you noticed today? ✨"
+];
+
+const practiceContent = {
+    gratitude: {
+        instruction: "Take a moment to think of 3 things you're grateful for:",
+        steps: ["One person in your life", "One experience recently", "One thing about yourself"],
+        emoji: "🙏",
+        affirmation: "Gratitude turns what we have into enough."
+    },
+    breathing: {
+        instruction: "Follow this breathing pattern:",
+        steps: ["Breathe in for 4 seconds", "Hold for 4 seconds", "Breathe out for 6 seconds", "Repeat 5 times"],
+        emoji: "🌬️",
+        affirmation: "Your breath is always there to bring you back to the present."
+    }
+};
+
+let timerInterval = null;
+const PRACTICE_TIME = 30;
+
+// ========== PATH NAVIGATION ==========
+function startPath(id) {
+    const p = paths.find(p => p.id === id);
+    if (p) {
+        console.log(`🚀 Starting path: ${p.title} (${id})`);
+        
+        p.started = true;
+        updateWarmth();
+        saveState();
+        
+        // Show immediate feedback
+        showToast(`Opening ${p.title}... 🚀`);
+        
+        // Navigate to the appropriate course
+        setTimeout(() => {
+            if (id === 'mindfulness') {
+                navigateTo('public/course-mindfulness.html');
+            } else {
+                // For other paths that don't exist yet, show message
+                showToast(`${p.title} course coming soon! Check back later. ✨`);
+                // Optionally reset started status
+                p.started = false;
+                updateWarmth();
+                saveState();
+            }
+        }, 800);
+    }
+}
+
+// ========== CORE FUNCTIONS ==========
+function loadModulePrompts() {
+    const mp = localStorage.getItem('modulePrompts');
+    if (mp) {
+        try {
+            const prompts = JSON.parse(mp);
+            if (Array.isArray(prompts) && prompts.length > 0) {
+                journalPrompts = prompts;
+                localStorage.removeItem('modulePrompts');
+            }
+        } catch (e) {
+            console.error('Failed to load module prompts:', e);
+        }
+    }
+}
+
+function getIcon(i, sw = '2') {
+    return `<svg class="w-full h-full" stroke-width="${sw}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="${i}"/></svg>`;
+}
+
+function scrollToTop() {
+    document.getElementById('mainContent').scrollTop = 0;
+}
+
+function shouldShowCheckIn() {
+    return state.lastCheckIn !== new Date().toDateString();
+}
+
+function handleFeelingSelect(f) {
+    state.currentFeeling = f;
+    state.lastCheckIn = new Date().toDateString();
+    saveState();
+    document.querySelectorAll('.feeling-emoji').forEach(e => 
+        e.classList.toggle('selected', e.dataset.feeling === f)
+    );
+    setTimeout(() => render(), 600);
+}
+
+function updateWarmth() {
+    const w = document.getElementById('appWrapper');
+    const c = paths.filter(p => p.started).length;
+    w.className = c >= 3 ? 'app-wrapper warmth-3' : 
+                   c >= 2 ? 'app-wrapper warmth-2' : 
+                   c >= 1 ? 'app-wrapper warmth-1' : 'app-wrapper';
+}
+
+function switchTab(t) {
+    state.currentTab = t;
+    render();
+    
+    document.querySelectorAll('.nav-btn').forEach(b => {
+        const ind = b.querySelector('.nav-indicator');
+        const ic = b.querySelector('.nav-icon');
+        const l = b.querySelector('.nav-label');
+        const a = b.dataset.tab === t;
+        
+        ind.classList.toggle('active', a);
+        ic.classList.toggle('active', a);
+        ic.classList.toggle('inactive', !a);
+        ic.setAttribute('stroke-width', a ? '2.5' : '2');
+        l.classList.toggle('active', a);
+        l.classList.toggle('inactive', !a);
+    });
+    
+    updateTimerBadge();
+    scrollToTop();
+}
+
+function updateTimerBadge() {
+    document.querySelectorAll('.timer-badge').forEach(b => 
+        b.classList.toggle('active', state.timerRunning)
+    );
+}
+
+function togglePrompts() {
+    state.promptsOpen = !state.promptsOpen;
+    const pc = document.getElementById('promptsContent');
+    if (pc) pc.classList.toggle('open', state.promptsOpen);
+    const ti = document.querySelector('.toggle-icon');
+    if (ti) ti.classList.toggle('expanded', state.promptsOpen);
+}
+
+function addPrompt(p) {
+    const t = document.getElementById('newEntryText');
+    if (t) {
+        const v = t.value.trim();
+        t.value = v + (v ? '\n\n' : '') + p + '\n\n';
+        t.focus();
+        showToast("Prompt added 💭");
+    }
+}
+
+function startTimer() {
+    if (state.timerRunning) return;
+    state.timerRunning = true;
+    state.timerSeconds = 0;
+    updateTimerBadge();
+    
+    timerInterval = setInterval(() => {
+        state.timerSeconds++;
+        updateTimerUI();
+        if (state.timerSeconds >= PRACTICE_TIME) {
+            stopTimer();
+        }
+    }, 1000);
+    
+    render();
+    showToast("Practice started 🌱");
+}
+
+function stopTimer() {
+    state.timerRunning = false;
+    clearInterval(timerInterval);
+    updateTimerBadge();
+    render();
+    setTimeout(() => showPostPracticeModal(), 500);
+}
+
+function showPostPracticeModal() {
+    showModal(`<div style="text-align:center" class="scale-in">
+        <div style="font-size:3rem;margin-bottom:1rem">✨</div>
+        <h2 style="color:white;font-size:1.5rem;font-weight:700;margin-bottom:0.5rem">Practice Complete!</h2>
+        <p style="color:rgb(148,163,184);font-size:0.9375rem;margin-bottom:1.5rem">You practiced for 30 seconds</p>
+        <div style="display:flex;flex-direction:column;gap:0.75rem;margin-bottom:1rem">
+            <button onclick="journalAfterPractice()" class="post-practice-option">
+                <div class="option-icon" style="background:rgba(14,116,144,0.2);color:rgb(165,243,252)">📝</div>
+                <div class="option-content">
+                    <div class="option-title">Journal About It</div>
+                    <div class="option-description">Capture what you noticed</div>
+                </div>
+            </button>
+            <button onclick="practiceAgain()" class="post-practice-option">
+                <div class="option-icon" style="background:rgba(217,119,6,0.2);color:rgb(253,230,138)">🔄</div>
+                <div class="option-content">
+                    <div class="option-title">Practice Again</div>
+                    <div class="option-description">Build consistency</div>
+                </div>
+            </button>
+            <button onclick="learnMoreSkills()" class="post-practice-option">
+                <div class="option-icon" style="background:rgba(34,197,94,0.2);color:rgb(134,239,172)">📚</div>
+                <div class="option-content">
+                    <div class="option-title">Learn More Skills</div>
+                    <div class="option-description">Explore another technique</div>
+                </div>
+            </button>
+        </div>
+    </div>`);
+}
+
+function journalAfterPractice() {
+    closeModal();
+    switchTab('journal');
+    showToast("Ready to reflect 📝");
+}
+
+function practiceAgain() {
+    closeModal();
+    state.timerSeconds = 0;
+    updateTimerUI();
+    startTimer();
+}
+
+function learnMoreSkills() {
+    closeModal();
+    switchTab('paths');
+    showToast("Explore new skills 📚");
+}
+
+function updateTimerUI() {
+    const d = document.getElementById('timerDisplay');
+    if (d) {
+        const m = Math.floor(state.timerSeconds / 60);
+        const s = state.timerSeconds % 60;
+        d.textContent = `${m}:${s.toString().padStart(2, '0')}`;
+    }
+}
+
+function saveJournalEntry() {
+    const t = document.getElementById('newEntryText');
+    if (!t) return;
+    const c = t.value.trim();
+    if (!c) {
+        showToast("Write something first");
+        return;
+    }
+    state.journalEntries.unshift({
+        id: Date.now(),
+        date: new Date().toISOString(),
+        content: c
+    });
+    saveState();
+    t.value = '';
+    render();
+    showToast("Entry saved ✨");
+}
+
+function deleteEntry(id) {
+    if (confirm("Delete this entry?")) {
+        state.journalEntries = state.journalEntries.filter(e => e.id !== id);
+        saveState();
+        render();
+        showToast("Entry deleted");
+    }
+}
+
+function exportJournal() {
+    if (state.journalEntries.length === 0) {
+        showToast("No entries to export");
+        return;
+    }
+    const data = {
+        entries: state.journalEntries,
+        exportDate: new Date().toISOString()
+    };
+    const json = JSON.stringify(data, null, 2);
+    const blob = new Blob([json], {type: 'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `mphaven-journal-${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast("Journal exported ✅");
+}
+
+function showPrivacyModal() {
+    showModal(`<div style="text-align:center" class="scale-in">
+        <div style="font-size:2.5rem;margin-bottom:1rem">🔒</div>
+        <h3 style="color:white;font-size:1.5rem;margin-bottom:1rem">Privacy Protected</h3>
+        <p style="color:rgb(203,213,225);font-size:0.9375rem;margin-bottom:1.5rem;line-height:1.6">
+            All your entries are saved locally on your device. No tracking, no analytics, no cloud storage. 
+            Your reflections stay private.
+        </p>
+        <p style="color:rgb(148,163,184);font-size:0.875rem;margin-bottom:1.5rem">
+            Getting a new phone? Export your journal below.
+        </p>
+        <button onclick="exportJournal()" class="modal-button modal-button-primary">Export Journal</button>
+        <button onclick="closeModal()" class="modal-button modal-button-secondary">Close</button>
+    </div>`);
+}
+
+function showToast(m) {
+    const t = document.getElementById('toast');
+    t.textContent = m;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function showModal(c) {
+    const m = document.createElement('div');
+    m.className = 'modal-overlay';
+    m.innerHTML = `<div class="modal-content">${c}</div>`;
+    m.onclick = e => e.target === m && closeModal();
+    document.body.appendChild(m);
+}
+
+function closeModal() {
+    const m = document.querySelector('.modal-overlay');
+    if (m) m.remove();
+}
+
+function saveState() {
+    localStorage.setItem('mphaven_state', JSON.stringify(state));
+    localStorage.setItem('mphaven_paths', JSON.stringify(paths));
+}
+
+function loadState() {
+    const s = localStorage.getItem('mphaven_state');
+    if (s) Object.assign(state, JSON.parse(s));
+    
+    const p = localStorage.getItem('mphaven_paths');
+    if (p) {
+        const l = JSON.parse(p);
+        l.forEach((p, i) => paths[i].started = p.started);
+    }
+}
+
+// ========== RENDER FUNCTIONS ==========
+function renderHome() {
+    const sc = shouldShowCheckIn();
+    const fe = ['😌', '😔', '😊', '😰', '😴', '😐'];
+    const fl = ['Calm', 'Heavy', 'Joyful', 'Anxious', 'Tired', 'Neutral'];
+    const ap = paths.find(p => p.started);
+    
+    return `<div class="content-wrapper fade-in">
+        ${sc ? `<div style="padding:1.75rem;background:linear-gradient(135deg,rgba(14,116,144,0.15),rgba(217,119,6,0.1));border:1px solid rgba(14,116,144,0.3);border-radius:1.5rem;box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);margin-bottom:2rem">
+            <h3 style="color:white;font-size:1.125rem;font-weight:700;margin-bottom:1rem;text-align:center">How are you feeling?</h3>
+            <p style="color:rgb(203,213,225);font-size:0.875rem;text-align:center;margin-bottom:1.5rem">Take a moment to check in with yourself</p>
+            <div style="display:flex;justify-content:center;gap:0.75rem;margin-bottom:1.5rem;flex-wrap:wrap">
+                ${fe.map((e, i) => `<button onclick="handleFeelingSelect('${fl[i].toLowerCase()}')" class="feeling-emoji" data-feeling="${fl[i].toLowerCase()}">${e}</button>`).join('')}
+            </div>
+            <p style="color:rgb(100,116,139);font-size:0.75rem;text-align:center;font-style:italic">Just for you. Not tracked, not measured.</p>
+        </div>` : ''}
+        
+        <div style="margin-bottom:2rem">
+            <h1 style="color:white;font-size:3rem;font-weight:700;margin-bottom:1rem;line-height:1.2">Welcome<br/>back</h1>
+            <p style="color:rgb(203,213,225);font-size:1.125rem;line-height:1.6">Your sanctuary is here.</p>
+        </div>
+        
+        ${ap ? `<div style="margin-bottom:2rem">
+            <h2 style="color:rgb(148,163,184);font-size:0.75rem;font-weight:700;margin-bottom:1.25rem;text-transform:uppercase;letter-spacing:0.1em">Continue</h2>
+            <button onclick="startPath('${ap.id}')" class="card" style="padding:1.75rem;background:linear-gradient(135deg,${ap.color}25,${ap.color}15);border:2px solid ${ap.color}50;text-align:left">
+                <div style="display:flex;align-items:center;gap:1.25rem">
+                    <div class="icon-container" style="width:4rem;height:4rem;background:${ap.color}">
+                        <div style="width:2rem;height:2rem;color:white">${getIcon(ap.icon, '2')}</div>
+                    </div>
+                    <div style="flex:1">
+                        <h3 style="color:white;font-size:1.25rem;font-weight:700;margin-bottom:0.5rem">${ap.title}</h3>
+                        <p style="color:rgb(203,213,225);font-size:0.875rem">${ap.description}</p>
+                    </div>
+                    <div style="width:3rem;height:3rem;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(14,116,144,0.3)">
+                        <svg style="width:1.5rem;height:1.5rem;color:rgb(165,243,252)" stroke-width="2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+                        </svg>
+                    </div>
+                </div>
+            </button>
+        </div>` : ''}
+        
+        <div>
+            <h2 style="color:rgb(148,163,184);font-size:0.75rem;font-weight:700;margin-bottom:1.25rem;text-transform:uppercase;letter-spacing:0.1em">Explore</h2>
+            <div style="display:flex;flex-direction:column;gap:1rem">
+                ${paths.filter(p => !p.started).slice(0, 2).map(p => `
+                    <button onclick="startPath('${p.id}')" class="card" style="background:linear-gradient(135deg,${p.color}15,${p.color}08);border:1px solid ${p.color}30;text-align:left">
+                        <div style="display:flex;align-items:center;gap:1rem">
+                            <div class="icon-container" style="width:3.5rem;height:3.5rem;background:${p.color}">
+                                <div style="width:1.75rem;height:1.75rem;color:white">${getIcon(p.icon, '2')}</div>
+                            </div>
+                            <div style="flex:1">
+                                <h3 style="color:white;font-size:1.125rem;font-weight:700;margin-bottom:0.25rem">${p.title}</h3>
+                                <p style="color:rgb(148,163,184);font-size:0.875rem">${p.description}</p>
+                            </div>
+                            <svg style="width:1.25rem;height:1.25rem;color:rgb(100,116,139)" stroke-width="2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </div>
+                    </button>
+                `).join('')}
+            </div>
+            <button onclick="switchTab('paths')" style="width:100%;margin-top:1.5rem;padding:1.25rem;background:rgba(30,41,59,0.5);border:1px solid rgba(51,65,85,0.5);border-radius:1rem;color:white;font-weight:700;font-size:1rem;cursor:pointer;-webkit-tap-highlight-color:transparent" class="card">View all paths</button>
+        </div>
+    </div>`;
+}
+
+function renderPaths() {
+    return `<div class="content-wrapper fade-in">
+        <div style="margin-bottom:2rem">
+            <h2 style="color:white;font-size:2.5rem;font-weight:700;margin-bottom:0.5rem">Your Paths</h2>
+            <p style="color:rgb(148,163,184);font-size:1rem">Choose what speaks to you</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:1rem">
+            ${paths.map(p => `
+                <button onclick="startPath('${p.id}')" class="path-card" style="border:1px solid ${p.color}40;background:linear-gradient(135deg,${p.color}20,${p.color}10);text-align:left">
+                    <div style="display:flex;align-items:center;gap:1.25rem">
+                        <div class="icon-container" style="width:4rem;height:4rem;background:${p.color}">
+                            <div style="width:2rem;height:2rem;color:white">${getIcon(p.icon, '2')}</div>
+                        </div>
+                        <div style="flex:1">
+                            <h3 style="color:white;font-size:1.25rem;font-weight:700;margin-bottom:0.5rem">${p.title}</h3>
+                            <p style="color:rgb(203,213,225);font-size:0.875rem">${p.description}</p>
+                        </div>
+                        <div style="padding:0.5rem 0.75rem;border-radius:0.75rem;background:${p.color}40;color:white;font-size:0.75rem;font-weight:600">
+                            ${p.started ? 'Continue' : 'Begin'}
+                        </div>
+                    </div>
+                </button>
+            `).join('')}
+        </div>
+    </div>`;
+}
+
+function renderPractice() {
+    const pr = practiceContent[state.currentPractice];
+    return `<div class="content-wrapper fade-in">
+        <h2 style="color:white;font-size:2.5rem;font-weight:700;margin-bottom:0.5rem">Practice</h2>
+        <p style="color:rgb(148,163,184);font-size:1rem;margin-bottom:2rem">Build wellness habits</p>
+        
+        <div style="text-align:center;padding:2rem 1.5rem;background:linear-gradient(135deg,rgba(14,116,144,0.08),rgba(217,119,6,0.08));border:1px solid rgba(14,116,144,0.3);border-radius:1.5rem;margin-bottom:1.5rem">
+            <div id="timerDisplay" class="practice-timer">0:00</div>
+            ${state.timerRunning ? 
+                `<button onclick="stopTimer()" class="practice-button practice-button-stop">⏹️ Stop Practice</button>` :
+                `<button onclick="startTimer()" class="practice-button practice-button-start">Start 30-Second Practice</button>`
+            }
+            <p style="color:rgb(203,213,225);font-size:0.875rem;margin-top:1rem">Find a quiet space and focus on your breath</p>
+        </div>
+        
+        <div class="practice-content">
+            <div style="margin-bottom:1rem;font-weight:500;color:white">${pr.instruction}</div>
+            ${pr.steps.map(s => `<div style="margin-bottom:0.75rem;color:rgb(203,213,225)">${s}</div>`).join('')}
+            <div class="practice-emoji">${pr.emoji}</div>
+            <div class="practice-affirmation">${pr.affirmation}</div>
+        </div>
+        
+        <div style="margin-top:2rem">
+            <h3 style="color:rgb(148,163,184);font-size:0.75rem;font-weight:700;margin-bottom:1rem;text-transform:uppercase;letter-spacing:0.1em">Practice Types</h3>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+                <button onclick="state.currentPractice='gratitude';render();showToast('Switched to gratitude 🙏')" 
+                    class="card" style="text-align:center;padding:1.5rem;border:${state.currentPractice==='gratitude'?'2px solid rgba(14,116,144,0.5)':'1px solid rgba(51,65,85,0.4)'}">
+                    <div style="font-size:2rem;margin-bottom:0.5rem">🙏</div>
+                    <div style="color:white;font-weight:600">Gratitude</div>
+                </button>
+                <button onclick="state.currentPractice='breathing';render();showToast('Switched to breathing 🌬️')" 
+                    class="card" style="text-align:center;padding:1.5rem;border:${state.currentPractice==='breathing'?'2px solid rgba(14,116,144,0.5)':'1px solid rgba(51,65,85,0.4)'}">
+                    <div style="font-size:2rem;margin-bottom:0.5rem">🌬️</div>
+                    <div style="color:white;font-weight:600">Breathing</div>
+                </button>
+            </div>
+        </div>
+    </div>`;
+}
+
+function renderJournal() {
+    loadModulePrompts();
+    return `<div class="content-wrapper fade-in">
+        <h2 style="color:white;font-size:2.5rem;font-weight:700;margin-bottom:0.5rem">Journal</h2>
+        <p style="color:rgb(148,163,184);font-size:1rem;margin-bottom:2rem">${state.journalEntries.length} reflections</p>
+        
+        <div class="journal-container">
+            <textarea id="newEntryText" class="journal-textarea" placeholder="What's alive in your experience right now?..."></textarea>
+            
+            <button onclick="togglePrompts()" class="prompts-toggle">
+                <svg class="toggle-icon ${state.promptsOpen ? 'expanded' : ''}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+                <span style="color:rgb(203,213,225);font-size:0.875rem;font-weight:600">▶️ Reflection prompts</span>
+            </button>
+            
+            <div id="promptsContent" class="prompts-content ${state.promptsOpen ? 'open' : ''}">
+                <div style="padding:0.75rem 0">
+                    ${journalPrompts.map(p => `<button onclick="addPrompt('${p}')" class="prompt-chip">${p}</button>`).join('')}
+                </div>
+            </div>
+            
+            <button onclick="saveJournalEntry()" class="save-button">Save Reflection</button>
+        </div>
+        
+        ${state.journalEntries.length > 0 ? `
+            <h3 style="color:rgb(148,163,184);font-size:0.75rem;font-weight:700;margin-bottom:1rem;text-transform:uppercase;letter-spacing:0.1em;margin-top:2rem">Past Reflections</h3>
+            ${state.journalEntries.map(e => {
+                const d = new Date(e.date);
+                const f = d.toLocaleDateString('en-US', {month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'});
+                return `<div class="journal-entry">
+                    <div class="entry-date">${f}</div>
+                    <div class="entry-content">${e.content}</div>
+                    <div style="margin-top:0.75rem;text-align:right">
+                        <button onclick="deleteEntry(${e.id})" style="background:none;border:none;color:rgb(148,163,184);font-size:0.75rem;cursor:pointer;text-decoration:underline">Delete</button>
+                    </div>
+                </div>`;
+            }).join('')}
+        ` : `
+            <div style="text-align:center;padding:3rem 1rem;margin-top:2rem">
+                <div style="font-size:3rem;margin-bottom:1rem;opacity:0.4">📓</div>
+                <p style="color:white;font-size:1rem;font-weight:600;margin-bottom:0.5rem">Your wellness journey begins here</p>
+                <p style="color:rgb(148,163,184);font-size:0.875rem;margin-bottom:1.5rem">Start with a reflection or explore a learning path</p>
+                <button onclick="switchTab('paths')" style="padding:0.875rem 1.5rem;border-radius:0.75rem;background:linear-gradient(to right,#0e7490,#d97706);color:white;font-weight:600;border:none;cursor:pointer">Explore Paths</button>
+            </div>
+        `}
+        
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:1rem;margin-top:1.5rem;background:rgba(14,116,144,0.05);border:1px solid rgba(14,116,144,0.15);border-radius:0.75rem;cursor:pointer" onclick="showPrivacyModal()">
+            <div style="display:flex;align-items:center;gap:0.75rem">
+                <svg style="width:1.5rem;height:1.5rem;color:rgb(165,243,252);opacity:0.7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                </svg>
+                <div>
+                    <div style="color:white;font-size:0.75rem;font-weight:600">Privacy protected</div>
+                    <div style="color:rgb(148,163,184);font-size:0.75rem">Saved locally on your device</div>
+                </div>
+            </div>
+            <svg style="width:1.25rem;height:1.25rem;color:rgb(148,163,184)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+        </div>
+    </div>`;
+}
+
+function render() {
+    const c = document.getElementById('mainContent');
+    switch(state.currentTab) {
+        case 'home': c.innerHTML = renderHome(); break;
+        case 'paths': c.innerHTML = renderPaths(); break;
+        case 'practice': 
+            c.innerHTML = renderPractice(); 
+            updateTimerUI(); 
+            break;
+        case 'journal': c.innerHTML = renderJournal(); break;
+    }
+}
+
+// ========== INITIALIZATION ==========
+loadState();
+updateWarmth();
+
+// Check session on load
+checkSession();
+
+// Handle URL parameters
+const urlParams = new URLSearchParams(window.location.search);
+const tab = urlParams.get('tab');
+if (tab && ['home', 'paths', 'practice', 'journal'].includes(tab)) {
+    state.currentTab = tab;
+}
+
+// Initial render
+render();
+switchTab(state.currentTab);
+
+// Save state on unload
+window.addEventListener('beforeunload', saveState);
     </script>
 </body>
 </html>
