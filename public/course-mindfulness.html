@@ -9,296 +9,227 @@
     <title>MPHaven - Mindfulness</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* ===== BASE STYLES ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            -webkit-font-smoothing: antialiased;
+        :root {
+            /* BACKGROUNDS & NEUTRALS - EXACT MATCH */
+            --bg-dark: #0f172a;
+            --bg-card: rgba(15, 23, 42, 0.98);
+            --bg-card-light: rgba(30, 41, 59, 0.65);
+            --bg-card-dark: rgba(15, 23, 42, 0.45);
+            --border-subtle: rgba(30, 41, 59, 0.5);
+            --border-softer: rgba(51, 65, 85, 0.4);
+            
+            /* PRIMARY COLORS - EXACT MATCH */
+            --primary-teal: #0e7490;
+            --primary-teal-dark: #0c627a;
+            --accent-amber: #d97706;
+            --accent-amber-dark: #b45309;
+            
+            /* TEXT COLORS - EXACT MATCH */
+            --text-primary: rgb(241, 245, 249);
+            --text-secondary: rgb(203, 213, 225);
+            --text-muted: rgb(148, 163, 184);
+            --text-dim: rgb(100, 116, 139);
+            --text-teal-light: rgb(165, 243, 252);
+            --text-teal: rgb(94, 234, 212);
+            --text-amber-light: rgb(253, 230, 138);
+            --text-amber: rgb(251, 191, 36);
+            
+            /* SUCCESS - EXACT MATCH */
+            --success-emerald: rgb(74, 222, 128);
+            --success-bg: rgba(34, 197, 94, 0.12);
+            
+            /* GRADIENTS - EXACT MATCH */
+            --gradient-main: linear-gradient(135deg, #0e7490, #d97706);
+            --gradient-subtle: linear-gradient(135deg, rgba(14,116,144,0.15), rgba(217,119,6,0.10));
+            --gradient-success: linear-gradient(135deg, rgba(34,197,94,0.15), rgba(21,128,61,0.08));
+            
+            /* SHADOWS - EXACT MATCH */
+            --shadow-card: 0 25px 50px -12px rgba(0,0,0,0.25);
         }
-        html, body {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            position: fixed;
-            overscroll-behavior: none;
+        
+        *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;-webkit-font-smoothing:antialiased}html,body{width:100%;height:100%;overflow:hidden;position:fixed;overscroll-behavior:none}body{background:var(--bg-dark);touch-action:pan-y}.container{width:100%;height:100vh;height:100dvh;display:flex;flex-direction:column}.app-wrapper{width:100%;max-width:28rem;height:100%;margin:0 auto;background:var(--bg-card);backdrop-filter:blur(40px);display:flex;flex-direction:column;position:relative}.bg-blur-1{position:absolute;top:-5%;left:50%;transform:translateX(-50%);width:22rem;height:22rem;background:rgba(14,116,144,0.08);border-radius:50%;filter:blur(140px);pointer-events:none;z-index:0;opacity:0.6}.bg-blur-2{position:absolute;bottom:-5%;right:-5%;width:18rem;height:18rem;background:rgba(217,119,6,0.08);border-radius:50%;filter:blur(140px);pointer-events:none;z-index:0;opacity:0.6}.main-content{flex:1;overflow-y:auto;overflow-x:hidden;position:relative;z-index:1;-ms-overflow-style:none;scrollbar-width:none;scroll-behavior:smooth;-webkit-overflow-scrolling:touch}.main-content::-webkit-scrollbar{display:none}.content-wrapper{padding:1.5rem;padding-bottom:2rem;min-height:100%}.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(100px);background:rgba(30,41,59,0.95);border:1px solid rgba(14,116,144,0.3);border-radius:0.75rem;padding:1rem 1.5rem;color:white;font-weight:600;z-index:10000;opacity:0;transition:all 0.3s ease;backdrop-filter:blur(10px);box-shadow:0 10px 25px rgba(0,0,0,0.3);max-width:90%;text-align:center}.toast.show{transform:translateX(-50%) translateY(0);opacity:1}@keyframes gentleFadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}.fade-in{animation:gentleFadeIn 0.35s ease-out}
+        
+        /* CARD STYLES - USING YOUR EXACT COLORS */
+        .module-card{
+            background:linear-gradient(135deg, var(--bg-card-light), var(--bg-card-dark));
+            border:1px solid var(--border-softer);
+            border-radius:1.25rem;
+            padding:1.5rem;
+            margin-bottom:1rem;
+            cursor:pointer;
+            transition:all 0.3s;
+            display:block;
+            width:100%;
+            -webkit-tap-highlight-color:transparent;
+            box-shadow: var(--shadow-card);
         }
-        body {
-            background: #0f172a;
-            touch-action: pan-y;
+        .module-card:active{transform:scale(0.98)}
+        .module-card:hover{border-color:rgba(var(--primary-teal),0.5)}
+        
+        /* RECOMMENDED MODULE - USING YOUR GRADIENT */
+        .module-card.card-recommended {
+            border:2px solid rgba(var(--primary-teal),0.5);
+            background: var(--gradient-subtle);
+            box-shadow: 0 4px 20px rgba(14,116,144,0.15);
         }
-        .container {
-            width: 100%;
-            height: 100vh;
-            height: 100dvh;
-            display: flex;
-            flex-direction: column;
+
+        /* AVAILABLE MODULES - SUBTLE DIM */
+        .module-card.card-available {
+            opacity: 0.9;
+            border-color: rgba(var(--text-dim),0.3);
         }
-        .app-wrapper {
-            width: 100%;
-            max-width: 28rem;
-            height: 100%;
-            margin: 0 auto;
-            background: rgba(15, 23, 42, 0.98);
-            backdrop-filter: blur(40px);
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            border-left: 1px solid rgba(30, 41, 59, 0.5);
-            border-right: 1px solid rgba(30, 41, 59, 0.5);
+        
+        /* MODULE ICON - MATCHING YOUR STYLE */
+        .module-icon{
+            width:3.5rem;
+            height:3.5rem;
+            border-radius:1rem;
+            background:var(--gradient-subtle);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            margin-bottom:1rem;
+            font-size:1.5rem
         }
-        .bg-blur-1 {
-            position: absolute;
-            top: -5%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 22rem;
-            height: 22rem;
-            background: rgba(14, 116, 144, 0.08);
-            border-radius: 50%;
-            filter: blur(140px);
-            pointer-events: none;
-            z-index: 0;
-            opacity: 0.6;
+        
+        /* TEXT STYLES - EXACT MATCH */
+        .module-title{
+            color:var(--text-primary);
+            font-size:1.5rem;
+            font-weight:700;
+            margin-bottom:0.5rem
         }
-        .bg-blur-2 {
-            position: absolute;
-            bottom: -5%;
-            right: -5%;
-            width: 18rem;
-            height: 18rem;
-            background: rgba(217, 119, 6, 0.08);
-            border-radius: 50%;
-            filter: blur(140px);
-            pointer-events: none;
-            z-index: 0;
-            opacity: 0.6;
+        .module-tagline{
+            color:var(--text-secondary);
+            font-size:0.875rem;
+            margin-bottom:1rem
         }
-        .main-content {
-            flex: 1;
-            overflow-y: auto;
-            overflow-x: hidden;
-            position: relative;
-            z-index: 1;
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-            scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
+        .module-description{
+            color:var(--text-muted);
+            font-size:0.8125rem;
+            line-height:1.4;
+            margin-bottom:1.25rem
         }
-        .main-content::-webkit-scrollbar {
-            display: none;
+        
+        /* STATUS BADGES - PERFECTLY MATCHING YOUR PALETTE */
+        .status-badge{
+            padding:0.25rem 0.75rem;
+            border-radius:9999px;
+            font-size:0.75rem;
+            font-weight:600;
+            letter-spacing:0.05em;
+            text-transform:uppercase;
         }
-        .nav-bar {
-            position: relative;
-            z-index: 1000;
-            border-top: 1px solid rgba(30, 41, 59, 0.5);
-            background: rgba(15, 23, 42, 0.98);
-            backdrop-filter: blur(24px);
-            box-shadow: 0 -20px 25px -5px rgba(0, 0, 0, 0.3);
-            padding: 0.75rem 0;
-            padding-bottom: calc(0.75rem + env(safe-area-inset-bottom));
+        
+        /* COMPLETED: Using your success emerald */
+        .status-completed{
+            background:var(--success-bg);
+            color:var(--success-emerald);
+            border:1px solid rgba(34,197,94,0.25);
         }
-        .nav-container {
-            display: flex;
-            align-items: center;
-            justify-content: space-around;
-            max-width: 28rem;
-            margin: 0 auto;
+        
+        /* RECOMMENDED: Using your primary gradient */
+        .status-recommended{
+            background: var(--gradient-subtle);
+            color:var(--text-teal-light);
+            border:1px solid rgba(var(--primary-teal),0.35);
         }
-        .nav-btn {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.375rem;
-            padding: 0.5rem 1rem;
-            background: none;
-            border: none;
-            cursor: pointer;
-            transition: all 0.2s;
-            min-width: 80px;
-            -webkit-tap-highlight-color: transparent;
+        
+        /* AVAILABLE: Using your muted palette */
+        .status-available{
+            background:rgba(var(--text-muted),0.15);
+            color:var(--text-muted);
+            border:1px solid rgba(var(--text-muted),0.3);
         }
-        .nav-btn:active {
-            transform: scale(0.96);
+        
+        /* HEADER - MATCHING YOUR STYLE */
+        .header{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:1.5rem;
+            padding-bottom:1rem;
+            border-bottom:1px solid var(--border-subtle)
         }
-        .nav-indicator {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 2.5rem;
-            height: 3px;
-            background: linear-gradient(to right, #0e7490, #d97706);
-            border-radius: 9999px;
-            opacity: 0;
-            transition: opacity 0.2s;
+        
+        /* PROGRESS CIRCLE - USING YOUR GRADIENT */
+        .progress-circle{
+            width:2.5rem;
+            height:2.5rem;
+            border-radius:50%;
+            background: var(--gradient-subtle);
+            color:var(--text-primary);
+            font-size:0.875rem;
+            font-weight:600;
+            display:flex;
+            align-items:center;
+            justify-content:center;
         }
-        .nav-indicator.active {
-            opacity: 1;
-        }
-        .nav-icon {
-            width: 24px;
-            height: 24px;
-            transition: all 0.2s;
-        }
-        .nav-icon.active {
-            color: white;
-            transform: scale(1.1);
-        }
-        .nav-icon.inactive {
-            color: rgb(100, 116, 139);
-        }
-        .nav-label {
-            font-size: 0.6875rem;
-            font-weight: 600;
-            transition: all 0.2s;
-            white-space: nowrap;
-        }
-        .nav-label.active {
-            color: white;
-        }
-        .nav-label.inactive {
-            color: rgb(100, 116, 139);
-        }
-        .content-wrapper {
+        
+        /* SKILL HEADER - LIKE YOUR OBSERVE MODULE */
+        .skill-header{
+            background: var(--gradient-main);
             padding: 1.5rem;
-            padding-bottom: 8rem;
-            min-height: 100%;
-        }
-        
-        /* ===== ANIMATIONS ===== */
-        @keyframes gentleFadeIn {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes scaleIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        .fade-in {
-            animation: gentleFadeIn 0.35s ease-out;
-        }
-        .scale-in {
-            animation: scaleIn 0.3s ease-out;
-        }
-        
-        /* ===== SKILL CARDS ===== */
-        .skill-card {
-            position: relative;
-            overflow: hidden;
-            border-radius: 1.5rem;
-            padding: 1.5rem;
-            transition: all 0.3s;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            cursor: pointer;
-            -webkit-tap-highlight-color: transparent;
-            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.6));
-            border: 1px solid rgba(51, 65, 85, 0.4);
-            text-align: left;
+            border-radius: 1.25rem;
             margin-bottom: 1rem;
-        }
-        .skill-card:active {
-            transform: scale(0.98);
-        }
-        .skill-card:hover {
-            border-color: rgba(14, 116, 144, 0.5);
-        }
-        .skill-icon {
-            width: 3.5rem;
-            height: 3.5rem;
-            border-radius: 1rem;
-            background: linear-gradient(135deg, rgba(14, 116, 144, 0.2), rgba(217, 119, 6, 0.1));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1rem;
-            font-size: 1.5rem;
-        }
-        .skill-title {
-            color: white;
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-        .skill-tagline {
-            color: rgb(203, 213, 225);
-            font-size: 0.875rem;
-            margin-bottom: 0.75rem;
-        }
-        .skill-description {
-            color: rgb(148, 163, 184);
-            font-size: 0.8125rem;
-            line-height: 1.4;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(14,116,144,0.2);
         }
         
-        /* ===== PROGRESS BAR ===== */
-        .progress-container {
-            margin: 1.5rem 0;
-        }
-        .progress-label {
-            color: rgb(148, 163, 184);
-            font-size: 0.875rem;
-            margin-bottom: 0.5rem;
-            display: flex;
-            justify-content: space-between;
-        }
-        .progress-bar {
-            height: 6px;
-            background: rgba(30, 41, 59, 0.5);
-            border-radius: 3px;
-            overflow: hidden;
-        }
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(to right, #0e7490, #d97706);
-            border-radius: 3px;
-            transition: width 0.5s ease;
-        }
-        
-        /* ===== TOAST ===== */
-        .toast {
-            position: fixed;
-            bottom: 100px;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: rgba(30, 41, 59, 0.95);
-            border: 1px solid rgba(14, 116, 144, 0.3);
+        /* SUCCESS MESSAGE - MATCHING YOUR STYLE */
+        .success-message{
+            background: var(--gradient-success);
+            border: 1px solid rgba(34,197,94,0.35);
+            padding: 1rem;
+            margin-top: 0.5rem;
+            text-align: center;
             border-radius: 0.75rem;
-            padding: 1rem 1.5rem;
-            color: white;
-            font-weight: 600;
-            z-index: 10000;
-            opacity: 0;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-            max-width: 90%;
+        }
+        .success-message p{
+            color: var(--success-emerald);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        
+        /* INFO BOX - MATCHING YOUR PALETTE */
+        .info-box{
+            background: var(--gradient-subtle);
+            border: 1px solid rgba(var(--primary-teal),0.25);
+            border-radius: 1rem;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
             text-align: center;
         }
-        .toast.show {
-            transform: translateX(-50%) translateY(0);
-            opacity: 1;
+        .info-box p{
+            color: var(--text-teal-light);
+            font-size: 0.875rem;
         }
         
-        /* ===== RESPONSIVE ===== */
-        @media (min-width: 640px) {
-            .app-wrapper {
-                border-radius: 2.5rem;
-                height: 844px;
-            }
-            .container {
-                padding: 2rem;
-                align-items: center;
-                justify-content: center;
-            }
+        /* BACK BUTTON - MATCHING YOUR STYLE */
+        .back-button{
+            padding:0.75rem 1.5rem;
+            background:rgba(var(--bg-card-light),0.5);
+            border:1px solid var(--border-softer);
+            border-radius:0.75rem;
+            color:var(--text-muted);
+            font-size:0.875rem;
+            cursor:pointer;
+            width:100%;
+            text-align:center;
         }
-        @media (max-width: 380px) {
-            .content-wrapper {
-                padding: 1rem;
-                padding-bottom: 6rem;
-            }
+        .back-button:hover{
+            background:rgba(var(--bg-card-light),0.7);
+            border-color:rgba(var(--primary-teal),0.3);
+        }
+        
+        @media (min-width:640px){
+            .app-wrapper{border-radius:2.5rem;height:844px}
+            .container{padding:2rem;align-items:center;justify-content:center}
+        }
+        @media (max-width:380px){
+            .content-wrapper{padding:1rem}
+            .module-icon{width:3rem;height:3rem;font-size:1.25rem}
+            .module-title{font-size:1.25rem}
         }
     </style>
 </head>
@@ -309,34 +240,6 @@
             <div class="bg-blur-2"></div>
             
             <div id="mainContent" class="main-content"></div>
-            
-            <div class="nav-bar">
-                <div class="nav-container">
-                    <button onclick="switchTab('skills')" class="nav-btn" data-tab="skills">
-                        <div class="nav-indicator active"></div>
-                        <svg class="nav-icon active" stroke-width="2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
-                        </svg>
-                        <span class="nav-label active">Skills</span>
-                    </button>
-                    
-                    <button onclick="switchTab('progress')" class="nav-btn" data-tab="progress">
-                        <div class="nav-indicator"></div>
-                        <svg class="nav-icon inactive" stroke-width="2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-                        </svg>
-                        <span class="nav-label inactive">Progress</span>
-                    </button>
-                    
-                    <button onclick="window.location.href='index.html?tab=journal'" class="nav-btn" data-tab="journal">
-                        <div class="nav-indicator"></div>
-                        <svg class="nav-icon inactive" stroke-width="2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                        </svg>
-                        <span class="nav-label inactive">Journal</span>
-                    </button>
-                </div>
-            </div>
         </div>
     </div>
     
@@ -345,198 +248,213 @@
     <script>
         // ===== STATE =====
         let state = {
-            currentTab: 'skills',
-            completedSkills: [],
-            skillProgress: {},
-            lastActivity: null
+            completedModules: [],
+            lastActivity: null,
+            showIntro: true
         };
 
-        const skills = [
+        // ===== 8 MINDFULNESS MODULES =====
+        const modules = [
             { 
-                id: 'observe', 
-                name: 'OBSERVE', 
+                id: 'introduction', 
+                name: 'GETTING STARTED', 
+                icon: '🌟', 
+                tagline: 'Begin your awareness journey', 
+                description: 'Learn what mindful awareness is, how it helps, and how to use these modules.',
+                learnUrl: 'module-introduction.html',
+                duration: '5 min',
+                required: true
+            },
+            { 
+                id: 'notice', 
+                name: 'NOTICE', 
                 icon: '👁️', 
-                tagline: 'Watch thoughts like clouds', 
-                description: 'Notice sensations, thoughts, and emotions without getting caught in them.',
-                why: 'Awareness is the foundation of choice.',
-                learnUrl: 'lesson-observe-1.html',
+                tagline: 'See thoughts like passing clouds', 
+                description: 'Become aware of sensations, thoughts, and emotions without getting pulled in.',
+                learnUrl: 'module-notice.html', 
                 duration: '10 min',
-                lessons: 3
+                dependsOn: 'introduction'
             },
             { 
-                id: 'describe', 
-                name: 'DESCRIBE', 
+                id: 'label', 
+                name: 'LABEL', 
                 icon: '📝', 
-                tagline: 'Facts over stories', 
-                description: 'Put words to what you observe using only facts, not interpretations.',
-                why: 'Language shapes how we experience reality.',
-                learnUrl: 'lesson-describe-1.html',
+                tagline: 'Name what you notice clearly', 
+                description: 'Put simple words to your experience using facts, without adding judgment.',
+                learnUrl: 'module-label.html', 
                 duration: '8 min',
-                lessons: 2
+                dependsOn: 'notice'
             },
             { 
-                id: 'participate', 
-                name: 'PARTICIPATE', 
+                id: 'engage', 
+                name: 'ENGAGE', 
                 icon: '🌿', 
-                tagline: 'Be fully present', 
-                description: 'Engage completely in what you\'re doing. Drop self-consciousness.',
-                why: 'Life happens when you\'re not watching yourself.',
-                learnUrl: 'lesson-participate-1.html',
+                tagline: 'Be fully in the moment', 
+                description: 'Dive completely into what you\'re doing, letting go of self-consciousness.',
+                learnUrl: 'module-engage.html', 
                 duration: '12 min',
-                lessons: 4
+                dependsOn: 'label'
             },
             { 
-                id: 'nonjudgment', 
-                name: 'NONJUDGE', 
+                id: 'accept', 
+                name: 'ACCEPT', 
                 icon: '⚖️', 
-                tagline: 'Drop the labels', 
-                description: 'Let go of evaluating things as good/bad, right/wrong.',
-                why: 'Judgment creates unnecessary suffering.',
-                learnUrl: 'lesson-nonjudge-1.html',
+                tagline: 'Let go of good/bad labels', 
+                description: 'Observe experiences without labeling them as right, wrong, good, or bad.',
+                learnUrl: 'module-accept.html', 
                 duration: '15 min',
-                lessons: 3
+                dependsOn: 'engage'
             },
             { 
-                id: 'onemindfully', 
-                name: 'ONE-MINDFULLY', 
+                id: 'focus', 
+                name: 'FOCUS', 
                 icon: '🎯', 
                 tagline: 'One thing at a time', 
-                description: 'Focus on one thing completely. When your mind wanders, gently bring it back.',
-                why: 'Presence deepens everything.',
-                learnUrl: 'lesson-onemindfully-1.html',
+                description: 'Give your full attention to one task. Gently return when the mind wanders.',
+                learnUrl: 'module-focus.html', 
                 duration: '10 min',
-                lessons: 2
+                dependsOn: 'accept'
             },
             { 
-                id: 'effectively', 
-                name: 'EFFECTIVELY', 
+                id: 'actwisely', 
+                name: 'ACT WISELY', 
                 icon: '✅', 
-                tagline: 'Do what works', 
-                description: 'Focus on what actually works, not what should work or what feels fair.',
-                why: 'Being right doesn\'t always help.',
-                learnUrl: 'lesson-effectively-1.html',
+                tagline: 'Choose what truly works', 
+                description: 'Do what helps reach your goals, even if it doesn\'t feel fair or right.',
+                learnUrl: 'module-actwisely.html', 
                 duration: '12 min',
-                lessons: 3
+                dependsOn: 'focus'
+            },
+            { 
+                id: 'checkin', 
+                name: 'CHECK-IN', 
+                icon: '🧠', 
+                tagline: 'Know your state', 
+                description: 'Pause and notice your current emotional, mental, and physical state.',
+                learnUrl: 'module-checkin.html', 
+                duration: '8 min',
+                dependsOn: 'actwisely'
             }
         ];
 
-        // ===== TWO-WAY COMMUNICATION FUNCTIONS =====
+        // ===== NAVIGATION =====
         
-        // 1. Send data TO lesson modules
-        function startSkill(skillId) {
-            const skill = skills.find(s => s.id === skillId);
-            if (!skill) return;
+        function startModule(moduleId) {
+            const module = modules.find(m => m.id === moduleId);
+            if (!module) return;
             
-            // Save current context to localStorage for the lesson to read
-            const lessonData = {
-                skillId: skillId,
-                skillName: skill.name,
+            // Send data to module
+            localStorage.setItem('currentModule', JSON.stringify({
+                moduleId: moduleId,
+                moduleName: module.name,
                 timestamp: new Date().toISOString(),
-                fromApp: 'mindfulness-course',
-                userProgress: state.skillProgress[skillId] || 0
-            };
+                userProgress: state.completedModules.includes(moduleId) ? 100 : 0,
+                fromApp: 'mindfulness-course'
+            }));
             
-            localStorage.setItem('currentLesson', JSON.stringify(lessonData));
-            
-            // Navigate to lesson
-            window.location.href = skill.learnUrl;
+            // Navigate to module
+            window.location.href = module.learnUrl;
         }
         
-        // 2. Check for data FROM lesson modules (when returning)
-        function checkLessonCompletion() {
-            const completedLesson = localStorage.getItem('completedLesson');
-            if (completedLesson) {
+        function checkModuleCompletion() {
+            const completed = localStorage.getItem('moduleCompleted');
+            if (completed) {
                 try {
-                    const data = JSON.parse(completedLesson);
-                    if (data.skillId && data.completed) {
-                        // Update progress
-                        if (!state.completedSkills.includes(data.skillId)) {
-                            state.completedSkills.push(data.skillId);
+                    const data = JSON.parse(completed);
+                    let moduleId = data.moduleId;
+                    
+                    const idMap = {
+                        'observe': 'notice',
+                        'describe': 'label',
+                        'participate': 'engage',
+                        'nonjudgment': 'accept',
+                        'onemindfully': 'focus',
+                        'effectively': 'actwisely'
+                    };
+                    
+                    if (idMap[moduleId]) {
+                        moduleId = idMap[moduleId];
+                    }
+                    
+                    if (moduleId && data.completed) {
+                        if (!state.completedModules.includes(moduleId)) {
+                            state.completedModules.push(moduleId);
                         }
                         
-                        // Update progress percentage
-                        const progress = Math.min(100, (state.skillProgress[data.skillId] || 0) + 33);
-                        state.skillProgress[data.skillId] = progress;
-                        
-                        // Save activity
                         state.lastActivity = new Date().toISOString();
+                        state.showIntro = false;
                         
-                        // Save state
                         saveState();
+                        syncWithMainApp();
                         
-                        // Show toast
-                        const skill = skills.find(s => s.id === data.skillId);
-                        showToast(`Great job! ${skill ? skill.name : 'Skill'} progress updated ✨`);
+                        const module = modules.find(m => m.id === moduleId);
+                        showToast(`${module ? module.name : 'Module'} completed! ✨`);
                         
-                        // Clear the completion data
-                        localStorage.removeItem('completedLesson');
+                        localStorage.removeItem('moduleCompleted');
                         
-                        // If lesson sent journal prompts, pass them to main app
                         if (data.journalPrompts) {
                             localStorage.setItem('modulePrompts', JSON.stringify(data.journalPrompts));
-                            showToast(`New reflection prompts available 📝`);
+                            showToast("Reflection prompts added to your journal 📝");
                         }
                         
-                        // Refresh view
                         render();
                     }
                 } catch (e) {
-                    console.error('Error parsing lesson completion:', e);
+                    console.error('Error:', e);
                 }
             }
         }
         
-        // 3. Load shared state with main app
-        function loadSharedState() {
-            // Load user progress from main app if available
+        function syncWithMainApp() {
             try {
-                const mainAppState = localStorage.getItem('mphaven_state');
-                if (mainAppState) {
-                    const data = JSON.parse(mainAppState);
-                    
-                    // Sync completed skills
-                    if (data.completedSkills) {
-                        state.completedSkills = data.completedSkills.filter(id => 
-                            skills.some(s => s.id === id)
-                        );
-                    }
-                    
-                    // Sync skill progress
-                    if (data.skillProgress) {
-                        Object.keys(data.skillProgress).forEach(skillId => {
-                            if (skills.some(s => s.id === skillId)) {
-                                state.skillProgress[skillId] = data.skillProgress[skillId];
-                            }
-                        });
-                    }
-                }
-            } catch (e) {
-                console.log('No shared state found or error loading');
-            }
-        }
-        
-        // 4. Save shared state to main app
-        function saveSharedState() {
-            try {
-                // Get current main app state
-                let mainAppState = {};
+                let mainState = {};
                 const existing = localStorage.getItem('mphaven_state');
                 if (existing) {
-                    mainAppState = JSON.parse(existing);
+                    mainState = JSON.parse(existing);
                 }
                 
-                // Update with our data
-                mainAppState.completedSkills = state.completedSkills;
-                mainAppState.skillProgress = state.skillProgress;
-                mainAppState.lastMindfulnessActivity = state.lastActivity;
+                if (!mainState.mindfulnessProgress) {
+                    mainState.mindfulnessProgress = {};
+                }
                 
-                // Save back
-                localStorage.setItem('mphaven_state', JSON.stringify(mainAppState));
+                modules.forEach(module => {
+                    mainState.mindfulnessProgress[module.id] = {
+                        completed: state.completedModules.includes(module.id),
+                        lastPracticed: state.lastActivity,
+                        name: module.name,
+                        tagline: module.tagline
+                    };
+                });
                 
-                // Also save to our own storage
-                localStorage.setItem('mindfulness_course_state', JSON.stringify(state));
+                localStorage.setItem('mphaven_state', JSON.stringify(mainState));
+                
             } catch (e) {
-                console.error('Error saving shared state:', e);
+                console.error('Sync error:', e);
+            }
+        }
+        
+        function loadFromMainApp() {
+            try {
+                const mainState = localStorage.getItem('mphaven_state');
+                if (mainState) {
+                    const data = JSON.parse(mainState);
+                    
+                    if (data.mindfulnessProgress) {
+                        Object.keys(data.mindfulnessProgress).forEach(moduleId => {
+                            if (data.mindfulnessProgress[moduleId].completed) {
+                                if (!state.completedModules.includes(moduleId)) {
+                                    state.completedModules.push(moduleId);
+                                }
+                            }
+                        });
+                        
+                        if (state.completedModules.length > 0) {
+                            state.showIntro = false;
+                        }
+                    }
+                }
+            } catch (e) {
+                console.log('No main app data found');
             }
         }
 
@@ -548,238 +466,101 @@
             setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
-        function switchTab(tabName) {
-            state.currentTab = tabName;
-            saveState();
+        function getModuleStatus(module) {
+            if (state.completedModules.includes(module.id)) {
+                return { type: 'completed', text: 'COMPLETED', cardClass: '' };
+            }
             
-            // Update nav indicators
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                const indicator = btn.querySelector('.nav-indicator');
-                const icon = btn.querySelector('.nav-icon');
-                const label = btn.querySelector('.nav-label');
-                const isActive = btn.dataset.tab === tabName;
-                
-                indicator.classList.toggle('active', isActive);
-                icon.classList.toggle('active', isActive);
-                icon.classList.toggle('inactive', !isActive);
-                icon.setAttribute('stroke-width', isActive ? '2.5' : '2');
-                label.classList.toggle('active', isActive);
-                label.classList.toggle('inactive', !isActive);
-            });
+            if (!module.dependsOn) {
+                return { type: 'recommended', text: 'RECOMMENDED', cardClass: 'card-recommended' };
+            }
             
-            render();
+            if (state.completedModules.includes(module.dependsOn)) {
+                return { type: 'recommended', text: 'RECOMMENDED', cardClass: 'card-recommended' };
+            }
+            
+            return { type: 'available', text: 'AVAILABLE', cardClass: 'card-available' };
         }
 
-        // ===== RENDER FUNCTIONS =====
-        function renderSkills() {
-            const totalSkills = skills.length;
-            const completedCount = state.completedSkills.length;
-            const progressPercent = Math.round((completedCount / totalSkills) * 100);
+        // ===== RENDER FUNCTION =====
+        function render() {
+            const completedCount = state.completedModules.length;
+            const totalModules = modules.length;
+            const progressPercent = Math.round((completedCount / totalModules) * 100);
             
-            return `
+            const visibleModules = modules.filter(module => 
+                !(module.id === 'introduction' && !state.showIntro)
+            );
+            
+            const content = document.getElementById('mainContent');
+            content.innerHTML = `
                 <div class="content-wrapper fade-in">
-                    <h1 style="color:white;font-size:2.5rem;font-weight:700;margin-bottom:0.5rem">Mindfulness Skills</h1>
-                    <p style="color:rgb(148,163,184);font-size:1rem;margin-bottom:1.5rem">
-                        Build your practice step by step
-                    </p>
-                    
-                    <div class="progress-container">
-                        <div class="progress-label">
-                            <span>Your Progress</span>
-                            <span>${completedCount}/${totalSkills} skills</span>
+                    <div class="header">
+                        <div>
+                            <h1 style="color:var(--text-primary);font-size:1.5rem;font-weight:700">Mindfulness</h1>
+                            <p style="color:var(--text-muted);font-size:0.875rem">
+                                ${completedCount}/${totalModules} modules completed
+                            </p>
                         </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: ${progressPercent}%"></div>
+                        <div class="progress-circle">
+                            ${progressPercent}%
                         </div>
                     </div>
                     
-                    <div style="margin-top: 2rem">
-                        ${skills.map(skill => {
-                            const isCompleted = state.completedSkills.includes(skill.id);
-                            const progress = state.skillProgress[skill.id] || 0;
-                            const lessonCount = skill.lessons || 1;
-                            const completedLessons = Math.floor((progress / 100) * lessonCount);
+                    ${state.showIntro ? `
+                        <div class="info-box">
+                            <p>Follow the recommended path or choose what you need right now</p>
+                        </div>
+                    ` : ''}
+                    
+                    <div style="margin-top:0.5rem">
+                        ${visibleModules.map(module => {
+                            const status = getModuleStatus(module);
                             
                             return `
-                                <button onclick="startSkill('${skill.id}')" class="skill-card">
-                                    <div class="skill-icon">${skill.icon}</div>
-                                    <div class="skill-title">${skill.name}</div>
-                                    <div class="skill-tagline">${skill.tagline}</div>
-                                    <div class="skill-description">${skill.description}</div>
+                                <button onclick="startModule('${module.id}')" 
+                                        class="module-card ${status.cardClass}">
+                                    <div class="module-icon">${module.icon}</div>
+                                    <div class="module-title">${module.name}</div>
+                                    <div class="module-tagline">${module.tagline}</div>
+                                    <div class="module-description">${module.description}</div>
                                     
-                                    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:1rem">
-                                        <div style="color:rgb(148,163,184);font-size:0.75rem">
-                                            ${skill.duration} • ${completedLessons}/${lessonCount} lessons
+                                    <div style="display:flex;justify-content:space-between;align-items:center">
+                                        <div style="color:var(--text-muted);font-size:0.75rem">
+                                            ${module.duration}
                                         </div>
-                                        ${isCompleted ? 
-                                            `<div style="color:#10b981;font-size:0.75rem;font-weight:600">✓ Completed</div>` :
-                                            `<div style="color:rgb(165,243,252);font-size:0.75rem;font-weight:600">Start →</div>`
-                                        }
+                                        <div class="status-badge status-${status.type}">
+                                            ${status.text}
+                                        </div>
                                     </div>
-                                    
-                                    ${progress > 0 && progress < 100 ? `
-                                        <div style="margin-top:0.5rem">
-                                            <div style="height:3px;background:rgba(30,41,59,0.5);border-radius:1.5px;overflow:hidden">
-                                                <div style="width:${progress}%;height:100%;background:linear-gradient(to right,#0e7490,#d97706);border-radius:1.5px"></div>
-                                            </div>
-                                        </div>
-                                    ` : ''}
                                 </button>
                             `;
                         }).join('')}
                     </div>
                     
-                    ${state.lastActivity ? `
-                        <div style="text-align:center;margin-top:2rem;padding:1rem;background:rgba(14,116,144,0.05);border-radius:1rem;border:1px solid rgba(14,116,144,0.15)">
-                            <div style="color:rgb(165,243,252);font-size:0.875rem;font-weight:600">
-                                Last practiced: ${formatDate(state.lastActivity)}
-                            </div>
-                        </div>
-                    ` : ''}
-                </div>
-            `;
-        }
-
-        function renderProgress() {
-            const totalSkills = skills.length;
-            const completedCount = state.completedSkills.length;
-            const progressPercent = Math.round((completedCount / totalSkills) * 100);
-            const today = new Date().toISOString().split('T')[0];
-            const streakDays = calculateStreak();
-            
-            return `
-                <div class="content-wrapper fade-in">
-                    <h1 style="color:white;font-size:2.5rem;font-weight:700;margin-bottom:0.5rem">Your Progress</h1>
-                    <p style="color:rgb(148,163,184);font-size:1rem;margin-bottom:2rem">
-                        Track your mindfulness journey
-                    </p>
-                    
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2rem">
-                        <div style="background:linear-gradient(135deg,rgba(14,116,144,0.1),rgba(217,119,6,0.05));border:1px solid rgba(14,116,144,0.2);border-radius:1rem;padding:1.25rem;text-align:center">
-                            <div style="color:white;font-size:2rem;font-weight:700">${completedCount}</div>
-                            <div style="color:rgb(148,163,184);font-size:0.875rem">Skills Completed</div>
-                        </div>
-                        
-                        <div style="background:linear-gradient(135deg,rgba(14,116,144,0.1),rgba(217,119,6,0.05));border:1px solid rgba(14,116,144,0.2);border-radius:1rem;padding:1.25rem;text-align:center">
-                            <div style="color:white;font-size:2rem;font-weight:700">${streakDays}</div>
-                            <div style="color:rgb(148,163,184);font-size:0.875rem">Day Streak</div>
-                        </div>
-                    </div>
-                    
-                    <div style="margin-bottom:2rem">
-                        <h3 style="color:white;font-size:1.125rem;font-weight:600;margin-bottom:1rem">Skill Progress</h3>
-                        <div style="display:flex;flex-direction:column;gap:0.75rem">
-                            ${skills.map(skill => {
-                                const progress = state.skillProgress[skill.id] || 0;
-                                const isCompleted = state.completedSkills.includes(skill.id);
-                                
-                                return `
-                                    <div style="display:flex;align-items:center;justify-content:space-between;padding:0.75rem;background:rgba(30,41,59,0.4);border-radius:0.75rem">
-                                        <div style="display:flex;align-items:center;gap:0.75rem">
-                                            <div style="width:2rem;height:2rem;border-radius:0.5rem;background:linear-gradient(135deg,rgba(14,116,144,0.2),rgba(217,119,6,0.1));display:flex;align-items:center;justify-content:center;font-size:1rem">
-                                                ${skill.icon}
-                                            </div>
-                                            <div>
-                                                <div style="color:white;font-size:0.875rem;font-weight:600">${skill.name}</div>
-                                                <div style="color:rgb(148,163,184);font-size:0.75rem">${skill.tagline}</div>
-                                            </div>
-                                        </div>
-                                        <div style="text-align:right">
-                                            <div style="color:${isCompleted ? '#10b981' : 'rgb(165,243,252)'};font-size:0.875rem;font-weight:600">
-                                                ${isCompleted ? '✓ Complete' : `${progress}%`}
-                                            </div>
-                                            ${!isCompleted ? `
-                                                <div style="width:60px;height:4px;background:rgba(30,41,59,0.5);border-radius:2px;margin-top:0.25rem;overflow:hidden">
-                                                    <div style="width:${progress}%;height:100%;background:linear-gradient(to right,#0e7490,#d97706);border-radius:2px"></div>
-                                                </div>
-                                            ` : ''}
-                                        </div>
-                                    </div>
-                                `;
-                            }).join('')}
-                        </div>
-                    </div>
-                    
-                    ${completedCount > 0 ? `
-                        <button onclick="shareProgress()" style="width:100%;padding:1rem;border-radius:0.75rem;background:linear-gradient(135deg,rgba(14,116,144,0.1),rgba(217,119,6,0.05));border:1px solid rgba(14,116,144,0.3);color:rgb(165,243,252);font-weight:600;font-size:0.875rem;cursor:pointer;margin-top:1rem">
-                            📤 Share Your Progress
+                    <div style="margin-top:2rem;text-align:center">
+                        <button onclick="window.location.href='index.html'" class="back-button">
+                            ← Back to Main App
                         </button>
-                    ` : ''}
+                    </div>
                 </div>
             `;
-        }
-
-        // ===== UTILITY FUNCTIONS =====
-        function formatDate(isoString) {
-            const date = new Date(isoString);
-            return date.toLocaleDateString('en-US', { 
-                month: 'short', 
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-        }
-
-        function calculateStreak() {
-            // Simple streak calculation based on last activity
-            if (!state.lastActivity) return 0;
-            
-            const lastDate = new Date(state.lastActivity);
-            const today = new Date();
-            const diffTime = Math.abs(today - lastDate);
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            
-            // If last activity was today or yesterday, count as streak
-            return diffDays <= 1 ? 1 : 0;
-        }
-
-        function shareProgress() {
-            const completedCount = state.completedSkills.length;
-            const totalSkills = skills.length;
-            const progressPercent = Math.round((completedCount / totalSkills) * 100);
-            
-            const shareText = `I've completed ${completedCount}/${totalSkills} mindfulness skills (${progressPercent}% progress) on MPHaven! 🧘‍♂️✨`;
-            
-            if (navigator.share) {
-                navigator.share({
-                    title: 'My Mindfulness Progress',
-                    text: shareText,
-                    url: window.location.href
-                }).catch(err => {
-                    navigator.clipboard.writeText(shareText);
-                    showToast('Progress copied to clipboard! 📋');
-                });
-            } else {
-                navigator.clipboard.writeText(shareText);
-                showToast('Progress copied to clipboard! 📋');
-            }
-        }
-
-        function render() {
-            const content = document.getElementById('mainContent');
-            if (!content) return;
-            
-            if (state.currentTab === 'skills') {
-                content.innerHTML = renderSkills();
-            } else if (state.currentTab === 'progress') {
-                content.innerHTML = renderProgress();
-            }
         }
 
         // ===== STATE MANAGEMENT =====
         function saveState() {
-            saveSharedState();
+            localStorage.setItem('mindfulness_state', JSON.stringify(state));
+            syncWithMainApp();
         }
 
         function loadState() {
             try {
-                const saved = localStorage.getItem('mindfulness_course_state');
+                const saved = localStorage.getItem('mindfulness_state');
                 if (saved) {
                     const data = JSON.parse(saved);
-                    state.currentTab = data.currentTab || 'skills';
-                    state.completedSkills = data.completedSkills || [];
-                    state.skillProgress = data.skillProgress || {};
+                    state.completedModules = data.completedModules || [];
                     state.lastActivity = data.lastActivity;
+                    state.showIntro = data.showIntro !== false;
                 }
             } catch (e) {
                 console.log('Starting fresh');
@@ -789,21 +570,11 @@
         // ===== INITIALIZATION =====
         function init() {
             loadState();
-            loadSharedState();
-            checkLessonCompletion(); // Check for returning from lessons
-            
-            // Handle URL parameters
-            const urlParams = new URLSearchParams(window.location.search);
-            const tab = urlParams.get('tab');
-            if (tab && ['skills', 'progress'].includes(tab)) {
-                state.currentTab = tab;
-            }
-            
+            loadFromMainApp();
+            checkModuleCompletion();
             render();
-            switchTab(state.currentTab);
         }
 
-        // Start the app
         init();
     </script>
 </body>
