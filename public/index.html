@@ -8,14 +8,52 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="MPHaven">
     <meta name="format-detection" content="telephone=no">
-    <meta name="theme-color" content="#020617">
+    <meta name="theme-color" content="#0f172a">
     <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>❤️</text></svg>">
     <title>MPHaven - Welcome</title>
     <style>
+        /* ========== CRITICAL FIXES ========== */
+        
+        /* Prevent initial flash */
+        body:not(.loaded) {
+            visibility: hidden;
+            opacity: 0;
+        }
+        
+        /* Prevent iOS rubber band effect */
+        html, body {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            -webkit-overflow-scrolling: auto !important;
+        }
+        
+        /* FIX TEXT GLITCH: Prevent text collapse */
+        body, .container, .content, p, span, h1, h2, h3, .tagline, .subtitle, .btn, .feature-content, .footer {
+            white-space: normal !important;
+            word-wrap: break-word !important;
+            overflow-wrap: break-word !important;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            letter-spacing: normal !important;
+        }
+        
+        /* Ensure proper spacing */
+        .tagline, .subtitle, .feature-content p, .footer p {
+            line-height: 1.6 !important;
+            letter-spacing: 0.01em !important;
+            word-spacing: 0.05em !important;
+        }
+        
+        /* ========== BASE STYLES ========== */
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
        
         @keyframes pulse-glow {
@@ -29,13 +67,9 @@
         }
        
         html, body {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            background: linear-gradient(to bottom, #020617, #0f172a, #020617);
+            overscroll-behavior: none;
+            touch-action: pan-y;
         }
        
         body {
@@ -43,30 +77,45 @@
             align-items: center;
             justify-content: center;
             padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-            margin: 0;
-            overflow: hidden;
-            -webkit-tap-highlight-color: transparent;
-            -webkit-touch-callout: none;
+            background: var(--bg-dark);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+       
+        body.loaded {
+            opacity: 1;
+            visibility: visible;
         }
        
         .container {
             width: 100%;
             max-width: 28rem;
             height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
-            background: rgba(15, 23, 42, 0.5);
-            backdrop-filter: blur(40px);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            background: var(--bg-card);
+            /* Reduced blur for performance */
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: var(--shadow-card);
             display: flex;
             flex-direction: column;
             overflow-y: auto;
             overflow-x: hidden;
             position: relative;
-            border: 1px solid rgba(30, 41, 59, 0.5);
+            border: 1px solid var(--border-subtle);
             -ms-overflow-style: none;
             scrollbar-width: none;
             margin-top: env(safe-area-inset-top);
             margin-bottom: env(safe-area-inset-bottom);
-            -webkit-overflow-scrolling: touch;
+            /* Hardware acceleration */
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
+            will-change: transform;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+       
+        body.loaded .container {
+            opacity: 1;
         }
        
         .container::-webkit-scrollbar {
@@ -80,9 +129,9 @@
             transform: translateX(-50%);
             width: 30rem;
             height: 30rem;
-            background: rgba(147, 51, 234, 0.15);
+            background: var(--blur-teal);
             border-radius: 50%;
-            filter: blur(120px);
+            filter: blur(var(--blur-radius));
             pointer-events: none;
             animation: pulse-glow 4s ease-in-out infinite;
         }
@@ -93,7 +142,7 @@
             right: -10%;
             width: 25rem;
             height: 25rem;
-            background: rgba(6, 182, 212, 0.15);
+            background: var(--blur-amber);
             border-radius: 50%;
             filter: blur(100px);
             pointer-events: none;
@@ -119,23 +168,23 @@
             width: 4.5rem;
             height: 4.5rem;
             margin: 0 auto 1rem;
-            background: linear-gradient(135deg, #9333EA, #0891B2);
+            background: var(--gradient-main);
             border-radius: 1.5rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 20px 40px rgba(147, 51, 234, 0.3);
+            box-shadow: 0 20px 40px var(--teal-glow);
             animation: float 3s ease-in-out infinite;
         }
        
         .logo-icon svg {
             width: 40px !important;
             height: 40px !important;
-            color: white;
+            color: var(--text-primary);
         }
        
         h1 {
-            color: white;
+            color: var(--text-primary);
             font-size: 2.5rem;
             font-weight: 700;
             letter-spacing: -0.025em;
@@ -144,16 +193,20 @@
         }
        
         .tagline {
-            color: rgb(203, 213, 225);
+            color: var(--text-secondary);
             font-size: 1rem;
-            line-height: 1.5;
+            line-height: 1.6;
             margin-bottom: 0.75rem;
+            word-spacing: 0.05em;
+            white-space: normal;
         }
        
         .subtitle {
-            color: rgb(148, 163, 184);
+            color: var(--text-muted);
             font-size: 0.875rem;
-            line-height: 1.5;
+            line-height: 1.6;
+            word-spacing: 0.05em;
+            white-space: normal;
         }
        
         .auth-buttons {
@@ -171,7 +224,7 @@
             font-weight: 600;
             border: none;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -180,8 +233,11 @@
             overflow: hidden;
             min-height: 48px;
             -webkit-appearance: none;
-            -webkit-tap-highlight-color: rgba(0,0,0,0);
             touch-action: manipulation;
+            -webkit-touch-callout: none;
+            user-select: none;
+            white-space: normal;
+            word-wrap: break-word;
         }
        
         .btn:disabled {
@@ -194,29 +250,29 @@
         }
        
         .btn-primary {
-            background: linear-gradient(135deg, #9333EA, #7C3AED);
-            color: white;
-            box-shadow: 0 10px 25px rgba(147, 51, 234, 0.4);
+            background: linear-gradient(135deg, var(--primary-teal), var(--primary-teal-dark));
+            color: var(--text-primary);
+            box-shadow: 0 10px 25px var(--teal-glow);
         }
        
         .btn-primary:hover:not(:disabled) {
-            box-shadow: 0 15px 35px rgba(147, 51, 234, 0.5);
+            box-shadow: 0 15px 35px var(--teal-glow);
             transform: translateY(-2px);
         }
        
         .btn-secondary {
-            background: rgba(30, 41, 59, 0.8);
-            color: white;
-            border: 1px solid rgba(100, 116, 139, 0.3);
+            background: var(--bg-card-light);
+            color: var(--text-primary);
+            border: 1px solid var(--border-softer);
         }
        
         .btn-secondary:hover:not(:disabled) {
-            background: rgba(30, 41, 59, 1);
-            border-color: rgba(100, 116, 139, 0.5);
+            background: rgba(30, 41, 59, 0.9);
+            border-color: var(--text-muted);
         }
        
         .btn-google {
-            background: white;
+            background: var(--text-primary);
             color: #1f2937;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         }
@@ -243,13 +299,14 @@
         .divider-line {
             flex: 1;
             height: 1px;
-            background: rgba(100, 116, 139, 0.3);
+            background: var(--border-softer);
         }
        
         .divider-text {
-            color: rgb(148, 163, 184);
+            color: var(--text-muted);
             font-size: 0.875rem;
             font-weight: 500;
+            white-space: nowrap;
         }
        
         .features {
@@ -263,9 +320,9 @@
             align-items: start;
             gap: 0.75rem;
             padding: 0.875rem;
-            background: rgba(30, 41, 59, 0.3);
+            background: var(--bg-card-light);
             border-radius: 1rem;
-            border: 1px solid rgba(100, 116, 139, 0.2);
+            border: 1px solid var(--border-softer);
         }
        
         .feature-icon {
@@ -281,37 +338,47 @@
         .feature-icon svg {
             width: 20px !important;
             height: 20px !important;
-            color: white;
+            color: var(--text-primary);
         }
        
         .feature-content h3 {
-            color: white;
+            color: var(--text-primary);
             font-size: 0.8125rem;
             font-weight: 600;
             margin-bottom: 0.25rem;
+            white-space: normal;
         }
        
         .feature-content p {
-            color: rgb(148, 163, 184);
+            color: var(--text-muted);
             font-size: 0.75rem;
-            line-height: 1.4;
+            line-height: 1.6;
+            white-space: normal;
+            word-spacing: 0.05em;
         }
        
         .footer {
             text-align: center;
             padding: max(1.5rem, env(safe-area-inset-bottom)) 1.5rem 1.5rem;
-            color: rgb(100, 116, 139);
+            color: var(--text-dim);
             font-size: 0.75rem;
             flex-shrink: 0;
         }
        
         .footer a {
-            color: #9333EA;
+            color: var(--text-teal);
             text-decoration: none;
         }
        
         .footer a:hover {
             text-decoration: underline;
+            color: var(--text-teal-light);
+        }
+       
+        .footer p {
+            line-height: 1.6;
+            word-spacing: 0.05em;
+            white-space: normal;
         }
        
         .loading-overlay {
@@ -320,15 +387,17 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.9);
             display: none;
             align-items: center;
             justify-content: center;
-            z-index: 1000;
+            z-index: 9999;
             flex-direction: column;
             gap: 1rem;
             padding-top: env(safe-area-inset-top);
             padding-bottom: env(safe-area-inset-bottom);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
        
         .loading-overlay.show {
@@ -338,15 +407,17 @@
         .loading-spinner {
             width: 3rem;
             height: 3rem;
-            border: 3px solid rgba(100, 116, 139, 0.3);
-            border-top: 3px solid #9333EA;
+            border: 3px solid var(--border-softer);
+            border-top: 3px solid var(--primary-teal);
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
        
         .loading-text {
-            color: white;
+            color: var(--text-primary);
             font-size: 1rem;
+            font-weight: 500;
+            white-space: normal;
         }
        
         @keyframes spin {
@@ -354,7 +425,7 @@
             100% { transform: rotate(360deg); }
         }
        
-        /* iOS SVG FIXES - ADDED */
+        /* iOS SVG FIXES */
         .logo-icon,
         .feature-icon,
         .btn svg {
@@ -365,26 +436,92 @@
             will-change: transform;
         }
        
-        /* Test SVG styles */
-        .test-svg {
-            position: fixed;
-            top: 10px;
-            left: 10px;
-            z-index: 9999;
-            width: 50px;
-            height: 50px;
-            display: none;
+        /* Comfortable Theme CSS Variables */
+        :root {
+            /* Backgrounds & Neutrals */
+            --bg-dark: #0f172a;
+            --bg-card: rgba(15, 23, 42, 0.98);
+            --bg-card-light: rgba(30, 41, 59, 0.65);
+            --bg-card-dark: rgba(15, 23, 42, 0.45);
+            --border-subtle: rgba(30, 41, 59, 0.5);
+            --border-softer: rgba(51, 65, 85, 0.4);
+
+            /* Primary – Teal */
+            --primary-teal: #0e7490;
+            --primary-teal-dark: #0c627a;
+            --teal-glow: rgba(14, 116, 144, 0.25);
+
+            /* Accent – Amber */
+            --accent-amber: #d97706;
+            --accent-amber-dark: #b45309;
+            --amber-glow: rgba(217, 119, 6, 0.25);
+
+            /* Teal / Cyan text & accent shades */
+            --text-teal-light: rgb(165, 243, 252);
+            --text-teal: rgb(94, 234, 212);
+            --text-teal-dark: rgb(14, 116, 144);
+
+            /* Amber / Warm text shades */
+            --text-amber-light: rgb(253, 230, 138);
+            --text-amber: rgb(251, 191, 36);
+            --text-amber-dark: rgb(217, 119, 6);
+
+            /* Success / Positive feedback */
+            --success-emerald: rgb(74, 222, 128);
+            --success-bg: rgba(34, 197, 94, 0.12);
+
+            /* Neutral text */
+            --text-primary: rgb(241, 245, 249);
+            --text-secondary: rgb(203, 213, 225);
+            --text-muted: rgb(148, 163, 184);
+            --text-dim: rgb(100, 116, 139);
+
+            /* Blur / Glow orbs */
+            --blur-teal: rgba(14, 116, 144, 0.08);
+            --blur-amber: rgba(217, 119, 6, 0.08);
+            --blur-radius: 140px;
+            --blur-opacity: 0.6;
+
+            /* Gradients */
+            --gradient-main: linear-gradient(135deg, #0e7490, #d97706);
+            --gradient-teal-heavy: linear-gradient(to right, #0e7490 70%, #d97706);
+            --gradient-subtle: linear-gradient(135deg, rgba(14,116,144,0.15), rgba(217,119,6,0.10));
+            --gradient-success: linear-gradient(135deg, rgba(34,197,94,0.15), rgba(21,128,61,0.08));
+
+            /* Shadows & Depth */
+            --shadow-card: 0 25px 50px -12px rgba(0,0,0,0.25);
+            --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+        }
+
+        /* Feature icon specific colors */
+        .feature:nth-child(1) .feature-icon {
+            background: linear-gradient(135deg, var(--primary-teal), var(--primary-teal-dark));
         }
        
-        /* Optional: Remove backdrop-filter if icons still don't show */
-        /* Uncomment this block if icons are still missing on iOS */
-        /*
-        .container {
-            backdrop-filter: none !important;
-            -webkit-backdrop-filter: none !important;
-            background: rgba(15, 23, 42, 0.95) !important;
+        .feature:nth-child(2) .feature-icon {
+            background: linear-gradient(135deg, var(--success-emerald), rgb(34, 197, 94));
         }
-        */
+       
+        .feature:nth-child(3) .feature-icon {
+            background: linear-gradient(135deg, var(--primary-teal), var(--accent-amber));
+        }
+       
+        .error-message {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            border-radius: 1rem;
+            padding: 1rem;
+            margin-top: 1rem;
+            color: rgb(252, 165, 165);
+            font-size: 0.875rem;
+            display: none;
+            line-height: 1.6;
+            white-space: normal;
+        }
+       
+        .error-message.show {
+            display: block;
+        }
        
         @media (min-width: 640px) {
             .container {
@@ -427,15 +564,6 @@
             }
         }
        
-        html {
-            overscroll-behavior: none;
-        }
-       
-        body {
-            overscroll-behavior: none;
-            touch-action: pan-y;
-        }
-       
         @supports (-webkit-touch-callout: none) {
             body {
                 height: -webkit-fill-available;
@@ -443,37 +571,16 @@
            
             .container {
                 height: -webkit-fill-available;
+                max-height: -webkit-fill-available;
             }
            
             .btn {
                 min-height: 44px;
             }
         }
-       
-        .error-message {
-            background: rgba(239, 68, 68, 0.2);
-            border: 1px solid rgba(239, 68, 68, 0.4);
-            border-radius: 1rem;
-            padding: 1rem;
-            margin-top: 1rem;
-            color: rgb(252, 165, 165);
-            font-size: 0.875rem;
-            display: none;
-        }
-       
-        .error-message.show {
-            display: block;
-        }
     </style>
 </head>
 <body>
-    <!-- Test SVG - Hidden by default, set display: block temporarily to test -->
-    <div class="test-svg" style="display: none;">
-        <svg width="100" height="100" viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r="40" fill="red" />
-        </svg>
-    </div>
-   
     <div class="container">
         <div class="bg-blur-1"></div>
         <div class="bg-blur-2"></div>
@@ -527,7 +634,7 @@
            
             <div class="features">
                 <div class="feature">
-                    <div class="feature-icon" style="background: linear-gradient(135deg, #9333EA, #7C3AED);">
+                    <div class="feature-icon">
                         <svg width="20" height="20" preserveAspectRatio="xMidYMid meet" 
                              fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
@@ -541,7 +648,7 @@
                 </div>
                
                 <div class="feature">
-                    <div class="feature-icon" style="background: linear-gradient(135deg, #059669, #10B981);">
+                    <div class="feature-icon">
                         <svg width="20" height="20" preserveAspectRatio="xMidYMid meet" 
                              fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
@@ -555,7 +662,7 @@
                 </div>
                
                 <div class="feature">
-                    <div class="feature-icon" style="background: linear-gradient(135deg, #0891B2, #06B6D4);">
+                    <div class="feature-icon">
                         <svg width="20" height="20" preserveAspectRatio="xMidYMid meet" 
                              fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
@@ -577,27 +684,296 @@
    
     <div class="loading-overlay" id="loadingOverlay">
         <div class="loading-spinner"></div>
-        <div class="loading-text">Loading...</div>
+        <div class="loading-text" id="loadingText">Loading...</div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
    
     <script>
-        // Wrap everything in an IIFE to avoid global scope pollution
-        (function() {
-            'use strict';
+        // ========== CRITICAL FIXES ==========
+        
+        // Prevent multiple initializations
+        let isInitialized = false;
+        let isProcessingAuth = false;
+        let loadTimer = null;
+        
+        // Device detection
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+        
+        console.log('Device info:', { isIOS, isSafari, userAgent: navigator.userAgent });
+       
+        // Supabase configuration
+        const SUPABASE_URL = 'https://ocdwpaefmslyidelkzde.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jZHdwYWVmbXNseWlkZWxremRlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk0NjQ1OTQsImV4cCI6MjA4NTA0MDU5NH0.OAYuCQhxrmZMLI_H8OuaJvs7dKVm82gUPgGzQDUYq-Q';
+       
+        // Initialize Supabase
+        let sbClient = null;
+       
+        // ========== UI HELPER FUNCTIONS ==========
+        
+        function showLoading(message = 'Loading...') {
+            if (isProcessingAuth) return;
+            
+            const overlay = document.getElementById('loadingOverlay');
+            const text = document.getElementById('loadingText');
+            if (text) text.textContent = message;
+            overlay.classList.add('show');
+            
+            // Clear any existing timer
+            if (loadTimer) {
+                clearTimeout(loadTimer);
+                loadTimer = null;
+            }
+            
+            // Safety timeout
+            loadTimer = setTimeout(() => {
+                console.warn('Loading timeout - hiding overlay');
+                hideLoading();
+            }, 15000); // 15 second timeout
+        }
+       
+        function hideLoading() {
+            const overlay = document.getElementById('loadingOverlay');
+            overlay.classList.remove('show');
+            
+            if (loadTimer) {
+                clearTimeout(loadTimer);
+                loadTimer = null;
+            }
+            
+            isProcessingAuth = false;
+        }
+       
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            if (!errorDiv) return;
+            
+            errorDiv.textContent = message;
+            errorDiv.classList.add('show');
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                errorDiv.classList.remove('show');
+            }, 5000);
+        }
+       
+        // ========== AUTH FUNCTIONS ==========
+        
+        function getRedirectURL() {
+            const baseURL = window.location.origin;
+            console.log('Base URL:', baseURL);
+            // Ensure proper URL format
+            return `${baseURL.replace(/\/$/, '')}/app.html`;
+        }
+       
+        async function handleGoogleSignIn() {
+            if (isProcessingAuth) return;
+            
+            console.log('Starting Google sign-in...');
            
-            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-            const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+            if (!sbClient) {
+                showError('Authentication service not available. Please refresh the page.');
+                return;
+            }
            
-            console.log('Device info:', { isIOS, isSafari, userAgent: navigator.userAgent });
+            const googleBtn = document.getElementById('googleBtn');
+            if (!googleBtn) return;
+            
+            googleBtn.disabled = true;
+            isProcessingAuth = true;
            
-            // Supabase configuration
-            const SUPABASE_URL = 'https://ocdwpaefmslyidelkzde.supabase.co';
-            const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jZHdwYWVmbXNseWlkZWxremRlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk0NjQ1OTQsImV4cCI6MjA4NTA0MDU5NH0.OAYuCQhxrmZMLI_H8OuaJvs7dKVm82gUPgGzQDUYq-Q';
+            showLoading('Connecting to Google...');
            
+            try {
+                const redirectTo = getRedirectURL();
+                console.log('Redirect URL:', redirectTo);
+               
+                // iOS-specific handling
+                if (isIOS) {
+                    // For iOS, open in same window
+                    const { data, error } = await sbClient.auth.signInWithOAuth({
+                        provider: 'google',
+                        options: {
+                            redirectTo: redirectTo,
+                            skipBrowserRedirect: true
+                        }
+                    });
+                   
+                    if (error) throw error;
+                    
+                    if (data?.url) {
+                        // Direct navigation for iOS
+                        window.location.href = data.url;
+                    }
+                } else {
+                    // Standard flow for desktop/Android
+                    const { data, error } = await sbClient.auth.signInWithOAuth({
+                        provider: 'google',
+                        options: {
+                            redirectTo: redirectTo,
+                            queryParams: {
+                                access_type: 'offline',
+                                prompt: 'consent',
+                            }
+                        }
+                    });
+                    
+                    if (error) throw error;
+                    
+                    // Safety timeout
+                    setTimeout(() => {
+                        if (isProcessingAuth) {
+                            console.warn('OAuth popup timeout');
+                            hideLoading();
+                            googleBtn.disabled = false;
+                            isProcessingAuth = false;
+                            showError('Sign-in window may have been blocked. Please check your popup settings.');
+                        }
+                    }, 10000);
+                }
+               
+            } catch (error) {
+                console.error('Google sign-in error:', error);
+                hideLoading();
+                
+                const googleBtn = document.getElementById('googleBtn');
+                if (googleBtn) googleBtn.disabled = false;
+                isProcessingAuth = false;
+               
+                let errorMessage = 'Unable to sign in with Google. ';
+               
+                if (error.message.includes('popup')) {
+                    errorMessage += 'Please allow popups for this site.';
+                } else if (isIOS) {
+                    errorMessage += 'Please ensure Safari cookies are enabled and you are not in Private Browsing mode.';
+                } else {
+                    errorMessage += error.message || 'Please try again.';
+                }
+               
+                showError(errorMessage);
+            }
+        }
+       
+        function handleSignUp() {
+            if (isProcessingAuth) return;
+            
+            isProcessingAuth = true;
+            showLoading('Loading sign up...');
+            
+            // Small delay for smoother transition
+            setTimeout(() => {
+                window.location.href = 'signup.html';
+            }, 300);
+        }
+       
+        function handleLogin() {
+            if (isProcessingAuth) return;
+            
+            isProcessingAuth = true;
+            showLoading('Loading login...');
+            
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 300);
+        }
+       
+        // ========== SESSION MANAGEMENT ==========
+        
+        async function checkSession() {
+            if (!sbClient || isProcessingAuth) return false;
+           
+            try {
+                const { data: { session }, error } = await sbClient.auth.getSession();
+               
+                if (error) {
+                    console.log('Session check error:', error);
+                    return false;
+                }
+               
+                if (session) {
+                    console.log('Active session found, redirecting...');
+                    showLoading('Welcome back!');
+                    
+                    // Clear any pending timeouts
+                    if (loadTimer) {
+                        clearTimeout(loadTimer);
+                    }
+                    
+                    setTimeout(() => {
+                        window.location.href = 'app.html';
+                    }, 800);
+                    return true;
+                }
+               
+                return false;
+            } catch (err) {
+                console.log('Session check failed:', err);
+                return false;
+            }
+        }
+       
+        async function handleOAuthCallback() {
+            // Check URL for OAuth parameters
+            const hash = window.location.hash;
+            const search = window.location.search;
+           
+            if (!hash.includes('access_token') && !hash.includes('error') && !search.includes('code=')) {
+                return; // Not an OAuth callback
+            }
+           
+            console.log('OAuth callback detected');
+           
+            if (!sbClient) {
+                console.error('Supabase not initialized for OAuth callback');
+                showError('Authentication error. Please try signing in again.');
+                window.history.replaceState({}, document.title, '/');
+                return;
+            }
+           
+            showLoading('Completing sign in...');
+            isProcessingAuth = true;
+           
+            try {
+                // Small delay to ensure Supabase processes the token
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+                const { data, error } = await sbClient.auth.getSession();
+               
+                if (error) throw error;
+               
+                if (data.session) {
+                    console.log('Session established, redirecting to app');
+                    
+                    // Clear URL parameters
+                    window.history.replaceState({}, document.title, '/');
+                    
+                    // Show success message briefly
+                    showLoading('Welcome! Loading your account...');
+                    
+                    setTimeout(() => {
+                        window.location.href = 'app.html';
+                    }, 1000);
+                } else {
+                    throw new Error('No session after OAuth');
+                }
+            } catch (error) {
+                console.error('OAuth callback error:', error);
+                hideLoading();
+                isProcessingAuth = false;
+                showError('Sign-in failed. Please try again.');
+                window.history.replaceState({}, document.title, '/');
+            }
+        }
+       
+        // ========== INITIALIZATION ==========
+        
+        async function initializeApp() {
+            if (isInitialized) return;
+            isInitialized = true;
+            
+            console.log('Initializing app...');
+            
             // Initialize Supabase
-            let sbClient = null;
-           
             try {
                 sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
                     auth: {
@@ -638,277 +1014,118 @@
                 console.error('Failed to initialize Supabase:', error);
                 showError('Unable to initialize authentication. Please refresh the page.');
             }
+            
+            // Setup button listeners
+            const googleBtn = document.getElementById('googleBtn');
+            const signupBtn = document.getElementById('signupBtn');
+            const loginBtn = document.getElementById('loginBtn');
            
-            // UI Helper functions
-            function showLoading(message = 'Loading...') {
-                const overlay = document.getElementById('loadingOverlay');
-                const text = overlay.querySelector('.loading-text');
-                if (text) text.textContent = message;
-                overlay.classList.add('show');
-                if (isIOS) document.body.style.overflow = 'hidden';
+            if (googleBtn) {
+                googleBtn.addEventListener('click', handleGoogleSignIn);
             }
            
-            function hideLoading() {
-                const overlay = document.getElementById('loadingOverlay');
-                overlay.classList.remove('show');
-                if (isIOS) document.body.style.overflow = '';
+            if (signupBtn) {
+                signupBtn.addEventListener('click', handleSignUp);
             }
            
-            function showError(message) {
-                const errorDiv = document.getElementById('errorMessage');
-                errorDiv.textContent = message;
-                errorDiv.classList.add('show');
-                setTimeout(() => {
-                    errorDiv.classList.remove('show');
-                }, 5000);
+            if (loginBtn) {
+                loginBtn.addEventListener('click', handleLogin);
             }
-           
-            // Get the correct redirect URL
-            function getRedirectURL() {
-                const baseURL = window.location.origin;
-                console.log('Base URL:', baseURL);
-                return `${baseURL}/app.html`;
-            }
-           
-            // Google Sign-In Handler
-            async function handleGoogleSignIn() {
-                console.log('Starting Google sign-in...');
-               
-                if (!sbClient) {
-                    showError('Authentication service not available. Please refresh the page.');
-                    return;
-                }
-               
-                const googleBtn = document.getElementById('googleBtn');
-                googleBtn.disabled = true;
-               
-                showLoading('Connecting to Google...');
-               
-                try {
-                    const redirectTo = getRedirectURL();
-                    console.log('Redirect URL:', redirectTo);
-                   
-                    const { data, error } = await sbClient.auth.signInWithOAuth({
-                        provider: 'google',
-                        options: {
-                            redirectTo: redirectTo,
-                            queryParams: {
-                                access_type: 'offline',
-                                prompt: 'consent',
-                            },
-                            skipBrowserRedirect: false
-                        }
-                    });
-                   
-                    if (error) {
-                        throw error;
+            
+            // iOS specific fixes
+            if (isIOS) {
+                const setVH = () => {
+                    const vh = window.innerHeight * 0.01;
+                    document.documentElement.style.setProperty('--vh', `${vh}px`);
+                };
+                setVH();
+                window.addEventListener('resize', setVH);
+                
+                // Prevent bounce scrolling
+                document.addEventListener('touchmove', function(e) {
+                    if (e.target.closest('.container')) {
+                        e.stopPropagation();
                     }
-                   
-                    console.log('OAuth initiated:', data);
-                   
-                    setTimeout(() => {
-                        hideLoading();
-                        googleBtn.disabled = false;
-                        showError('Sign-in window did not open. Please check your popup settings.');
-                    }, 5000);
-                   
-                } catch (error) {
-                    console.error('Google sign-in error:', error);
-                    hideLoading();
-                    googleBtn.disabled = false;
-                   
-                    let errorMessage = 'Unable to sign in with Google. ';
-                   
-                    if (error.message.includes('popup')) {
-                        errorMessage += 'Please allow popups for this site.';
-                    } else if (isIOS) {
-                        errorMessage += 'Please ensure:\n• Safari cookies are enabled\n• Not in Private Browsing\n• Popups are allowed';
-                    } else {
-                        errorMessage += error.message || 'Please try again.';
-                    }
-                   
-                    showError(errorMessage);
-                }
+                }, { passive: false });
             }
-           
-            // Simple navigation handlers
-            function handleSignUp() {
-                showLoading('Loading sign up...');
-                setTimeout(() => {
-                    window.location.href = 'signup.html';
-                }, isIOS ? 100 : 0);
-            }
-           
-            function handleLogin() {
-                showLoading('Loading login...');
-                setTimeout(() => {
-                    window.location.href = 'login.html';
-                }, isIOS ? 100 : 0);
-            }
-           
-            // Check for existing session
-            async function checkSession() {
-                if (!sbClient) {
-                    console.log('Supabase not initialized');
-                    return false;
-                }
-               
-                try {
-                    const { data: { session }, error } = await sbClient.auth.getSession();
-                   
-                    if (error) {
-                        console.log('Session check error:', error);
-                        return false;
-                    }
-                   
-                    if (session) {
-                        console.log('Active session found, redirecting...');
-                        showLoading('Welcome back!');
-                        setTimeout(() => {
-                            window.location.href = 'app.html';
-                        }, 500);
-                        return true;
-                    }
-                   
-                    return false;
-                } catch (err) {
-                    console.log('No active session');
-                    return false;
-                }
-            }
-           
-            // Handle OAuth callback
-            async function handleOAuthCallback() {
-                const hash = window.location.hash;
-                const search = window.location.search;
-               
-                if (hash.includes('access_token') || hash.includes('error') || search.includes('code=')) {
-                    console.log('OAuth callback detected');
-                   
-                    if (!sbClient) {
-                        console.error('Supabase not initialized for OAuth callback');
-                        showError('Authentication error. Please try signing in again.');
-                        window.history.replaceState({}, document.title, '/');
-                        return;
-                    }
-                   
-                    showLoading('Completing sign in...');
-                   
-                    try {
-                        const { data, error } = await sbClient.auth.getSession();
-                       
-                        if (error) {
-                            throw error;
-                        }
-                       
-                        if (data.session) {
-                            console.log('Session established, redirecting to app');
-                            setTimeout(() => {
-                                window.location.href = 'app.html';
-                            }, 500);
-                        } else {
-                            throw new Error('No session after OAuth');
-                        }
-                    } catch (error) {
-                        console.error('OAuth callback error:', error);
-                        hideLoading();
-                        showError('Sign-in failed. Please try again.');
-                        window.history.replaceState({}, document.title, '/');
-                    }
-                }
-            }
-           
-            // Initialize page
-            document.addEventListener('DOMContentLoaded', async function() {
-                console.log('Page loaded');
-               
-                // Setup button listeners
-                const googleBtn = document.getElementById('googleBtn');
-                const signupBtn = document.getElementById('signupBtn');
-                const loginBtn = document.getElementById('loginBtn');
-               
-                if (googleBtn) {
-                    googleBtn.addEventListener('click', handleGoogleSignIn);
-                }
-               
-                if (signupBtn) {
-                    signupBtn.addEventListener('click', handleSignUp);
-                }
-               
-                if (loginBtn) {
-                    loginBtn.addEventListener('click', handleLogin);
-                }
-               
-                // iOS viewport fixes
-                if (isIOS) {
-                    const setVH = () => {
-                        const vh = window.innerHeight * 0.01;
-                        document.documentElement.style.setProperty('--vh', `${vh}px`);
-                    };
-                    setVH();
-                    window.addEventListener('resize', setVH);
-                }
-               
-                // Check for OAuth callback first
-                await handleOAuthCallback();
-               
-                // Then check for existing session
+            
+            // Mark page as loaded
+            setTimeout(() => {
+                document.body.classList.add('loaded');
+            }, 100);
+        }
+       
+        // ========== MAIN EXECUTION ==========
+        
+        document.addEventListener('DOMContentLoaded', async function() {
+            console.log('DOM loaded');
+            
+            // Check for OAuth callback first
+            await handleOAuthCallback();
+            
+            // Initialize the app
+            await initializeApp();
+            
+            // Then check for existing session (if not processing OAuth)
+            if (!isProcessingAuth) {
                 setTimeout(() => {
                     checkSession();
-                }, 500);
-            });
-           
-            // Listen for auth state changes
-            if (sbClient) {
-                sbClient.auth.onAuthStateChange((event, session) => {
-                    console.log('Auth state changed:', event, session?.user?.email);
-                   
-                    if (event === 'SIGNED_IN' && session) {
-                        console.log('User signed in, redirecting...');
-                        showLoading('Loading your account...');
-                        setTimeout(() => {
-                            window.location.href = 'app.html';
-                        }, 500);
-                    }
-                   
-                    if (event === 'SIGNED_OUT') {
-                        console.log('User signed out');
-                    }
-                });
+                }, 1000);
             }
-           
-            // Debug helper
-            window.debugAuth = async function() {
-                console.log('=== AUTH DEBUG ===');
-                console.log('Device:', { isIOS, isSafari });
-                console.log('Current URL:', window.location.href);
-                console.log('LocalStorage available:', typeof localStorage !== 'undefined');
-                console.log('Supabase client:', !!sbClient);
+        });
+       
+        // Listen for auth state changes
+        if (sbClient) {
+            sbClient.auth.onAuthStateChange((event, session) => {
+                console.log('Auth state changed:', event, session?.user?.email);
                
-                if (sbClient) {
-                    try {
-                        const { data, error } = await sbClient.auth.getSession();
-                        console.log('Session:', data, error);
-                    } catch (e) {
-                        console.error('Session check failed:', e);
-                    }
+                if (event === 'SIGNED_IN' && session && !isProcessingAuth) {
+                    console.log('User signed in via listener, redirecting...');
+                    isProcessingAuth = true;
+                    showLoading('Loading your account...');
+                    
+                    setTimeout(() => {
+                        window.location.href = 'app.html';
+                    }, 800);
                 }
-               
+            });
+        }
+        
+        // Handle page visibility changes
+        document.addEventListener('visibilitychange', function() {
+            if (document.visibilityState === 'visible' && isInitialized && !isProcessingAuth) {
+                // Re-check session when user returns to tab
+                setTimeout(checkSession, 500);
+            }
+        });
+        
+        // Handle beforeunload
+        window.addEventListener('beforeunload', function() {
+            // Clean up
+            if (loadTimer) {
+                clearTimeout(loadTimer);
+            }
+        });
+       
+        // Debug helper
+        window.debugAuth = async function() {
+            console.log('=== AUTH DEBUG ===');
+            console.log('Device:', { isIOS, isSafari });
+            console.log('Current URL:', window.location.href);
+            console.log('LocalStorage available:', typeof localStorage !== 'undefined');
+            console.log('Supabase client:', !!sbClient);
+            console.log('Processing auth:', isProcessingAuth);
+           
+            if (sbClient) {
                 try {
-                    const items = [];
-                    for (let i = 0; i < localStorage.length; i++) {
-                        const key = localStorage.key(i);
-                        if (key && key.includes('supabase')) {
-                            items.push(key);
-                        }
-                    }
-                    console.log('Supabase storage keys:', items);
+                    const { data, error } = await sbClient.auth.getSession();
+                    console.log('Session:', data, error);
                 } catch (e) {
-                    console.error('Storage check failed:', e);
+                    console.error('Session check failed:', e);
                 }
-            };
-           
-        })(); // End of IIFE
+            }
+        };
+       
     </script>
 </body>
 </html>
