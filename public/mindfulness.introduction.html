@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#0f172a">
+    <title>Getting Started - MPHaven</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin:0; padding:0; box-sizing:border-box;
+            font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,sans-serif;
+            -webkit-font-smoothing:antialiased;
+            -moz-osx-font-smoothing:grayscale;
+        }
+        html,body { width:100%; height:100%; overflow:hidden; background:#0f172a; }
+        .container { width:100%; height:100vh; display:flex; flex-direction:column; }
+        .app-wrapper {
+            width:100%; max-width:28rem; height:100%; margin:0 auto;
+            background:rgba(15,23,42,0.98); display:flex; flex-direction:column;
+            border-left:1px solid rgba(30,41,59,0.5); border-right:1px solid rgba(30,41,59,0.5);
+        }
+        .bg-blur-1,.bg-blur-2 { position:absolute; border-radius:50%; filter:blur(140px); pointer-events:none; z-index:0; opacity:0.6; }
+        .bg-blur-1 { top:-5%; left:50%; transform:translateX(-50%); width:22rem; height:22rem; background:rgba(14,116,144,0.08); }
+        .bg-blur-2 { bottom:-5%; right:-5%; width:18rem; height:18rem; background:rgba(217,119,6,0.08); }
+        .main-content { flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; position:relative; z-index:1; }
+        .main-content::-webkit-scrollbar { display:none; }
+        .content-wrapper { padding:1rem 1.25rem 2rem; }
+
+        /* Cards & Layout */
+        .card { background:linear-gradient(135deg,rgba(30,41,59,0.65),rgba(15,23,42,0.45)); border:1px solid rgba(51,65,85,0.4); border-radius:1.25rem; }
+        .card-pad { padding:1.5rem; margin-bottom:1rem; }
+        .card-pad-lg { padding:1.75rem; margin-bottom:1rem; }
+        .skill-header { background:linear-gradient(135deg,#0e7490,#d97706); }
+
+        /* Buttons */
+        .btn { color:white; font-weight:600; border:none; padding:1rem; border-radius:1rem; cursor:pointer; width:100%; font-size:1rem; transition:all 0.3s ease; }
+        .btn-primary { background:linear-gradient(to right,#0e7490,#d97706); box-shadow:0 4px 16px rgba(14,116,144,0.2); }
+        .btn-primary:hover,.btn-primary:active { opacity:0.92; transform:translateY(-2px); box-shadow:0 6px 20px rgba(14,116,144,0.25); }
+        .btn-teal { background:#0e7490; box-shadow:0 4px 16px rgba(14,116,144,0.2); }
+        .btn-teal:hover,.btn-teal:active { background:#0c627a; transform:translateY(-2px); box-shadow:0 6px 20px rgba(14,116,144,0.25); }
+        .btn-amber { background:#d97706; box-shadow:0 4px 16px rgba(217,119,6,0.2); }
+        .btn-amber:hover,.btn-amber:active { background:#b45309; transform:translateY(-2px); box-shadow:0 6px 20px rgba(217,119,6,0.25); }
+        .btn-mb { margin-bottom:1rem; }
+
+        /* Progress */
+        .progress-dots { display:flex; gap:0.25rem; }
+        .progress-dot { flex:1; height:0.5rem; background:rgba(148,163,184,0.25); border-radius:9999px; }
+        .progress-dot.active { background:linear-gradient(to right,#0e7490,#d97706); }
+
+        /* Animations */
+        .hidden { display:none !important; }
+        @keyframes fadeIn { from { opacity:0; transform:translateY(15px); } to { opacity:1; transform:translateY(0); } }
+        @keyframes slideUp { from { transform:translateY(20px); opacity:0; } to { transform:translateY(0); opacity:1; } }
+        .step-transition { animation:slideUp 0.4s ease-out; }
+
+        /* Text Colors */
+        .t-pri { color:rgb(241,245,249); }
+        .t-sec { color:rgb(203,213,225); }
+        .t-mut { color:rgb(148,163,184); }
+        .t-teal { color:rgb(165,243,252); }
+        .t-amber { color:rgb(253,230,138); }
+        .t-green { color:rgb(134,239,172); }
+
+        /* Highlights */
+        .highlight-strip { padding:1.25rem; border-radius:1rem; margin-bottom:1.25rem; }
+        .highlight-strip h4 { font-weight:600; font-size:1.125rem; margin-bottom:0.75rem; }
+        .highlight-strip p { font-size:1rem; color:rgb(203,213,225); line-height:1.6; }
+        .hs-teal { background:rgba(14,116,144,0.12); border-left:4px solid rgb(14,116,144); }
+        .hs-teal h4 { color:rgb(165,243,252); }
+        .hs-amber { background:rgba(217,119,6,0.12); border-left:4px solid rgb(217,119,6); }
+        .hs-amber h4 { color:rgb(253,230,138); }
+        .hs-green { background:rgba(34,197,94,0.12); border-left:4px solid rgb(34,197,94); }
+        .hs-green h4 { color:rgb(134,239,172); }
+
+        /* Info boxes */
+        .tip-box { background:rgba(251,191,36,0.1); border:1px solid rgba(251,191,36,0.35); padding:1rem; margin-bottom:1rem; border-radius:1.25rem; }
+        .tip-box p { color:rgb(253,224,71); text-align:center; font-size:0.9375rem; line-height:1.6; }
+
+        /* Numbered steps */
+        .step-num-grad { width:2.25rem; height:2.25rem; background:linear-gradient(135deg,#0e7490,#d97706); border-radius:0.5rem; display:flex; align-items:center; justify-content:center; color:white; font-weight:700; flex-shrink:0; font-size:0.875rem; }
+
+        p+p { margin-top:1rem; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="app-wrapper">
+        <div class="bg-blur-1"></div>
+        <div class="bg-blur-2"></div>
+        <div class="main-content">
+            <div class="content-wrapper" id="content"></div>
+        </div>
+    </div>
+</div>
+<script>
+let step = 1;
+const TOTAL = 5;
+const steps = {
+    1:'Welcome', 
+    2:'What is Mindfulness?', 
+    3:'Why It Works',
+    4:'How to Use These Modules', 
+    5:'Ready to Begin'
+};
+
+// ─── RENDER HELPERS ───────────────────────────────────────────────
+
+function header() {
+    return `<div class="card" style="padding:1rem;margin-bottom:1rem">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem">
+            <button onclick="window.location.href='course-mindfulness.html'" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;padding:0.25rem">←</button>
+            <h1 class="t-pri" style="font-weight:600;font-size:1.125rem">${steps[step]}</h1>
+            <div class="t-mut" style="font-size:0.875rem">${step}/${TOTAL}</div>
+        </div>
+        <div class="progress-dots">${Array(TOTAL).fill().map((_,i)=>`<div class="progress-dot${i<step?' active':''}"></div>`).join('')}</div>
+    </div>`;
+}
+
+// ─── STEP RENDERERS ──────────────────────────────────────────────
+
+function renderStep1() {
+    return `<div class="step-transition">
+        ${header()}
+        <div class="card skill-header" style="padding:2.5rem;text-align:center;margin-bottom:1rem">
+            <div style="font-size:4rem;margin-bottom:1rem">🌟</div>
+            <h2 style="color:white;font-size:1.875rem;font-weight:700;margin-bottom:1rem">Welcome to Mindfulness</h2>
+            <p style="color:rgba(255,255,255,0.95);font-size:1.125rem;line-height:1.7">A simple path to clarity, calm, and control</p>
+        </div>
+
+        <div class="card card-pad">
+            <h3 class="t-pri" style="font-weight:600;font-size:1.25rem;margin-bottom:1.5rem;text-align:center">You're here because...</h3>
+            <div class="t-sec" style="line-height:1.7;font-size:1rem">
+                <p style="margin-bottom:1.25rem">Your mind feels busy, maybe overwhelming at times.</p>
+                <p style="margin-bottom:1.25rem">Emotions can take over before you realize what's happening.</p>
+                <p style="margin-bottom:1.25rem">You want tools that actually work — not just feel-good advice.</p>
+                <p class="t-pri" style="font-weight:600;margin-top:1.5rem">You're in the right place.</p>
+            </div>
+        </div>
+
+        <div class="card card-pad" style="background:rgba(14,116,144,0.08);border:1px solid rgba(14,116,144,0.25)">
+            <div style="text-align:center">
+                <p class="t-teal" style="font-size:1.125rem;font-weight:600;line-height:1.7">This isn't about meditation or clearing your mind.</p>
+                <p class="t-sec" style="font-size:1rem;margin-top:1rem;line-height:1.6">It's about learning to <strong class="t-teal">work with your mind</strong> instead of fighting it.</p>
+            </div>
+        </div>
+
+        <button onclick="nextStep()" class="btn btn-primary btn-mb">Tell Me More →</button>
+    </div>`;
+}
+
+function renderStep2() {
+    return `<div class="step-transition">
+        ${header()}
+        <div class="card skill-header" style="padding:1.75rem;margin-bottom:1rem">
+            <h2 style="color:white;font-size:1.5rem;font-weight:700;text-align:center;margin-bottom:0.5rem">What is Mindfulness?</h2>
+            <p style="color:rgba(255,255,255,0.9);text-align:center;font-size:1rem">In the simplest terms possible</p>
+        </div>
+
+        <div class="card card-pad-lg" style="background:linear-gradient(135deg,rgba(14,116,144,0.15),rgba(217,119,6,0.12));border:2px solid rgba(14,116,144,0.35)">
+            <div style="text-align:center;margin-bottom:1.5rem">
+                <div style="font-size:3rem;margin-bottom:1rem">🎯</div>
+                <h3 class="t-pri" style="font-size:1.375rem;font-weight:700;line-height:1.4;margin-bottom:1rem">Mindfulness = Paying attention on purpose</h3>
+                <p class="t-teal" style="font-size:1.05rem;font-weight:500">Without judgment. In the present moment.</p>
+            </div>
+        </div>
+
+        <div class="card card-pad">
+            <h3 class="t-pri" style="font-weight:600;font-size:1.125rem;margin-bottom:1.5rem">Think of it like this:</h3>
+            
+            <div class="highlight-strip hs-teal">
+                <h4>Most of the time...</h4>
+                <p>Your mind is on autopilot — jumping between past regrets, future worries, and judgment of the present.</p>
+            </div>
+
+            <div class="highlight-strip hs-amber">
+                <h4>With mindfulness...</h4>
+                <p>You notice what's happening <em>right now</em> — thoughts, feelings, sensations — without getting swept away.</p>
+            </div>
+
+            <div class="highlight-strip hs-green">
+                <h4>The result?</h4>
+                <p>You respond to life skillfully instead of reacting automatically.</p>
+            </div>
+        </div>
+
+        <div class="tip-box">
+            <p>💡 <strong>Key point:</strong> Mindfulness isn't about feeling calm. It's about being <em>aware</em> — which often leads to calm.</p>
+        </div>
+
+        <button onclick="nextStep()" class="btn btn-teal btn-mb">Why Does This Matter? →</button>
+    </div>`;
+}
+
+function renderStep3() {
+    return `<div class="step-transition">
+        ${header()}
+        <div class="card skill-header" style="padding:1.75rem;margin-bottom:1rem">
+            <h2 style="color:white;font-size:1.5rem;font-weight:700;text-align:center;margin-bottom:0.5rem">Why It Actually Works</h2>
+            <p style="color:rgba(255,255,255,0.9);text-align:center;font-size:1rem">The science is clear</p>
+        </div>
+
+        <div class="card card-pad">
+            <h3 class="t-pri" style="font-weight:600;font-size:1.125rem;margin-bottom:1.5rem">Mindfulness has been proven to:</h3>
+            
+            <div style="display:grid;gap:1rem">
+                ${[
+                    {icon:'🧠',title:'Reduce anxiety & stress',desc:'By creating space between stimulus and response'},
+                    {icon:'😌',title:'Improve emotional regulation',desc:'You notice feelings before they control you'},
+                    {icon:'🎯',title:'Enhance focus & clarity',desc:'Training attention like a muscle'},
+                    {icon:'💪',title:'Build mental resilience',desc:'Develop the skill to weather difficult moments'}
+                ].map(i=>`
+                    <div style="padding:1.25rem;background:rgba(30,41,59,0.5);border-radius:1rem;border:1px solid rgba(51,65,85,0.4)">
+                        <div style="display:flex;gap:1rem;align-items:start">
+                            <div style="font-size:2rem;flex-shrink:0">${i.icon}</div>
+                            <div>
+                                <h4 class="t-pri" style="font-weight:600;font-size:1.05rem;margin-bottom:0.5rem">${i.title}</h4>
+                                <p class="t-sec" style="font-size:0.9375rem;line-height:1.5">${i.desc}</p>
+                            </div>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+
+        <div class="card card-pad" style="background:rgba(217,119,6,0.1);border:1px solid rgba(217,119,6,0.25)">
+            <div style="display:flex;gap:1rem;align-items:start">
+                <div style="font-size:2.5rem;flex-shrink:0">📊</div>
+                <div>
+                    <p class="t-amber" style="font-weight:600;font-size:1rem;margin-bottom:0.75rem">Real Research:</p>
+                    <p class="t-sec" style="font-size:0.9375rem;line-height:1.7">Over 10,000 studies show mindfulness changes brain structure, reduces symptoms of depression and anxiety, and improves overall wellbeing.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card card-pad" style="background:rgba(14,116,144,0.08);border:1px solid rgba(14,116,144,0.25)">
+            <p class="t-teal" style="font-size:1.05rem;font-weight:600;text-align:center;line-height:1.7">But here's the thing:<br><span class="t-pri">You have to practice it.</span></p>
+            <p class="t-sec" style="text-align:center;margin-top:1rem;font-size:0.9375rem">Reading about mindfulness is like reading about the gym. The benefits come from doing.</p>
+        </div>
+
+        <button onclick="nextStep()" class="btn btn-amber btn-mb">How Do I Practice? →</button>
+    </div>`;
+}
+
+function renderStep4() {
+    return `<div class="step-transition">
+        ${header()}
+        <div class="card skill-header" style="padding:1.75rem;margin-bottom:1rem">
+            <h2 style="color:white;font-size:1.5rem;font-weight:700;text-align:center;margin-bottom:0.5rem">How These Modules Work</h2>
+            <p style="color:rgba(255,255,255,0.9);text-align:center;font-size:1rem">Your roadmap to mastery</p>
+        </div>
+
+        <div class="card card-pad">
+            <h3 class="t-pri" style="font-weight:600;font-size:1.125rem;margin-bottom:1.5rem">Each module teaches one core skill:</h3>
+            
+            <div style="margin-bottom:2rem">
+                ${[
+                    {num:1,name:'NOTICE',desc:'See thoughts and emotions without getting pulled in'},
+                    {num:2,name:'LABEL',desc:'Put simple words to your experience'},
+                    {num:3,name:'ENGAGE',desc:'Be fully present in what you\'re doing'},
+                    {num:4,name:'ACCEPT',desc:'Let go of good/bad judgments'},
+                    {num:5,name:'FOCUS',desc:'Give full attention to one thing at a time'},
+                    {num:6,name:'ACT WISELY',desc:'Do what works, even when it\'s hard'},
+                    {num:7,name:'CHECK-IN',desc:'Know your current emotional state'}
+                ].map(s=>`
+                    <div style="display:flex;gap:1rem;margin-bottom:1.25rem;align-items:start">
+                        <div class="step-num-grad">${s.num}</div>
+                        <div style="padding-top:0.25rem">
+                            <h4 class="t-pri" style="font-weight:600;font-size:1rem;margin-bottom:0.375rem">${s.name}</h4>
+                            <p class="t-sec" style="font-size:0.9375rem;line-height:1.5">${s.desc}</p>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+
+        <div class="card card-pad" style="background:rgba(14,116,144,0.1);border:1px solid rgba(14,116,144,0.25)">
+            <h3 class="t-teal" style="font-weight:600;font-size:1.05rem;margin-bottom:1.25rem">Each lesson follows this structure:</h3>
+            <div class="t-sec" style="line-height:1.7;font-size:0.9375rem">
+                <p style="margin-bottom:1rem">✓ <strong class="t-pri">Learn</strong> the concept through interactive examples</p>
+                <p style="margin-bottom:1rem">✓ <strong class="t-pri">Practice</strong> the skill in a guided exercise</p>
+                <p style="margin-bottom:1rem">✓ <strong class="t-pri">Apply</strong> it to your real life today</p>
+                <p>✓ <strong class="t-pri">Reflect</strong> on what you learned (optional journaling)</p>
+            </div>
+        </div>
+
+        <div class="tip-box">
+            <p>⏱️ Each module takes <strong>5-15 minutes</strong>. You can do them all at once or spread them out over weeks.</p>
+        </div>
+
+        <button onclick="nextStep()" class="btn btn-primary btn-mb">I'm Ready to Start →</button>
+    </div>`;
+}
+
+function renderStep5() {
+    return `<div class="step-transition">
+        ${header()}
+        <div class="card skill-header" style="padding:2rem;text-align:center;margin-bottom:1rem">
+            <div style="font-size:3.5rem;margin-bottom:1rem">🚀</div>
+            <h2 style="color:white;font-size:1.75rem;font-weight:700;margin-bottom:1rem">Your Practice Begins</h2>
+            <p style="color:rgba(255,255,255,0.95);font-size:1.125rem;line-height:1.7">Everything you need is already here</p>
+        </div>
+
+        <div class="card card-pad-lg" style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.25)">
+            <h3 class="t-green" style="font-weight:600;font-size:1.125rem;margin-bottom:1.5rem;text-align:center">What you've learned so far:</h3>
+            <div class="t-sec" style="line-height:1.7;font-size:1rem">
+                ${[
+                    'Mindfulness = paying attention on purpose',
+                    'It works by creating space between stimulus and response',
+                    'Science proves it reduces stress and improves wellbeing',
+                    'You\'ll learn 7 core skills through interactive practice'
+                ].map(t=>`
+                    <div style="display:flex;gap:1rem;margin-bottom:1rem;align-items:start">
+                        <span class="t-green" style="font-weight:700;flex-shrink:0">✓</span>
+                        <span>${t}</span>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+
+        <div class="card card-pad">
+            <h3 class="t-pri" style="font-weight:600;font-size:1.125rem;margin-bottom:1.5rem;text-align:center">Pro tips for success:</h3>
+            <div style="margin-bottom:1.5rem">
+                ${[
+                    {icon:'🎯',tip:'Follow the recommended path — each skill builds on the last'},
+                    {icon:'🔄',tip:'Practice makes permanent — revisit modules when you need them'},
+                    {icon:'📝',tip:'Journal your insights to make them stick'},
+                    {icon:'⏰',tip:'Real change happens when you apply skills in daily life'}
+                ].map(i=>`
+                    <div style="display:flex;gap:1rem;margin-bottom:1.25rem;align-items:start">
+                        <div style="font-size:1.5rem;flex-shrink:0">${i.icon}</div>
+                        <p class="t-sec" style="padding-top:0.25rem;font-size:0.9375rem;line-height:1.6">${i.tip}</p>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+
+        <div class="card card-pad" style="background:linear-gradient(135deg,rgba(14,116,144,0.15),rgba(217,119,6,0.12));border:2px solid rgba(14,116,144,0.35)">
+            <div style="text-align:center">
+                <p class="t-teal" style="font-size:1.125rem;font-weight:600;line-height:1.7;margin-bottom:1rem">Remember:</p>
+                <p class="t-pri" style="font-size:1.05rem;line-height:1.7">You're not trying to become someone different.<br>You're learning to work skillfully with who you already are.</p>
+            </div>
+        </div>
+
+        <button onclick="completeIntroduction()" class="btn btn-primary btn-mb" style="font-size:1.125rem">Begin First Skill: NOTICE →</button>
+        
+        <button onclick="window.location.href='course-mindfulness.html'" style="width:100%;padding:1rem;border-radius:1rem;background:transparent;border:2px solid rgba(148,163,184,0.4);color:rgb(203,213,225);font-weight:600;font-size:1rem;cursor:pointer">← Back to Course Menu</button>
+    </div>`;
+}
+
+// ─── NAVIGATION ──────────────────────────────────────────────────
+
+function scrollToTop() {
+    document.querySelector('.main-content').scrollTo({top:0,behavior:'smooth'});
+}
+
+function nextStep() {
+    if(step<TOTAL){ 
+        step++; 
+        render(); 
+        setTimeout(scrollToTop,50); 
+    }
+}
+
+function completeIntroduction() {
+    // Mark introduction as complete
+    localStorage.setItem('moduleCompleted', JSON.stringify({
+        moduleId: 'introduction',
+        completed: true,
+        timestamp: new Date().toISOString()
+    }));
+    
+    // Confetti celebration
+    confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 }
+    });
+    
+    // Redirect to course menu after short delay
+    setTimeout(() => {
+        window.location.href = 'course-mindfulness.html';
+    }, 1500);
+}
+
+function render() {
+    const fns=[null,renderStep1,renderStep2,renderStep3,renderStep4,renderStep5];
+    document.getElementById('content').innerHTML=fns[step]();
+}
+
+// Initialize
+render();
+</script>
+</body>
+</html>
