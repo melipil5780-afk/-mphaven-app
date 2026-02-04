@@ -27,7 +27,6 @@
         height:100%; 
         overflow:hidden; 
         background:#0f172a;
-        height: -webkit-fill-available;
     }
     
     body { 
@@ -35,15 +34,19 @@
         height:100%; 
         overflow:hidden; 
         background:#0f172a;
-        min-height: -webkit-fill-available;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
     }
     
     .container { 
         width:100%; 
-        height:100vh; 
-        min-height: -webkit-fill-available;
+        height:100%;
         display:flex; 
         flex-direction:column; 
+        position: relative;
     }
     
     .app-wrapper {
