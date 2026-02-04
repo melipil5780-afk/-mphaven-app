@@ -471,14 +471,14 @@
         };
 
         // ===== 8 MINDFULNESS MODULES =====
-       const modules = [
+     const modules = [
     { 
         id: 'introduction', 
         name: 'GETTING STARTED', 
         icon: '🌟', 
         tagline: 'Begin your awareness journey', 
         description: 'Learn what mindful awareness is, how it helps, and how to use these modules.',
-        learnUrl: 'mindfulness-introduction.html',
+        learnUrl: 'public/mindfulness.introduction.html',  // WITH public/ AND dot
         duration: '5 min',
         required: true
     },
@@ -488,7 +488,7 @@
         icon: '👁️', 
         tagline: 'See thoughts like passing clouds', 
         description: 'Become aware of sensations, thoughts, and emotions without getting pulled in.',
-        learnUrl: 'mindfulness-notice.html',
+        learnUrl: 'public/mindfulness.notice.html',  // WITH public/ AND dot
         duration: '10 min',
         dependsOn: 'introduction'
     },
@@ -498,7 +498,7 @@
         icon: '📝', 
         tagline: 'Name what you notice clearly', 
         description: 'Put simple words to your experience using facts, without adding judgment.',
-        learnUrl: 'mindfulness-label.html',
+        learnUrl: 'public/mindfulness.label.html',  // WITH public/ AND dot
         duration: '8 min',
         dependsOn: 'notice'
     },
@@ -508,7 +508,7 @@
         icon: '🌿', 
         tagline: 'Be fully in the moment', 
         description: 'Dive completely into what you\'re doing, letting go of self-consciousness.',
-        learnUrl: 'mindfulness-engage.html',
+        learnUrl: 'public/mindfulness.engage.html',  // WITH public/ AND dot
         duration: '12 min',
         dependsOn: 'label'
     },
@@ -518,7 +518,7 @@
         icon: '⚖️', 
         tagline: 'Let go of good/bad labels', 
         description: 'Observe experiences without labeling them as right, wrong, good, or bad.',
-        learnUrl: 'mindfulness-accept.html',
+        learnUrl: 'public/mindfulness.accept.html',  // WITH public/ AND dot
         duration: '15 min',
         dependsOn: 'engage'
     },
@@ -528,7 +528,7 @@
         icon: '🎯', 
         tagline: 'One thing at a time', 
         description: 'Give your full attention to one task. Gently return when the mind wanders.',
-        learnUrl: 'mindfulness-focus.html',
+        learnUrl: 'public/mindfulness.focus.html',  // WITH public/ AND dot
         duration: '10 min',
         dependsOn: 'accept'
     },
@@ -538,7 +538,7 @@
         icon: '✅', 
         tagline: 'Choose what truly works', 
         description: 'Do what helps reach your goals, even if it doesn\'t feel fair or right.',
-        learnUrl: 'mindfulness-actwisely.html',
+        learnUrl: 'public/mindfulness.actwisely.html',  // WITH public/ AND dot
         duration: '12 min',
         dependsOn: 'focus'
     },
@@ -548,12 +548,11 @@
         icon: '🧠', 
         tagline: 'Know your state', 
         description: 'Pause and notice your current emotional, mental, and physical state.',
-        learnUrl: 'mindfulness-checkin.html',
+        learnUrl: 'public/mindfulness.checkin.html',  // WITH public/ AND dot
         duration: '8 min',
         dependsOn: 'actwisely'
     }
 ];
-
         // ===== NAVIGATION =====
         
         function startModule(moduleId) {
