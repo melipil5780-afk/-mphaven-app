@@ -471,49 +471,86 @@
         };
 
         // ===== 8 MINDFULNESS MODULES =====
-        const modules = [
+       const modules = [
     { 
         id: 'introduction', 
         name: 'GETTING STARTED', 
-        // ... keep all other properties the same
+        icon: '🌟', 
+        tagline: 'Begin your awareness journey', 
+        description: 'Learn what mindful awareness is, how it helps, and how to use these modules.',
         learnUrl: 'mindfulness-introduction.html',
+        duration: '5 min',
+        required: true
     },
     { 
         id: 'notice', 
-        name: 'NOTICE',                    // You show "NOTICE" to users
-        // ... keep all other properties
-        learnUrl: 'mindfulness-notice.html',  // File: mindfulness-notice.html
+        name: 'NOTICE', 
+        icon: '👁️', 
+        tagline: 'See thoughts like passing clouds', 
+        description: 'Become aware of sensations, thoughts, and emotions without getting pulled in.',
+        learnUrl: 'mindfulness-notice.html',
+        duration: '10 min',
+        dependsOn: 'introduction'
     },
     { 
         id: 'label', 
-        name: 'LABEL',                     // You show "LABEL" to users
-        // ... keep all other properties
-        learnUrl: 'mindfulness-label.html',    // File: mindfulness-label.html
+        name: 'LABEL', 
+        icon: '📝', 
+        tagline: 'Name what you notice clearly', 
+        description: 'Put simple words to your experience using facts, without adding judgment.',
+        learnUrl: 'mindfulness-label.html',
+        duration: '8 min',
+        dependsOn: 'notice'
     },
     { 
         id: 'engage', 
         name: 'ENGAGE', 
+        icon: '🌿', 
+        tagline: 'Be fully in the moment', 
+        description: 'Dive completely into what you\'re doing, letting go of self-consciousness.',
         learnUrl: 'mindfulness-engage.html',
+        duration: '12 min',
+        dependsOn: 'label'
     },
     { 
         id: 'accept', 
         name: 'ACCEPT', 
+        icon: '⚖️', 
+        tagline: 'Let go of good/bad labels', 
+        description: 'Observe experiences without labeling them as right, wrong, good, or bad.',
         learnUrl: 'mindfulness-accept.html',
+        duration: '15 min',
+        dependsOn: 'engage'
     },
     { 
         id: 'focus', 
         name: 'FOCUS', 
+        icon: '🎯', 
+        tagline: 'One thing at a time', 
+        description: 'Give your full attention to one task. Gently return when the mind wanders.',
         learnUrl: 'mindfulness-focus.html',
+        duration: '10 min',
+        dependsOn: 'accept'
     },
     { 
         id: 'actwisely', 
         name: 'ACT WISELY', 
+        icon: '✅', 
+        tagline: 'Choose what truly works', 
+        description: 'Do what helps reach your goals, even if it doesn\'t feel fair or right.',
         learnUrl: 'mindfulness-actwisely.html',
+        duration: '12 min',
+        dependsOn: 'focus'
     },
     { 
         id: 'checkin', 
         name: 'CHECK-IN', 
+        icon: '🧠', 
+        tagline: 'Know your state', 
+        description: 'Pause and notice your current emotional, mental, and physical state.',
         learnUrl: 'mindfulness-checkin.html',
+        duration: '8 min',
+        dependsOn: 'actwisely'
     }
 ];
 
