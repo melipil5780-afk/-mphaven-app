@@ -2,28 +2,31 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Just The Facts">
     <meta name="theme-color" content="#0f172a">
+    <meta name="format-detection" content="telephone=no">
     <title>Just The Facts - MPHaven</title>
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📰</text></svg>">
     <style>
         :root{--bg-dark:#0f172a;--bg-card:rgba(15,23,42,.98);--border-subtle:rgba(30,41,59,.5);--primary-teal:#0e7490;--accent-amber:#d97706;--drama-red:#dc2626;--text-primary:#f1f5f9;--text-secondary:#cbd5e1;--text-muted:#94a3b8;--text-teal:#5eead4;--text-amber:#fbbf24;--success-emerald:#4ade80;--gradient-main:linear-gradient(135deg,#0e7490,#d97706)}
-        *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,sans-serif}
-        html,body{width:100%;height:100%;overflow:hidden;background:var(--bg-dark);color:var(--text-primary)}
-        .container{width:100%;height:100vh;display:flex;flex-direction:column}
+        *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased}
+        html,body{width:100%;height:100%;overflow:hidden;background:var(--bg-dark);color:var(--text-primary);-webkit-overflow-scrolling:touch}
+        .container{width:100%;height:100vh;height:-webkit-fill-available;display:flex;flex-direction:column}
         .app-wrapper{width:100%;max-width:28rem;height:100%;margin:0 auto;background:var(--bg-card);display:flex;flex-direction:column;position:relative;overflow:hidden}
         .bg-blur-1,.bg-blur-2{position:absolute;border-radius:50%;filter:blur(140px);pointer-events:none;z-index:0;opacity:.6}
         .bg-blur-1{top:-5%;left:50%;transform:translateX(-50%);width:22rem;height:22rem;background:rgba(14,116,144,.08)}
         .bg-blur-2{bottom:-5%;right:-5%;width:18rem;height:18rem;background:rgba(217,119,6,.08)}
         .main-content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;position:relative;z-index:1}
         .main-content::-webkit-scrollbar{display:none}
-        .content-wrapper{padding:1rem 1.25rem 2rem}
-        .card{background:linear-gradient(135deg,rgba(30,41,59,.65),rgba(15,23,42,.45));border:1px solid rgba(51,65,85,.4);border-radius:1.25rem;padding:1.5rem;margin-bottom:1rem}
+        .content-wrapper{padding:1rem 1.25rem 2rem;padding-bottom:calc(2rem + env(safe-area-inset-bottom))}
+        .card{background:linear-gradient(135deg,rgba(30,41,59,.65),rgba(15,23,42,.45));border:1px solid rgba(51,65,85,.4);border-radius:1.25rem;padding:1.5rem;margin-bottom:1rem;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
         .skill-header{background:var(--gradient-main)}
-        .btn{color:#fff;font-weight:600;border:none;padding:1rem;border-radius:1rem;cursor:pointer;width:100%;font-size:1rem;transition:all .3s ease}
+        .btn{color:#fff;font-weight:600;border:none;padding:1rem;border-radius:1rem;cursor:pointer;width:100%;font-size:1rem;transition:all .3s ease;-webkit-appearance:none;touch-action:manipulation}
         .btn-primary{background:var(--gradient-main);box-shadow:0 4px 16px rgba(14,116,144,.2)}
-        .btn-primary:hover{opacity:.92;transform:translateY(-2px)}
+        .btn-primary:hover,.btn-primary:active{opacity:.92;transform:translateY(-2px)}
         .btn:disabled{opacity:.4;cursor:not-allowed;transform:none!important}
         .progress-dots{display:flex;gap:.25rem}
         .progress-dot{flex:1;height:.5rem;background:rgba(148,163,184,.25);border-radius:9999px}
@@ -31,19 +34,25 @@
         @keyframes fadeIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
         .step-transition{animation:fadeIn .4s ease-out}
         .checkbox-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.5rem}
-        .checkbox-label{display:flex;align-items:center;gap:.5rem;padding:.75rem;background:rgba(30,41,59,.5);border:1px solid rgba(51,65,85,.4);border-radius:.75rem;cursor:pointer;transition:all .2s}
-        .checkbox-label:hover{border-color:rgba(14,116,144,.5);background:rgba(14,116,144,.12)}
+        .checkbox-label{display:flex;align-items:center;gap:.5rem;padding:.75rem;background:rgba(30,41,59,.5);border:1px solid rgba(51,65,85,.4);border-radius:.75rem;cursor:pointer;transition:all .2s;-webkit-tap-highlight-color:transparent}
+        .checkbox-label:hover,.checkbox-label:active{border-color:rgba(14,116,144,.5);background:rgba(14,116,144,.12)}
         .checkbox-label.checked{border-color:rgba(14,116,144,.6);background:rgba(14,116,144,.18)}
         input[type="checkbox"]{width:1.25rem;height:1.25rem;cursor:pointer;accent-color:var(--primary-teal)}
-        textarea{width:100%;padding:.75rem;border-radius:.75rem;border:1px solid rgba(51,65,85,.4);background:rgba(30,41,59,.5);color:#fff;font-size:1rem;min-height:100px;resize:vertical}
+        textarea{width:100%;padding:.75rem;border-radius:.75rem;border:1px solid rgba(51,65,85,.4);background:rgba(30,41,59,.5);color:#fff;font-size:1rem;min-height:100px;resize:vertical;-webkit-appearance:none;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
         input[type="range"]{width:100%;height:6px;background:rgba(30,41,59,.7);border-radius:10px;outline:0;-webkit-appearance:none}
-        input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:var(--primary-teal);cursor:pointer}
+        input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:var(--primary-teal);cursor:pointer;border:none}
+        input[type="text"]{width:100%;padding:.75rem;border-radius:.75rem;border:1px solid rgba(51,65,85,.4);background:rgba(30,41,59,.5);color:#fff;font-size:1rem;-webkit-appearance:none;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
         .char-counter{font-size:.875rem;color:var(--text-muted);text-align:right;margin-top:.5rem}
         .char-counter.active{color:var(--text-teal);font-weight:600}
-        .feedback-toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(100px);background:rgba(14,116,144,.95);color:#fff;padding:1rem 1.5rem;border-radius:.75rem;z-index:1000;opacity:0;transition:all .3s ease}
+        .feedback-toast{position:fixed;bottom:calc(2rem + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%) translateY(100px);background:rgba(14,116,144,.95);color:#fff;padding:1rem 1.5rem;border-radius:.75rem;z-index:1000;opacity:0;transition:all .3s ease;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
         .feedback-toast.show{transform:translateX(-50%) translateY(0);opacity:1}
         .hidden{display:none!important}
         .relief-emoji{font-size:2rem;margin-bottom:.5rem}
+        /* iOS specific fixes */
+        @supports (-webkit-touch-callout: none){.container{height:-webkit-fill-available}}
+        input,textarea{font-size:16px!important} /* Prevents iOS zoom on focus */
+        input:focus,textarea:focus{font-size:16px!important}
+        button{cursor:pointer;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
     </style>
 </head>
 <body>
@@ -86,11 +95,27 @@
     };
 
     function initApp() {
+        // Check if iOS Safari
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+        
+        if (isIOS && isSafari) {
+            // iOS Safari specific optimizations
+            document.body.style.cursor = 'pointer';
+        }
+        
         if (loadProgress()) {
             render();
         } else {
             render();
         }
+        
+        // Prevent pull-to-refresh on iOS
+        document.body.addEventListener('touchmove', function(e) {
+            if (e.target.tagName !== 'TEXTAREA' && e.target.tagName !== 'INPUT') {
+                e.preventDefault();
+            }
+        }, { passive: false });
     }
 
     function autoSave() {
@@ -131,7 +156,7 @@
         return `
             <div class="card" style="padding:1rem;margin-bottom:1rem">
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem">
-                    <button onclick="goBack()" style="background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer;padding:.25rem">←</button>
+                    <button onclick="goBack()" style="background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer;padding:.25rem;-webkit-tap-highlight-color:transparent">←</button>
                     <h1 style="font-weight:600;font-size:1.125rem">${stepTitles[currentStep]}</h1>
                     <div style="color:var(--text-muted);font-size:.875rem">${currentStep}/${TOTAL_STEPS}</div>
                 </div>
@@ -148,7 +173,12 @@
             currentStep--;
             render();
         } else {
-            window.history.back();
+            // Go back in history or to homepage for iOS
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                window.location.href = "/"; // Fallback to homepage
+            }
         }
     }
 
@@ -226,7 +256,6 @@
         }
     }
 
-    // Clean download function
     function downloadProgress() {
         const content = `JUST THE FACTS - MY TRANSFORMATION
 ${new Date().toLocaleDateString()}
@@ -244,21 +273,33 @@ ${new Date().toLocaleDateString()}
 "Just give me the news report."`;
         
         try {
-            const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = `Just-The-Facts-${new Date().toISOString().split("T")[0]}.txt`;
-            a.style.display = "none";
-            document.body.appendChild(a);
-            a.click();
+            // iOS Safari download handling
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
             
-            setTimeout(() => {
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-            }, 100);
-            
-            showFeedback("✓ Downloaded! Check your downloads folder.", 3000);
+            if (isIOS) {
+                // iOS Safari can't download files directly, show content
+                alert("📱 iOS Note: Copy your transformation below:\n\n" + content);
+                navigator.clipboard.writeText(content).then(() => {
+                    showFeedback("✓ Copied to clipboard!", 3000);
+                });
+            } else {
+                // Regular download for other browsers
+                const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = `Just-The-Facts-${new Date().toISOString().split("T")[0]}.txt`;
+                a.style.display = "none";
+                document.body.appendChild(a);
+                a.click();
+                
+                setTimeout(() => {
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }, 100);
+                
+                showFeedback("✓ Downloaded! Check your downloads folder.", 3000);
+            }
             
             setTimeout(() => {
                 if (typeof confetti === 'function') {
@@ -297,8 +338,19 @@ ${new Date().toLocaleDateString()}
 
     function returnToCourse() {
         localStorage.removeItem("factsProgress");
-        // You might want to change this to your actual course URL
-        window.location.href = "/course-mindfulness.html";
+        // Check if we're in an app or browser
+        const isStandalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
+        
+        if (isStandalone) {
+            // If installed as PWA, go to app homepage
+            window.location.href = "/";
+        } else if (window.history.length > 1) {
+            // Try to go back
+            window.history.back();
+        } else {
+            // Fallback to homepage
+            window.location.href = "/";
+        }
     }
 
     function render() {
@@ -392,6 +444,11 @@ ${new Date().toLocaleDateString()}
                     updateButtonState();
                 });
                 dramaText.dispatchEvent(new Event("input"));
+                
+                // iOS keyboard handling
+                dramaText.addEventListener('blur', () => {
+                    window.scrollTo(0, 0);
+                });
             }
             
             document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
@@ -409,6 +466,14 @@ ${new Date().toLocaleDateString()}
                     } else {
                         label.classList.remove("checked");
                     }
+                });
+                
+                // iOS touch handling
+                label.addEventListener('touchstart', function() {
+                    this.style.transform = 'scale(0.98)';
+                });
+                label.addEventListener('touchend', function() {
+                    this.style.transform = 'scale(1)';
                 });
             });
             
@@ -554,6 +619,11 @@ ${new Date().toLocaleDateString()}
                     updateButtonState();
                 });
                 factsText.dispatchEvent(new Event("input"));
+                
+                // iOS keyboard handling
+                factsText.addEventListener('blur', () => {
+                    window.scrollTo(0, 0);
+                });
             }
             
             if (reliefRating) {
@@ -563,6 +633,11 @@ ${new Date().toLocaleDateString()}
             
             if (differenceWord) {
                 differenceWord.value = userInput.diffWord;
+                
+                // iOS keyboard handling
+                differenceWord.addEventListener('blur', () => {
+                    window.scrollTo(0, 0);
+                });
             }
             
             updateButtonState();
