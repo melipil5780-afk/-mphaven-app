@@ -19,36 +19,165 @@
             -webkit-font-smoothing:antialiased;
             -moz-osx-font-smoothing:grayscale;
         }
-        html,body { width:100%; height:100%; overflow:hidden; background:#0f172a; }
-        .container { width:100%; height:100vh; display:flex; flex-direction:column; }
-        .app-wrapper {
-            width:100%; max-width:28rem; height:100%; margin:0 auto;
-            background:rgba(15,23,42,0.98); display:flex; flex-direction:column;
-            border-left:1px solid rgba(30,41,59,0.5); border-right:1px solid rgba(30,41,59,0.5);
-        }
-        .bg-blur-1,.bg-blur-2 { position:absolute; border-radius:50%; filter:blur(140px); pointer-events:none; z-index:0; opacity:0.6; }
-        .bg-blur-1 { top:-5%; left:50%; transform:translateX(-50%); width:22rem; height:22rem; background:rgba(14,116,144,0.08); }
-        .bg-blur-2 { bottom:-5%; right:-5%; width:18rem; height:18rem; background:rgba(217,119,6,0.08); }
-        .main-content { flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; position:relative; z-index:1; }
-        .main-content::-webkit-scrollbar { display:none; }
-        .content-wrapper { padding:1rem 1.25rem 2rem; }
 
 ```
+    /* Mobile viewport fix - simpler approach */
+    html { 
+        width:100%; 
+        height:100%; 
+        background:#0f172a;
+    }
+    
+    body { 
+        width:100%; 
+        height:100%; 
+        overflow:hidden; 
+        background:#0f172a;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .container { 
+        width:100%; 
+        height:100%;
+        display:flex; 
+        flex-direction:column;
+    }
+    
+    .app-wrapper {
+        width:100%; max-width:28rem; height:100%; margin:0 auto;
+        background:rgba(15,23,42,0.98); display:flex; flex-direction:column;
+        border-left:1px solid rgba(30,41,59,0.5); border-right:1px solid rgba(30,41,59,0.5);
+    }
+    
+    .bg-blur-1,.bg-blur-2 { position:absolute; border-radius:50%; filter:blur(140px); pointer-events:none; z-index:0; opacity:0.6; }
+    .bg-blur-1 { top:-5%; left:50%; transform:translateX(-50%); width:22rem; height:22rem; background:rgba(14,116,144,0.08); }
+    .bg-blur-2 { bottom:-5%; right:-5%; width:18rem; height:18rem; background:rgba(217,119,6,0.08); }
+    
+    .main-content { 
+        flex:1; 
+        overflow-y:auto; 
+        -webkit-overflow-scrolling:touch; 
+        scrollbar-width:none; 
+        position:relative; 
+        z-index:1; 
+    }
+    .main-content::-webkit-scrollbar { display:none; }
+    
+    .content-wrapper { 
+        padding:1rem 1.25rem 2rem; 
+    }
+    
+    /* Adjust padding on very small screens */
+    @media (max-width: 350px) {
+        .content-wrapper {
+            padding:1rem 1rem 2rem;
+        }
+    }
+
     /* Cards & Layout */
     .card { background:linear-gradient(135deg,rgba(30,41,59,0.65),rgba(15,23,42,0.45)); border:1px solid rgba(51,65,85,0.4); border-radius:1.25rem; }
     .card-pad { padding:1.5rem; margin-bottom:1rem; }
     .card-pad-lg { padding:1.75rem; margin-bottom:1rem; }
     .skill-header { background:linear-gradient(135deg,#0e7490,#d97706); }
 
-    /* Buttons */
-    .btn { color:white; font-weight:600; border:none; padding:1rem; border-radius:1rem; cursor:pointer; width:100%; font-size:1rem; transition:all 0.3s ease; }
-    .btn-primary { background:linear-gradient(to right,#0e7490,#d97706); box-shadow:0 4px 16px rgba(14,116,144,0.2); }
-    .btn-primary:hover,.btn-primary:active { opacity:0.92; transform:translateY(-2px); box-shadow:0 6px 20px rgba(14,116,144,0.25); }
-    .btn-teal { background:#0e7490; box-shadow:0 4px 16px rgba(14,116,144,0.2); }
-    .btn-teal:hover,.btn-teal:active { background:#0c627a; transform:translateY(-2px); box-shadow:0 6px 20px rgba(14,116,144,0.25); }
-    .btn-amber { background:#d97706; box-shadow:0 4px 16px rgba(217,119,6,0.2); }
-    .btn-amber:hover,.btn-amber:active { background:#b45309; transform:translateY(-2px); box-shadow:0 6px 20px rgba(217,119,6,0.25); }
+    /* Buttons - improved touch targets */
+    .btn { 
+        color:white; 
+        font-weight:600; 
+        border:none; 
+        padding:1rem; 
+        border-radius:1rem; 
+        cursor:pointer; 
+        width:100%; 
+        font-size:1rem; 
+        transition:all 0.3s ease;
+        min-height:48px;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    .btn-primary { 
+        background:linear-gradient(to right,#0e7490,#d97706); 
+        box-shadow:0 4px 16px rgba(14,116,144,0.2); 
+    }
+    
+    .btn-teal { 
+        background:#0e7490; 
+        box-shadow:0 4px 16px rgba(14,116,144,0.2); 
+    }
+    
+    .btn-amber { 
+        background:#d97706; 
+        box-shadow:0 4px 16px rgba(217,119,6,0.2); 
+    }
+    
+    /* Active states for touch */
+    .btn-primary:active { 
+        opacity:0.92; 
+        transform:translateY(-2px); 
+        box-shadow:0 6px 20px rgba(14,116,144,0.25); 
+    }
+    
+    .btn-teal:active { 
+        background:#0c627a; 
+        transform:translateY(-2px); 
+        box-shadow:0 6px 20px rgba(14,116,144,0.25); 
+    }
+    
+    .btn-amber:active { 
+        background:#b45309; 
+        transform:translateY(-2px); 
+        box-shadow:0 6px 20px rgba(217,119,6,0.25); 
+    }
+    
+    /* Hover effects only on devices with hover capability */
+    @media (hover: hover) and (pointer: fine) {
+        .btn-primary:hover { 
+            opacity:0.92; 
+            transform:translateY(-2px); 
+            box-shadow:0 6px 20px rgba(14,116,144,0.25); 
+        }
+        .btn-teal:hover { 
+            background:#0c627a; 
+            transform:translateY(-2px); 
+            box-shadow:0 6px 20px rgba(14,116,144,0.25); 
+        }
+        .btn-amber:hover { 
+            background:#b45309; 
+            transform:translateY(-2px); 
+            box-shadow:0 6px 20px rgba(217,119,6,0.25); 
+        }
+    }
+    
     .btn-mb { margin-bottom:1rem; }
+    
+    /* Back button with better touch target */
+    .back-btn {
+        background:none;
+        border:none;
+        color:white;
+        font-size:1.5rem;
+        cursor:pointer;
+        padding:0.5rem;
+        min-width:44px;
+        min-height:44px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    .back-btn:active {
+        opacity:0.7;
+    }
+    
+    @media (hover: hover) and (pointer: fine) {
+        .back-btn:hover {
+            opacity:0.8;
+        }
+    }
 
     /* Progress */
     .progress-dots { display:flex; gap:0.25rem; }
@@ -88,6 +217,34 @@
     .step-num-grad { width:2.25rem; height:2.25rem; background:linear-gradient(135deg,#0e7490,#d97706); border-radius:0.5rem; display:flex; align-items:center; justify-content:center; color:white; font-weight:700; flex-shrink:0; font-size:0.875rem; }
 
     p+p { margin-top:1rem; }
+    
+    /* Secondary button style */
+    .btn-secondary {
+        width:100%;
+        padding:1rem;
+        border-radius:1rem;
+        background:transparent;
+        border:2px solid rgba(148,163,184,0.4);
+        color:rgb(203,213,225);
+        font-weight:600;
+        font-size:1rem;
+        cursor:pointer;
+        min-height:48px;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    .btn-secondary:active {
+        background:rgba(148,163,184,0.1);
+        border-color:rgba(148,163,184,0.6);
+    }
+    
+    @media (hover: hover) and (pointer: fine) {
+        .btn-secondary:hover {
+            background:rgba(148,163,184,0.1);
+            border-color:rgba(148,163,184,0.6);
+        }
+    }
 </style>
 ```
 
@@ -116,7 +273,7 @@ const steps = {
 // ─── RENDER HELPERS ───────────────────────────────────────────────
 
 function header() {
-return `<div class="card" style="padding:1rem;margin-bottom:1rem"> <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem"> <button onclick="window.location.href='course-mindfulness.html'" style="background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;padding:0.25rem">←</button> <h1 class="t-pri" style="font-weight:600;font-size:1.125rem">${steps[step]}</h1> <div class="t-mut" style="font-size:0.875rem">${step}/${TOTAL}</div> </div> <div class="progress-dots">${Array(TOTAL).fill().map((_,i)=>`<div class="progress-dot${i<step?' active':''}"></div>`).join('')}</div> </div>`;
+return `<div class="card" style="padding:1rem;margin-bottom:1rem"> <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem"> <button onclick="window.location.href='course-mindfulness.html'" class="back-btn">←</button> <h1 class="t-pri" style="font-weight:600;font-size:1.125rem">${steps[step]}</h1> <div class="t-mut" style="font-size:0.875rem">${step}/${TOTAL}</div> </div> <div class="progress-dots">${Array(TOTAL).fill().map((_,i)=>`<div class="progress-dot${i<step?' active':''}"></div>`).join('')}</div> </div>`;
 }
 
 // ─── STEP RENDERERS ──────────────────────────────────────────────
@@ -124,7 +281,6 @@ return `<div class="card" style="padding:1rem;margin-bottom:1rem"> <div style="d
 function renderStep1() {
 return `<div class="step-transition">
 ${header()}
-
 <div class="card skill-header" style="padding:2.5rem;text-align:center;margin-bottom:1rem">
 <div style="font-size:4rem;margin-bottom:1rem">🌟</div>
 <h2 style="color:white;font-size:1.875rem;font-weight:700;margin-bottom:1rem">Welcome to Mindfulness</h2>
@@ -158,7 +314,6 @@ ${header()}
 function renderStep2() {
 return `<div class="step-transition">
 ${header()}
-
 <div class="card skill-header" style="padding:1.75rem;margin-bottom:1rem">
 <h2 style="color:white;font-size:1.5rem;font-weight:700;text-align:center;margin-bottom:0.5rem">What is Mindfulness?</h2>
 <p style="color:rgba(255,255,255,0.9);text-align:center;font-size:1rem">In the simplest terms possible</p>
@@ -205,7 +360,6 @@ ${header()}
 function renderStep3() {
 return `<div class="step-transition">
 ${header()}
-
 <div class="card skill-header" style="padding:1.75rem;margin-bottom:1rem">
 <h2 style="color:white;font-size:1.5rem;font-weight:700;text-align:center;margin-bottom:0.5rem">Why It Actually Works</h2>
 <p style="color:rgba(255,255,255,0.9);text-align:center;font-size:1rem">The science is clear</p>
@@ -259,7 +413,6 @@ ${header()}
 function renderStep4() {
 return `<div class="step-transition">
 ${header()}
-
 <div class="card skill-header" style="padding:1.75rem;margin-bottom:1rem">
 <h2 style="color:white;font-size:1.5rem;font-weight:700;text-align:center;margin-bottom:0.5rem">How These Modules Work</h2>
 <p style="color:rgba(255,255,255,0.9);text-align:center;font-size:1rem">Your roadmap to mastery</p>
@@ -313,7 +466,6 @@ ${header()}
 function renderStep5() {
 return `<div class="step-transition">
 ${header()}
-
 <div class="card skill-header" style="padding:2rem;text-align:center;margin-bottom:1rem">
 <div style="font-size:3.5rem;margin-bottom:1rem">🚀</div>
 <h2 style="color:white;font-size:1.75rem;font-weight:700;margin-bottom:1rem">Your Practice Begins</h2>
@@ -364,7 +516,7 @@ ${header()}
 
     <button onclick="completeIntroduction()" class="btn btn-primary btn-mb" style="font-size:1.125rem">Begin First Skill: NOTICE →</button>
     
-    <button onclick="window.location.href='course-mindfulness.html'" style="width:100%;padding:1rem;border-radius:1rem;background:transparent;border:2px solid rgba(148,163,184,0.4);color:rgb(203,213,225);font-weight:600;font-size:1rem;cursor:pointer">← Back to Course Menu</button>
+    <button onclick="window.location.href='course-mindfulness.html'" class="btn-secondary">← Back to Course Menu</button>
 </div>`;
 ```
 
