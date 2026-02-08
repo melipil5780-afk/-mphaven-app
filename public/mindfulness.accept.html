@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ACCEPT">
+<meta name="theme-color" content="#0f172a">
+<meta name="format-detection" content="telephone=no">
+<title>ACCEPT - MPHaven</title>
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎯</text></svg>">
+<style>
+:root{
+    --bg-dark:#0f172a;
+    --bg-card:rgba(15,23,42,.98);
+    --border-subtle:rgba(30,41,59,.5);
+    --primary-teal:#0e7490;
+    --accent-amber:#d97706;
+    --drama-red:#dc2626;
+    --text-primary:#f1f5f9;
+    --text-secondary:#cbd5e1;
+    --text-muted:#94a3b8;
+    --text-teal:#5eead4;
+    --text-amber:#fbbf24;
+    --gradient-main:linear-gradient(135deg,#0e7490,#d97706)
+}
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    -webkit-tap-highlight-color:transparent;
+    -webkit-font-smoothing:antialiased
+}
+html,body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:var(--bg-dark);
+    color:var(--text-primary);
+    -webkit-overflow-scrolling:touch
+}
+.container{
+    width:100%;
+    height:100vh;
+    height:-webkit-fill-available;
+    display:flex;
+    flex-direction:column
+}
+.app-wrapper{
+    width:100%;
+    max-width:28rem;
+    height:100%;
+    margin:0 auto;
+    background:var(--bg-card);
+    display:flex;
+    flex-direction:column;
+    position:relative;
+    overflow:hidden
+}
+.bg-blur-1,.bg-blur-2{
+    position:absolute;
+    border-radius:50%;
+    pointer-events:none;
+    z-index:0;
+    opacity:.3
+}
+.bg-blur-1{
+    top:-5%;
+    left:50%;
+    transform:translateX(-50%);
+    width:22rem;
+    height:22rem;
+    background:rgba(14,116,144,.15)
+}
+.bg-blur-2{
+    bottom:-5%;
+    right:-5%;
+    width:18rem;
+    height:18rem;
+    background:rgba(217,119,6,.15)
+}
+.main-content{
+    flex:1;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+    position:relative;
+    z-index:1
+}
+.main-content::-webkit-scrollbar{
+    display:none
+}
+.content-wrapper{
+    padding:1rem 1.25rem 2rem;
+    padding-bottom:calc(2rem + env(safe-area-inset-bottom))
+}
+.card{
+    background:linear-gradient(135deg,rgba(30,41,59,.65),rgba(15,23,42,.45));
+    border:1px solid rgba(51,65,85,.4);
+    border-radius:1.25rem;
+    padding:1.5rem;
+    margin-bottom:1rem
+}
+.skill-header{
+    background:linear-gradient(135deg,rgba(14,116,144,0.15),rgba(217,119,6,0.12));
+    border:1px solid rgba(14,116,144,0.25)
+}
+.btn{
+    color:#fff;
+    font-weight:600;
+    border:none;
+    padding:1rem;
+    border-radius:1rem;
+    cursor:pointer;
+    width:100%;
+    font-size:1rem;
+    transition:all .3s ease;
+    -webkit-appearance:none;
+    touch-action:manipulation;
+    min-height:44px
+}
+.btn-primary{
+    background:var(--gradient-main);
+    box-shadow:0 4px 16px rgba(14,116,144,.2)
+}
+.btn-primary:hover,.btn-primary:active{
+    opacity:.92;
+    transform:translateY(-2px);
+    box-shadow:0 6px 20px rgba(14,116,144,.25)
+}
+.btn-secondary{
+    background:var(--primary-teal);
+    box-shadow:0 4px 16px rgba(14,116,144,.2)
+}
+.btn-secondary:hover,.btn-secondary:active{
+    background:#0c627a;
+    transform:translateY(-2px);
+    box-shadow:0 6px 20px rgba(14,116,144,.25)
+}
+.btn-tertiary{
+    background:var(--accent-amber);
+    box-shadow:0 4px 16px rgba(217,119,6,.2)
+}
+.btn-tertiary:hover,.btn-tertiary:active{
+    background:#b45309;
+    transform:translateY(-2px);
+    box-shadow:0 6px 20px rgba(217,119,6,.25)
+}
+.btn:disabled{
+    opacity:.4;
+    cursor:not-allowed;
+    transform:none!important
+}
+.progress-dots{
+    display:flex;
+    gap:.25rem
+}
+.progress-dot{
+    flex:1;
+    height:.5rem;
+    background:rgba(148,163,184,.25);
+    border-radius:9999px
+}
+.progress-dot.active{
+    background:var(--gradient-main)
+}
+@keyframes fadeIn{
+    from{opacity:0}
+    to{opacity:1}
+}
+.step-transition{
+    animation:fadeIn .4s ease-out
+}
+.checkbox-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:.5rem
+}
+.checkbox-label{
+    display:flex;
+    align-items:center;
+    gap:.5rem;
+    padding:.75rem;
+    background:rgba(30,41,59,.5);
+    border:1px solid rgba(51,65,85,.4);
+    border-radius:.75rem;
+    cursor:pointer;
+    transition:all .2s;
+    -webkit-tap-highlight-color:transparent
+}
+.checkbox-label:hover,.checkbox-label:active{
+    border-color:rgba(14,116,144,.5);
+    background:rgba(14,116,144,.12)
+}
+.checkbox-label:active{
+    transform:scale(0.98)
+}
+.checkbox-label.checked{
+    border-color:rgba(14,116,144,.6);
+    background:rgba(14,116,144,.18)
+}
+input[type=checkbox]{
+    width:1.25rem;
+    height:1.25rem;
+    cursor:pointer;
+    accent-color:var(--primary-teal)
+}
+textarea,input[type=text]{
+    width:100%;
+    padding:.75rem;
+    border-radius:.75rem;
+    border:1px solid rgba(51,65,85,.4);
+    background:rgba(30,41,59,.5);
+    color:#fff;
+    font-size:16px;
+    -webkit-appearance:none;
+    font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif
+}
+textarea{
+    min-height:100px;
+    resize:vertical
+}
+input[type=range]{
+    width:100%;
+    height:6px;
+    background:rgba(30,41,59,.7);
+    border-radius:10px;
+    outline:0;
+    -webkit-appearance:none
+}
+input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;
+    width:24px;
+    height:24px;
+    border-radius:50%;
+    background:var(--primary-teal);
+    cursor:pointer;
+    border:none
+}
+.char-counter{
+    font-size:.875rem;
+    color:var(--text-muted);
+    text-align:right;
+    margin-top:.5rem
+}
+.char-counter.active{
+    color:var(--text-teal);
+    font-weight:600
+}
+.feedback-toast{
+    position:fixed;
+    bottom:calc(2rem + env(safe-area-inset-bottom));
+    left:50%;
+    transform:translateX(-50%) translateY(100px);
+    background:rgba(14,116,144,.95);
+    color:#fff;
+    padding:1rem 1.5rem;
+    border-radius:.75rem;
+    z-index:1000;
+    opacity:0;
+    transition:all .3s ease
+}
+.feedback-toast.show{
+    transform:translateX(-50%) translateY(0);
+    opacity:1
+}
+.hidden{
+    display:none!important
+}
+.relief-emoji{
+    font-size:2rem;
+    margin-bottom:.5rem
+}
+@supports (-webkit-touch-callout:none){
+    .container{height:-webkit-fill-available}
+}
+button{
+    cursor:pointer;
+    -webkit-user-select:none;
+    user-select:none
+}
+.btn-mb{
+    margin-bottom:1rem
+}
+</style>
+</head>
+<body>
+<div class="container"><div class="app-wrapper"><div class="bg-blur-1"></div><div class="bg-blur-2"></div><div class="main-content"><div class="content-wrapper" id="content"></div></div></div></div>
+<div id="feedbackToast" class="feedback-toast"></div>
+<script>
+const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js';s.onload=initApp;document.head.appendChild(s);let u={selfAttack:'',scientistVersion:'',lightness:5,feelingWord:'',judgeWords:[]},c=1;const T=7,titles={1:'The Second Arrow',2:'Aim All Arrows at Yourself',3:'You\'re Shooting Yourself',4:'Two Ways to Respond',5:'Remove the Arrows',6:'The Space of Acceptance',7:'Your Practice Begins'};function initApp(){const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)&&!window.MSStream,isSafari=/^((?!chrome|android).)*safari/i.test(navigator.userAgent);isIOS&&isSafari&&(document.body.style.cursor='pointer');loadProgress()?render():render()}function autoSave(){localStorage.setItem('acceptProgress',JSON.stringify({step:c,userInput:u,timestamp:Date.now()}))}function loadProgress(){const s=localStorage.getItem('acceptProgress');if(s)try{const d=JSON.parse(s);if((Date.now()-d.timestamp)/36e5<24&&confirm('Resume where you left off?'))return c=d.step,Object.assign(u,d.userInput),!0}catch(e){console.error('Error loading progress:',e)}return!1}function showFeedback(m,d=2e3){const t=document.getElementById('feedbackToast');t.textContent=m;t.classList.add('show');setTimeout(()=>{t.classList.remove('show')},d)}function renderHeader(){return'<div class="card" style="padding:1rem;margin-bottom:1rem"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem"><button onclick="goBack()" style="background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer;padding:.25rem;-webkit-tap-highlight-color=transparent">←</button><h1 style="font-weight:600;font-size:1.125rem">'+titles[c]+'</h1><div style="color:var(--text-muted);font-size:.875rem">'+c+'/'+T+'</div></div><div class="progress-dots">'+Array(T).fill().map((e,i)=>'<div class="progress-dot '+(i<c?'active':'')+'"></div>').join('')+'</div></div>'}function goBack(){if(c>1){c--;render()}else{window.history.length>1?window.history.back():window.location.href='/'}}function canProceed(){return c===2?u.selfAttack.length>=20:c!==5||u.scientistVersion.length>=10}function updateButtonState(){document.querySelectorAll('.btn-primary').forEach(b=>{b.disabled=!canProceed()})}function nextStep(){if(c===2){const d=document.getElementById('selfAttackText');d&&(u.selfAttack=d.value.trim());u.judgeWords=Array.from(document.querySelectorAll('.checkbox-label.checked')).map(e=>e.querySelector('span').textContent)}if(c===5){const f=document.getElementById('scientistText');f&&(u.scientistVersion=f.value.trim());const w=document.getElementById('dropJudgmentWord');w&&(u.feelingWord=w.value.trim());const r=document.getElementById('lightnessRating');r&&(u.lightness=parseInt(r.value))}autoSave();if(c<T){c++;render();document.querySelector('.main-content').scrollTo({top:0})}}function getLightnessEmoji(v){const e=['😫','😣','😕','😐','🙂','😌','😊','😁','✨','🌟'];return e[Math.min(Math.max(0,v-1),9)]}function updateLightnessValue(){const v=document.getElementById('lightnessRating').value;u.lightness=v;const val=document.getElementById('lightnessVal'),emoji=document.getElementById('lightnessEmoji'),dis=document.getElementById('lightnessDisplay');val&&(val.textContent=v);emoji&&(emoji.textContent=getLightnessEmoji(v));if(dis){dis.style.background=v<4?'rgba(239,68,68,.2)':v<7?'rgba(217,119,6,.2)':'rgba(14,116,144,.2)'}}function downloadProgress(){const cnt='ACCEPT - MY PRACTICE\n'+new Date().toLocaleDateString()+'\n\n⚔️ SELF-JUDGMENT (Arrow #2):\n"'+(u.selfAttack||'No self-attack entered')+'"\n\n🔬 SCIENTIST (Just Facts):\n"'+(u.scientistVersion||'No facts entered')+'"\n\n📊 Lightness: '+u.lightness+'/10\n✨ Feeling: "'+(u.feelingWord||'N/A')+'"\n\n💡 Practice: Judge → Fact → Pause.\n"The skill is in the pause. Let the fact be there."';try{const iOS=/iPad|iPhone|iPod/.test(navigator.userAgent)&&!window.MSStream;if(iOS){alert('📱 iOS Note: Copy your practice notes below:\n\n'+cnt);navigator.clipboard.writeText(cnt).then(()=>{showFeedback('✓ Copied to clipboard!',3e3)})}else{const b=new Blob([cnt],{type:'text/plain;charset=utf-8'}),url=URL.createObjectURL(b),a=document.createElement('a');a.href=url;a.download='ACCEPT-Practice-'+new Date().toISOString().split('T')[0]+'.txt';a.style.display='none';document.body.appendChild(a);a.click();setTimeout(()=>{document.body.removeChild(a);URL.revokeObjectURL(url)},100);showFeedback('✓ Downloaded!',3e3)}localStorage.setItem('moduleCompleted',JSON.stringify({moduleId:'accept',completed:!0,timestamp:new Date().toISOString()}))}catch(e){console.error('Download failed:',e);showFeedback('Download failed. Please try again.',3e3)}}function returnToCourse(){localStorage.removeItem('acceptProgress');const isStandalone=window.navigator.standalone||window.matchMedia('(display-mode:standalone)').matches;isStandalone?window.location.href='/':window.history.length>1?window.history.back():window.location.href='/'}function render(){const content=document.getElementById('content');let html='';switch(c){case 1:html=renderStep1();break;case 2:html=renderStep2();break;case 3:html=renderStep3();break;case 4:html=renderStep4();break;case 5:html=renderStep5();break;case 6:html=renderStep6();break;case 7:html=renderStep7();break;default:html=renderStep1()}content.innerHTML=html;setTimeout(()=>{const m=document.querySelector('.main-content');m&&(m.scrollTop=0)},50)}function renderStep1(){return'<div class="step-transition">'+renderHeader()+'<div class="card skill-header" style="padding:2rem;text-align:center;margin-bottom:1rem"><div style="font-size:4rem;margin-bottom:1rem">🎯</div><h2 style="color:#fff;font-size:1.75rem;font-weight:700;margin-bottom:1.5rem">The Second Arrow</h2><div style="font-family:monospace;font-size:1.5rem;padding:1rem;background:rgba(30,41,59,.5);border-radius:1rem;margin:1rem 0">Mistake Happens<br><span style="font-size:2rem;color:var(--text-teal)">+</span><br>Self-Judgment<br><span style="font-size:2rem;color:#fca5a5">=</span><br><span style="background:rgba(220,38,38,.3);padding:.25rem .5rem;border-radius:.5rem">Double Pain</span></div><div style="background:rgba(255,255,255,.1);padding:1.25rem;border-radius:1rem;margin:1.5rem 0"><p style="color:#fff;font-weight:600;margin-bottom:.5rem">Example:</p><p style="color:rgba(255,255,255,.9);font-size:1rem;line-height:1.6">You make a mistake<br><span style="color:var(--text-teal)">Arrow #1:</span> The event itself<br><span style="color:#fca5a5">Arrow #2:</span> "I\'m so stupid!"<br><span style="color:#fff;font-weight:600">Result:</span> Self-inflicted torture</p></div><div style="background:rgba(14,116,144,.18);border:1px solid rgba(14,116,144,.35);padding:.5rem 1rem;border-radius:2rem;font-size:.875rem;color:var(--text-teal);font-weight:500;display:inline-block">You\'ll learn to stop shooting yourself</div></div><button onclick="nextStep()" class="btn btn-primary">Count My Arrows →</button></div>'}function renderStep2(){setTimeout(()=>{const d=document.getElementById('selfAttackText'),cc=document.getElementById('charCounter');if(d){d.addEventListener('input',e=>{const l=e.target.value.length;u.selfAttack=e.target.value;cc&&(cc.textContent=l+' characters'+(l<20?' (min 20)':''),l>=20?cc.classList.add('active'):cc.classList.remove('active'));updateButtonState()});d.dispatchEvent(new Event('input'));d.addEventListener('blur',()=>{window.scrollTo(0,0)})}document.querySelectorAll('input[type="checkbox"]').forEach(cb=>{const lbl=cb.closest('.checkbox-label'),txt=lbl.querySelector('span').textContent;u.judgeWords&&u.judgeWords.includes(txt)&&(cb.checked=!0,lbl.classList.add('checked'));cb.addEventListener('change',e=>{e.target.checked?lbl.classList.add('checked'):lbl.classList.remove('checked')})});updateButtonState()},100);return'<div class="step-transition">'+renderHeader()+'<div class="card" style="background:rgba(220,38,38,.15);border:1px solid rgba(220,38,38,.35)"><div style="font-size:3rem;margin-bottom:.75rem;text-align:center">⚔️</div><h2 style="font-size:1.5rem;font-weight:600;margin-bottom:1rem;text-align:center">Aim All Arrows at Yourself</h2><p style="color:var(--text-secondary);text-align:center;font-size:1rem">Be as harsh as you normally are.</p></div><div class="card"><p style="font-size:1.05rem;font-weight:600;margin-bottom:1.5rem">Instructions:</p>'+['Think of a recent mistake or flaw','Now be as harsh as possible','Use the cruelest words you can','Really attack yourself for 30 seconds'].map((ins,i)=>'<div style="display:flex;gap:1rem;margin-bottom:1.5rem;align-items:start"><div style="width:2.25rem;height:2.25rem;background:var(--gradient-main);border-radius:.5rem;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;flex-shrink:0">'+(i+1)+'</div><p style="color:var(--text-secondary);padding-top:.375rem;line-height:1.6;font-size:1rem">'+ins+'</p></div>').join('')+'</div><div class="card" style="border:2px solid rgba(220,38,38,.4);background:rgba(220,38,38,.05)"><div style="display:flex;align-items:center;gap:.5rem;margin-bottom:1rem"><span style="font-size:1.5rem">⚔️</span><h3 style="color:#fca5a5;font-weight:600;font-size:1.125rem">Which cruel words did you use?</h3></div><div class="checkbox-grid" style="margin-bottom:1.5rem">'+['Stupid / Failure','Pathetic / Worthless','Loser / Broken','Unlovable / Disaster','Should be better'].map(w=>'<label class="checkbox-label"><input type="checkbox"><span style="color:var(--text-secondary);font-size:.9375rem">'+w+'</span></label>').join('')+'</div><p style="font-weight:600;margin-bottom:.75rem;font-size:1rem">Write the full self-attack:</p><textarea id="selfAttackText" placeholder="Write what you tell yourself...">'+u.selfAttack+'</textarea><div id="charCounter" class="char-counter">0 characters (min 20)</div></div><button onclick="nextStep()" class="btn btn-primary btn-mb">I See My Judgments →</button></div>'}function renderStep3(){return'<div class="step-transition">'+renderHeader()+'<div class="card" style="text-align:center;padding:1.5rem;margin-bottom:1rem"><div style="font-size:3rem;margin-bottom:1rem">🔫</div><h2 style="font-size:1.5rem;font-weight:600;margin-bottom:.5rem">You\'re Shooting Yourself</h2><p style="color:var(--text-secondary)">Arrow #2 doesn\'t help. It just adds pain.</p></div><div class="card" style="border:2px solid rgba(220,38,38,.45);background:rgba(220,38,38,.08);margin-bottom:1rem"><div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1rem"><div style="font-size:2rem">❌</div><div><h3 style="color:#fca5a5;font-weight:600;font-size:1.25rem">THE TWO ARROWS</h3><p style="color:#fca5a5;font-size:.875rem;font-weight:500">One you can\'t control, one you can</p></div></div>'+['Arrow #1: The mistake','Arrow #2: Self-judgment','Result: Double pain'].map(d=>'<div style="background:rgba(220,38,38,.1);padding:1rem;border-radius:.75rem;margin-bottom:1rem"><p style="color:#fca5a5;font-size:1.1rem;font-weight:600">'+d+'</p></div>').join('')+'</div><div style="text-align:center;font-size:2rem;margin:1rem 0">⬇️</div><div class="card" style="border:2px solid rgba(14,116,144,.45);background:rgba(14,116,144,.08);margin-bottom:1rem"><div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1rem"><div style="font-size:2rem">🔬</div><div><h3 style="color:var(--text-teal);font-weight:600;font-size:1.25rem">THE SCIENTIST WAY</h3><p style="color:var(--text-teal);font-size:.875rem;font-weight:500">Just observe. Then pause.</p></div></div>'+['The mistake: Just facts','No self-attack needed','No need to "learn" yet','Just observe. Then pause.','Let the fact be there','Space opens naturally'].map(f=>'<div style="background:rgba(14,116,144,.1);padding:1rem;border-radius:.75rem;margin-bottom:1rem"><p style="color:var(--text-teal);font-size:1.1rem;font-weight:600">'+f+'</p></div>').join('')+'</div><button onclick="nextStep()" class="btn btn-primary btn-mb">Learn Scientist Mode →</button></div>'}function renderStep4(){const modes=[{icon:'❌',title:'JUDGE MODE',subtitle:'Self-inflicted pain',color:'rgba(220,38,38,.08)',borderColor:'rgba(220,38,38,.45)',steps:['Make mistake','"I\'m so stupid!"','Shame spiral begins','Feel worthless','Can\'t think clearly','Stuck + hopeless'],resultLabel:'Feels like:',resultText:'😞 Crushed by shame',resultColor:'rgb(220,38,38)'},{icon:'🔬',title:'SCIENTIST MODE',subtitle:'Observe. Then pause.',color:'rgba(14,116,144,.08)',borderColor:'rgba(14,116,144,.45)',steps:['Make mistake','"This didn\'t work"','No story added','Just observation','Pause. Breathe.','Space opens up'],resultLabel:'Feels like:',resultText:'🔬 Clear and spacious',resultColor:'var(--primary-teal)'}];return'<div class="step-transition">'+renderHeader()+'<div class="card skill-header" style="padding:1.75rem;margin-bottom:1rem"><div style="font-size:3rem;margin-bottom:.75rem;text-align:center">🔬</div><h2 style="color:#fff;font-size:1.5rem;font-weight:700;text-align:center;margin-bottom:.5rem">Two Ways to Respond</h2><p style="color:rgba(255,255,255,.9);text-align:center;font-size:1rem">Same mistake, totally different outcomes</p></div>'+modes.map(m=>'<div class="card" style="border:2px solid '+m.borderColor+';background:'+m.color+';margin-bottom:1rem"><div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1.25rem"><div style="font-size:2rem">'+m.icon+'</div><div><h3 style="color:'+(m.icon==='❌'?'#fca5a5':'var(--text-teal)')+';font-weight:600;font-size:1.25rem">'+m.title+'</h3><p style="color:'+(m.icon==='❌'?'rgb(248,113,113)':'var(--text-teal)')+';font-size:.875rem;font-weight:500">'+m.subtitle+'</p></div></div><div style="margin-bottom:1.25rem">'+m.steps.map((s,i)=>'<div style="display:flex;gap:.75rem;margin-bottom:1rem;align-items:start"><div style="width:1.75rem;height:1.75rem;background:'+(m.icon==='❌'?'rgba(220,38,38,.25)':'rgba(14,116,144,.25)')+';color:'+(m.icon==='❌'?'rgb(220,38,38)':'var(--primary-teal)')+';border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8125rem;font-weight:700;flex-shrink:0">'+(i+1)+'</div><p style="color:var(--text-secondary);padding-top:.125rem">'+s+'</p></div>').join('')+'</div><div style="background:'+(m.icon==='❌'?'rgba(220,38,38,.12)':'rgba(14,116,144,.12)')+';padding:1rem;border-radius:.75rem;border:1px solid '+(m.icon==='❌'?'rgba(220,38,38,.25)':'rgba(14,116,144,.25)')+'"><p style="color:'+m.resultColor+';font-weight:600;margin-bottom:.5rem;font-size:1rem">'+m.resultLabel+'</p><p style="color:'+(m.icon==='❌'?'rgb(248,113,113)':'var(--text-teal)')+';font-size:1.125rem">'+m.resultText+'</p></div></div>').join('')+'<div class="card" style="background:rgba(217,119,6,.08);border:1px solid rgba(217,119,6,.3);margin-bottom:1rem"><div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1rem"><div style="font-size:2rem">🎯</div><div><h3 style="color:var(--text-amber);font-weight:600;font-size:1.125rem">The Skill</h3><p style="color:var(--text-amber);font-size:.875rem">The power is in the pause.</p></div></div><div style="color:var(--text-secondary);line-height:1.6"><p><strong>Scientist Mode isn\'t about fixing or learning yet.</strong> It\'s about accepting reality first.</p><p>The moment you add "What can I learn?" you\'re already skipping the essential step: <strong>letting the fact simply be true.</strong></p><p>True skill: See the fact → <strong>Pause</strong> → Let space open.</p></div></div><button onclick="nextStep()" class="btn btn-primary btn-mb">Practice Scientist Mode →</button></div>'}function renderStep5(){setTimeout(()=>{const f=document.getElementById('scientistText'),fc=document.getElementById('scientistCounter'),r=document.getElementById('lightnessRating'),dw=document.getElementById('dropJudgmentWord');if(f){f.addEventListener('input',e=>{const l=e.target.value.length;u.scientistVersion=e.target.value;fc&&(fc.textContent=l+' characters'+(l<10?' (min 10)':''),l>=10?fc.classList.add('active'):fc.classList.remove('active'));updateButtonState()});f.dispatchEvent(new Event('input'));f.addEventListener('blur',()=>{window.scrollTo(0,0)})}r&&(r.value=u.lightness,updateLightnessValue());if(dw){dw.value=u.feelingWord;dw.addEventListener('blur',()=>{window.scrollTo(0,0)})}updateButtonState()},100);const dp=u.selfAttack?'<div class="card" style="border-left:4px solid rgba(220,38,38,.6);background:rgba(220,38,38,.08)"><p style="font-weight:600;margin-bottom:.75rem;font-size:1rem">⚔️ Your Self-Attack:</p><p style="color:var(--text-secondary);font-style:italic;line-height:1.6;font-size:1rem">"'+u.selfAttack+'"</p></div><div style="text-align:center;font-size:2rem;margin:1rem 0">⬇️</div>':'';return'<div class="step-transition">'+renderHeader()+'<div class="card skill-header" style="padding:1.75rem;margin-bottom:1rem"><div style="font-size:3rem;margin-bottom:.75rem;text-align:center">🧪</div><h2 style="color:#fff;font-size:1.5rem;font-weight:700;text-align:center;margin-bottom:.5rem">Remove the Arrows</h2><p style="color:rgba(255,255,255,.9);text-align:center;font-size:1rem">Rewrite with just facts. Then pause.</p></div>'+dp+'<div class="card" style="border-left:4px solid var(--primary-teal);background:rgba(14,116,144,.08)"><div style="display:flex;align-items:center;gap:.5rem;margin-bottom:1rem"><span style="font-size:1.5rem">🔬</span><h3 style="color:var(--text-teal);font-weight:600;font-size:1.125rem">Think Like a Scientist:</h3></div><div style="background:rgba(14,116,144,.1);padding:1rem;border-radius:.75rem;margin-bottom:1rem"><p style="color:var(--text-teal);font-weight:600;margin-bottom:.5rem">The Practice:</p><p style="color:var(--text-secondary);font-size:.9375rem;line-height:1.5">Just state observable facts. The goal is <strong>not</strong> to find a lesson or solution. The goal is to state what\'s true, then pause. Let the fact be there without rushing to fix it.</p></div><p style="font-size:1.05rem;margin-bottom:1rem">Rewrite using ONLY facts:</p><textarea id="scientistText" placeholder="Just the facts. Then pause. No need to fix, learn, or move on yet.">'+u.scientistVersion+'</textarea><div id="scientistCounter" class="char-counter">0 characters (min 10)</div></div><div class="card"><p style="font-weight:600;margin-bottom:1.5rem;font-size:1.125rem;text-align:center">How much lighter does just-facts feel?</p><div style="margin-bottom:2rem"><input type="range" min="1" max="10" value="'+(u.lightness||5)+'" id="lightnessRating" style="width:100%;margin-bottom:1rem" oninput="updateLightnessValue()"><div style="display:flex;justify-content:space-between;align-items:center"><span style="color:var(--text-muted);font-size:.875rem">Same weight</span><div id="lightnessDisplay" style="background:rgba(14,116,144,.2);padding:.5rem 1.25rem;border-radius:.75rem;min-width:3rem;text-align:center"><span id="lightnessVal" style="color:var(--text-teal);font-weight:700;font-size:1.5rem">'+(u.lightness||5)+'</span><div id="lightnessEmoji" class="relief-emoji">'+getLightnessEmoji(u.lightness||5)+'</div></div><span style="color:var(--text-muted);font-size:.875rem">Much lighter</span></div></div><p style="font-weight:600;margin-bottom:1rem;font-size:1rem">How does dropping judgment feel?</p><input type="text" id="dropJudgmentWord" placeholder="e.g., spacious, calm, free..." value="'+u.feelingWord+'" style="width:100%;padding:.75rem;border-radius:.75rem;border:1px solid rgba(51,65,85,.4);background:rgba(30,41,59,.5);color:#fff;font-size:1rem"></div><button onclick="nextStep()" class="btn btn-primary btn-mb">Continue →</button></div>'}function renderStep6(){return'<div class="step-transition">'+header()+'<div class="card" style="text-align:center;padding:1.5rem;margin-bottom:1rem"><div style="font-size:3rem;margin-bottom:1rem">🌌</div><h2 style="font-size:1.5rem;font-weight:600;margin-bottom:.5rem">The Space of Acceptance</h2><p style="color:var(--text-secondary)">Your 3-step skill for letting reality be.</p></div><div class="card"><h3 style="font-weight:600;margin-bottom:1.5rem;font-size:1.125rem">Examples:</h3><div style="margin-bottom:2rem">'+[{judgment:'"I\'m so lazy"',fact:'"I haven\'t started that task yet"',skill:'No "I should be more productive." Just the fact, then pause.'},{judgment:'"This is terrible"',fact:'"This didn\'t go as planned"',skill:'No "What can I learn?" Just the fact, then pause.'},{judgment:'"I\'m a bad person"',fact:'"I made a choice I regret"',skill:'No "I\'ll be better." Just the fact, then pause.'}].map(item=>'<div style="padding:1rem;background:rgba(30,41,59,.5);border-radius:.875rem;margin-bottom:1rem"><div style="margin-bottom:.75rem"><p style="font-size:.875rem;color:var(--text-muted);margin-bottom:.25rem">❌ Judgment:</p><p style="color:#fca5a5;font-weight:600;font-size:1rem">'+item.judgment+'</p></div><div><p style="font-size:.875rem;color:var(--text-muted);margin-bottom:.25rem">🔬 Just Facts:</p><p style="color:var(--text-teal);font-weight:600;font-size:1rem">'+item.fact+'</p><p style="color:var(--text-muted);font-size:.8125rem;margin-top:.5rem">'+item.skill+'</p></div></div>').join('')+'</div><div style="background:rgba(14,116,144,.1);padding:1.25rem;border-radius:.875rem;border:1px solid rgba(14,116,144,.4);margin-bottom:1.5rem"><h3 style="color:var(--text-teal);font-weight:600;margin-bottom:1rem;font-size:1.05rem">🔬 The 3-Step Skill:</h3><div style="color:var(--text-secondary);line-height:1.7;font-size:1rem">'+[{step:'1',text:'Notice: "I\'m judging"'},{step:'2',text:'State ONE fact (just what happened)'},{step:'3',text:'<strong>Pause. Breathe. Let the fact be there.</strong>'}].map(s=>'<div style="display:flex;align-items:center;gap:1rem;margin-bottom:.75rem"><div style="width:1.75rem;height:1.75rem;background:rgba(14,116,144,.3);color:var(--text-teal);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.875rem;flex-shrink:0">'+s.step+'</div><p style="font-size:1rem">'+s.text+'</p></div>').join('')+'</div></div></div><div class="card" style="background:rgba(14,116,144,.1);border:1px solid rgba(14,116,144,.3)"><h3 style="color:var(--text-teal);font-weight:600;margin-bottom:1rem;font-size:1.05rem">✨ Your Daily Practice:</h3><div style="color:var(--text-secondary);line-height:1.7;font-size:1rem"><p style="margin-bottom:1rem">When you catch self-judgment:</p><div style="background:rgba(14,116,144,.15);padding:1rem;border-radius:.75rem;margin:1rem 0"><p style="color:var(--text-teal);font-weight:600;text-align:center;font-size:1.125rem">Judge → Fact → <strong>Pause</strong></p></div><p>The skill is in the pause. That\'s where acceptance happens. That\'s where you stop shooting yourself.</p></div></div><button onclick="nextStep()" class="btn btn-primary btn-mb">Review My Practice →</button></div>'}function renderStep7(){const dp=u.selfAttack||'No self-attack entered',fp=u.scientistVersion||'No facts entered',dw=u.feelingWord||'Freeing';return'<div class="step-transition">'+renderHeader()+'<div class="card skill-header" style="padding:1.5rem;text-align:center;margin-bottom:1rem"><div style="font-size:3.5rem;margin-bottom:.75rem">📝</div><h2 style="color:#fff;font-size:1.75rem;font-weight:700;margin-bottom:.5rem">Your Practice Begins</h2><p style="color:rgba(255,255,255,.9);font-size:.9375rem">Part 1: Judge vs Scientist</p></div>'+(u.selfAttack&&u.scientistVersion?'<div class="card"><h3 style="font-weight:600;margin-bottom:1.5rem;font-size:1.25rem;text-align:center">Your Practice Example:</h3><div style="margin-bottom:1.5rem;padding:1.25rem;background:rgba(220,38,38,.08);border-radius:.875rem;border-left:3px solid rgba(220,38,38,.6)"><div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.75rem"><span style="font-size:1.5rem">⚔️</span><p style="font-size:.875rem;color:#fca5a5;font-weight:600">Judge Mode (Arrow #2)</p></div><p style="color:var(--text-secondary);font-style:italic;line-height:1.6">"'+dp.slice(0,200)+(dp.length>200?'...':'')+'"</p></div><div style="text-align:center;font-size:1.5rem;margin:1rem 0">⬇️</div><div style="margin-bottom:1.5rem;padding:1.25rem;background:rgba(14,116,144,.08);border-radius:.875rem;border-left:3px solid var(--primary-teal)"><div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.75rem"><span style="font-size:1.5rem">🔬</span><p style="font-size:.875rem;color:var(--text-teal);font-weight:600">Scientist Mode (Just Facts)</p></div><p style="color:var(--text-teal);font-weight:500;line-height:1.6">"'+fp.slice(0,200)+(fp.length>200?'...':'')+'"</p></div><div style="background:linear-gradient(135deg,rgba(14,116,144,.1),rgba(217,119,6,.1));padding:1.5rem;border-radius:.875rem;border:1px solid rgba(14,116,144,.2);text-align:center"><p style="color:var(--text-secondary);font-size:.9375rem;margin-bottom:.75rem">You described this shift as:</p><h3 style="color:#fff;font-size:1.75rem;margin:.75rem 0;font-weight:700">"'+dw+'"</h3><div style="display:flex;justify-content:center;align-items:center;gap:.75rem;margin-top:1rem"><span style="font-size:.875rem;color:var(--text-muted)">Lightness Level:</span><span style="background:rgba(14,116,144,.25);color:var(--text-teal);padding:.375rem 1rem;border-radius:2rem;font-weight:700;font-size:1.125rem">'+u.lightness+'/10</span><span style="font-size:1.5rem">'+getLightnessEmoji(u.lightness)+'</span></div></div></div>':'')+'<div class="card" style="background:rgba(14,116,144,.08);border:1px solid rgba(14,116,144,.25)"><h3 style="font-weight:600;margin-bottom:1.25rem;font-size:1.125rem;color:var(--text-teal)">Keep Practicing</h3><div style="color:var(--text-secondary);line-height:1.7;font-size:1rem"><p style="margin-bottom:1rem">This skill develops with daily use. Each time you catch yourself judging and state a fact instead, you strengthen the practice.</p><p style="margin-bottom:1rem">Notice when your mind shoots Arrow #2. Then practice: <strong>Judge → Fact → Pause.</strong></p><p>The real practice is in the pause. That\'s where you let reality be true without fighting it. From that space, any next step will be wiser.</p></div></div><div class="card"><h3 style="font-weight:600;font-size:1.125rem;margin-bottom:1.25rem;text-align:center">Save Your Practice Notes</h3><div style="display:grid;gap:.75rem"><button onclick="downloadProgress()" class="btn btn-primary" style="display:flex;align-items:center;justify-content:center;gap:.75rem;padding:1.25rem"><span style="font-size:1.5rem">💾</span><span>Download Notes</span></button><button onclick="returnToCourse()" class="btn btn-secondary" style="display:flex;align-items:center;justify-content:center;gap:.75rem;padding:1.25rem"><span style="font-size:1.5rem">←</span><span>Return to Course</span></button></div></div></div>'}window.goBack=goBack;window.nextStep=nextStep;window.updateLightnessValue=updateLightnessValue;window.downloadProgress=downloadProgress;window.returnToCourse=returnToCourse
+</script>
+</body>
+</html>
