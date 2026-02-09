@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Focus">
+<meta name="theme-color" content="#0f172a">
+<meta name="format-detection" content="telephone=no">
+<title>Focus - Mindfulness</title>
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📋</text></svg>">
+<style>
+:root{
+    --bg-dark:#0f172a;
+    --bg-card:rgba(15,23,42,.98);
+    --border-subtle:rgba(30,41,59,.5);
+    --primary-teal:#0e7490;
+    --accent-amber:#d97706;
+    --distraction-red:#dc2626;
+    --text-primary:#f1f5f9;
+    --text-secondary:#cbd5e1;
+    --text-muted:#94a3b8;
+    --text-teal:#5eead4;
+    --text-amber:#fbbf24;
+    --success-emerald:#4ade80;
+    --gradient-main:linear-gradient(135deg,#0e7490,#d97706)
+}
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    -webkit-tap-highlight-color:transparent;
+    -webkit-font-smoothing:antialiased
+}
+html,body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:var(--bg-dark);
+    color:var(--text-primary);
+    -webkit-overflow-scrolling:touch
+}
+.container{
+    width:100%;
+    height:100vh;
+    height:-webkit-fill-available;
+    display:flex;
+    flex-direction:column
+}
+.app-wrapper{
+    width:100%;
+    max-width:28rem;
+    height:100%;
+    margin:0 auto;
+    background:var(--bg-card);
+    display:flex;
+    flex-direction:column;
+    position:relative;
+    overflow:hidden
+}
+.bg-blur-1,.bg-blur-2{
+    position:absolute;
+    border-radius:50%;
+    pointer-events:none;
+    z-index:0;
+    opacity:.3
+}
+.bg-blur-1{
+    top:-5%;
+    left:50%;
+    transform:translateX(-50%);
+    width:22rem;
+    height:22rem;
+    background:rgba(14,116,144,.15)
+}
+.bg-blur-2{
+    bottom:-5%;
+    right:-5%;
+    width:18rem;
+    height:18rem;
+    background:rgba(217,119,6,.15)
+}
+.main-content{
+    flex:1;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+    position:relative;
+    z-index:1
+}
+.main-content::-webkit-scrollbar{
+    display:none
+}
+.content-wrapper{
+    padding:1rem 1.25rem 2rem;
+    padding-bottom:calc(2rem + env(safe-area-inset-bottom))
+}
+.card{
+    background:linear-gradient(135deg,rgba(30,41,59,.65),rgba(15,23,42,.45));
+    border:1px solid rgba(51,65,85,.4);
+    border-radius:1.25rem;
+    padding:1.5rem;
+    margin-bottom:1rem
+}
+.skill-header{
+    background:linear-gradient(135deg,rgba(14,116,144,0.15),rgba(217,119,6,0.12));
+    border:1px solid rgba(14,116,144,0.25)
+}
+.btn{
+    color:#fff;
+    font-weight:600;
+    border:none;
+    padding:1rem;
+    border-radius:1rem;
+    cursor:pointer;
+    width:100%;
+    font-size:1rem;
+    transition:all .3s ease;
+    -webkit-appearance:none;
+    touch-action:manipulation;
+    min-height:44px
+}
+.btn-primary{
+    background:var(--gradient-main);
+    box-shadow:0 4px 16px rgba(14,116,144,.2)
+}
+.btn-primary:hover,.btn-primary:active{
+    opacity:.92;
+    transform:translateY(-2px);
+    box-shadow:0 6px 20px rgba(14,116,144,.25)
+}
+.btn-secondary{
+    background:var(--primary-teal);
+    box-shadow:0 4px 16px rgba(14,116,144,.2)
+}
+.btn-secondary:hover,.btn-secondary:active{
+    background:#0c627a;
+    transform:translateY(-2px);
+    box-shadow:0 6px 20px rgba(14,116,144,.25)
+}
+.btn-tertiary{
+    background:var(--accent-amber);
+    box-shadow:0 4px 16px rgba(217,119,6,.2)
+}
+.btn-tertiary:hover,.btn-tertiary:active{
+    background:#b45309;
+    transform:translateY(-2px);
+    box-shadow:0 6px 20px rgba(217,119,6,.25)
+}
+.btn:disabled{
+    opacity:.4;
+    cursor:not-allowed;
+    transform:none!important
+}
+.progress-dots{
+    display:flex;
+    gap:.25rem
+}
+.progress-dot{
+    flex:1;
+    height:.5rem;
+    background:rgba(148,163,184,.25);
+    border-radius:9999px
+}
+.progress-dot.active{
+    background:var(--gradient-main)
+}
+@keyframes fadeIn{
+    from{opacity:0}
+    to{opacity:1}
+}
+.step-transition{
+    animation:fadeIn .4s ease-out
+}
+.checkbox-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:.5rem
+}
+.checkbox-label{
+    display:flex;
+    align-items:center;
+    gap:.5rem;
+    padding:.75rem;
+    background:rgba(30,41,59,.5);
+    border:1px solid rgba(51,65,85,.4);
+    border-radius:.75rem;
+    cursor:pointer;
+    transition:all .2s;
+    -webkit-tap-highlight-color:transparent
+}
+.checkbox-label:hover,.checkbox-label:active{
+    border-color:rgba(14,116,144,.5);
+    background:rgba(14,116,144,.12)
+}
+.checkbox-label:active{
+    transform:scale(0.98)
+}
+.checkbox-label.checked{
+    border-color:rgba(14,116,144,.6);
+    background:rgba(14,116,144,.18)
+}
+input[type=checkbox]{
+    width:1.25rem;
+    height:1.25rem;
+    cursor:pointer;
+    accent-color:var(--primary-teal)
+}
+textarea,input[type=text]{
+    width:100%;
+    padding:.75rem;
+    border-radius:.75rem;
+    border:1px solid rgba(51,65,85,.4);
+    background:rgba(30,41,59,.5);
+    color:#fff;
+    font-size:16px;
+    -webkit-appearance:none;
+    font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif
+}
+textarea{
+    min-height:100px;
+    resize:vertical
+}
+input[type=range]{
+    width:100%;
+    height:6px;
+    background:rgba(30,41,59,.7);
+    border-radius:10px;
+    outline:0;
+    -webkit-appearance:none
+}
+input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;
+    width:24px;
+    height:24px;
+    border-radius:50%;
+    background:var(--primary-teal);
+    cursor:pointer;
+    border:none
+}
+.char-counter{
+    font-size:.875rem;
+    color:var(--text-muted);
+    text-align:right;
+    margin-top:.5rem
+}
+.char-counter.active{
+    color:var(--text-teal);
+    font-weight:600
+}
+.feedback-toast{
+    position:fixed;
+    bottom:calc(2rem + env(safe-area-inset-bottom));
+    left:50%;
+    transform:translateX(-50%) translateY(100px);
+    background:rgba(14,116,144,.95);
+    color:#fff;
+    padding:1rem 1.5rem;
+    border-radius:.75rem;
+    z-index:1000;
+    opacity:0;
+    transition:all .3s ease
+}
+.feedback-toast.show{
+    transform:translateX(-50%) translateY(0);
+    opacity:1
+}
+.hidden{
+    display:none!important
+}
+.relief-emoji{
+    font-size:2rem;
+    margin-bottom:.5rem
+}
+@supports (-webkit-touch-callout:none){
+    .container{height:-webkit-fill-available}
+}
+button{
+    cursor:pointer;
+    -webkit-user-select:none;
+    user-select:none
+}
+.btn-mb{
+    margin-bottom:1rem
+}
+</style>
+</head>
+<body>
+<div class="container"><div class="app-wrapper"><div class="bg-blur-1"></div><div class="bg-blur-2"></div><div class="main-content"><div class="content-wrapper" id="content"></div></div></div></div>
+<div id="feedbackToast" class="feedback-toast"></div>
+<script>
+// Initialize app
+(function() {
+    let u = { distraction: '', scatteredWords: [], focusedState: 5, focusWord: '' };
+    let c = 1;
+    const T = 7;
+    const titles = {
+        1: 'The Myth of Multitasking',
+        2: 'The Scattered Mind Test',
+        3: 'The Power of One Thing',
+        4: 'Scattered vs Focused',
+        5: 'Practice: 2-Minute Focus',
+        6: 'Your Focus Tool',
+        7: 'Practice Summary'
+    };
+
+    function initApp() {
+        loadProgress() ? render() : render();
+    }
+
+    function autoSave() {
+        localStorage.setItem('focusProgress', JSON.stringify({
+            step: c,
+            userInput: u,
+            timestamp: Date.now()
+        }));
+    }
+
+    function loadProgress() {
+        const s = localStorage.getItem('focusProgress');
+        if (s) {
+            try {
+                const d = JSON.parse(s);
+                if ((Date.now() - d.timestamp) / 3600000 < 24 && confirm('Resume where you left off?')) {
+                    c = d.step;
+                    Object.assign(u, d.userInput);
+                    return true;
+                }
+            } catch(e) {
+                console.error('Error loading progress:', e);
+            }
+        }
+        return false;
+    }
+
+    function showFeedback(m, d = 2000) {
+        const t = document.getElementById('feedbackToast');
+        t.textContent = m;
+        t.classList.add('show');
+        setTimeout(() => {
+            t.classList.remove('show');
+        }, d);
+    }
+
+    function renderHeader() {
+        return `<div class="card" style="padding:1rem;margin-bottom:1rem">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem">
+                <button onclick="goBack()" style="background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer;padding:.25rem;-webkit-tap-highlight-color:transparent">←</button>
+                <h1 style="font-weight:600;font-size:1.125rem">${titles[c]}</h1>
+                <div style="color:var(--text-muted);font-size:.875rem">${c}/${T}</div>
+            </div>
+            <div class="progress-dots">
+                ${Array(T).fill().map((_, i) => 
+                    `<div class="progress-dot ${i < c ? 'active' : ''}"></div>`
+                ).join('')}
+            </div>
+        </div>`;
+    }
+
+    function goBack() {
+        if (c > 1) {
+            c--;
+            render();
+        } else {
+            window.history.length > 1 ? window.history.back() : window.location.href = '/';
+        }
+    }
+
+    function canProceed() {
+        if (c === 2) return u.distraction.length >= 20;
+        if (c === 5) return u.focusWord.length >= 1;
+        return true;
+    }
+
+    function updateButtonState() {
+        document.querySelectorAll('.btn-primary').forEach(b => {
+            b.disabled = !canProceed();
+        });
+    }
+
+    function nextStep() {
+        // Save data from current step
+        if (c === 2) {
+            const d = document.getElementById('distractionText');
+            if (d) u.distraction = d.value.trim();
+            
+            const checkboxes = document.querySelectorAll('.checkbox-label.checked');
+            u.scatteredWords = Array.from(checkboxes).map(e => 
+                e.querySelector('span').textContent
+            );
+        }
+        
+        if (c === 5) {
+            const f = document.getElementById('focusWord');
+            if (f) u.focusWord = f.value.trim();
+            
+            const r = document.getElementById('focusRating');
+            if (r) u.focusedState = parseInt(r.value);
+        }
+        
+        autoSave();
+        
+        if (c < T) {
+            c++;
+            render();
+            document.querySelector('.main-content').scrollTo({ top: 0 });
+        }
+    }
+
+    function getFocusEmoji(v) {
+        const e = ['😫','😣','😕','😐','🙂','😌','😊','😁','✨','🎯'];
+        return e[Math.min(Math.max(0, v - 1), 9)];
+    }
+
+    function updateFocusValue() {
+        const v = document.getElementById('focusRating').value;
+        u.focusedState = v;
+        
+        const val = document.getElementById('focusVal');
+        const emoji = document.getElementById('focusEmoji');
+        const dis = document.getElementById('focusDisplay');
+        
+        if (val) val.textContent = v;
+        if (emoji) emoji.textContent = getFocusEmoji(v);
+        if (dis) {
+            dis.style.background = v < 4 ? 'rgba(220,38,68,.2)' : 
+                                  v < 7 ? 'rgba(217,119,6,.2)' : 
+                                  'rgba(14,116,144,.2)';
+        }
+    }
+
+    function downloadProgress() {
+        const cnt = `FOCUS - MY PRACTICE
+${new Date().toLocaleDateString()}
+
+🎯 THE SCATTERED MIND TEST:
+"${u.distraction || 'No distraction entered'}"
+
+✨ FOCUSED STATE:
+Feeling: ${u.focusedState}/10
+Word: "${u.focusWord || 'N/A'}"
+
+🎯 Daily Focus Question:
+"What ONE thing right now?"
+
+💡 Practice: One thing at a time.
+Close everything else. Set timer. Focus.`;
+
+        try {
+            const iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+            if (iOS) {
+                alert('📱 iOS Note: Copy your practice notes below:\n\n' + cnt);
+                navigator.clipboard.writeText(cnt).then(() => {
+                    showFeedback('✓ Copied to clipboard!', 3000);
+                });
+            } else {
+                const b = new Blob([cnt], {type: 'text/plain;charset=utf-8'});
+                const url = URL.createObjectURL(b);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'Focus-Practice-' + new Date().toISOString().split('T')[0] + '.txt';
+                a.style.display = 'none';
+                document.body.appendChild(a);
+                a.click();
+                setTimeout(() => {
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }, 100);
+                showFeedback('✓ Downloaded!', 3000);
+            }
+            
+            localStorage.setItem('moduleCompleted', JSON.stringify({
+                moduleId: 'focus',
+                completed: true,
+                timestamp: new Date().toISOString()
+            }));
+        } catch(e) {
+            console.error('Download failed:', e);
+            showFeedback('Download failed. Please try again.', 3000);
+        }
+    }
+
+    function returnToCourse() {
+        localStorage.removeItem('focusProgress');
+        const isStandalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
+        isStandalone ? window.location.href = '/' : 
+                      window.history.length > 1 ? window.history.back() : 
+                      window.location.href = '/';
+    }
+
+    function render() {
+        const content = document.getElementById('content');
+        let html = '';
+        
+        switch(c) {
+            case 1: html = renderStep1(); break;
+            case 2: html = renderStep2(); break;
+            case 3: html = renderStep3(); break;
+            case 4: html = renderStep4(); break;
+            case 5: html = renderStep5(); break;
+            case 6: html = renderStep6(); break;
+            case 7: html = renderStep7(); break;
+            default: html = renderStep1();
+        }
+        
+        content.innerHTML = html;
+        
+        // Initialize interactive elements after render
+        setTimeout(() => {
+            initializeStep();
+        }, 50);
+    }
+
+    function initializeStep() {
+        // Initialize for step 2
+        if (c === 2) {
+            const d = document.getElementById('distractionText');
+            const cc = document.getElementById('charCounter');
+            
+            if (d) {
+                d.addEventListener('input', (e) => {
+                    const l = e.target.value.length;
+                    u.distraction = e.target.value;
+                    if (cc) {
+                        cc.textContent = l + ' characters' + (l < 20 ? ' (min 20)' : '');
+                        l >= 20 ? cc.classList.add('active') : cc.classList.remove('active');
+                    }
+                    updateButtonState();
+                });
+                
+                d.value = u.distraction;
+                d.dispatchEvent(new Event('input'));
+            }
+            
+            // Initialize checkboxes
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                const lbl = cb.closest('.checkbox-label');
+                const txt = lbl.querySelector('span').textContent;
+                
+                if (u.scatteredWords && u.scatteredWords.includes(txt)) {
+                    cb.checked = true;
+                    lbl.classList.add('checked');
+                }
+                
+                cb.addEventListener('change', (e) => {
+                    e.target.checked ? 
+                        lbl.classList.add('checked') : 
+                        lbl.classList.remove('checked');
+                });
+            });
+        }
+        
+        // Initialize for step 5
+        if (c === 5) {
+            const f = document.getElementById('focusWord');
+            const r = document.getElementById('focusRating');
+            
+            if (f) {
+                f.value = u.focusWord;
+                f.addEventListener('input', () => updateButtonState());
+            }
+            
+            if (r) {
+                r.value = u.focusedState;
+                updateFocusValue();
+            }
+        }
+        
+        updateButtonState();
+    }
+
+    function renderStep1() {
+        return `<div class="step-transition">
+            ${renderHeader()}
+            <div class="card skill-header" style="padding:2rem;text-align:center;margin-bottom:1rem">
+                <div style="font-size:4rem;margin-bottom:1rem">🎯</div>
+                <h2 style="color:#fff;font-size:1.75rem;font-weight:700;margin-bottom:1.5rem">One Thing at a Time</h2>
+                <div style="font-family:monospace;font-size:1.5rem;padding:1rem;background:rgba(30,41,59,.5);border-radius:1rem;margin:1rem 0">
+                    Multitasking<br>
+                    <span style="font-size:2rem;color:var(--text-teal)">≠</span><br>
+                    <span style="background:rgba(14,116,144,.3);padding:.25rem .5rem;border-radius:.5rem">Effectiveness</span>
+                </div>
+                <div style="background:rgba(255,255,255,.1);padding:1.25rem;border-radius:1rem;margin:1.5rem 0">
+                    <p style="color:#fff;font-weight:600;margin-bottom:.5rem">The Myth:</p>
+                    <p style="color:rgba(255,255,255,.9);font-size:1rem;line-height:1.6">
+                        Your brain tells you: "I can do 5 things at once!"<br>
+                        Science says: You switch, you lose focus.<br>
+                        Each switch costs 40% of your attention.
+                    </p>
+                </div>
+                <div style="background:rgba(14,116,144,.18);border:1px solid rgba(14,116,144,.35);padding:.5rem 1rem;border-radius:2rem;font-size:.875rem;color:var(--text-teal);font-weight:500;display:inline-block">
+                    You'll learn to give one thing your full attention
+                </div>
+            </div>
+            <button onclick="nextStep()" class="btn btn-primary">Test Your Focus →</button>
+        </div>`;
+    }
+
+    function renderStep2() {
+        return `<div class="step-transition">
+            ${renderHeader()}
+            <div class="card" style="background:rgba(217,119,6,.15);border:1px solid rgba(217,119,6,.35)">
+                <div style="font-size:3rem;margin-bottom:.75rem;text-align:center">🧪</div>
+                <h2 style="font-size:1.5rem;font-weight:600;margin-bottom:1rem;text-align:center">The Scattered Mind Test</h2>
+                <p style="color:var(--text-secondary);text-align:center;font-size:1rem">Try to do three things at once</p>
+            </div>
+            
+            <div class="card">
+                <p style="font-size:1.05rem;font-weight:600;margin-bottom:1.5rem">Instructions:</p>
+                ${['Count backwards from 100 by 7s', 'Name 5 items in your fridge', 'Plan tonight\'s dinner', 'Do all three AT ONCE for 60 seconds!'].map((ins, i) => `
+                    <div style="display:flex;gap:1rem;margin-bottom:1.5rem;align-items:start">
+                        <div style="width:2.25rem;height:2.25rem;background:var(--gradient-main);border-radius:.5rem;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;flex-shrink:0">${i + 1}</div>
+                        <p style="color:var(--text-secondary);padding-top:.375rem;line-height:1.6;font-size:1rem">${ins}</p>
+                    </div>
+                `).join('')}
+            </div>
+            
+            <div class="card" style="border:2px solid rgba(220,38,38,.4);background:rgba(220,38,38,.05)">
+                <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:1rem">
+                    <span style="font-size:1.5rem">🤹‍♂️</span>
+                    <h3 style="color:#fca5a5;font-weight:600;font-size:1.125rem">What Scattering Felt Like:</h3>
+                </div>
+                <div class="checkbox-grid" style="margin-bottom:1.5rem">
+                    ${['Frazzled / Exhausted', 'Overwhelmed / Scattered', 'Frustrated / Ineffective', 'Made many errors', 'Lost track completely', 'Brain felt overloaded'].map(w => `
+                        <label class="checkbox-label">
+                            <input type="checkbox">
+                            <span style="color:var(--text-secondary);font-size:.9375rem">${w}</span>
+                        </label>
+                    `).join('')}
+                </div>
+                <p style="font-weight:600;margin-bottom:.75rem;font-size:1rem">Describe the multitasking experience:</p>
+                <textarea id="distractionText" placeholder="What did it feel like to juggle three things?...">${u.distraction}</textarea>
+                <div id="charCounter" class="char-counter">0 characters (min 20)</div>
+            </div>
+            
+            <button onclick="nextStep()" class="btn btn-primary btn-mb">Learn to Focus →</button>
+        </div>`;
+    }
+
+    function renderStep3() {
+        return `<div class="step-transition">
+            ${renderHeader()}
+            <div class="card" style="text-align:center;padding:1.5rem;margin-bottom:1rem">
+                <div style="font-size:3rem;margin-bottom:1rem">🧠</div>
+                <h2 style="font-size:1.5rem;font-weight:600;margin-bottom:.5rem">The Power of One Thing</h2>
+                <p style="color:var(--text-secondary)">Your brain can't truly multitask</p>
+            </div>
+            
+            <div class="card" style="border:2px solid rgba(220,38,38,.45);background:rgba(220,38,38,.08);margin-bottom:1rem">
+                <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1rem">
+                    <div style="font-size:2rem">🤹‍♂️</div>
+                    <div>
+                        <h3 style="color:#fca5a5;font-weight:600;font-size:1.25rem">SCATTERED ATTENTION</h3>
+                        <p style="color:#fca5a5;font-size:.875rem;font-weight:500">Brain rapidly switching contexts</p>
+                    </div>
+                </div>
+                <div style="background:rgba(220,38,38,.1);padding:1rem;border-radius:.75rem;margin-bottom:1rem">
+                    <p style="color:#fca5a5;font-size:1.1rem;font-weight:600">"Working on report + checking phone"</p>
+                </div>
+                <div style="background:rgba(220,38,38,.1);padding:1rem;border-radius:.75rem;margin-bottom:1rem">
+                    <p style="color:#fca5a5;font-size:1.1rem;font-weight:600">"Cooking + planning + worrying"</p>
+                </div>
+                <div style="background:rgba(220,38,38,.1);padding:1rem;border-radius:.75rem">
+                    <p style="color:#fca5a5;font-size:1.1rem;font-weight:600">"Meeting + email + thinking"</p>
+                </div>
+            </div>
+            
+            <div style="text-align:center;font-size:2rem;margin:1rem 0">⬇️</div>
+            
+            <div class="card" style="border:2px solid rgba(14,116,144,.45);background:rgba(14,116,144,.08);margin-bottom:1rem">
+                <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1rem">
+                    <div style="font-size:2rem">🎯</div>
+                    <div>
+                        <h3 style="color:var(--text-teal);font-weight:600;font-size:1.25rem">FOCUSED ATTENTION</h3>
+                        <p style="color:var(--text-teal);font-size:.875rem;font-weight:500">One task, full presence</p>
+                    </div>
+                </div>
+                <div style="background:rgba(14,116,144,.1);padding:1rem;border-radius:.75rem;margin-bottom:1rem">
+                    <p style="color:var(--text-teal);font-size:1.1rem;font-weight:600">"Only this report for 25 minutes"</p>
+                </div>
+                <div style="background:rgba(14,116,144,.1);padding:1rem;border-radius:.75rem;margin-bottom:1rem">
+                    <p style="color:var(--text-teal);font-size:1.1rem;font-weight:600">"Just cooking, nothing else"</p>
+                </div>
+                <div style="background:rgba(14,116,144,.1);padding:1rem;border-radius:.75rem">
+                    <p style="color:var(--text-teal);font-size:1.1rem;font-weight:600">"Full attention in this meeting"</p>
+                </div>
+            </div>
+            
+            <div class="card" style="background:rgba(217,119,6,.08);border:1px solid rgba(217,119,6,.3)">
+                <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1rem">
+                    <div style="font-size:2rem">💡</div>
+                    <div>
+                        <h3 style="color:var(--text-amber);font-weight:600;font-size:1.125rem">What Focus Means:</h3>
+                        <p style="color:var(--text-amber);font-size:.875rem">Giving full attention to one activity</p>
+                    </div>
+                </div>
+                <div style="color:var(--text-secondary);line-height:1.6">
+                    <p><strong>Focus is doing one thing at a time, with your whole mind.</strong> It's not just doing one thing—it's being fully present with that one thing.</p>
+                    <p>The moment you check your phone while working, you've stopped focusing. Your attention has split.</p>
+                </div>
+            </div>
+            
+            <button onclick="nextStep()" class="btn btn-primary btn-mb">See the Difference →</button>
+        </div>`;
+    }
+
+    function renderStep4() {
+        const rules = [
+            { rule: '1', title: 'Choose ONE thing to do', example: '"Just this report for 25 minutes"', note: 'Not 5 things at once' },
+            { rule: '2', title: 'Close everything else', example: '"Phone away, tabs closed, notifications off"', note: 'Not scattered attention' },
+            { rule: '3', title: 'When mind wanders, gently return', example: '"Oops, planning dinner. Back to report."', note: 'Not beating yourself up' },
+            { rule: '4', title: 'Notice urges to switch, don\'t follow', example: '"Urge to check email. Not now."', note: 'Not giving in to every urge' },
+            { rule: '5', title: 'Ask: "What ONE thing right now?"', example: '"Right now: just reading this page"', note: 'Not "what else can I do?"' }
+        ];
+        
+        return `<div class="step-transition">
+            ${renderHeader()}
+            <div class="card skill-header" style="padding:1.75rem;margin-bottom:1rem">
+                <div style="font-size:3rem;margin-bottom:.75rem;text-align:center">📝</div>
+                <h2 style="color:#fff;font-size:1.5rem;font-weight:700;text-align:center;margin-bottom:.5rem">How to Focus</h2>
+                <p style="color:rgba(255,255,255,.9);text-align:center;font-size:1rem">Simple rules for single-tasking</p>
+            </div>
+            
+            ${rules.map(r => `
+                <div class="card" style="border-left:4px solid ${r.rule === '5' ? 'var(--accent-amber)' : 'var(--primary-teal)'};background:${r.rule === '5' ? 'rgba(217,119,6,.08)' : 'rgba(14,116,144,.08)'}">
+                    <div style="display:flex;align-items:start;gap:1rem;margin-bottom:.75rem">
+                        <div style="background:${r.rule === '5' ? 'rgba(217,119,6,.2)' : 'rgba(14,116,144,.2)'};color:${r.rule === '5' ? 'var(--text-amber)' : 'var(--text-teal)'};width:2rem;height:2rem;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0">
+                            ${r.rule}
+                        </div>
+                        <div>
+                            <h3 style="color:${r.rule === '5' ? 'var(--text-amber)' : 'var(--text-teal)'};font-weight:600;font-size:1.125rem;margin-bottom:.25rem">${r.title}</h3>
+                            <p style="color:var(--text-secondary);font-size:.9375rem">${r.note}</p>
+                        </div>
+                    </div>
+                    <div style="background:${r.rule === '5' ? 'rgba(217,119,6,.1)' : 'rgba(14,116,144,.1)'};padding:.75rem;border-radius:.5rem;margin-top:.5rem">
+                        <p style="color:${r.rule === '5' ? 'var(--text-amber)' : 'var(--text-teal)'};font-weight:500;font-size:.9375rem">${r.example}</p>
+                    </div>
+                </div>
+            `).join('')}
+            
+            <div class="card" style="background:rgba(14,116,144,.1);border:1px solid rgba(14,116,144,.25);margin-bottom:1rem">
+                <h3 style="color:var(--text-teal);font-weight:600;margin-bottom:1rem;font-size:1.05rem">The Focus Question:</h3>
+                <p style="color:var(--text-secondary);line-height:1.6">When you notice scattering, ask yourself: <strong>"What ONE thing right now?"</strong></p>
+            </div>
+            
+            <button onclick="nextStep()" class="btn btn-primary btn-mb">Practice Focus →</button>
+        </div>`;
+    }
+
+    function renderStep5() {
+        return `<div class="step-transition">
+            ${renderHeader()}
+            <div class="card skill-header" style="padding:1.75rem;margin-bottom:1rem">
+                <div style="font-size:3rem;margin-bottom:.75rem;text-align:center">🎯</div>
+                <h2 style="color:#fff;font-size:1.5rem;font-weight:700;text-align:center;margin-bottom:.5rem">Practice: 2-Minute Focus</h2>
+                <p style="color:rgba(255,255,255,.9);text-align:center;font-size:1rem">Single-tasking in action</p>
+            </div>
+            
+            <div class="card" style="border-left:4px solid var(--primary-teal);background:rgba(14,116,144,.08)">
+                <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:1rem">
+                    <span style="font-size:1.5rem">🎯</span>
+                    <h3 style="color:var(--text-teal);font-weight:600;font-size:1.125rem">Your Turn: Single-Tasking</h3>
+                </div>
+                <div style="background:rgba(14,116,144,.1);padding:1rem;border-radius:.75rem;margin-bottom:1rem">
+                    <p style="color:var(--text-teal);font-weight:600;margin-bottom:.5rem">Instructions:</p>
+                    <p style="color:var(--text-secondary);font-size:.9375rem;line-height:1.5">Pick ONE simple task. Do ONLY this for 2 minutes. No phone. No other tabs. No planning other tasks.</p>
+                </div>
+                <p style="font-size:1.05rem;margin-bottom:1rem">One word for this focused state:</p>
+                <input type="text" id="focusWord" placeholder="e.g., calm, clear, satisfying..." value="${u.focusWord}">
+            </div>
+            
+            <div class="card">
+                <p style="font-weight:600;margin-bottom:1.5rem;font-size:1.125rem;text-align:center">How satisfying was single-tasking?</p>
+                <div style="margin-bottom:2rem">
+                    <input type="range" min="1" max="10" value="${u.focusedState || 5}" id="focusRating" style="width:100%;margin-bottom:1rem" oninput="updateFocusValue()">
+                    <div style="display:flex;justify-content:space-between;align-items:center">
+                        <span style="color:var(--text-muted);font-size:.875rem">Scattered</span>
+                        <div id="focusDisplay" style="background:rgba(14,116,144,.2);padding:.5rem 1.25rem;border-radius:.75rem;min-width:3rem;text-align:center">
+                            <span id="focusVal" style="color:var(--text-teal);font-weight:700;font-size:1.5rem">${u.focusedState || 5}</span>
+                            <div id="focusEmoji" class="relief-emoji">${getFocusEmoji(u.focusedState || 5)}</div>
+                        </div>
+                        <span style="color:var(--text-muted);font-size:.875rem">Focused</span>
+                    </div>
+                </div>
+            </div>
+            
+            <button onclick="nextStep()" class="btn btn-primary btn-mb">Continue →</button>
+        </div>`;
+    }
+
+    function renderStep6() {
+        return `<div class="step-transition">
+            ${renderHeader()}
+            <div class="card" style="text-align:center;padding:1.5rem;margin-bottom:1rem">
+                <div style="font-size:3rem;margin-bottom:1rem">🛠️</div>
+                <h2 style="font-size:1.5rem;font-weight:600;margin-bottom:.5rem">Your Focus Tool</h2>
+                <p style="color:var(--text-secondary)">Simple daily practice</p>
+            </div>
+            
+            <div class="card">
+                <h3 style="font-weight:600;margin-bottom:1.5rem;font-size:1.125rem">Your Focus Practice:</h3>
+                
+                <div style="margin-bottom:1.5rem">
+                    <p style="font-weight:600;margin-bottom:.75rem;font-size:1rem">🤹‍♂️ Scattered Signs (Notice):</p>
+                    ${['Checking phone while working', 'Starting new task before finishing', 'Multiple tabs/windows open', 'Thinking about other tasks', 'Feeling rushed and scattered'].map(i => `
+                        <div style="display:flex;align-items:center;gap:.75rem;padding:.75rem;margin-bottom:.5rem;background:rgba(220,38,38,.1);border-radius:.75rem">
+                            <span style="color:#fca5a5;font-size:1.25rem">❌</span>
+                            <span style="color:var(--text-secondary)">${i}</span>
+                        </div>
+                    `).join('')}
+                </div>
+                
+                <div>
+                    <p style="font-weight:600;margin-bottom:.75rem;font-size:1rem">🎯 Focus Actions (Do):</p>
+                    ${['Choose ONE task to start', 'Close everything else', 'Set a timer (2-25 mins)', 'Work until timer ends', 'Take short break, repeat'].map(i => `
+                        <div style="display:flex;align-items:center;gap:.75rem;padding:.75rem;margin-bottom:.5rem;background:rgba(14,116,144,.1);border-radius:.75rem">
+                            <span style="color:var(--text-teal);font-size:1.25rem">✅</span>
+                            <span style="color:var(--text-secondary)">${i}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+            
+            <div class="card" style="background:rgba(14,116,144,.1);border:1px solid rgba(14,116,144,.3)">
+                <h3 style="color:var(--text-teal);font-weight:600;margin-bottom:1rem;font-size:1.05rem">✨ Your Daily Focus Question:</h3>
+                <div style="color:var(--text-secondary);line-height:1.7;font-size:1rem">
+                    <p style="margin-bottom:1rem">When you notice scattering:</p>
+                    <div style="background:rgba(14,116,144,.15);padding:1rem;border-radius:.75rem;margin:1rem 0">
+                        <p style="color:var(--text-teal);font-weight:600;text-align:center;font-size:1.125rem">"What ONE thing right now?"</p>
+                    </div>
+                    <p>This takes practice. Keep returning to one thing.</p>
+                </div>
+            </div>
+            
+            <button onclick="nextStep()" class="btn btn-primary btn-mb">Review My Practice →</button>
+        </div>`;
+    }
+
+    function renderStep7() {
+        const dp = u.distraction || 'No distraction entered';
+        const fp = u.focusWord || 'Clearer';
+        
+        return `<div class="step-transition">
+            ${renderHeader()}
+            <div class="card skill-header" style="padding:1.5rem;text-align:center;margin-bottom:1rem">
+                <div style="font-size:3.5rem;margin-bottom:.75rem">🎯</div>
+                <h2 style="color:#fff;font-size:1.75rem;font-weight:700;margin-bottom:.5rem">Practice Summary</h2>
+                <p style="color:rgba(255,255,255,.9);font-size:.9375rem">FOCUS: One thing at a time</p>
+            </div>
+            
+            ${u.distraction && u.focusWord ? `
+                <div class="card">
+                    <h3 style="font-weight:600;margin-bottom:1.5rem;font-size:1.25rem;text-align:center">Your Focus Practice:</h3>
+                    
+                    <div style="margin-bottom:1.5rem;padding:1.25rem;background:rgba(220,38,38,.08);border-radius:.875rem;border-left:3px solid var(--distraction-red)">
+                        <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.75rem">
+                            <span style="font-size:1.5rem">🤹‍♂️</span>
+                            <p style="font-size:.875rem;color:#fca5a5;font-weight:600">Scattered Experience</p>
+                        </div>
+                        <p style="color:var(--text-secondary);font-style:italic;line-height:1.6">"${dp.slice(0,200)}${dp.length > 200 ? '...' : ''}"</p>
+                    </div>
+                    
+                    <div style="text-align:center;font-size:1.5rem;margin:1rem 0">⬇️</div>
+                    
+                    <div style="margin-bottom:1.5rem;padding:1.25rem;background:rgba(14,116,144,.08);border-radius:.875rem;border-left:3px solid var(--primary-teal)">
+                        <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.75rem">
+                            <span style="font-size:1.5rem">🎯</span>
+                            <p style="font-size:.875rem;color:var(--text-teal);font-weight:600">Focused State</p>
+                        </div>
+                        <p style="color:var(--text-teal);font-weight:500;line-height:1.6">"${fp}"</p>
+                    </div>
+                    
+                    <div style="background:linear-gradient(135deg,rgba(14,116,144,.1),rgba(217,119,6,.1));padding:1.5rem;border-radius:.875rem;border:1px solid rgba(14,116,144,.2);text-align:center">
+                        <p style="color:var(--text-secondary);font-size:.9375rem;margin-bottom:.75rem">You described this shift as:</p>
+                        <h3 style="color:#fff;font-size:1.75rem;margin:.75rem 0;font-weight:700">"${fp}"</h3>
+                        <div style="display:flex;justify-content:center;align-items:center;gap:.75rem;margin-top:1rem">
+                            <span style="font-size:.875rem;color:var(--text-muted)">Focus Level:</span>
+                            <span style="background:rgba(14,116,144,.25);color:var(--text-teal);padding:.375rem 1rem;border-radius:2rem;font-weight:700;font-size:1.125rem">${u.focusedState}/10</span>
+                            <span style="font-size:1.5rem">${getFocusEmoji(u.focusedState)}</span>
+                        </div>
+                    </div>
+                </div>
+            ` : ''}
+            
+            <div class="card" style="background:rgba(14,116,144,.08);border:1px solid rgba(14,116,144,.25)">
+                <h3 style="font-weight:600;margin-bottom:1.25rem;font-size:1.125rem;color:var(--text-teal)">Keep Focusing</h3>
+                <div style="color:var(--text-secondary);line-height:1.7;font-size:1rem">
+                    <p style="margin-bottom:1rem">This skill develops with daily use. Each time you ask "What ONE thing right now?" you strengthen focused attention.</p>
+                    <p style="margin-bottom:1rem">Notice when your attention scatters. Then practice focus: <strong>Close everything else. Set timer. One thing.</strong></p>
+                    <p>The more you practice focusing, the more natural it becomes.</p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3 style="font-weight:600;font-size:1.125rem;margin-bottom:1.25rem;text-align:center">Save Your Practice Notes</h3>
+                <div style="display:grid;gap:.75rem">
+                    <button onclick="downloadProgress()" class="btn btn-primary" style="display:flex;align-items:center;justify-content:center;gap:.75rem;padding:1.25rem">
+                        <span style="font-size:1.5rem">💾</span>
+                        <span>Download Notes</span>
+                    </button>
+                    <button onclick="returnToCourse()" class="btn btn-secondary" style="display:flex;align-items:center;justify-content:center;gap:.75rem;padding:1.25rem">
+                        <span style="font-size:1.5rem">←</span>
+                        <span>Return to Course</span>
+                    </button>
+                </div>
+            </div>
+        </div>`;
+    }
+
+    // Make functions globally available
+    window.goBack = goBack;
+    window.nextStep = nextStep;
+    window.updateFocusValue = updateFocusValue;
+    window.downloadProgress = downloadProgress;
+    window.returnToCourse = returnToCourse;
+
+    // Initialize the app
+    initApp();
+})();
+</script>
+</body>
+</html>
