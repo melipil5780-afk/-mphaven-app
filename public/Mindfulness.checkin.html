@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Check-In">
+<meta name="theme-color" content="#0f172a">
+<meta name="format-detection" content="telephone=no">
+<title>Check-In - MindPath</title>
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📋</text></svg>">
+<style>
+:root{
+    --bg-dark:#0f172a;
+    --bg-card:rgba(15,23,42,.98);
+    --border-subtle:rgba(30,41,59,.5);
+    --primary-teal:#0e7490;
+    --accent-amber:#d97706;
+    --autopilot-red:#dc2626;
+    --text-primary:#f1f5f9;
+    --text-secondary:#cbd5e1;
+    --text-muted:#94a3b8;
+    --text-teal:#5eead4;
+    --text-amber:#fbbf24;
+    --success-emerald:#4ade80;
+    --gradient-main:linear-gradient(135deg,#0e7490,#d97706)
+}
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    -webkit-tap-highlight-color:transparent;
+    -webkit-font-smoothing:antialiased
+}
+html,body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:var(--bg-dark);
+    color:var(--text-primary);
+    -webkit-overflow-scrolling:touch
+}
+.container{
+    width:100%;
+    height:100vh;
+    height:-webkit-fill-available;
+    display:flex;
+    flex-direction:column
+}
+.app-wrapper{
+    width:100%;
+    max-width:28rem;
+    height:100%;
+    margin:0 auto;
+    background:var(--bg-card);
+    display:flex;
+    flex-direction:column;
+    position:relative;
+    overflow:hidden
+}
+.bg-blur-1,.bg-blur-2{
+    position:absolute;
+    border-radius:50%;
+    pointer-events:none;
+    z-index:0;
+    opacity:.3
+}
+.bg-blur-1{
+    top:-5%;
+    left:50%;
+    transform:translateX(-50%);
+    width:22rem;
+    height:22rem;
+    background:rgba(14,116,144,.15)
+}
+.bg-blur-2{
+    bottom:-5%;
+    right:-5%;
+    width:18rem;
+    height:18rem;
+    background:rgba(217,119,6,.15)
+}
+.main-content{
+    flex:1;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+    position:relative;
+    z-index:1
+}
+.main-content::-webkit-scrollbar{
+    display:none
+}
+.content-wrapper{
+    padding:1rem 1.25rem 2rem;
+    padding-bottom:calc(2rem + env(safe-area-inset-bottom))
+}
+.card{
+    background:linear-gradient(135deg,rgba(30,41,59,.65),rgba(15,23,42,.45));
+    border:1px solid rgba(51,65,85,.4);
+    border-radius:1.25rem;
+    padding:1.5rem;
+    margin-bottom:1rem
+}
+.skill-header{
+    background:linear-gradient(135deg,rgba(14,116,144,0.15),rgba(217,119,6,0.12));
+    border:1px solid rgba(14,116,144,0.25)
+}
+.btn{
+    color:#fff;
+    font-weight:600;
+    border:none;
+    padding:1rem;
+    border-radius:1rem;
+    cursor:pointer;
+    width:100%;
+    font-size:1rem;
+    transition:all .3s ease;
+    -webkit-appearance:none;
+    touch-action:manipulation;
+    min-height:44px
+}
+.btn-primary{
+    background:var(--gradient-main);
+    box-shadow:0 4px 16px rgba(14,116,144,.2)
+}
+.btn-primary:hover,.btn-primary:active{
+    opacity:.92;
+    transform:translateY(-2px);
+    box-shadow:0 6px 20px rgba(14,116,144,.25)
+}
+.btn-secondary{
+    background:var(--primary-teal);
+    box-shadow:0 4px 16px rgba(14,116,144,.2)
+}
+.btn-secondary:hover,.btn-secondary:active{
+    background:#0c627a;
+    transform:translateY(-2px);
+    box-shadow:0 6px 20px rgba(14,116,144,.25)
+}
+.btn-tertiary{
+    background:var(--accent-amber);
+    box-shadow:0 4px 16px rgba(217,119,6,.2)
+}
+.btn-tertiary:hover,.btn-tertiary:active{
+    background:#b45309;
+    transform:translateY(-2px);
+    box-shadow:0 6px 20px rgba(217,119,6,.25)
+}
+.btn:disabled{
+    opacity:.4;
+    cursor:not-allowed;
+    transform:none!important
+}
+.progress-dots{
+    display:flex;
+    gap:.25rem
+}
+.progress-dot{
+    flex:1;
+    height:.5rem;
+    background:rgba(148,163,184,.25);
+    border-radius:9999px
+}
+.progress-dot.active{
+    background:var(--gradient-main)
+}
+@keyframes fadeIn{
+    from{opacity:0}
+    to{opacity:1}
+}
+.step-transition{
+    animation:fadeIn .4s ease-out
+}
+.checkbox-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:.5rem
+}
+.checkbox-label{
+    display:flex;
+    align-items:center;
+    gap:.5rem;
+    padding:.75rem;
+    background:rgba(30,41,59,.5);
+    border:1px solid rgba(51,65,85,.4);
+    border-radius:.75rem;
+    cursor:pointer;
+    transition:all .2s;
+    -webkit-tap-highlight-color:transparent
+}
+.checkbox-label:hover,.checkbox-label:active{
+    border-color:rgba(14,116,144,.5);
+    background:rgba(14,116,144,.12)
+}
+.checkbox-label:active{
+    transform:scale(0.98)
+}
+.checkbox-label.checked{
+    border-color:rgba(14,116,144,.6);
+    background:rgba(14,116,144,.18)
+}
+input[type=checkbox]{
+    width:1.25rem;
+    height:1.25rem;
+    cursor:pointer;
+    accent-color:var(--primary-teal)
+}
+textarea,input[type=text]{
+    width:100%;
+    padding:.75rem;
+    border-radius:.75rem;
+    border:1px solid rgba(51,65,85,.4);
+    background:rgba(30,41,59,.5);
+    color:#fff;
+    font-size:16px;
+    -webkit-appearance:none;
+    font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif
+}
+textarea{
+    min-height:100px;
+    resize:vertical
+}
+input[type=range]{
+    width:100%;
+    height:6px;
+    background:rgba(30,41,59,.7);
+    border-radius:10px;
+    outline:0;
+    -webkit-appearance:none
+}
+input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;
+    width:24px;
+    height:24px;
+    border-radius:50%;
+    background:var(--primary-teal);
+    cursor:pointer;
+    border:none
+}
+.char-counter{
+    font-size:.875rem;
+    color:var(--text-muted);
+    text-align:right;
+    margin-top:.5rem
+}
+.char-counter.active{
+    color:var(--text-teal);
+    font-weight:600
+}
+.feedback-toast{
+    position:fixed;
+    bottom:calc(2rem + env(safe-area-inset-bottom));
+    left:50%;
+    transform:translateX(-50%) translateY(100px);
+    background:rgba(14,116,144,.95);
+    color:#fff;
+    padding:1rem 1.5rem;
+    border-radius:.75rem;
+    z-index:1000;
+    opacity:0;
+    transition:all .3s ease
+}
+.feedback-toast.show{
+    transform:translateX(-50%) translateY(0);
+    opacity:1
+}
+.hidden{
+    display:none!important
+}
+.relief-emoji{
+    font-size:2rem;
+    margin-bottom:.5rem
+}
+@supports (-webkit-touch-callout:none){
+    .container{height:-webkit-fill-available}
+}
+button{
+    cursor:pointer;
+    -webkit-user-select:none;
+    user-select:none
+}
+.btn-mb{
+    margin-bottom:1rem
+}
+</style>
+</head>
+<body>
+<div class="container"><div class="app-wrapper"><div class="bg-blur-1"></div><div class="bg-blur-2"></div><div class="main-content"><div class="content-wrapper" id="content"></div></div></div></div>
+<div id="feedbackToast" class="feedback-toast"></div>
+<script>
+// Load confetti
+const script = document.createElement('script');
+script.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js';
+script.onload = initApp;
+document.head.appendChild(script);
+
+// State management
+let userData = {
+    autoResponse: '',
+    checkinWords: [],
+    mood: 5,
+    body: '',
+    energy: '',
+    urge: '',
+    checkinWord: ''
+};
+
+let currentStep = 1;
+const totalSteps = 7;
+
+const stepTitles = {
+    1: 'Autopilot Reactions',
+    2: 'The Auto-Response',
+    3: 'Know Your Dashboard',
+    4: 'Autopilot vs Check-In',
+    5: '10-Second Check-In',
+    6: 'Your Check-In Tool',
+    7: 'Practice Summary'
+};
+
+// Initialize app
+function initApp() {
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    
+    if (isIOS && isSafari) {
+        document.body.style.cursor = 'pointer';
+    }
+    
+    // Load saved progress or start fresh
+    if (!loadProgress()) {
+        render();
+    }
+}
+
+// Save progress to localStorage
+function autoSave() {
+    localStorage.setItem('checkinProgress', JSON.stringify({
+        step: currentStep,
+        userInput: userData,
+        timestamp: Date.now()
+    }));
+}
+
+// Load progress from localStorage
+function loadProgress() {
+    const saved = localStorage.getItem('checkinProgress');
+    if (saved) {
+        try {
+            const data = JSON.parse(saved);
+            if ((Date.now() - data.timestamp) / 3600000 < 24) {
+                if (confirm('Resume where you left off?')) {
+                    currentStep = data.step;
+                    Object.assign(userData, data.userInput);
+                    render();
+                    return true;
+                }
+            }
+        } catch (e) {
+            console.error('Error loading progress:', e);
+        }
+    }
+    return false;
+}
+
+// Show feedback toast
+function showFeedback(message, duration = 2000) {
+    const toast = document.getElementById('feedbackToast');
+    toast.textContent = message;
+    toast.classList.add('show');
+    setTimeout(() => {
+        toast.classList.remove('show');
+    }, duration);
+}
+
+// Render header with progress
+function renderHeader() {
+    let dots = '';
+    for (let i = 0; i < totalSteps; i++) {
+        dots += `<div class="progress-dot ${i < currentStep ? 'active' : ''}"></div>`;
+    }
+    
+    return `<div class="card" style="padding:1rem;margin-bottom:1rem">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem">
+            <button onclick="window.goBack()" style="background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer;padding:.25rem">←</button>
+            <h1 style="font-weight:600;font-size:1.125rem">${stepTitles[currentStep]}</h1>
+            <div style="color:var(--text-muted);font-size:.875rem">${currentStep}/${totalSteps}</div>
+        </div>
+        <div class="progress-dots">
+            ${dots}
+        </div>
+    </div>`;
+}
+
+// Go back to previous step
+function goBack() {
+    if (currentStep > 1) {
+        currentStep--;
+        render();
+    } else {
+        if (window.history.length > 1) {
+            window.history.back();
+        } else {
+            window.location.href = '/';
+        }
+    }
+}
+
+// Check if we can proceed to next step
+function canProceed() {
+    if (currentStep === 2) {
+        return userData.autoResponse && userData.autoResponse.trim().length >= 1;
+    }
+    if (currentStep === 5) {
+        return userData.checkinWord && userData.checkinWord.trim().length >= 1;
+    }
+    return true;
+}
+
+// Update button state (enable/disable)
+function updateButtonState() {
+    const buttons = document.querySelectorAll('.btn-primary');
+    buttons.forEach(button => {
+        if (button.id === 'nextStepBtn' || button.classList.contains('next-step')) {
+            button.disabled = !canProceed();
+        }
+    });
+}
+
+// Move to next step
+function nextStep() {
+    // Save data from current step
+    if (currentStep === 2) {
+        const textarea = document.getElementById('autoResponseText');
+        if (textarea) {
+            userData.autoResponse = textarea.value.trim();
+        }
+        
+        const checkedLabels = document.querySelectorAll('.checkbox-label.checked');
+        userData.checkinWords = Array.from(checkedLabels).map(label => 
+            label.querySelector('span')?.textContent || ''
+        ).filter(text => text);
+    }
+    
+    if (currentStep === 5) {
+        const wordInput = document.getElementById('checkinWord');
+        if (wordInput) {
+            userData.checkinWord = wordInput.value.trim();
+        }
+        
+        const moodSlider = document.getElementById('moodRating');
+        if (moodSlider) {
+            userData.mood = parseInt(moodSlider.value) || 5;
+        }
+        
+        const bodyInput = document.getElementById('bodyArea');
+        if (bodyInput) {
+            userData.body = bodyInput.value.trim();
+        }
+        
+        const energyInput = document.getElementById('energyLevel');
+        if (energyInput) {
+            userData.energy = energyInput.value.trim();
+        }
+        
+        const urgeInput = document.getElementById('currentUrge');
+        if (urgeInput) {
+            userData.urge = urgeInput.value.trim();
+        }
+    }
+    
+    // Save to localStorage
+    autoSave();
+    
+    // Move to next step if not at the end
+    if (currentStep < totalSteps) {
+        currentStep++;
+        render();
+        
+        // Scroll to top
+        setTimeout(() => {
+            const main = document.querySelector('.main-content');
+            if (main) {
+                main.scrollTop = 0;
+            }
+        }, 50);
+    }
+}
+
+// Get mood emoji based on value
+function getMoodEmoji(value) {
+    const emojis = ['😫', '😣', '😕', '😐', '🙂', '😌', '😊', '😁', '✨', '🧭'];
+    const index = Math.min(Math.max(0, parseInt(value) - 1), 9);
+    return emojis[index] || '😐';
+}
+
+// Update mood display when slider changes
+function updateMoodValue() {
+    const slider = document.getElementById('moodRating');
+    if (!slider) return;
+    
+    const value = slider.value;
+    userData.mood = parseInt(value);
+    
+    const valDisplay = document.getElementById('moodVal');
+    const emojiDisplay = document.getElementById('moodEmoji');
+    const moodDisplay = document.getElementById('moodDisplay');
+    
+    if (valDisplay) {
+        valDisplay.textContent = value;
+    }
+    if (emojiDisplay) {
+        emojiDisplay.textContent = getMoodEmoji(value);
+    }
+    if (moodDisplay) {
+        if (value < 4) {
+            moodDisplay.style.background = 'rgba(220,38,68,.2)';
+        } else if (value < 7) {
+            moodDisplay.style.background = 'rgba(217,119,6,.2)';
+        } else {
+            moodDisplay.style.background = 'rgba(14,116,144,.2)';
+        }
+    }
+}
+
+// Download practice notes
+function downloadProgress() {
+    const content = `CHECK-IN - MY PRACTICE
+${new Date().toLocaleDateString()}
+
+🤖 AUTO-RESPONSE:
+"${userData.autoResponse || 'No auto-response entered'}"
+
+🧭 MY CHECK-IN:
+Mood: ${userData.mood}/10
+Body: "${userData.body || 'N/A'}"
+Energy: "${userData.energy || 'N/A'}"
+Urge: "${userData.urge || 'N/A'}"
+
+✨ 10-Second Check-In:
+"MOOD • BODY • ENERGY • URGE"
+
+💡 Practice: Check your dashboard.
+Before reacting: 10 seconds. Name: Mood, Body, Energy, Urge.`;
+    
+    try {
+        const iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        
+        if (iOS) {
+            alert(`📱 iOS Note: Copy your practice notes below:\n\n${content}`);
+            navigator.clipboard.writeText(content).then(() => {
+                showFeedback('✓ Copied to clipboard!', 3000);
+            }).catch(() => {
+                showFeedback('Could not copy to clipboard', 3000);
+            });
+        } else {
+            const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Check-In-Practice-${new Date().toISOString().split('T')[0]}.txt`;
+            a.style.display = 'none';
+            document.body.appendChild(a);
+            a.click();
+            
+            setTimeout(() => {
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 100);
+            
+            showFeedback('✓ Downloaded!', 3000);
+        }
+        
+        localStorage.setItem('moduleCompleted', JSON.stringify({
+            moduleId: 'check-in',
+            completed: true,
+            timestamp: new Date().toISOString()
+        }));
+        
+    } catch (e) {
+        console.error('Download failed:', e);
+        showFeedback('Download failed. Please try again.', 3000);
+    }
+}
+
+// Return to course
+function returnToCourse() {
+    localStorage.removeItem('checkinProgress');
+    
+    const isStandalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
+    
+    if (isStandalone) {
+        window.location.href = '/';
+    } else if (window.history.length > 1) {
+        window.history.back();
+    } else {
+        window.location.href = '/';
+    }
+}
+
+// Main render function
+function render() {
+    const content = document.getElementById('content');
+    let html = '';
+    
+    switch(currentStep) {
+        case 1:
+            html = renderStep1();
+            break;
+        case 2:
+            html = renderStep2();
+            break;
+        case 3:
+            html = renderStep3();
+            break;
+        case 4:
+            html = renderStep4();
+            break;
+        case 5:
+            html = renderStep5();
+            break;
+        case 6:
+            html = renderStep6();
+            break;
+        case 7:
+            html = renderStep7();
+            break;
+        default:
+            html = renderStep1();
+    }
+    
+    content.innerHTML = html;
+    
+    // Initialize event listeners after render
+    setTimeout(() => {
+        if (currentStep === 2) {
+            initStep2Listeners();
+        }
+        if (currentStep === 5) {
+            initStep5Listeners();
+        }
+        updateButtonState();
+    }, 50);
+}
+
+// Initialize listeners for step 2
+function initStep2Listeners() {
+    const textarea = document.getElementById('autoResponseText');
+    if (textarea) {
+        textarea.addEventListener('input', function(e) {
+            userData.autoResponse = e.target.value;
+            updateButtonState();
+        });
+        textarea.value = userData.autoResponse || '';
+    }
+    
+    document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+        const label = checkbox.closest('.checkbox-label');
+        if (!label) return;
+        
+        const span = label.querySelector('span');
+        if (!span) return;
+        
+        const text = span.textContent;
+        
+        if (userData.checkinWords && userData.checkinWords.includes(text)) {
+            checkbox.checked = true;
+            label.classList.add('checked');
+        }
+        
+        checkbox.addEventListener('change', function(e) {
+            if (e.target.checked) {
+                label.classList.add('checked');
+            } else {
+                label.classList.remove('checked');
+            }
+        });
+    });
+}
+
+// Initialize listeners for step 5
+function initStep5Listeners() {
+    const wordInput = document.getElementById('checkinWord');
+    if (wordInput) {
+        wordInput.addEventListener('input', function() {
+            userData.checkinWord = this.value.trim();
+            updateButtonState();
+        });
+        wordInput.value = userData.checkinWord || '';
+    }
+    
+    const moodSlider = document.getElementById('moodRating');
+    if (moodSlider) {
+        moodSlider.value = userData.mood || 5;
+        moodSlider.addEventListener('input', updateMoodValue);
+        updateMoodValue();
+    }
+    
+    const bodyInput = document.getElementById('bodyArea');
+    if (bodyInput) {
+        bodyInput.value = userData.body || '';
+        bodyInput.addEventListener('input', function() {
+            userData.body = this.value.trim();
+        });
+    }
+    
+    const energyInput = document.getElementById('energyLevel');
+    if (energyInput) {
+        energyInput.value = userData.energy || '';
+        energyInput.addEventListener('input', function() {
+            userData.energy = this.value.trim();
+        });
+    }
+    
+    const urgeInput = document.getElementById('currentUrge');
+    if (urgeInput) {
+        urgeInput.value = userData.urge || '';
+        urgeInput.addEventListener('input', function() {
+            userData.urge = this.value.trim();
+        });
+    }
+}
+
+// Render step 1
+function renderStep1() {
+    return `<div class="step-transition">
+        ${renderHeader()}
+        <div class="card skill-header" style="padding:2rem;text-align:center;margin-bottom:1rem">
+            <div style="font-size:4rem;margin-bottom:1rem">🧭</div>
+            <h2 style="color:#fff;font-size:1.75rem;font-weight:700;margin-bottom:1.5rem">Autopilot Reactions</h2>
+            <div style="font-family:monospace;font-size:1.5rem;padding:1rem;background:rgba(30,41,59,.5);border-radius:1rem;margin:1rem 0">
+                "How are you?"<br>
+                <span style="font-size:2rem;color:var(--text-teal)">+</span><br>
+                Automatic Answer<br>
+                <span style="font-size:2rem;color:#fca5a5">=</span><br>
+                <span style="background:rgba(14,116,144,.3);padding:.25rem .5rem;border-radius:.5rem">Missing Your Truth</span>
+            </div>
+            <div style="background:rgba(255,255,255,.1);padding:1.25rem;border-radius:1rem;margin:1.5rem 0">
+                <p style="color:#fff;font-weight:600;margin-bottom:.5rem">Example:</p>
+                <p style="color:rgba(255,255,255,.9);font-size:1rem;line-height:1.6">
+                    Someone asks: "How are you?"<br>
+                    <span style="color:var(--text-teal)">Autopilot:</span> "I'm fine!" (automatic)<br>
+                    <span style="color:#fca5a5">Reality:</span> Actually anxious, tired<br>
+                    <span style="color:#fff;font-weight:600">Result:</span> Reacting from habit, not truth
+                </p>
+            </div>
+            <div style="background:rgba(14,116,144,.18);border:1px solid rgba(14,116,144,.35);padding:.5rem 1rem;border-radius:2rem;font-size:.875rem;color:var(--text-teal);font-weight:500;display:inline-block">
+                You'll learn to check your dashboard
+            </div>
+        </div>
+        <button onclick="window.nextStep()" class="btn btn-primary next-step" id="nextStepBtn">Test Your Autopilot →</button>
+    </div>`;
+}
+
+// Render step 2
+function renderStep2() {
+    const checkboxItems = ['Yes, I checked', 'No, just auto-answered', 'Honestly not sure', 'Said what I always say', 'Didn\'t actually know'];
+    let checkboxes = '';
+    checkboxItems.forEach(word => {
+        checkboxes += `<label class="checkbox-label">
+            <input type="checkbox">
+            <span style="color:var(--text-secondary);font-size:.9375rem">${word}</span>
+        </label>`;
+    });
+    
+    return `<div class="step-transition">
+        ${renderHeader()}
+        <div class="card" style="background:rgba(217,119,6,.15);border:1px solid rgba(217,119,6,.35)">
+            <div style="font-size:3rem;margin-bottom:.75rem;text-align:center">🤖</div>
+            <h2 style="font-size:1.5rem;font-weight:600;margin-bottom:1rem;text-align:center">The Auto-Response</h2>
+            <p style="color:var(--text-secondary);text-align:center;font-size:1rem">React without thinking</p>
+        </div>
+        
+        <div class="card">
+            <p style="font-size:1.05rem;font-weight:600;margin-bottom:1.5rem">Instructions:</p>
+            <div style="display:flex;gap:1rem;margin-bottom:1.5rem;align-items:start">
+                <div style="width:2.25rem;height:2.25rem;background:var(--gradient-main);border-radius:.5rem;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;flex-shrink:0">1</div>
+                <p style="color:var(--text-secondary);padding-top:.375rem;line-height:1.6;font-size:1rem">Someone asks: "How are you?"</p>
+            </div>
+            <div style="display:flex;gap:1rem;margin-bottom:1.5rem;align-items:start">
+                <div style="width:2.25rem;height:2.25rem;background:var(--gradient-main);border-radius:.5rem;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;flex-shrink:0">2</div>
+                <p style="color:var(--text-secondary);padding-top:.375rem;line-height:1.6;font-size:1rem">Don't think. Just REACT.</p>
+            </div>
+            <div style="display:flex;gap:1rem;margin-bottom:1.5rem;align-items:start">
+                <div style="width:2.25rem;height:2.25rem;background:var(--gradient-main);border-radius:.5rem;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;flex-shrink:0">3</div>
+                <p style="color:var(--text-secondary);padding-top:.375rem;line-height:1.6;font-size:1rem">Give your automatic answer</p>
+            </div>
+            <div style="display:flex;gap:1rem;margin-bottom:1.5rem;align-items:start">
+                <div style="width:2.25rem;height:2.25rem;background:var(--gradient-main);border-radius:.5rem;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;flex-shrink:0">4</div>
+                <p style="color:var(--text-secondary);padding-top:.375rem;line-height:1.6;font-size:1rem">Click below without checking</p>
+            </div>
+        </div>
+        
+        <div class="card" style="text-align:center">
+            <button onclick="document.getElementById('autoResponseSection').classList.remove('hidden');this.classList.add('hidden')" class="btn btn-tertiary" style="font-size:1.5rem;padding:1.5rem">
+                I'm fine
+            </button>
+            <p style="color:var(--text-muted);font-size:.875rem;margin-top:.5rem">Click without thinking. Give your automatic answer.</p>
+        </div>
+        
+        <div id="autoResponseSection" class="hidden">
+            <div class="card" style="border:2px solid rgba(220,38,38,.4);background:rgba(220,38,38,.05)">
+                <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:1rem">
+                    <span style="font-size:1.5rem">🤖</span>
+                    <h3 style="color:#fca5a5;font-weight:600;font-size:1.125rem">Was that accurate?</h3>
+                </div>
+                <div class="checkbox-grid" style="margin-bottom:1.5rem">
+                    ${checkboxes}
+                </div>
+                <p style="font-weight:600;margin-bottom:.75rem;font-size:1rem">What was your auto-response?</p>
+                <textarea id="autoResponseText" placeholder="e.g., 'I'm fine', 'Good', etc...">${userData.autoResponse || ''}</textarea>
+            </div>
+            <button onclick="window.nextStep()" class="btn btn-primary next-step btn-mb" id="nextStepBtn">Learn to Check-In →</button>
+        </div>
+    </div>`;
+}
+
+// Render step 3
+function renderStep3() {
+    return `<div class="step-transition">
+        ${renderHeader()}
+        <div class="card" style="text-align:center;padding:1.5rem;margin-bottom:1rem">
+            <div style="font-size:3rem;margin-bottom:1rem">🧠</div>
+            <h2 style="font-size:1.5rem;font-weight:600;margin-bottom:.5rem">Know Your Dashboard</h2>
+            <p style="color:var(--text-secondary)">Your brain runs on autopilot 95% of the time</p>
+        </div>
+        
+        <div class="card" style="border:2px solid rgba(220,38,38,.45);background:rgba(220,38,38,.08);margin-bottom:1rem">
+            <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1rem">
+                <div style="font-size:2rem">🤖</div>
+                <div>
+                    <h3 style="color:#fca5a5;font-weight:600;font-size:1.25rem">AUTOPILOT MODE</h3>
+                    <p style="color:#fca5a5;font-size:.875rem;font-weight:500">Reacts from habit, not awareness</p>
+                </div>
+            </div>
+            <div style="background:rgba(220,38,38,.1);padding:1rem;border-radius:.75rem;margin-bottom:1rem">
+                <p style="color:#fca5a5;font-size:1.1rem;font-weight:600">"I'm fine" (automatic)</p>
+            </div>
+            <div style="background:rgba(220,38,38,.1);padding:1rem;border-radius:.75rem;margin-bottom:1rem">
+                <p style="color:#fca5a5;font-size:1.1rem;font-weight:600">"Good" (habitual)</p>
+            </div>
+            <div style="background:rgba(220,38,38,.1);padding:1rem;border-radius:.75rem;margin-bottom:1rem">
+                <p style="color:#fca5a5;font-size:1.1rem;font-weight:600">"Okay" (default)</p>
+            </div>
+            <div style="background:rgba(220,38,38,.1);padding:1rem;border-radius:.75rem;margin-bottom:1rem">
+                <p style="color:#fca5a5;font-size:1.1rem;font-weight:600">"Not bad" (routine)</p>
+            </div>
+        </div>
+        
+        <div style="text-align:center;font-size:2rem;margin:1rem 0">⬇️</div>
+        
+        <div class="card" style="border:2px solid rgba(14,116,144,.45);background:rgba(14,116,144,.08);margin-bottom:1rem">
+            <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1rem">
+                <div style="font-size:2rem">🧭</div>
+                <div>
+                    <h3 style="color:var(--text-teal);font-weight:600;font-size:1.25rem">CHECK-IN MODE</h3>
+                    <p style="color:var(--text-teal);font-size:.875rem;font-weight:500">Glances at internal dashboard</p>
+                </div>
+            </div>
+            <div style="background:rgba(14,116,144,.1);padding:1rem;border-radius:.75rem;margin-bottom:1rem">
+                <p style="color:var(--text-teal);font-size:1.1rem;font-weight:600">"Anxious 6/10, tight shoulders"</p>
+            </div>
+            <div style="background:rgba(14,116,144,.1);padding:1rem;border-radius:.75rem;margin-bottom:1rem">
+                <p style="color:var(--text-teal);font-size:1.1rem;font-weight:600">"Tired, low energy, want nap"</p>
+            </div>
+            <div style="background:rgba(14,116,144,.1);padding:1rem;border-radius:.75rem;margin-bottom:1rem">
+                <p style="color:var(--text-teal);font-size:1.1rem;font-weight:600">"Calm 8/10, relaxed, focused"</p>
+            </div>
+            <div style="background:rgba(14,116,144,.1);padding:1rem;border-radius:.75rem;margin-bottom:1rem">
+                <p style="color:var(--text-teal);font-size:1.1rem;font-weight:600">"Frustrated, tense jaw, urge to vent"</p>
+            </div>
+        </div>
+        
+        <div class="card" style="background:rgba(217,119,6,.08);border:1px solid rgba(217,119,6,.3)">
+            <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1rem">
+                <div style="font-size:2rem">💡</div>
+                <div>
+                    <h3 style="color:var(--text-amber);font-weight:600;font-size:1.125rem">What Check-In Means:</h3>
+                    <p style="color:var(--text-amber);font-size:.875rem">Pausing to scan your internal state</p>
+                </div>
+            </div>
+            <div style="color:var(--text-secondary);line-height:1.6">
+                <p><strong>Check-in is taking 10 seconds to scan your internal dashboard before reacting.</strong> Like glancing at your car's gauges before driving.</p>
+                <p>Autopilot reacts from habit. Check-in responds from awareness.</p>
+            </div>
+        </div>
+        
+        <button onclick="window.nextStep()" class="btn btn-primary next-step btn-mb" id="nextStepBtn">See the Difference →</button>
+    </div>`;
+}
+
+// Render step 4
+function renderStep4() {
+    const rules = [
+        { rule: '1', title: 'MOOD: Name emotional state', example: '"Anxious 6/10"', note: 'Not "fine"' },
+        { rule: '2', title: 'BODY: Notice physical sensations', example: '"Tight shoulders, shallow breath"', note: 'Not ignoring body' },
+        { rule: '3', title: 'ENERGY: Rate energy level', example: '"Low, dragging" or "High, buzzing"', note: 'Not default answer' },
+        { rule: '4', title: 'URGE: Notice what you feel pulled to do', example: '"Urge to check phone, avoid work"', note: 'Not acting automatically' },
+        { rule: '5', title: 'Ask: "MOOD • BODY • ENERGY • URGE?"', example: '"Check my dashboard before reacting"', note: 'Not autopilot response' }
+    ];
+    
+    let rulesHtml = '';
+    rules.forEach(rule => {
+        const isFive = rule.rule === '5';
+        rulesHtml += `<div class="card" style="border-left:4px solid ${isFive ? 'var(--accent-amber)' : 'var(--primary-teal)'};background:${isFive ? 'rgba(217,119,6,.08)' : 'rgba(14,116,144,.08)'}">
+            <div style="display:flex;align-items:start;gap:1rem;margin-bottom:.75rem">
+                <div style="background:${isFive ? 'rgba(217,119,6,.2)' : 'rgba(14,116,144,.2)'};color:${isFive ? 'var(--text-amber)' : 'var(--text-teal)'};width:2rem;height:2rem;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0">
+                    ${rule.rule}
+                </div>
+                <div>
+                    <h3 style="color:${isFive ? 'var(--text-amber)' : 'var(--text-teal)'};font-weight:600;font-size:1.125rem;margin-bottom:.25rem">
+                        ${rule.title}
+                    </h3>
+                    <p style="color:var(--text-secondary);font-size:.9375rem">${rule.note}</p>
+                </div>
+            </div>
+            <div style="background:${isFive ? 'rgba(217,119,6,.1)' : 'rgba(14,116,144,.1)'};padding:.75rem;border-radius:.5rem;margin-top:.5rem">
+                <p style="color:${isFive ? 'var(--text-amber)' : 'var(--text-teal)'};font-weight:500;font-size:.9375rem">${rule.example}</p>
+            </div>
+        </div>`;
+    });
+    
+    return `<div class="step-transition">
+        ${renderHeader()}
+        <div class="card skill-header" style="padding:1.75rem;margin-bottom:1rem">
+            <div style="font-size:3rem;margin-bottom:.75rem;text-align:center">📝</div>
+            <h2 style="color:#fff;font-size:1.5rem;font-weight:700;text-align:center;margin-bottom:.5rem">How to Check-In</h2>
+            <p style="color:rgba(255,255,255,.9);text-align:center;font-size:1rem">Simple 10-second dashboard scan</p>
+        </div>
+        
+        ${rulesHtml}
+        
+        <div class="card" style="background:rgba(14,116,144,.1);border:1px solid rgba(14,116,144,.25);margin-bottom:1rem">
+            <h3 style="color:var(--text-teal);font-weight:600;margin-bottom:1rem;font-size:1.05rem">The Check-In Question:</h3>
+            <p style="color:var(--text-secondary);line-height:1.6">
+                Before reacting, ask yourself: <strong>"MOOD • BODY • ENERGY • URGE?"</strong>
+            </p>
+        </div>
+        
+        <button onclick="window.nextStep()" class="btn btn-primary next-step btn-mb" id="nextStepBtn">Practice Check-In →</button>
+    </div>`;
+}
+
+// Render step 5
+function renderStep5() {
+    return `<div class="step-transition">
+        ${renderHeader()}
+        <div class="card skill-header" style="padding:1.75rem;margin-bottom:1rem">
+            <div style="font-size:3rem;margin-bottom:.75rem;text-align:center">🧭</div>
+            <h2 style="color:#fff;font-size:1.5rem;font-weight:700;text-align:center;margin-bottom:.5rem">10-Second Check-In</h2>
+            <p style="color:rgba(255,255,255,.9);text-align:center;font-size:1rem">Scan your dashboard now</p>
+        </div>
+        
+        <div class="card" style="border-left:4px solid var(--primary-teal);background:rgba(14,116,144,.08)">
+            <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:1rem">
+                <span style="font-size:1.5rem">🧭</span>
+                <h3 style="color:var(--text-teal);font-weight:600;font-size:1.125rem">Your Turn: Dashboard Scan</h3>
+            </div>
+            <div style="background:rgba(14,116,144,.1);padding:1rem;border-radius:.75rem;margin-bottom:1rem">
+                <p style="color:var(--text-teal);font-weight:600;margin-bottom:.5rem">Instructions:</p>
+                <p style="color:var(--text-secondary);font-size:.9375rem;line-height:1.5">
+                    Take 10 seconds. Really check. Not what you "should" feel, but what's actually here.
+                </p>
+            </div>
+            
+            <p style="font-size:1.05rem;margin-bottom:.75rem;font-weight:600">MOOD (1-10):</p>
+            <input type="range" min="1" max="10" value="${userData.mood || 5}" id="moodRating" style="width:100%;margin-bottom:1rem">
+            
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem">
+                <span style="color:var(--text-muted);font-size:.875rem">Low</span>
+                <div id="moodDisplay" style="background:rgba(14,116,144,.2);padding:.5rem 1.25rem;border-radius:.75rem;min-width:3rem;text-align:center">
+                    <span id="moodVal" style="color:var(--text-teal);font-weight:700;font-size:1.5rem">${userData.mood || 5}</span>
+                    <div id="moodEmoji" class="relief-emoji">${getMoodEmoji(userData.mood || 5)}</div>
+                </div>
+                <span style="color:var(--text-muted);font-size:.875rem">High</span>
+            </div>
+            
+            <p style="font-size:1.05rem;margin-bottom:.75rem;font-weight:600">BODY (sensations):</p>
+            <input type="text" id="bodyArea" placeholder="e.g., tight shoulders, calm stomach..." value="${userData.body || ''}" style="margin-bottom:1.5rem">
+            
+            <p style="font-size:1.05rem;margin-bottom:.75rem;font-weight:600">ENERGY (level):</p>
+            <input type="text" id="energyLevel" placeholder="e.g., low, medium, high, buzzing..." value="${userData.energy || ''}" style="margin-bottom:1.5rem">
+            
+            <p style="font-size:1.05rem;margin-bottom:.75rem;font-weight:600">URGE (pull to action):</p>
+            <input type="text" id="currentUrge" placeholder="e.g., check phone, eat, avoid..." value="${userData.urge || ''}" style="margin-bottom:1.5rem">
+            
+            <p style="font-size:1.05rem;margin-bottom:.75rem;font-weight:600">One word for checking in:</p>
+            <input type="text" id="checkinWord" placeholder="e.g., clearer, aware, grounded..." value="${userData.checkinWord || ''}">
+        </div>
+        
+        <button onclick="window.nextStep()" class="btn btn-primary next-step btn-mb" id="nextStepBtn" ${!userData.checkinWord ? 'disabled' : ''}>Continue →</button>
+    </div>`;
+}
+
+// Render step 6
+function renderStep6() {
+    const autopilotItems = ['Saying "I\'m fine" automatically', 'Reacting without pause', 'Not knowing how you feel', 'Ignoring body signals', 'Acting from habit only'];
+    const checkinItems = ['Pause 10 seconds before reacting', 'Scan: Mood (1-10)', 'Notice: Body sensations', 'Check: Energy level', 'Name: Current urge'];
+    
+    let autopilotHtml = '';
+    autopilotItems.forEach(item => {
+        autopilotHtml += `<div style="display:flex;align-items:center;gap:.75rem;padding:.75rem;margin-bottom:.5rem;background:rgba(220,38,38,.1);border-radius:.75rem">
+            <span style="color:#fca5a5;font-size:1.25rem">❌</span>
+            <span style="color:var(--text-secondary)">${item}</span>
+        </div>`;
+    });
+    
+    let checkinHtml = '';
+    checkinItems.forEach(item => {
+        checkinHtml += `<div style="display:flex;align-items:center;gap:.75rem;padding:.75rem;margin-bottom:.5rem;background:rgba(14,116,144,.1);border-radius:.75rem">
+            <span style="color:var(--text-teal);font-size:1.25rem">✅</span>
+            <span style="color:var(--text-secondary)">${item}</span>
+        </div>`;
+    });
+    
+    return `<div class="step-transition">
+        ${renderHeader()}
+        <div class="card" style="text-align:center;padding:1.5rem;margin-bottom:1rem">
+            <div style="font-size:3rem;margin-bottom:1rem">🛠️</div>
+            <h2 style="font-size:1.5rem;font-weight:600;margin-bottom:.5rem">Your Check-In Tool</h2>
+            <p style="color:var(--text-secondary)">Simple daily practice</p>
+        </div>
+        
+        <div class="card">
+            <h3 style="font-weight:600;margin-bottom:1.5rem;font-size:1.125rem">Your Check-In Practice:</h3>
+            
+            <div style="margin-bottom:1.5rem">
+                <p style="font-weight:600;margin-bottom:.75rem;font-size:1rem">🤖 Autopilot Signs (Avoid):</p>
+                ${autopilotHtml}
+            </div>
+            
+            <div>
+                <p style="font-weight:600;margin-bottom:.75rem;font-size:1rem">📋 Check-In Actions (Use):</p>
+                ${checkinHtml}
+            </div>
+        </div>
+        
+        <div class="card" style="background:rgba(14,116,144,.1);border:1px solid rgba(14,116,144,.3)">
+            <h3 style="color:var(--text-teal);font-weight:600;margin-bottom:1rem;font-size:1.05rem">✨ Your Daily Check-In Question:</h3>
+            <div style="color:var(--text-secondary);line-height:1.7;font-size:1rem">
+                <p style="margin-bottom:1rem">Before reacting to anything:</p>
+                <div style="background:rgba(14,116,144,.15);padding:1rem;border-radius:.75rem;margin:1rem 0">
+                    <p style="color:var(--text-teal);font-weight:600;text-align:center;font-size:1.125rem">
+                        "MOOD • BODY • ENERGY • URGE?"
+                    </p>
+                </div>
+                <p>This takes practice. Keep checking your dashboard.</p>
+            </div>
+        </div>
+        
+        <button onclick="window.nextStep()" class="btn btn-primary next-step btn-mb" id="nextStepBtn">Review My Practice →</button>
+    </div>`;
+}
+
+// Render step 7
+function renderStep7() {
+    const autoResponse = userData.autoResponse || 'No auto-response entered';
+    const checkinWord = userData.checkinWord || 'Aware';
+    
+    let summaryHtml = '';
+    if (userData.autoResponse && userData.checkinWord) {
+        summaryHtml = `<div class="card">
+            <h3 style="font-weight:600;margin-bottom:1.5rem;font-size:1.25rem;text-align:center">Your Check-In Practice:</h3>
+            
+            <div style="margin-bottom:1.5rem;padding:1.25rem;background:rgba(220,38,38,.08);border-radius:.875rem;border-left:3px solid var(--autopilot-red)">
+                <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.75rem">
+                    <span style="font-size:1.5rem">🤖</span>
+                    <p style="font-size:.875rem;color:#fca5a5;font-weight:600">Autopilot Response</p>
+                </div>
+                <p style="color:var(--text-secondary);font-style:italic;line-height:1.6">"${autoResponse}"</p>
+            </div>
+            
+            <div style="text-align:center;font-size:1.5rem;margin:1rem 0">⬇️</div>
+            
+            <div style="margin-bottom:1.5rem;padding:1.25rem;background:rgba(14,116,144,.08);border-radius:.875rem;border-left:3px solid var(--primary-teal)">
+                <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.75rem">
+                    <span style="font-size:1.5rem">🧭</span>
+                    <p style="font-size:.875rem;color:var(--text-teal);font-weight:600">Check-In State</p>
+                </div>
+                <p style="color:var(--text-teal);font-weight:500;line-height:1.6">"${checkinWord}"</p>
+                <div style="margin-top:1rem;color:var(--text-secondary);font-size:.875rem">
+                    Mood: ${userData.mood}/10 • Body: ${userData.body || '—'}<br>
+                    Energy: ${userData.energy || '—'} • Urge: ${userData.urge || '—'}
+                </div>
+            </div>
+            
+            <div style="background:linear-gradient(135deg,rgba(14,116,144,.1),rgba(217,119,6,.1));padding:1.5rem;border-radius:.875rem;border:1px solid rgba(14,116,144,.2);text-align:center">
+                <p style="color:var(--text-secondary);font-size:.9375rem;margin-bottom:.75rem">You described this shift as:</p>
+                <h3 style="color:#fff;font-size:1.75rem;margin:.75rem 0;font-weight:700">"${checkinWord}"</h3>
+            </div>
+        </div>`;
+    }
+    
+    return `<div class="step-transition">
+        ${renderHeader()}
+        <div class="card skill-header" style="padding:1.5rem;text-align:center;margin-bottom:1rem">
+            <div style="font-size:3.5rem;margin-bottom:.75rem">🧭</div>
+            <h2 style="color:#fff;font-size:1.75rem;font-weight:700;margin-bottom:.5rem">Practice Summary</h2>
+            <p style="color:rgba(255,255,255,.9);font-size:.9375rem">Part 1: Autopilot vs Check-In</p>
+        </div>
+        
+        ${summaryHtml}
+        
+        <div class="card" style="background:rgba(14,116,144,.08);border:1px solid rgba(14,116,144,.25)">
+            <h3 style="font-weight:600;margin-bottom:1.25rem;font-size:1.125rem;color:var(--text-teal)">Keep Checking In</h3>
+            <div style="color:var(--text-secondary);line-height:1.7;font-size:1rem">
+                <p style="margin-bottom:1rem">This skill develops with daily use. Each time you ask "MOOD • BODY • ENERGY • URGE?" you strengthen awareness.</p>
+                <p style="margin-bottom:1rem">Notice when you're on autopilot. Then practice check-in: <strong>Pause 10 seconds. Scan dashboard. Respond from awareness.</strong></p>
+                <p>The more you practice checking in, the more natural it becomes.</p>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h3 style="font-weight:600;font-size:1.125rem;margin-bottom:1.25rem;text-align:center">Save Your Practice Notes</h3>
+            <div style="display:grid;gap:.75rem">
+                <button onclick="window.downloadProgress()" class="btn btn-primary" style="display:flex;align-items:center;justify-content:center;gap:.75rem;padding:1.25rem">
+                    <span style="font-size:1.5rem">💾</span>
+                    <span>Download Notes</span>
+                </button>
+                <button onclick="window.returnToCourse()" class="btn btn-secondary" style="display:flex;align-items:center;justify-content:center;gap:.75rem;padding:1.25rem">
+                    <span style="font-size:1.5rem">←</span>
+                    <span>Return to Course</span>
+                </button>
+            </div>
+        </div>
+    </div>`;
+}
+
+// Expose functions to global scope
+window.goBack = goBack;
+window.nextStep = nextStep;
+window.updateMoodValue = updateMoodValue;
+window.downloadProgress = downloadProgress;
+window.returnToCourse = returnToCourse;
+</script>
+</body>
+</html>
