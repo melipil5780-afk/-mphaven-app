@@ -6,7 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#0f172a">
-    <title>Skill Engine · MPHaven</title>
+    <title>Skill Family · MPHaven</title>
     <style>
         * {
             margin: 0;
@@ -91,42 +91,17 @@
         .content-wrapper {
             padding: max(1.5rem, env(safe-area-inset-top)) 1.25rem max(2rem, env(safe-area-inset-bottom));
             min-height: 100%;
-            display: flex;
-            flex-direction: column;
         }
 
-        /* Progress Bar */
-        .progress-container {
-            margin-bottom: 2rem;
-        }
-        .progress-steps {
+        .header {
             display: flex;
-            gap: 0.5rem;
-            margin-bottom: 0.5rem;
-        }
-        .progress-dot {
-            flex: 1;
-            height: 4px;
-            background: rgba(51, 65, 85, 0.4);
-            border-radius: 2px;
-        }
-        .progress-dot.active {
-            background: linear-gradient(135deg, #0e7490, #d97706);
-        }
-        .progress-text {
-            color: rgb(148, 163, 184);
-            font-size: 0.8125rem;
-            font-weight: 600;
-        }
-
-        /* Header */
-        .skill-header {
-            display: flex;
-            align-items: center;
+            align-items: flex-start;
             gap: 1rem;
             margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(51, 65, 85, 0.4);
         }
-        .skill-icon-large {
+        .family-icon-large {
             width: 5rem;
             height: 5rem;
             border-radius: 1.5rem;
@@ -136,284 +111,222 @@
             font-size: 2.5rem;
             flex-shrink: 0;
         }
-        .skill-info {
+        .header-text {
             flex: 1;
         }
-        .family-badge {
-            display: inline-block;
-            padding: 0.375rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.6875rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            margin-bottom: 0.5rem;
-        }
-        .skill-name {
-            font-size: 2rem;
+        .family-name {
+            font-size: 1.75rem;
             font-weight: 800;
-            line-height: 1.2;
             margin-bottom: 0.25rem;
         }
-        .skill-tagline {
-            color: rgb(165, 243, 252);
+        .family-description {
+            color: rgb(148, 163, 184);
             font-size: 0.9375rem;
+            line-height: 1.4;
         }
 
-        /* Cards */
-        .card {
+        .progress-box {
+            background: linear-gradient(135deg, rgba(14,116,144,0.15), rgba(217,119,6,0.10));
+            border: 1px solid rgba(14, 116, 144, 0.3);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .progress-text {
+            color: rgb(165, 243, 252);
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .skill-card {
             background: linear-gradient(135deg, rgba(30, 41, 59, 0.65), rgba(15, 23, 42, 0.45));
             border: 1px solid rgba(51, 65, 85, 0.4);
             border-radius: 1.25rem;
             padding: 1.5rem;
             margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
-        .card-title {
+        .skill-card:active {
+            transform: scale(0.98);
+        }
+        .skill-card.in-toolkit {
+            border: 1px solid rgba(139, 92, 246, 0.4);
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.12), rgba(139, 92, 246, 0.05));
+        }
+        .skill-card.recommended {
+            border: 2px solid rgba(14, 116, 144, 0.5);
+        }
+
+        .skill-header {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            color: rgb(241, 245, 249);
-            font-size: 1rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
         }
-        .card-text {
-            color: rgb(203, 213, 225);
-            font-size: 0.9375rem;
-            line-height: 1.6;
-        }
-
-        /* Visual Screen */
-        .visual-container {
-            text-align: center;
-            padding: 2rem 0;
-        }
-        .visual-emoji {
-            font-size: 5rem;
-            margin-bottom: 1rem;
-        }
-        .visual-quote {
-            background: rgba(14, 116, 144, 0.15);
-            border: 1px solid rgba(14, 116, 144, 0.3);
-            border-radius: 1rem;
-            padding: 1.5rem;
-            margin-top: 1.5rem;
-        }
-        .visual-quote p {
-            color: rgb(165, 243, 252);
-            font-size: 1.125rem;
-            font-weight: 600;
-            line-height: 1.5;
-        }
-
-        /* Steps */
-        .steps-list {
-            list-style: none;
-        }
-        .steps-list li {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1rem;
-            color: rgb(203, 213, 225);
-            font-size: 0.9375rem;
-            line-height: 1.5;
-        }
-        .step-number {
+        .skill-icon {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 0.75rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 1.75rem;
-            height: 1.75rem;
-            background: rgba(14, 116, 144, 0.2);
-            color: rgb(165, 243, 252);
-            border-radius: 9999px;
-            font-size: 0.875rem;
-            font-weight: 700;
+            font-size: 1.5rem;
             flex-shrink: 0;
         }
-
-        /* Stress Slider */
-        .stress-section {
-            margin-bottom: 2rem;
+        .skill-title {
+            flex: 1;
         }
-        .stress-label {
-            display: flex;
-            justify-content: space-between;
-            color: rgb(148, 163, 184);
-            font-size: 0.75rem;
-            margin-bottom: 0.5rem;
-        }
-        input[type=range] {
-            width: 100%;
-            height: 6px;
-            -webkit-appearance: none;
-            background: rgba(51, 65, 85, 0.4);
-            border-radius: 3px;
-            outline: none;
-        }
-        input[type=range]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 1.5rem;
-            height: 1.5rem;
-            background: linear-gradient(135deg, #0e7490, #d97706);
-            border-radius: 50%;
-            cursor: pointer;
-            box-shadow: 0 0 15px rgba(14, 116, 144, 0.3);
-        }
-        .stress-value {
-            text-align: center;
-            color: rgb(165, 243, 252);
+        .skill-name {
+            color: rgb(241, 245, 249);
             font-size: 1.25rem;
             font-weight: 700;
-            margin-top: 0.5rem;
+            margin-bottom: 0.25rem;
         }
-
-        /* Timer */
-        .timer-container {
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid rgba(51, 65, 85, 0.4);
-            border-radius: 1.5rem;
-            padding: 2rem;
-            text-align: center;
-            margin: 1.5rem 0;
-        }
-        .timer-prompt {
-            color: rgb(203, 213, 225);
-            font-size: 1rem;
-            margin-bottom: 0.75rem;
-        }
-        .timer-instruction {
+        .skill-tagline {
             color: rgb(165, 243, 252);
-            font-size: 1.125rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-        }
-        .timer-display {
-            font-size: 4rem;
-            font-weight: 800;
-            color: rgb(165, 243, 252);
-            margin-bottom: 1.5rem;
+            font-size: 0.8125rem;
         }
 
-        /* Rating Buttons */
-        .rating-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-            margin: 1.5rem 0;
-        }
-        .rating-btn {
-            background: rgba(30, 41, 59, 0.5);
-            border: 1px solid rgba(51, 65, 85, 0.4);
-            border-radius: 1rem;
-            padding: 1.25rem 0.5rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .rating-btn:active {
-            transform: scale(0.95);
-            background: rgba(30, 41, 59, 0.8);
-            border-color: rgba(14, 116, 144, 0.5);
-        }
-        .rating-emoji {
-            font-size: 2rem;
-        }
-        .rating-label {
-            color: rgb(203, 213, 225);
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-
-        /* Completion Screen */
-        .completion-container {
-            text-align: center;
-            padding: 2rem 0;
-        }
-        .checkmark {
-            font-size: 5rem;
-            color: rgb(74, 222, 128);
+        .skill-description {
+            color: rgb(148, 163, 184);
+            font-size: 0.875rem;
+            line-height: 1.5;
             margin-bottom: 1rem;
         }
-        .completion-title {
-            font-size: 1.75rem;
-            font-weight: 800;
-            margin-bottom: 0.5rem;
-        }
-        .completion-sub {
-            color: rgb(148, 163, 184);
-            font-size: 1rem;
-            margin-bottom: 2rem;
-        }
-        .stress-drop {
-            background: rgba(34, 197, 94, 0.12);
-            border: 1px solid rgba(74, 222, 128, 0.3);
-            border-radius: 1rem;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        .stress-drop-text {
-            color: rgb(74, 222, 128);
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-        .works-badge {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            background: rgba(14, 116, 144, 0.15);
-            border: 1px solid rgba(14, 116, 144, 0.3);
-            border-radius: 9999px;
-            color: rgb(165, 243, 252);
-            font-size: 0.875rem;
-            font-weight: 600;
-        }
 
-        /* Buttons */
-        .btn-primary {
-            width: 100%;
-            padding: 1rem;
-            background: linear-gradient(135deg, #0e7490, #d97706);
-            border: none;
+        .options-section {
+            background: rgba(15, 23, 42, 0.6);
             border-radius: 0.75rem;
-            color: white;
-            font-weight: 700;
-            font-size: 1rem;
-            cursor: pointer;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .options-title {
+            color: rgb(203, 213, 225);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
             margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .options-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+        .option-btn {
+            padding: 0.5rem 1rem;
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(51, 65, 85, 0.4);
+            border-radius: 9999px;
+            color: rgb(203, 213, 225);
+            font-size: 0.8125rem;
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+            cursor: pointer;
             transition: all 0.2s ease;
         }
-        .btn-primary:active {
-            transform: scale(0.98);
+        .option-btn:active {
+            background: rgba(14, 116, 144, 0.3);
+            border-color: rgba(14, 116, 144, 0.5);
         }
-        .btn-secondary {
-            width: 100%;
+
+        .custom-option {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        .custom-input {
+            flex: 1;
+            padding: 0.625rem 0.875rem;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(51, 65, 85, 0.4);
+            border-radius: 0.5rem;
+            color: white;
+            font-size: 0.8125rem;
+        }
+        .custom-input:focus {
+            outline: none;
+            border-color: rgba(14, 116, 144, 0.6);
+            background: rgba(15, 23, 42, 0.9);
+        }
+        .custom-input::placeholder {
+            color: rgb(100, 116, 139);
+        }
+        .add-btn {
+            padding: 0.625rem 1rem;
+            background: rgba(14, 116, 144, 0.3);
+            border: 1px solid rgba(14, 116, 144, 0.5);
+            border-radius: 0.5rem;
+            color: rgb(165, 243, 252);
+            font-size: 0.8125rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .add-btn:active {
+            background: rgba(14, 116, 144, 0.5);
+        }
+
+        .skill-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.5rem;
+        }
+        .duration {
+            color: rgb(100, 116, 139);
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        .skill-badge {
+            padding: 0.375rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.6875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .badge-toolkit {
+            background: rgba(139, 92, 246, 0.2);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            color: rgb(196, 181, 253);
+        }
+        .badge-learn {
+            background: rgba(14, 116, 144, 0.2);
+            border: 1px solid rgba(14, 116, 144, 0.3);
+            color: rgb(165, 243, 252);
+        }
+
+        .back-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
             padding: 1rem;
             background: rgba(30, 41, 59, 0.5);
             border: 1px solid rgba(51, 65, 85, 0.4);
             border-radius: 0.75rem;
             color: rgb(148, 163, 184);
-            font-weight: 600;
-            font-size: 0.9375rem;
-            cursor: pointer;
-            margin-bottom: 0.75rem;
-            transition: all 0.2s ease;
-        }
-        .btn-secondary:active {
-            transform: scale(0.98);
-            background: rgba(30, 41, 59, 0.7);
-        }
-        .btn-text {
-            width: 100%;
-            padding: 1rem;
-            background: none;
-            border: none;
-            color: rgb(148, 163, 184);
             font-size: 0.875rem;
             font-weight: 600;
             cursor: pointer;
+            width: 100%;
+            margin-top: 1rem;
+            transition: all 0.2s ease;
+        }
+        .back-button:active {
+            transform: scale(0.98);
+            background: rgba(30, 41, 59, 0.7);
         }
 
         .toast {
@@ -463,850 +376,393 @@
 
     <script>
         // ============================================
-        // FAMILY META — ADDED to match family.html (4 families)
+        // FAMILY META - 4 families with correct IDs
+        // Matches skill-engine.html and quick-use.html
         // ============================================
         const FAMILY_META = {
-            refocus: { name: 'REFOCUS', icon: '🎯', color: '#0e7490' },
-            comfort: { name: 'COMFORT', icon: '🫂', color: '#7c3aed' },
-            weighit: { name: 'WEIGH IT', icon: '⚖️', color: '#d97706' },
-            pause: { name: 'PAUSE', icon: '🛑', color: '#0891b2' }
+            refocus: { 
+                name: 'REFOCUS', 
+                icon: '🎯', 
+                color: '#0e7490', 
+                description: 'Shift your attention' 
+            },
+            comfort: { 
+                name: 'COMFORT', 
+                icon: '🫂', 
+                color: '#7c3aed', 
+                description: 'Soothe your senses' 
+            },
+            weighit: { 
+                name: 'WEIGH IT', 
+                icon: '⚖️', 
+                color: '#d97706', 
+                description: 'Think before acting' 
+            },
+            pause: { 
+                name: 'PAUSE', 
+                icon: '🛑', 
+                color: '#0891b2', 
+                description: 'Stop and breathe' 
+            }
         };
 
         // ============================================
-        // ALL SKILLS — COMPLETE REPLACEMENT: 19 skills, 4 families
-        // Copied exactly from fixed family.html (REFOCUS, COMFORT, WEIGH IT, PAUSE)
+        // ALL SKILLS - 19 skills, 4 families
+        // IDs match skill-engine.html and quick-use.html
         // ============================================
         const ALL_SKILLS = {
             // -------------------------------------------------
-            // FAMILY 1: REFOCUS (was ACCEPTS) - 7 skills
+            // FAMILY 1: REFOCUS - 7 skills
             // -------------------------------------------------
             refocus: [
                 { 
                     id: 'getbusy', 
                     name: 'GET BUSY', 
                     icon: '🏃', 
-                    familyId: 'refocus',
-                    familyName: 'REFOCUS',
-                    familyColor: '#0e7490',
                     tagline: 'Do something to occupy your mind',
-                    what: 'When your thoughts are stuck in a loop, doing almost anything else can interrupt the pattern.',
-                    when: 'You are ruminating, overthinking, or stuck in a thought spiral.',
-                    why: 'The brain has limited attention. Activating a different neural pathway—through movement, counting, or a task—disrupts the rumination loop.',
-                    visual: '🔢 🧊 🏃',
-                    steps: [
-                        'Notice you are stuck in a thought loop',
-                        'Choose a simple, neutral task',
-                        'Do it for 1-3 minutes'
-                    ],
-                    practicePrompt: 'What can you do right now to occupy your mind?',
-                    practiceInstruction: 'Count 10 things you can see',
-                    duration: 45,
-                    quick: 'Count 10 things you can see'
+                    description: 'When your thoughts are stuck in a loop, doing almost anything else can interrupt the pattern.',
+                    duration: '1-3 min',
+                    options: [
+                        { emoji: '🔢', text: 'Count 10 things you see' },
+                        { emoji: '🧊', text: 'Splash cold water' },
+                        { emoji: '🏃', text: 'Move your body' },
+                        { emoji: '📱', text: 'Scroll mindfully' },
+                        { emoji: '🧹', text: 'Tidy one small area' },
+                        { emoji: '✍️', text: 'Write down the thought' }
+                    ]
                 },
                 { 
                     id: 'lendahand', 
                     name: 'LEND A HAND', 
                     icon: '🤝', 
-                    familyId: 'refocus',
-                    familyName: 'REFOCUS',
-                    familyColor: '#0e7490',
                     tagline: 'Do something for someone else',
-                    what: 'Shifting focus outward can shrink problems inward. Small acts create distance.',
-                    when: 'You are stuck in self-focus, feeling worthless, or isolated.',
-                    why: 'Altruistic behavior activates reward centers and shifts attention away from self-focused rumination.',
-                    visual: '💬 📞 🤲',
-                    steps: [
-                        'Think of one person you care about',
-                        'Do one small thing for them',
-                        'Notice how it shifts your focus'
-                    ],
-                    practicePrompt: 'Who could use a kind message right now?',
-                    practiceInstruction: 'Send someone a genuine compliment',
-                    duration: 60,
-                    quick: 'Send someone a genuine compliment'
+                    description: 'Shifting focus outward can shrink problems inward. Small acts create distance.',
+                    duration: '1-5 min',
+                    options: [
+                        { emoji: '💬', text: 'Send a kind message' },
+                        { emoji: '📞', text: 'Call someone' },
+                        { emoji: '🤲', text: 'Offer help' },
+                        { emoji: '🎁', text: 'Give something' },
+                        { emoji: '👂', text: 'Just listen' },
+                        { emoji: '✍️', text: 'Write a note' }
+                    ]
                 },
                 { 
                     id: 'lookback', 
                     name: 'LOOK BACK', 
                     icon: '📅', 
-                    familyId: 'refocus',
-                    familyName: 'REFOCUS',
-                    familyColor: '#0e7490',
                     tagline: 'Remember what you\'ve survived',
-                    what: 'Your brain forgets resilience. Actively recall past struggles you made it through.',
-                    when: 'You feel hopeless, like you have never coped and never will.',
-                    why: 'Memory is state-dependent. Actively recalling past coping builds evidence that you can survive this too.',
-                    visual: '💔 📉 🗣️',
-                    steps: [
-                        'Think of a past difficult situation',
-                        'Remember how you got through it',
-                        'Name one strength you used'
-                    ],
-                    practicePrompt: 'Think of one time you survived something hard',
-                    practiceInstruction: 'What got you through it?',
-                    duration: 45,
-                    quick: 'Name one past challenge you survived'
+                    description: 'Your brain forgets resilience. Actively recall past struggles you made it through.',
+                    duration: '1-2 min',
+                    options: [
+                        { emoji: '💔', text: 'A past loss' },
+                        { emoji: '📉', text: 'A failure I bounced back from' },
+                        { emoji: '🗣️', text: 'A hard conversation' },
+                        { emoji: '🏥', text: 'A health scare' },
+                        { emoji: '💰', text: 'A financial struggle' },
+                        { emoji: '👤', text: 'A relationship ending' }
+                    ]
                 },
                 { 
                     id: 'flipfeeling', 
                     name: 'FLIP THE FEELING', 
                     icon: '🎭', 
-                    familyId: 'refocus',
-                    familyName: 'REFOCUS',
-                    familyColor: '#0e7490',
                     tagline: 'Change your emotional channel',
-                    what: 'You can\'t always change the situation, but you can shift your emotional state. Give your brain something else to feel.',
-                    when: 'You are stuck in sadness, anger, or anxiety and need a break.',
-                    why: 'Emotions are state-dependent. Comedy, cute animals, and uplifting music can trigger genuine emotional shifts.',
-                    visual: '😂 🎵 🐈',
-                    steps: [
-                        'Choose something that creates a different feeling',
-                        'Engage with it for 2-5 minutes',
-                        'Notice the shift'
-                    ],
-                    practicePrompt: 'What could flip your emotional channel?',
-                    practiceInstruction: 'Watch something funny or cute',
-                    duration: 120,
-                    quick: 'Watch something funny or look at cute animals'
+                    description: 'You can\'t always change the situation, but you can shift your emotional state. Give your brain something else to feel.',
+                    duration: '2-5 min',
+                    options: [
+                        { emoji: '😂', text: 'Watch something funny' },
+                        { emoji: '🎵', text: 'Listen to uplifting music' },
+                        { emoji: '🐈', text: 'Look at cute animal photos' },
+                        { emoji: '📖', text: 'Read something inspiring' },
+                        { emoji: '🎬', text: 'Watch a favorite scene' },
+                        { emoji: '📸', text: 'Look at happy memories' }
+                    ]
                 },
                 { 
                     id: 'setitdown', 
                     name: 'SET IT DOWN', 
                     icon: '📦', 
-                    familyId: 'refocus',
-                    familyName: 'REFOCUS',
-                    familyColor: '#0e7490',
                     tagline: 'Leave the problem for now',
-                    what: 'You can come back to it later. Right now, give yourself permission to put it away.',
-                    when: 'You are ruminating on a problem you cannot solve right now.',
-                    why: 'Imaginal containment reduces the brain\'s urgency to keep a problem in working memory.',
-                    visual: '📦 🔒 ☁️',
-                    steps: [
-                        'Imagine a container',
-                        'Place the worry inside',
-                        'Set it aside for later'
-                    ],
-                    practicePrompt: 'What do you need to put down right now?',
-                    practiceInstruction: 'Imagine placing it in a box on a high shelf',
-                    duration: 30,
-                    quick: 'Imagine putting it in a box on a high shelf'
+                    description: 'You can come back to it later. Right now, give yourself permission to put it away.',
+                    duration: '1-2 min',
+                    options: [
+                        { emoji: '📦', text: 'Box on a high shelf' },
+                        { emoji: '🔒', text: 'Lock it in a drawer' },
+                        { emoji: '☁️', text: 'Place it on a cloud' },
+                        { emoji: '🌊', text: 'Let it float away' },
+                        { emoji: '📱', text: 'Save to drafts' },
+                        { emoji: '🗄️', text: 'File it away' }
+                    ]
                 },
                 { 
                     id: 'swapthought', 
                     name: 'SWAP THE THOUGHT', 
                     icon: '🔄', 
-                    familyId: 'refocus',
-                    familyName: 'REFOCUS',
-                    familyColor: '#0e7490',
                     tagline: 'Replace it with another',
-                    what: 'You don\'t have to believe every thought. Try swapping it for a different one.',
-                    when: 'You are stuck on a thought that feels true but is unhelpful.',
-                    why: 'Cognitive reappraisal weakens automatic negative thoughts. Deliberately replacing a thought creates a new neural pathway.',
-                    visual: '👯 ❓ 📝',
-                    steps: [
-                        'Notice the thought',
-                        'Ask: Is this 100% true?',
-                        'Choose a more helpful thought'
-                    ],
-                    practicePrompt: 'What thought could you swap?',
-                    practiceInstruction: 'What would a friend say instead?',
-                    duration: 40,
-                    quick: 'What would a friend say?'
+                    description: 'You don\'t have to believe every thought. Try swapping it for a different one.',
+                    duration: '1-2 min',
+                    options: [
+                        { emoji: '👯', text: 'What would a friend say?' },
+                        { emoji: '❓', text: 'Is this 100% true?' },
+                        { emoji: '📝', text: 'Write a different thought' },
+                        { emoji: '🎭', text: 'What\'s another explanation?' },
+                        { emoji: '📅', text: 'Will this matter in a year?' },
+                        { emoji: '💭', text: 'Think of something neutral' }
+                    ]
                 },
                 { 
                     id: 'feelsomething', 
                     name: 'FEEL SOMETHING', 
                     icon: '⚡', 
-                    familyId: 'refocus',
-                    familyName: 'REFOCUS',
-                    familyColor: '#0e7490',
                     tagline: 'Wake up your senses',
-                    what: 'When you feel numb or disconnected, strong sensations can bring you back to your body.',
-                    when: 'You feel dissociated, numb, or unreal.',
-                    why: 'Strong physical sensations activate the somatosensory cortex and interrupt dissociation.',
-                    visual: '💧 🧊 🍋',
-                    steps: [
-                        'Choose a strong sensation',
-                        'Apply it briefly',
-                        'Notice the shift'
-                    ],
-                    practicePrompt: 'What sensation can you feel right now?',
-                    practiceInstruction: 'Splash cold water or hold an ice cube',
-                    duration: 15,
-                    quick: 'Splash cold water on your face'
+                    description: 'When you feel numb or disconnected, strong sensations can bring you back to your body.',
+                    duration: '15-30 sec',
+                    options: [
+                        { emoji: '💧', text: 'Splash cold water' },
+                        { emoji: '🧊', text: 'Hold an ice cube' },
+                        { emoji: '🍋', text: 'Eat something sour' },
+                        { emoji: '❄️', text: 'Step into cold air' },
+                        { emoji: '🎵', text: 'Loud music (30 sec)' },
+                        { emoji: '🦵', text: 'Pinch yourself lightly' }
+                    ]
                 }
             ],
 
             // -------------------------------------------------
-            // FAMILY 2: COMFORT (was IMPROVE) - 7 skills
+            // FAMILY 2: COMFORT - 7 skills
             // -------------------------------------------------
             comfort: [
                 { 
                     id: 'safeplace', 
                     name: 'SAFE PLACE', 
                     icon: '🏝️', 
-                    familyId: 'comfort',
-                    familyName: 'COMFORT',
-                    familyColor: '#7c3aed',
                     tagline: 'Imagine somewhere calm',
-                    what: 'Close your eyes and picture a place where you feel completely at ease. It can be real or imagined.',
-                    when: 'You feel anxious, overwhelmed, or need a mental escape.',
-                    why: 'Imaginal exposure to safety cues activates the parasympathetic nervous system.',
-                    visual: '🏖️ 🌲 🛋️',
-                    steps: [
-                        'Close your eyes',
-                        'Imagine a place where you feel completely safe',
-                        'Engage all your senses'
-                    ],
-                    practicePrompt: 'Where is your safe place?',
-                    practiceInstruction: 'Imagine yourself there for 2 minutes',
-                    duration: 90,
-                    quick: 'Close your eyes and imagine your safe place'
+                    description: 'Close your eyes and picture a place where you feel completely at ease. It can be real or imagined.',
+                    duration: '2-3 min',
+                    options: [
+                        { emoji: '🏖️', text: 'A quiet beach' },
+                        { emoji: '🌲', text: 'A peaceful forest' },
+                        { emoji: '🛋️', text: 'A cozy room' },
+                        { emoji: '🏔️', text: 'Mountains' },
+                        { emoji: '🌅', text: 'Sunrise or sunset' },
+                        { emoji: '🏡', text: 'A childhood memory' }
+                    ]
                 },
                 { 
                     id: 'findlesson', 
                     name: 'FIND THE LESSON', 
                     icon: '📘', 
-                    familyId: 'comfort',
-                    familyName: 'COMFORT',
-                    familyColor: '#7c3aed',
                     tagline: 'Look for meaning',
-                    what: 'Hard moments can teach us something. Not because they should happen, but because we can grow from them.',
-                    when: 'You feel bitter, resentful, or stuck in "why me?"',
-                    why: 'Meaning-making transforms suffering into growth. Finding a lesson doesn\'t justify the pain, but it reduces helplessness.',
-                    visual: '💪 🎯 🌱',
-                    steps: [
-                        'Acknowledge the pain',
-                        'Ask: What might this teach me?',
-                        'Write down one insight'
-                    ],
-                    practicePrompt: 'What could this situation teach you?',
-                    practiceInstruction: 'Name one potential lesson or strength',
-                    duration: 60,
-                    quick: 'What is one thing this could teach you?'
+                    description: 'Hard moments can teach us something. Not because they should happen, but because we can grow from them.',
+                    duration: '2-3 min',
+                    options: [
+                        { emoji: '💪', text: 'What strength is this building?' },
+                        { emoji: '🎯', text: 'What matters most to me?' },
+                        { emoji: '🌱', text: 'How might I grow from this?' },
+                        { emoji: '❤️', text: 'What do I value?' },
+                        { emoji: '👤', text: 'Who have I become?' },
+                        { emoji: '📝', text: 'Write one insight' }
+                    ]
                 },
                 { 
                     id: 'letgo', 
                     name: 'LET GO', 
                     icon: '🕊️', 
-                    familyId: 'comfort',
-                    familyName: 'COMFORT',
-                    familyColor: '#7c3aed',
                     tagline: 'Release what you cannot control',
-                    what: 'Some things are not yours to carry right now. Give yourself permission to put them down.',
-                    when: 'You are holding onto something you cannot change.',
-                    why: 'Radical acceptance reduces suffering. Letting go is an active process, not passive resignation.',
-                    visual: '🍃 🌬️ 🎈',
-                    steps: [
-                        'Identify what you cannot control',
-                        'Say "I release this"',
-                        'Imagine it floating away'
-                    ],
-                    practicePrompt: 'What are you holding that you can let go?',
-                    practiceInstruction: 'Say "I release this" and imagine it floating away',
-                    duration: 30,
-                    quick: 'Say "I release this" and breathe out'
+                    description: 'Some things are not yours to carry right now. Give yourself permission to put them down.',
+                    duration: '1-2 min',
+                    options: [
+                        { emoji: '🍃', text: 'Say: "I release this"' },
+                        { emoji: '🌬️', text: 'Breathe it out' },
+                        { emoji: '🎈', text: 'Imagine it floating away' },
+                        { emoji: '📝', text: 'Write it down, tear it up' },
+                        { emoji: '🙏', text: 'Surrender it' },
+                        { emoji: '💭', text: 'Not mine to carry' }
+                    ]
                 },
                 { 
                     id: 'calmdown', 
                     name: 'CALM DOWN', 
                     icon: '🧘', 
-                    familyId: 'comfort',
-                    familyName: 'COMFORT',
-                    familyColor: '#7c3aed',
                     tagline: 'Soothe your body',
-                    what: 'Your senses are a direct line to your nervous system. Feed them calm.',
-                    when: 'You feel agitated, on edge, or overstimulated.',
-                    why: 'Sensory soothing (soft textures, gentle sounds, calming scents) directly activates the parasympathetic nervous system.',
-                    visual: '👁️ 👂 👃',
-                    steps: [
-                        'Choose one sense',
-                        'Find something calming for that sense',
-                        'Focus on it for 1-3 minutes'
-                    ],
-                    practicePrompt: 'What sense can you soothe right now?',
-                    practiceInstruction: 'Look at something beautiful or listen to calming sounds',
-                    duration: 60,
-                    quick: 'Look at something beautiful or calming'
+                    description: 'Your senses are a direct line to your nervous system. Feed them calm.',
+                    duration: '1-3 min',
+                    options: [
+                        { emoji: '👁️', text: 'Look at something beautiful' },
+                        { emoji: '👂', text: 'Listen to calming sounds' },
+                        { emoji: '👃', text: 'Smell something pleasant' },
+                        { emoji: '👅', text: 'Savor a flavor' },
+                        { emoji: '🖐️', text: 'Touch something soft' },
+                        { emoji: '🧘', text: 'Gentle movement' }
+                    ]
                 },
                 { 
                     id: 'onething', 
                     name: 'ONE THING', 
                     icon: '🎯', 
-                    familyId: 'comfort',
-                    familyName: 'COMFORT',
-                    familyColor: '#7c3aed',
                     tagline: 'Focus on just this moment',
-                    what: 'Your mind can only hold so much. For now, focus on one thing. Just this breath. Just this moment.',
-                    when: 'You feel scattered, overwhelmed, or pulled in many directions.',
-                    why: 'Mono-tasking reduces cognitive load and anxiety. The brain is not designed for multitasking.',
-                    visual: '🫁 👁️ 👂',
-                    steps: [
-                        'Choose one thing',
-                        'Focus all attention on it',
-                        'When the mind wanders, gently return'
-                    ],
-                    practicePrompt: 'What one thing can you focus on?',
-                    practiceInstruction: 'Count 5 breaths, from 1 to 5',
-                    duration: 40,
-                    quick: 'Count 5 breaths, from 1 to 5'
+                    description: 'Your mind can only hold so much. For now, focus on one thing. Just this breath. Just this moment.',
+                    duration: '1-2 min',
+                    options: [
+                        { emoji: '🫁', text: 'Just this breath' },
+                        { emoji: '👁️', text: 'Just this object' },
+                        { emoji: '👂', text: 'Just this sound' },
+                        { emoji: '🖐️', text: 'Just this sensation' },
+                        { emoji: '🧮', text: 'Count to ten slowly' },
+                        { emoji: '💓', text: 'Just this heartbeat' }
+                    ]
                 },
                 { 
                     id: 'stepaway', 
                     name: 'STEP AWAY', 
                     icon: '🚶', 
-                    familyId: 'comfort',
-                    familyName: 'COMFORT',
-                    familyColor: '#7c3aed',
                     tagline: 'Take a short break',
-                    what: 'You don\'t have to leave forever. Just 5-15 minutes away can change everything.',
-                    when: 'You are in a situation that is escalating and need a pause.',
-                    why: 'Time out interrupts the escalation cycle. It gives the nervous system time to down-regulate.',
-                    visual: '🚪 🌳 🎧',
-                    steps: [
-                        'Recognize you need a break',
-                        'Step away physically',
-                        'Give yourself 5-15 minutes'
-                    ],
-                    practicePrompt: 'Where could you step away to?',
-                    practiceInstruction: 'Go to another room or step outside',
-                    duration: 300,
-                    quick: 'Step into another room for 5 minutes'
+                    description: 'You don\'t have to leave forever. Just 5-15 minutes away can change everything.',
+                    duration: '5-15 min',
+                    options: [
+                        { emoji: '🚪', text: 'Go to another room' },
+                        { emoji: '🌳', text: 'Step outside' },
+                        { emoji: '🎧', text: 'Put on headphones' },
+                        { emoji: '🛏️', text: 'Lie down' },
+                        { emoji: '🚶', text: 'Short walk' },
+                        { emoji: '☕', text: 'Make a drink' }
+                    ]
                 },
                 { 
                     id: 'beownfriend', 
                     name: 'BE YOUR OWN FRIEND', 
                     icon: '💗', 
-                    familyId: 'comfort',
-                    familyName: 'COMFORT',
-                    familyColor: '#7c3aed',
                     tagline: 'Talk to yourself with kindness',
-                    what: 'Would you say this to someone you love? If not, change the words.',
-                    when: 'You are being self-critical, harsh, or perfectionistic.',
-                    why: 'Self-compassion activates care-giving neural circuits and reduces threat responses.',
-                    visual: '💬 🤗 💪',
-                    steps: [
-                        'Notice your self-talk',
-                        'Imagine a friend in your situation',
-                        'Speak to yourself as you would to them'
-                    ],
-                    practicePrompt: 'What do you need to hear right now?',
-                    practiceInstruction: 'Say "I am doing my best. This is temporary."',
-                    duration: 45,
-                    quick: 'Say "I am doing my best. This is temporary."'
+                    description: 'Would you say this to someone you love? If not, change the words.',
+                    duration: '1-2 min',
+                    options: [
+                        { emoji: '💬', text: 'What do you need to hear?' },
+                        { emoji: '🤗', text: 'I\'m here for you' },
+                        { emoji: '💪', text: 'You\'re doing your best' },
+                        { emoji: '🌱', text: 'This is temporary' },
+                        { emoji: '❤️', text: 'You deserve kindness' },
+                        { emoji: '🫂', text: 'You\'re not alone' }
+                    ]
                 }
             ],
 
             // -------------------------------------------------
-            // FAMILY 3: WEIGH IT (was PROS/CONS) - 1 skill
+            // FAMILY 3: WEIGH IT - 1 skill
             // -------------------------------------------------
             weighit: [
                 { 
                     id: 'listitout', 
                     name: 'LIST IT OUT', 
                     icon: '📋', 
-                    familyId: 'weighit',
-                    familyName: 'WEIGH IT',
-                    familyColor: '#d97706',
                     tagline: 'Compare helping vs hurting',
-                    what: 'When urges are strong, writing down the pros and cons can slow you down enough to choose wisely.',
-                    when: 'You feel an urge to do something impulsive that you might regret.',
-                    why: 'Urges are emotional, not logical. Writing pros and cons engages the prefrontal cortex and reduces impulsivity.',
-                    visual: '✅ ❌ 📝',
-                    steps: [
-                        'Draw a line down the paper',
-                        'Label: Act vs. Don\'t act',
-                        'List pros and cons for each'
-                    ],
-                    practicePrompt: 'What decision are you facing?',
-                    practiceInstruction: 'Quick list: What helps? What hurts?',
-                    duration: 90,
-                    quick: 'Quick list: What helps? What hurts?'
+                    description: 'When urges are strong, writing down the pros and cons can slow you down enough to choose wisely.',
+                    duration: '2-3 min',
+                    options: [
+                        { emoji: '✅', text: 'Pros of acting now' },
+                        { emoji: '❌', text: 'Cons of acting now' },
+                        { emoji: '🟢', text: 'Pros of waiting' },
+                        { emoji: '🔴', text: 'Cons of waiting' },
+                        { emoji: '📝', text: 'Quick list' },
+                        { emoji: '📱', text: 'Notes app' }
+                    ]
                 }
             ],
 
             // -------------------------------------------------
-            // FAMILY 4: PAUSE (was STOP) - 4 skills
+            // FAMILY 4: PAUSE - 4 skills
             // -------------------------------------------------
             pause: [
                 { 
                     id: 'freeze', 
                     name: 'FREEZE', 
                     icon: '❄️', 
-                    familyId: 'pause',
-                    familyName: 'PAUSE',
-                    familyColor: '#0891b2',
                     tagline: 'Stop. Don\'t move. Don\'t react.',
-                    what: 'The moment between urge and action is where your power lives. Just freeze for 5-10 seconds.',
-                    when: 'You are about to react automatically and want to choose differently.',
-                    why: 'Freezing interrupts the automatic action chain. It creates space for choice.',
-                    visual: '⏸️ 🧊 🤚',
-                    steps: [
-                        'Notice the urge to act',
-                        'Stop all movement',
-                        'Count to 5'
-                    ],
-                    practicePrompt: 'Can you freeze for 5 seconds?',
-                    practiceInstruction: 'Stop. Don\'t move. Count to 5.',
-                    duration: 10,
-                    quick: 'Stop. Don\'t move. Count to 5.'
+                    description: 'The moment between urge and action is where your power lives. Just freeze for 5-10 seconds.',
+                    duration: '10 sec',
+                    options: [
+                        { emoji: '⏸️', text: 'Pause mid-motion' },
+                        { emoji: '🫁', text: 'Hold your breath' },
+                        { emoji: '🧊', text: 'Freeze your body' },
+                        { emoji: '👁️', text: 'Fix your gaze' },
+                        { emoji: '🤚', text: 'Stop your hands' },
+                        { emoji: '⏱️', text: 'Count to 10' }
+                    ]
                 },
                 { 
                     id: 'stepback', 
                     name: 'STEP BACK', 
                     icon: '👣', 
-                    familyId: 'pause',
-                    familyName: 'PAUSE',
-                    familyColor: '#0891b2',
                     tagline: 'Create space between you and the urge',
-                    what: 'Take a breath. Step away from the situation. Even one step changes your perspective.',
-                    when: 'You are emotionally flooded and need distance.',
-                    why: 'Physical distance creates psychological distance. It signals safety to the brain.',
-                    visual: '🫁 🚶 🧘',
-                    steps: [
-                        'Take one deep breath',
-                        'Physically step back',
-                        'Pause and notice'
-                    ],
-                    practicePrompt: 'Can you step back?',
-                    practiceInstruction: 'Take one step back and breathe',
-                    duration: 20,
-                    quick: 'Take one step back and breathe'
+                    description: 'Take a breath. Step away from the situation. Even one step changes your perspective.',
+                    duration: '30-60 sec',
+                    options: [
+                        { emoji: '🫁', text: 'One deep breath' },
+                        { emoji: '🚶', text: 'Physically step back' },
+                        { emoji: '🧘', text: 'Pause and notice' },
+                        { emoji: '🌬️', text: 'Exhale slowly' },
+                        { emoji: '🪑', text: 'Sit down' },
+                        { emoji: '👁️', text: 'Look away' }
+                    ]
                 },
                 { 
                     id: 'notice', 
                     name: 'NOTICE', 
                     icon: '👓', 
-                    familyId: 'pause',
-                    familyName: 'PAUSE',
-                    familyColor: '#0891b2',
                     tagline: 'Watch what\'s happening inside',
-                    what: 'You are not your thoughts. You are the one noticing them. Just observe without judgment.',
-                    when: 'You are caught up in thoughts, believing everything they say.',
-                    why: 'Cognitive defusion creates distance. You can\'t stop thoughts, but you can change your relationship to them.',
-                    visual: '☁️ 🌊 🏷️',
-                    steps: [
-                        'Notice the thought or feeling',
-                        'Label it: "I notice I am thinking..."',
-                        'Let it pass like a cloud'
-                    ],
-                    practicePrompt: 'What thought is here right now?',
-                    practiceInstruction: 'Label it: "I notice I am thinking..."',
-                    duration: 40,
-                    quick: 'Label your thought: "I notice I am thinking..."'
+                    description: 'You are not your thoughts. You are the one noticing them. Just observe without judgment.',
+                    duration: '1-2 min',
+                    options: [
+                        { emoji: '☁️', text: 'Thoughts as clouds' },
+                        { emoji: '🌊', text: 'Feelings as waves' },
+                        { emoji: '🏷️', text: 'Label it "thinking"' },
+                        { emoji: '🫁', text: 'Notice your breath' },
+                        { emoji: '👂', text: 'Notice sounds' },
+                        { emoji: '💓', text: 'Notice your heartbeat' }
+                    ]
                 },
                 { 
                     id: 'moveforward', 
                     name: 'MOVE FORWARD', 
                     icon: '🎯', 
-                    familyId: 'pause',
-                    familyName: 'PAUSE',
-                    familyColor: '#0891b2',
                     tagline: 'Act with intention',
-                    what: 'Now that you\'ve paused, what\'s the wise next step? Not perfect — just wise.',
-                    when: 'You have paused and now need to choose what to do next.',
-                    why: 'After pause, intention is key. Wise mind integrates emotion and reason.',
-                    visual: '🧠 ⚖️ 🕯️',
-                    steps: [
-                        'Acknowledge emotion',
-                        'Acknowledge logic',
-                        'Ask: What\'s the wise thing to do?'
-                    ],
-                    practicePrompt: 'What does wise mind say?',
-                    practiceInstruction: 'Take a breath. Ask: What\'s the wise thing to do?',
-                    duration: 30,
-                    quick: 'Take a breath. Ask: What\'s the wise thing to do?'
+                    description: 'Now that you\'ve paused, what\'s the wise next step? Not perfect — just wise.',
+                    duration: '1 min',
+                    options: [
+                        { emoji: '🧠', text: 'What\'s the wise choice?' },
+                        { emoji: '🎯', text: 'What\'s effective right now?' },
+                        { emoji: '⚖️', text: 'Balance emotion and logic' },
+                        { emoji: '👤', text: 'What would a mentor say?' },
+                        { emoji: '🕯️', text: 'Quiet yourself and listen' },
+                        { emoji: '💭', text: 'What does your gut say?' }
+                    ]
                 }
             ]
         };
 
         // ============================================
-        // APP STATE
+        // TOOLKIT STORAGE
         // ============================================
-        const AppState = {
-            skill: null,
-            currentStep: 1,
-            sudsBefore: 5,
-            sudsAfter: null,
-            rating: null,
-            timer: null,
-            timerSeconds: 0,
-            timerRunning: false,
-            practiced: false,
-
-            // Load skill from URL
-            loadSkill() {
-                const urlParams = new URLSearchParams(window.location.search);
-                const skillId = urlParams.get('skill');
-                
-                if (!skillId) {
-                    showToast('No skill selected');
-                    setTimeout(() => window.location.href = 'academy.html', 1500);
-                    return;
-                }
-
-                // Find skill in ALL_SKILLS (now using 4-family structure)
-                for (const familyId in ALL_SKILLS) {
-                    const found = ALL_SKILLS[familyId].find(s => s.id === skillId);
-                    if (found) {
-                        this.skill = JSON.parse(JSON.stringify(found));
-                        break;
-                    }
-                }
-
-                if (!this.skill) {
-                    showToast('Skill not found');
-                    setTimeout(() => window.location.href = 'academy.html', 1500);
-                    return;
-                }
-
-                this.currentStep = 1;
-                this.sudsBefore = 5;
-                this.sudsAfter = null;
-                this.rating = null;
-                this.practiced = false;
-                this.timerSeconds = this.skill.duration || 45;
-                this.render();
-            },
-
-            // Navigation
-            nextStep() {
-                if (this.currentStep < 7) {
-                    this.currentStep++;
-                    this.render();
-                }
-            },
-
-            prevStep() {
-                if (this.currentStep > 1) {
-                    this.currentStep--;
-                    this.render();
-                }
-            },
-
-            // Stress ratings
-            setSudsBefore(value) {
-                this.sudsBefore = parseInt(value);
-                this.render();
-            },
-
-            setSudsAfter(value) {
-                this.sudsAfter = parseInt(value);
-                this.render();
-            },
-
-            setRating(value) {
-                this.rating = value;
-                this.render();
-            },
-
-            // Timer
-            startTimer() {
-                if (this.timerRunning) return;
-                
-                this.timerRunning = true;
-                this.timer = setInterval(() => {
-                    this.timerSeconds--;
-                    if (this.timerSeconds <= 0) {
-                        this.stopTimer();
-                        this.practiced = true;
-                        showToast('Time’s up! 🌊');
-                    }
-                    this.render();
-                }, 1000);
-                this.render();
-            },
-
-            stopTimer() {
-                if (this.timer) {
-                    clearInterval(this.timer);
-                    this.timer = null;
-                }
-                this.timerRunning = false;
-                this.render();
-            },
-
-            skipTimer() {
-                this.stopTimer();
-                this.practiced = true;
-                this.nextStep();
-            },
-
-            // Add to toolkit
-            addToToolkit() {
-                const toolkit = JSON.parse(localStorage.getItem('mphaven_toolkit') || '{}');
-                
-                toolkit[this.skill.id] = {
-                    id: this.skill.id,
-                    name: this.skill.name,
-                    familyId: this.skill.familyId,
-                    icon: this.skill.icon,
-                    quick: this.skill.quick,
-                    savedAt: new Date().toISOString(),
-                    timesPracticed: (toolkit[this.skill.id]?.timesPracticed || 0) + 1
-                };
-                
-                localStorage.setItem('mphaven_toolkit', JSON.stringify(toolkit));
-                showToast(`✓ ${this.skill.name} added to toolkit`);
-                this.render();
-            },
-
-            // Navigation
-            goToToolkit() {
-                window.location.href = 'my-toolkit.html';
-            },
-
-            tryQuickVersion() {
-                window.location.href = `quick-use.html?skill=${this.skill.id}`;
-            },
-
-            // Format time
-            formatTime(seconds) {
-                const mins = Math.floor(seconds / 60);
-                const secs = seconds % 60;
-                return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-            },
-
-            // Render current screen
-            render() {
-                if (!this.skill) return;
-                
-                const content = document.getElementById('mainContent');
-                const s = this.skill;
-                const step = this.currentStep;
-                
-                let html = `<div class="content-wrapper">`;
-
-                // Progress bar
-                html += `
-                    <div class="progress-container">
-                        <div class="progress-steps">
-                            ${[1,2,3,4,5,6,7].map(i => 
-                                `<div class="progress-dot ${i <= step ? 'active' : ''}"></div>`
-                            ).join('')}
-                        </div>
-                        <div class="progress-text">Step ${step}/7</div>
-                    </div>
-                `;
-
-                // SCREEN 1: Intro
-                if (step === 1) {
-                    html += `
-                        <div class="skill-header">
-                            <div class="skill-icon-large" style="background: ${s.familyColor}20; color: ${s.familyColor}">
-                                ${s.icon}
-                            </div>
-                            <div class="skill-info">
-                                <span class="family-badge" style="background: ${s.familyColor}20; color: ${s.familyColor}">
-                                    ${s.familyName}
-                                </span>
-                                <div class="skill-name" style="color: ${s.familyColor}">${s.name}</div>
-                                <div class="skill-tagline">${s.tagline}</div>
-                            </div>
-                        </div>
-
-                        <div class="card">
-                            <div class="card-title">📘 What it is</div>
-                            <div class="card-text">${s.what}</div>
-                        </div>
-
-                        <div class="card">
-                            <div class="card-title">⏰ When to use</div>
-                            <div class="card-text">${s.when}</div>
-                        </div>
-
-                        <div style="margin-top: 1.5rem;">
-                            <button class="btn-primary" onclick="AppState.nextStep()">How it works →</button>
-                            <button class="btn-secondary" onclick="window.location.href='family.html?id=${s.familyId}'">← Back</button>
-                        </div>
-                    `;
-                }
-                
-                // SCREEN 2: Why
-                else if (step === 2) {
-                    html += `
-                        <div class="card">
-                            <div class="card-title">🧠 Why it works</div>
-                            <div class="card-text">${s.why}</div>
-                        </div>
-
-                        <div style="margin-top: 1.5rem;">
-                            <button class="btn-primary" onclick="AppState.nextStep()">Continue →</button>
-                            <button class="btn-secondary" onclick="AppState.prevStep()">← Back</button>
-                        </div>
-                    `;
-                }
-
-                // SCREEN 3: Visual
-                else if (step === 3) {
-                    html += `
-                        <div class="visual-container">
-                            <div class="visual-emoji">${s.visual || s.icon}</div>
-                            <div class="skill-name" style="color: ${s.familyColor}">${s.name}</div>
-                            <div style="color: rgb(148, 163, 184); margin-top: 0.5rem;">${s.tagline}</div>
-                            
-                            <div class="visual-quote">
-                                <p>${s.practiceInstruction}</p>
-                            </div>
-                        </div>
-
-                        <div style="margin-top: 1.5rem;">
-                            <button class="btn-primary" onclick="AppState.nextStep()">Continue →</button>
-                            <button class="btn-secondary" onclick="AppState.prevStep()">← Back</button>
-                        </div>
-                    `;
-                }
-
-                // SCREEN 4: Steps
-                else if (step === 4) {
-                    html += `
-                        <div class="card">
-                            <div class="card-title">📋 Step by step</div>
-                            <ul class="steps-list">
-                                ${s.steps.map((step, index) => `
-                                    <li>
-                                        <span class="step-number">${index + 1}</span>
-                                        <span>${step}</span>
-                                    </li>
-                                `).join('')}
-                            </ul>
-                        </div>
-
-                        <div style="margin-top: 1.5rem;">
-                            <button class="btn-primary" onclick="AppState.nextStep()">Practice →</button>
-                            <button class="btn-secondary" onclick="AppState.prevStep()">← Back</button>
-                        </div>
-                    `;
-                }
-
-                // SCREEN 5: Practice
-                else if (step === 5) {
-                    html += `
-                        <div class="stress-section">
-                            <div class="card-title">⏱️ Before you start</div>
-                            <div class="stress-label">
-                                <span>Calm</span>
-                                <span>Panic</span>
-                            </div>
-                            <input type="range" min="0" max="10" value="${this.sudsBefore}" 
-                                   onchange="AppState.setSudsBefore(this.value)">
-                            <div class="stress-value">${this.sudsBefore}/10</div>
-                        </div>
-
-                        <div class="timer-container">
-                            <div class="timer-prompt">${s.practicePrompt}</div>
-                            <div class="timer-instruction">${s.practiceInstruction}</div>
-                            
-                            <div class="timer-display">${this.formatTime(this.timerSeconds)}</div>
-                            
-                            ${!this.timerRunning && this.timerSeconds > 0 ? `
-                                <button class="btn-primary" onclick="AppState.startTimer()">Start Timer</button>
-                            ` : ''}
-                            
-                            ${this.timerRunning ? `
-                                <button class="btn-primary" onclick="AppState.stopTimer()">Pause</button>
-                            ` : ''}
-                            
-                            ${this.timerSeconds === 0 ? `
-                                <button class="btn-primary" onclick="AppState.nextStep()">Continue →</button>
-                            ` : ''}
-                            
-                            <button class="btn-text" onclick="AppState.skipTimer()">Skip</button>
-                        </div>
-
-                        <div style="margin-top: 0.5rem;">
-                            <button class="btn-secondary" onclick="AppState.prevStep()">← Back</button>
-                        </div>
-                    `;
-                }
-
-                // SCREEN 6: Rate
-                else if (step === 6) {
-                    html += `
-                        <div class="card">
-                            <div class="card-title">📊 How do you feel now?</div>
-                            
-                            <div class="stress-section">
-                                <div class="stress-label">
-                                    <span>Calm</span>
-                                    <span>Panic</span>
-                                </div>
-                                <input type="range" min="0" max="10" value="${this.sudsAfter !== null ? this.sudsAfter : 3}" 
-                                       onchange="AppState.setSudsAfter(this.value)">
-                                <div class="stress-value">${this.sudsAfter !== null ? this.sudsAfter : 3}/10</div>
-                            </div>
-                            
-                            <div style="margin-top: 1.5rem;">
-                                <div class="card-title">How well did ${s.name} work?</div>
-                                <div class="rating-grid">
-                                    <div class="rating-btn" onclick="AppState.setRating('strong')">
-                                        <span class="rating-emoji">💪</span>
-                                        <span class="rating-label">Saved me</span>
-                                    </div>
-                                    <div class="rating-btn" onclick="AppState.setRating('moderate')">
-                                        <span class="rating-emoji">👍</span>
-                                        <span class="rating-label">Helped a bit</span>
-                                    </div>
-                                    <div class="rating-btn" onclick="AppState.setRating('weak')">
-                                        <span class="rating-emoji">🤚</span>
-                                        <span class="rating-label">Not for me</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div style="margin-top: 1.5rem;">
-                            <button class="btn-primary" onclick="AppState.nextStep()">Continue →</button>
-                            <button class="btn-secondary" onclick="AppState.prevStep()">← Back</button>
-                        </div>
-                    `;
-                }
-
-                // SCREEN 7: Save
-                else if (step === 7) {
-                    const stressDrop = this.sudsBefore - (this.sudsAfter !== null ? this.sudsAfter : 3);
-                    
-                    html += `
-                        <div class="completion-container">
-                            <div class="checkmark">✓</div>
-                            <div class="completion-title">Skill complete</div>
-                            <div class="completion-sub">You practiced ${s.name}</div>
-                            
-                            <div class="stress-drop">
-                                <div class="stress-drop-text">
-                                    ⬇️ Stress dropped ${stressDrop > 0 ? stressDrop : 2} points
-                                </div>
-                                <span class="works-badge">This works for you</span>
-                            </div>
-                            
-                            <button class="btn-primary" onclick="AppState.addToToolkit()">
-                                ✅ Yes, add to my plan
-                            </button>
-                            
-                            <button class="btn-secondary" onclick="AppState.tryQuickVersion()">
-                                ⚡ Try quick version
-                            </button>
-                            
-                            <button class="btn-text" onclick="AppState.goToToolkit()">
-                                ← Back to toolkit
-                            </button>
-                        </div>
-                    `;
-                }
-
-                html += `</div>`;
-                content.innerHTML = html;
-                
-                // Scroll to top
-                setTimeout(() => {
-                    const mainContent = document.querySelector('.main-content');
-                    if (mainContent) mainContent.scrollTop = 0;
-                }, 50);
+        function getToolkit() {
+            try {
+                return JSON.parse(localStorage.getItem('mphaven_toolkit') || '{}');
+            } catch (e) {
+                return {};
             }
-        };
+        }
+
+        function isInToolkit(skillId) {
+            const toolkit = getToolkit();
+            return toolkit[skillId] !== undefined;
+        }
+
+        function getToolkitCountForFamily(familyId) {
+            const toolkit = getToolkit();
+            return Object.values(toolkit).filter(skill => skill.familyId === familyId).length;
+        }
 
         // ============================================
-        // GLOBAL FUNCTIONS
+        // UI FUNCTIONS
         // ============================================
         function showToast(message) {
             const toast = document.getElementById('toast');
@@ -1315,25 +771,145 @@
             setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
-        window.AppState = AppState;
+        // ============================================
+        // SKILL ACTIONS - Passes custom text to skill engine
+        // ============================================
+        function startSkill(skillId, customAction = null) {
+            if (customAction) {
+                localStorage.setItem('last_custom_action', JSON.stringify({
+                    skillId: skillId,
+                    action: customAction,
+                    timestamp: new Date().toISOString()
+                }));
+            }
+            window.location.href = `skill-engine.html?skill=${skillId}`;
+        }
+
+        window.startSkill = startSkill;
         window.showToast = showToast;
+
+        // ============================================
+        // RENDER
+        // ============================================
+        function render() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const familyId = urlParams.get('id');
+            
+            if (!familyId || !FAMILY_META[familyId]) {
+                window.location.href = 'academy.html';
+                return;
+            }
+
+            const family = FAMILY_META[familyId];
+            const skills = ALL_SKILLS[familyId] || [];
+            const toolkitCount = getToolkitCountForFamily(familyId);
+            
+            let html = `
+                <div class="content-wrapper">
+                    <div class="header">
+                        <div class="family-icon-large" style="background: ${family.color}20; color: ${family.color}">
+                            ${family.icon}
+                        </div>
+                        <div class="header-text">
+                            <div class="family-name" style="color: ${family.color}">${family.name}</div>
+                            <div class="family-description">${family.description}</div>
+                        </div>
+                    </div>
+
+                    <div class="progress-box">
+                        <span class="progress-text">
+                            🧰 ${toolkitCount} of ${skills.length} skills in your toolkit
+                        </span>
+                    </div>
+            `;
+
+            skills.forEach((skill, index) => {
+                const inToolkit = isInToolkit(skill.id);
+                const isFirst = index === 0 && toolkitCount === 0;
+                
+                html += `
+                    <div class="skill-card ${inToolkit ? 'in-toolkit' : ''} ${isFirst ? 'recommended' : ''}">
+                        <div class="skill-header">
+                            <div class="skill-icon" style="background: ${family.color}20; color: ${family.color}">
+                                ${skill.icon}
+                            </div>
+                            <div class="skill-title">
+                                <div class="skill-name">${skill.name}</div>
+                                <div class="skill-tagline">${skill.tagline}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="skill-description">
+                            ${skill.description}
+                        </div>
+                        
+                        <div class="options-section">
+                            <div class="options-title">
+                                <span>✨ Choose what works for you:</span>
+                            </div>
+                            <div class="options-grid">
+                                ${skill.options.map(opt => `
+                                    <div class="option-btn" onclick="event.stopPropagation(); startSkill('${skill.id}', '${opt.text.replace(/'/g, "\\'")}')">
+                                        ${opt.emoji} ${opt.text}
+                                    </div>
+                                `).join('')}
+                            </div>
+                            
+                            <div class="custom-option">
+                                <input type="text" 
+                                       id="custom-${skill.id}" 
+                                       class="custom-input" 
+                                       placeholder="Something else..." 
+                                       value="">
+                                <button class="add-btn" 
+                                        onclick="event.stopPropagation(); 
+                                                 const val = document.getElementById('custom-${skill.id}').value;
+                                                 if(val.trim()) {
+                                                     startSkill('${skill.id}', val.trim());
+                                                     document.getElementById('custom-${skill.id}').value = '';
+                                                 } else {
+                                                     showToast('Type what you want to try');
+                                                 }">
+                                    ➕ Use this
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="skill-footer">
+                            <span class="duration">⏱️ ${skill.duration}</span>
+                            ${inToolkit ? 
+                                '<span class="skill-badge badge-toolkit">✓ IN TOOLKIT</span>' : 
+                                '<span class="skill-badge badge-learn">LEARN →</span>'
+                            }
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `
+                    <div class="back-button" onclick="window.location.href='academy.html'">
+                        ← Back to Survival Toolkit
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('mainContent').innerHTML = html;
+            
+            setTimeout(() => {
+                const mainContent = document.querySelector('.main-content');
+                if (mainContent) mainContent.scrollTop = 0;
+            }, 50);
+        }
 
         // ============================================
         // INIT
         // ============================================
         function init() {
-            // Prevent zoom
             document.addEventListener('touchstart', (e) => {
                 if (e.touches.length > 1) e.preventDefault();
             }, { passive: false });
             
-            // Initialize toolkit if needed
-            if (!localStorage.getItem('mphaven_toolkit')) {
-                localStorage.setItem('mphaven_toolkit', '{}');
-            }
-            
-            // Load skill
-            AppState.loadSkill();
+            render();
         }
 
         document.addEventListener('DOMContentLoaded', init);
