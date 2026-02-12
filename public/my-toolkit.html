@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#0f172a">
+    <title>My Toolkit · MPHaven</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            position: fixed;
+            background: #0f172a;
+            color: rgb(241, 245, 249);
+        }
+
+        .container {
+            width: 100%;
+            height: 100vh;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .app-wrapper {
+            width: 100%;
+            max-width: 28rem;
+            height: 100%;
+            margin: 0 auto;
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            border-left: 1px solid rgba(30, 41, 59, 0.5);
+            border-right: 1px solid rgba(30, 41, 59, 0.5);
+        }
+
+        .bg-blur-1, .bg-blur-2 {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(140px);
+            -webkit-filter: blur(140px);
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.6;
+        }
+        .bg-blur-1 {
+            top: -10%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 22rem;
+            height: 22rem;
+            background: rgba(14, 116, 144, 0.08);
+        }
+        .bg-blur-2 {
+            bottom: -10%;
+            right: -10%;
+            width: 18rem;
+            height: 18rem;
+            background: rgba(217, 119, 6, 0.08);
+        }
+
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+            z-index: 1;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+        .main-content::-webkit-scrollbar {
+            display: none;
+        }
+
+        .content-wrapper {
+            padding: max(1.5rem, env(safe-area-inset-top)) 1.25rem max(2rem, env(safe-area-inset-bottom));
+            min-height: 100%;
+        }
+
+        .header {
+            margin-bottom: 2rem;
+        }
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: rgb(241, 245, 249);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .header p {
+            color: rgb(148, 163, 184);
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .empty-state {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.65), rgba(15, 23, 42, 0.45));
+            border: 1px solid rgba(51, 65, 85, 0.4);
+            border-radius: 1.5rem;
+            padding: 3rem 1.5rem;
+            text-align: center;
+            margin: 2rem 0;
+        }
+        .empty-emoji {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+        .empty-title {
+            color: rgb(241, 245, 249);
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .empty-text {
+            color: rgb(148, 163, 184);
+            font-size: 0.875rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .family-section {
+            margin-bottom: 2rem;
+        }
+        .family-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(51, 65, 85, 0.4);
+        }
+        .family-icon {
+            font-size: 1.5rem;
+        }
+        .family-title {
+            font-size: 1.125rem;
+            font-weight: 700;
+        }
+        .family-count {
+            color: rgb(148, 163, 184);
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-left: auto;
+        }
+
+        .toolkit-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.65), rgba(15, 23, 42, 0.45));
+            border: 1px solid rgba(51, 65, 85, 0.4);
+            border-radius: 1rem;
+            padding: 1.25rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .skill-icon {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .skill-info {
+            flex: 1;
+        }
+        .skill-name {
+            color: rgb(241, 245, 249);
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        .skill-quick {
+            color: rgb(165, 243, 252);
+            font-size: 0.8125rem;
+        }
+        .skill-practiced {
+            color: rgb(148, 163, 184);
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+        }
+
+        .btn-use {
+            padding: 0.5rem 1rem;
+            background: linear-gradient(135deg, #0e7490, #d97706);
+            border: none;
+            border-radius: 0.75rem;
+            color: white;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .btn-use:active {
+            transform: scale(0.95);
+        }
+
+        .btn-remove {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 0.5rem;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: rgb(252, 165, 165);
+            font-size: 1.25rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        .btn-remove:active {
+            transform: scale(0.95);
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #0e7490, #d97706);
+            border: none;
+            border-radius: 0.75rem;
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        .btn-secondary {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(51, 65, 85, 0.4);
+            border-radius: 0.75rem;
+            color: rgb(148, 163, 184);
+            font-weight: 600;
+            font-size: 0.9375rem;
+            cursor: pointer;
+            margin-top: 0.75rem;
+        }
+        .btn-secondary:active {
+            transform: scale(0.98);
+            background: rgba(30, 41, 59, 0.7);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: max(6rem, env(safe-area-inset-bottom) + 4rem);
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: rgba(30, 41, 59, 0.95);
+            border: 1px solid rgba(14, 116, 144, 0.3);
+            border-radius: 0.75rem;
+            padding: 0.875rem 1.25rem;
+            color: white;
+            font-weight: 600;
+            z-index: 10000;
+            opacity: 0;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            max-width: calc(100vw - 2rem);
+            text-align: center;
+            font-size: 0.875rem;
+        }
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        @media (min-width: 640px) {
+            .app-wrapper {
+                border-radius: 2rem;
+                margin: 1rem 0;
+                height: calc(100dvh - 2rem);
+                max-height: 844px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="app-wrapper">
+            <div class="bg-blur-1"></div>
+            <div class="bg-blur-2"></div>
+            <div id="mainContent" class="main-content"></div>
+        </div>
+    </div>
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // ============================================
+        // FAMILY META DATA - matches other files
+        // ============================================
+        const FAMILY_META = {
+            shift: { name: 'SHIFT', icon: '🎯', color: '#0e7490' },
+            soothe: { name: 'SOOTHE', icon: '🫂', color: '#7c3aed' },
+            flip: { name: 'FLIP', icon: '💭', color: '#d97706' },
+            reset: { name: 'RESET', icon: '⚡', color: '#0891b2' },
+            decide: { name: 'DECIDE', icon: '⚖️', color: '#7c3aed' }
+        };
+
+        // ============================================
+        // TOOLKIT STORAGE
+        // ============================================
+        function getToolkit() {
+            try {
+                return JSON.parse(localStorage.getItem('mphaven_toolkit') || '{}');
+            } catch (e) {
+                return {};
+            }
+        }
+
+        function saveToolkit(toolkit) {
+            localStorage.setItem('mphaven_toolkit', JSON.stringify(toolkit));
+        }
+
+        // ============================================
+        // UI FUNCTIONS
+        // ============================================
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        function useSkill(skillId) {
+            window.location.href = `quick-use.html?skill=${skillId}`;
+        }
+
+        function removeSkill(skillId) {
+            const toolkit = getToolkit();
+            delete toolkit[skillId];
+            saveToolkit(toolkit);
+            showToast('Removed from toolkit');
+            render();
+        }
+
+        // Make functions global for onclick
+        window.useSkill = useSkill;
+        window.removeSkill = removeSkill;
+
+        // ============================================
+        // RENDER
+        // ============================================
+        function render() {
+            const toolkit = getToolkit();
+            const skills = Object.values(toolkit);
+            
+            const content = document.getElementById('mainContent');
+            
+            // Empty state
+            if (skills.length === 0) {
+                content.innerHTML = `
+                    <div class="content-wrapper">
+                        <div class="header">
+                            <h1>🧰 My Toolkit</h1>
+                            <p>Your go-to skills when you need them most</p>
+                        </div>
+                        
+                        <div class="empty-state">
+                            <div class="empty-emoji">🧰</div>
+                            <div class="empty-title">Your toolkit is empty</div>
+                            <div class="empty-text">Learn skills and add them to your toolkit for quick access</div>
+                            <button class="btn-primary" onclick="location.href='academy.html'">
+                                + Learn Skills
+                            </button>
+                        </div>
+                        
+                        <button class="btn-secondary" onclick="location.href='distress-main.html'">
+                            ← Back to Crisis Resilience
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            // Group skills by family
+            const grouped = {};
+            skills.forEach(skill => {
+                const familyId = skill.familyId || 'shift';
+                if (!grouped[familyId]) {
+                    grouped[familyId] = [];
+                }
+                grouped[familyId].push(skill);
+            });
+
+            let html = `
+                <div class="content-wrapper">
+                    <div class="header">
+                        <h1>🧰 My Toolkit</h1>
+                        <p>${skills.length} ${skills.length === 1 ? 'skill' : 'skills'} ready to use</p>
+                    </div>
+            `;
+
+            // Render each family group
+            Object.entries(grouped).forEach(([familyId, familySkills]) => {
+                const family = FAMILY_META[familyId] || { 
+                    name: familyId.toUpperCase(), 
+                    icon: '📚', 
+                    color: '#0e7490' 
+                };
+                
+                html += `
+                    <div class="family-section">
+                        <div class="family-header">
+                            <span class="family-icon" style="color: ${family.color}">${family.icon}</span>
+                            <span class="family-title" style="color: ${family.color}">${family.name}</span>
+                            <span class="family-count">${familySkills.length}</span>
+                        </div>
+                `;
+
+                familySkills.forEach(skill => {
+                    const times = skill.timesPracticed || 0;
+                    const lastUsed = skill.lastPracticed 
+                        ? new Date(skill.lastPracticed).toLocaleDateString() 
+                        : null;
+                    
+                    html += `
+                        <div class="toolkit-card">
+                            <div class="skill-icon" style="background: ${family.color}20; color: ${family.color}">
+                                ${skill.icon || '🛠️'}
+                            </div>
+                            <div class="skill-info">
+                                <div class="skill-name">${skill.name}</div>
+                                <div class="skill-quick">${skill.quick || 'Ready when you are'}</div>
+                                ${times > 0 ? `
+                                    <div class="skill-practiced">
+                                        Practiced ${times} time${times !== 1 ? 's' : ''}
+                                        ${lastUsed ? `· Last ${lastUsed}` : ''}
+                                    </div>
+                                ` : ''}
+                            </div>
+                            <button class="btn-use" onclick="useSkill('${skill.id}')">Use</button>
+                            <button class="btn-remove" onclick="removeSkill('${skill.id}')">×</button>
+                        </div>
+                    `;
+                });
+
+                html += `</div>`;
+            });
+
+            html += `
+                    <button class="btn-secondary" onclick="location.href='academy.html'">
+                        + Learn More Skills
+                    </button>
+                    <button class="btn-secondary" onclick="location.href='distress-main.html'">
+                        ← Back to Crisis Resilience
+                    </button>
+                </div>
+            `;
+
+            content.innerHTML = html;
+            
+            // Scroll to top
+            setTimeout(() => {
+                const mainContent = document.querySelector('.main-content');
+                if (mainContent) mainContent.scrollTop = 0;
+            }, 50);
+        }
+
+        // ============================================
+        // INIT
+        // ============================================
+        function init() {
+            // Prevent zoom
+            document.addEventListener('touchstart', (e) => {
+                if (e.touches.length > 1) e.preventDefault();
+            }, { passive: false });
+            
+            render();
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
