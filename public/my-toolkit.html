@@ -316,14 +316,13 @@
 
     <script>
         // ============================================
-        // FAMILY META DATA - matches other files
+        // FAMILY META - UPDATED with 4 families
         // ============================================
         const FAMILY_META = {
-            shift: { name: 'SHIFT', icon: '🎯', color: '#0e7490' },
-            soothe: { name: 'SOOTHE', icon: '🫂', color: '#7c3aed' },
-            flip: { name: 'FLIP', icon: '💭', color: '#d97706' },
-            reset: { name: 'RESET', icon: '⚡', color: '#0891b2' },
-            decide: { name: 'DECIDE', icon: '⚖️', color: '#7c3aed' }
+            refocus: { name: 'REFOCUS', icon: '🎯', color: '#0e7490' },
+            comfort: { name: 'COMFORT', icon: '🫂', color: '#7c3aed' },
+            weighit: { name: 'WEIGH IT', icon: '⚖️', color: '#d97706' },
+            pause: { name: 'PAUSE', icon: '🛑', color: '#0891b2' }
         };
 
         // ============================================
@@ -363,7 +362,6 @@
             render();
         }
 
-        // Make functions global for onclick
         window.useSkill = useSkill;
         window.removeSkill = removeSkill;
 
@@ -376,7 +374,6 @@
             
             const content = document.getElementById('mainContent');
             
-            // Empty state
             if (skills.length === 0) {
                 content.innerHTML = `
                     <div class="content-wrapper">
@@ -402,10 +399,9 @@
                 return;
             }
 
-            // Group skills by family
             const grouped = {};
             skills.forEach(skill => {
-                const familyId = skill.familyId || 'shift';
+                const familyId = skill.familyId || 'refocus';
                 if (!grouped[familyId]) {
                     grouped[familyId] = [];
                 }
@@ -420,7 +416,6 @@
                     </div>
             `;
 
-            // Render each family group
             Object.entries(grouped).forEach(([familyId, familySkills]) => {
                 const family = FAMILY_META[familyId] || { 
                     name: familyId.toUpperCase(), 
@@ -439,9 +434,6 @@
 
                 familySkills.forEach(skill => {
                     const times = skill.timesPracticed || 0;
-                    const lastUsed = skill.lastPracticed 
-                        ? new Date(skill.lastPracticed).toLocaleDateString() 
-                        : null;
                     
                     html += `
                         <div class="toolkit-card">
@@ -454,7 +446,6 @@
                                 ${times > 0 ? `
                                     <div class="skill-practiced">
                                         Practiced ${times} time${times !== 1 ? 's' : ''}
-                                        ${lastUsed ? `· Last ${lastUsed}` : ''}
                                     </div>
                                 ` : ''}
                             </div>
@@ -479,18 +470,13 @@
 
             content.innerHTML = html;
             
-            // Scroll to top
             setTimeout(() => {
                 const mainContent = document.querySelector('.main-content');
                 if (mainContent) mainContent.scrollTop = 0;
             }, 50);
         }
 
-        // ============================================
-        // INIT
-        // ============================================
         function init() {
-            // Prevent zoom
             document.addEventListener('touchstart', (e) => {
                 if (e.touches.length > 1) e.preventDefault();
             }, { passive: false });
