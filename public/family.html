@@ -192,88 +192,6 @@
             margin-bottom: 1rem;
         }
 
-        .options-section {
-            background: rgba(15, 23, 42, 0.6);
-            border-radius: 0.75rem;
-            padding: 1rem;
-            margin-bottom: 1rem;
-        }
-        .options-title {
-            color: rgb(203, 213, 225);
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            margin-bottom: 0.75rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .options-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 0.75rem;
-        }
-        .option-btn {
-            padding: 0.5rem 1rem;
-            background: rgba(30, 41, 59, 0.8);
-            border: 1px solid rgba(51, 65, 85, 0.4);
-            border-radius: 9999px;
-            color: rgb(203, 213, 225);
-            font-size: 0.8125rem;
-            display: flex;
-            align-items: center;
-            gap: 0.375rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-family: inherit;
-        }
-        .option-btn:active {
-            background: rgba(14, 116, 144, 0.3);
-            border-color: rgba(14, 116, 144, 0.5);
-        }
-
-        .custom-option {
-            display: flex;
-            gap: 0.5rem;
-            margin-top: 0.5rem;
-        }
-        .custom-input {
-            flex: 1;
-            padding: 0.625rem 0.875rem;
-            background: rgba(15, 23, 42, 0.8);
-            border: 1px solid rgba(51, 65, 85, 0.4);
-            border-radius: 0.5rem;
-            color: white;
-            font-size: 0.8125rem;
-        }
-        .custom-input:focus {
-            outline: none;
-            border-color: rgba(14, 116, 144, 0.6);
-            background: rgba(15, 23, 42, 0.9);
-        }
-        .custom-input::placeholder {
-            color: rgb(100, 116, 139);
-        }
-        .add-btn {
-            padding: 0.625rem 1rem;
-            background: rgba(14, 116, 144, 0.3);
-            border: 1px solid rgba(14, 116, 144, 0.5);
-            border-radius: 0.5rem;
-            color: rgb(165, 243, 252);
-            font-size: 0.8125rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-            cursor: pointer;
-            white-space: nowrap;
-            font-family: inherit;
-        }
-        .add-btn:active {
-            background: rgba(14, 116, 144, 0.5);
-        }
-
         .skill-footer {
             display: flex;
             justify-content: space-between;
@@ -287,22 +205,33 @@
             align-items: center;
             gap: 0.25rem;
         }
-        .skill-badge {
-            padding: 0.375rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.6875rem;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-        .badge-toolkit {
-            background: rgba(139, 92, 246, 0.2);
-            border: 1px solid rgba(139, 92, 246, 0.3);
-            color: rgb(196, 181, 253);
-        }
-        .badge-learn {
+        .btn-learn {
+            padding: 0.5rem 1.25rem;
             background: rgba(14, 116, 144, 0.2);
             border: 1px solid rgba(14, 116, 144, 0.3);
+            border-radius: 9999px;
             color: rgb(165, 243, 252);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            font-family: inherit;
+        }
+        .btn-learn:active {
+            transform: scale(0.95);
+            background: rgba(14, 116, 144, 0.4);
+        }
+        .badge-toolkit {
+            padding: 0.5rem 1.25rem;
+            background: rgba(139, 92, 246, 0.2);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 9999px;
+            color: rgb(196, 181, 253);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
         }
 
         .back-button {
@@ -415,15 +344,7 @@
                     icon: '🏃', 
                     tagline: 'Do something to occupy your mind',
                     description: 'When your thoughts are stuck in a loop, doing almost anything else can interrupt the pattern.',
-                    duration: '1-3 min',
-                    options: [
-                        { emoji: '🔢', text: 'Count 10 things you see' },
-                        { emoji: '🧊', text: 'Splash cold water' },
-                        { emoji: '🏃', text: 'Move your body' },
-                        { emoji: '📱', text: 'Scroll mindfully' },
-                        { emoji: '🧹', text: 'Tidy one small area' },
-                        { emoji: '✍️', text: 'Write down the thought' }
-                    ]
+                    duration: '1-3 min'
                 },
                 { 
                     id: 'lendahand', 
@@ -431,15 +352,7 @@
                     icon: '🤝', 
                     tagline: 'Do something for someone else',
                     description: 'Shifting focus outward can shrink problems inward. Small acts create distance.',
-                    duration: '1-5 min',
-                    options: [
-                        { emoji: '💬', text: 'Send a kind message' },
-                        { emoji: '📞', text: 'Call someone' },
-                        { emoji: '🤲', text: 'Offer help' },
-                        { emoji: '🎁', text: 'Give something' },
-                        { emoji: '👂', text: 'Just listen' },
-                        { emoji: '✍️', text: 'Write a note' }
-                    ]
+                    duration: '1-5 min'
                 },
                 { 
                     id: 'lookback', 
@@ -447,15 +360,7 @@
                     icon: '📅', 
                     tagline: 'Remember what you\'ve survived',
                     description: 'Your brain forgets resilience. Actively recall past struggles you made it through.',
-                    duration: '1-2 min',
-                    options: [
-                        { emoji: '💔', text: 'A past loss' },
-                        { emoji: '📉', text: 'A failure I bounced back from' },
-                        { emoji: '🗣️', text: 'A hard conversation' },
-                        { emoji: '🏥', text: 'A health scare' },
-                        { emoji: '💰', text: 'A financial struggle' },
-                        { emoji: '👤', text: 'A relationship ending' }
-                    ]
+                    duration: '1-2 min'
                 },
                 { 
                     id: 'flipfeeling', 
@@ -463,15 +368,7 @@
                     icon: '🎭', 
                     tagline: 'Change your emotional channel',
                     description: 'You can\'t always change the situation, but you can shift your emotional state. Give your brain something else to feel.',
-                    duration: '2-5 min',
-                    options: [
-                        { emoji: '😂', text: 'Watch something funny' },
-                        { emoji: '🎵', text: 'Listen to uplifting music' },
-                        { emoji: '🐈', text: 'Look at cute animal photos' },
-                        { emoji: '📖', text: 'Read something inspiring' },
-                        { emoji: '🎬', text: 'Watch a favorite scene' },
-                        { emoji: '📸', text: 'Look at happy memories' }
-                    ]
+                    duration: '2-5 min'
                 },
                 { 
                     id: 'setitdown', 
@@ -479,15 +376,7 @@
                     icon: '📦', 
                     tagline: 'Leave the problem for now',
                     description: 'You can come back to it later. Right now, give yourself permission to put it away.',
-                    duration: '1-2 min',
-                    options: [
-                        { emoji: '📦', text: 'Box on a high shelf' },
-                        { emoji: '🔒', text: 'Lock it in a drawer' },
-                        { emoji: '☁️', text: 'Place it on a cloud' },
-                        { emoji: '🌊', text: 'Let it float away' },
-                        { emoji: '📱', text: 'Save to drafts' },
-                        { emoji: '🗄️', text: 'File it away' }
-                    ]
+                    duration: '1-2 min'
                 },
                 { 
                     id: 'swapthought', 
@@ -495,15 +384,7 @@
                     icon: '🔄', 
                     tagline: 'Replace it with another',
                     description: 'You don\'t have to believe every thought. Try swapping it for a different one.',
-                    duration: '1-2 min',
-                    options: [
-                        { emoji: '👯', text: 'What would a friend say?' },
-                        { emoji: '❓', text: 'Is this 100% true?' },
-                        { emoji: '📝', text: 'Write a different thought' },
-                        { emoji: '🎭', text: 'What\'s another explanation?' },
-                        { emoji: '📅', text: 'Will this matter in a year?' },
-                        { emoji: '💭', text: 'Think of something neutral' }
-                    ]
+                    duration: '1-2 min'
                 },
                 { 
                     id: 'feelsomething', 
@@ -511,15 +392,7 @@
                     icon: '⚡', 
                     tagline: 'Wake up your senses',
                     description: 'When you feel numb or disconnected, strong sensations can bring you back to your body.',
-                    duration: '15-30 sec',
-                    options: [
-                        { emoji: '💧', text: 'Splash cold water' },
-                        { emoji: '🧊', text: 'Hold an ice cube' },
-                        { emoji: '🍋', text: 'Eat something sour' },
-                        { emoji: '❄️', text: 'Step into cold air' },
-                        { emoji: '🎵', text: 'Loud music (30 sec)' },
-                        { emoji: '🦵', text: 'Pinch yourself lightly' }
-                    ]
+                    duration: '15-30 sec'
                 }
             ],
             comfort: [
@@ -529,15 +402,7 @@
                     icon: '🏝️', 
                     tagline: 'Imagine somewhere calm',
                     description: 'Close your eyes and picture a place where you feel completely at ease. It can be real or imagined.',
-                    duration: '2-3 min',
-                    options: [
-                        { emoji: '🏖️', text: 'A quiet beach' },
-                        { emoji: '🌲', text: 'A peaceful forest' },
-                        { emoji: '🛋️', text: 'A cozy room' },
-                        { emoji: '🏔️', text: 'Mountains' },
-                        { emoji: '🌅', text: 'Sunrise or sunset' },
-                        { emoji: '🏡', text: 'A childhood memory' }
-                    ]
+                    duration: '2-3 min'
                 },
                 { 
                     id: 'findlesson', 
@@ -545,15 +410,7 @@
                     icon: '📘', 
                     tagline: 'Look for meaning',
                     description: 'Hard moments can teach us something. Not because they should happen, but because we can grow from them.',
-                    duration: '2-3 min',
-                    options: [
-                        { emoji: '💪', text: 'What strength is this building?' },
-                        { emoji: '🎯', text: 'What matters most to me?' },
-                        { emoji: '🌱', text: 'How might I grow from this?' },
-                        { emoji: '❤️', text: 'What do I value?' },
-                        { emoji: '👤', text: 'Who have I become?' },
-                        { emoji: '📝', text: 'Write one insight' }
-                    ]
+                    duration: '2-3 min'
                 },
                 { 
                     id: 'letgo', 
@@ -561,15 +418,7 @@
                     icon: '🕊️', 
                     tagline: 'Release what you cannot control',
                     description: 'Some things are not yours to carry right now. Give yourself permission to put them down.',
-                    duration: '1-2 min',
-                    options: [
-                        { emoji: '🍃', text: 'Say: "I release this"' },
-                        { emoji: '🌬️', text: 'Breathe it out' },
-                        { emoji: '🎈', text: 'Imagine it floating away' },
-                        { emoji: '📝', text: 'Write it down, tear it up' },
-                        { emoji: '🙏', text: 'Surrender it' },
-                        { emoji: '💭', text: 'Not mine to carry' }
-                    ]
+                    duration: '1-2 min'
                 },
                 { 
                     id: 'calmdown', 
@@ -577,15 +426,7 @@
                     icon: '🧘', 
                     tagline: 'Soothe your body',
                     description: 'Your senses are a direct line to your nervous system. Feed them calm.',
-                    duration: '1-3 min',
-                    options: [
-                        { emoji: '👁️', text: 'Look at something beautiful' },
-                        { emoji: '👂', text: 'Listen to calming sounds' },
-                        { emoji: '👃', text: 'Smell something pleasant' },
-                        { emoji: '👅', text: 'Savor a flavor' },
-                        { emoji: '🖐️', text: 'Touch something soft' },
-                        { emoji: '🧘', text: 'Gentle movement' }
-                    ]
+                    duration: '1-3 min'
                 },
                 { 
                     id: 'onething', 
@@ -593,15 +434,7 @@
                     icon: '🎯', 
                     tagline: 'Focus on just this moment',
                     description: 'Your mind can only hold so much. For now, focus on one thing. Just this breath. Just this moment.',
-                    duration: '1-2 min',
-                    options: [
-                        { emoji: '🫁', text: 'Just this breath' },
-                        { emoji: '👁️', text: 'Just this object' },
-                        { emoji: '👂', text: 'Just this sound' },
-                        { emoji: '🖐️', text: 'Just this sensation' },
-                        { emoji: '🧮', text: 'Count to ten slowly' },
-                        { emoji: '💓', text: 'Just this heartbeat' }
-                    ]
+                    duration: '1-2 min'
                 },
                 { 
                     id: 'stepaway', 
@@ -609,15 +442,7 @@
                     icon: '🚶', 
                     tagline: 'Take a short break',
                     description: 'You don\'t have to leave forever. Just 5-15 minutes away can change everything.',
-                    duration: '5-15 min',
-                    options: [
-                        { emoji: '🚪', text: 'Go to another room' },
-                        { emoji: '🌳', text: 'Step outside' },
-                        { emoji: '🎧', text: 'Put on headphones' },
-                        { emoji: '🛏️', text: 'Lie down' },
-                        { emoji: '🚶', text: 'Short walk' },
-                        { emoji: '☕', text: 'Make a drink' }
-                    ]
+                    duration: '5-15 min'
                 },
                 { 
                     id: 'beownfriend', 
@@ -625,15 +450,7 @@
                     icon: '💗', 
                     tagline: 'Talk to yourself with kindness',
                     description: 'Would you say this to someone you love? If not, change the words.',
-                    duration: '1-2 min',
-                    options: [
-                        { emoji: '💬', text: 'What do you need to hear?' },
-                        { emoji: '🤗', text: 'I\'m here for you' },
-                        { emoji: '💪', text: 'You\'re doing your best' },
-                        { emoji: '🌱', text: 'This is temporary' },
-                        { emoji: '❤️', text: 'You deserve kindness' },
-                        { emoji: '🫂', text: 'You\'re not alone' }
-                    ]
+                    duration: '1-2 min'
                 }
             ],
             weighit: [
@@ -643,15 +460,7 @@
                     icon: '📋', 
                     tagline: 'Compare helping vs hurting',
                     description: 'When urges are strong, writing down the pros and cons can slow you down enough to choose wisely.',
-                    duration: '2-3 min',
-                    options: [
-                        { emoji: '✅', text: 'Pros of acting now' },
-                        { emoji: '❌', text: 'Cons of acting now' },
-                        { emoji: '🟢', text: 'Pros of waiting' },
-                        { emoji: '🔴', text: 'Cons of waiting' },
-                        { emoji: '📝', text: 'Quick list' },
-                        { emoji: '📱', text: 'Notes app' }
-                    ]
+                    duration: '2-3 min'
                 }
             ],
             pause: [
@@ -661,15 +470,7 @@
                     icon: '❄️', 
                     tagline: 'Stop. Don\'t move. Don\'t react.',
                     description: 'The moment between urge and action is where your power lives. Just freeze for 5-10 seconds.',
-                    duration: '10 sec',
-                    options: [
-                        { emoji: '⏸️', text: 'Pause mid-motion' },
-                        { emoji: '🫁', text: 'Hold your breath' },
-                        { emoji: '🧊', text: 'Freeze your body' },
-                        { emoji: '👁️', text: 'Fix your gaze' },
-                        { emoji: '🤚', text: 'Stop your hands' },
-                        { emoji: '⏱️', text: 'Count to 10' }
-                    ]
+                    duration: '10 sec'
                 },
                 { 
                     id: 'stepback', 
@@ -677,15 +478,7 @@
                     icon: '👣', 
                     tagline: 'Create space between you and the urge',
                     description: 'Take a breath. Step away from the situation. Even one step changes your perspective.',
-                    duration: '30-60 sec',
-                    options: [
-                        { emoji: '🫁', text: 'One deep breath' },
-                        { emoji: '🚶', text: 'Physically step back' },
-                        { emoji: '🧘', text: 'Pause and notice' },
-                        { emoji: '🌬️', text: 'Exhale slowly' },
-                        { emoji: '🪑', text: 'Sit down' },
-                        { emoji: '👁️', text: 'Look away' }
-                    ]
+                    duration: '30-60 sec'
                 },
                 { 
                     id: 'notice', 
@@ -693,15 +486,7 @@
                     icon: '👓', 
                     tagline: 'Watch what\'s happening inside',
                     description: 'You are not your thoughts. You are the one noticing them. Just observe without judgment.',
-                    duration: '1-2 min',
-                    options: [
-                        { emoji: '☁️', text: 'Thoughts as clouds' },
-                        { emoji: '🌊', text: 'Feelings as waves' },
-                        { emoji: '🏷️', text: 'Label it "thinking"' },
-                        { emoji: '🫁', text: 'Notice your breath' },
-                        { emoji: '👂', text: 'Notice sounds' },
-                        { emoji: '💓', text: 'Notice your heartbeat' }
-                    ]
+                    duration: '1-2 min'
                 },
                 { 
                     id: 'moveforward', 
@@ -709,15 +494,7 @@
                     icon: '🎯', 
                     tagline: 'Act with intention',
                     description: 'Now that you\'ve paused, what\'s the wise next step? Not perfect — just wise.',
-                    duration: '1 min',
-                    options: [
-                        { emoji: '🧠', text: 'What\'s the wise choice?' },
-                        { emoji: '🎯', text: 'What\'s effective right now?' },
-                        { emoji: '⚖️', text: 'Balance emotion and logic' },
-                        { emoji: '👤', text: 'What would a mentor say?' },
-                        { emoji: '🕯️', text: 'Quiet yourself and listen' },
-                        { emoji: '💭', text: 'What does your gut say?' }
-                    ]
+                    duration: '1 min'
                 }
             ]
         };
@@ -751,17 +528,10 @@
         }
 
         // ============================================
-        // SKILL ACTIONS - FIXED, GLOBAL
+        // SKILL ACTIONS
         // ============================================
-        window.startSkill = function(skillId, customAction = null) {
-            console.log('Starting skill:', skillId, customAction);
-            if (customAction && customAction.trim()) {
-                localStorage.setItem('last_custom_action', JSON.stringify({
-                    skillId: skillId,
-                    action: customAction.trim(),
-                    timestamp: new Date().toISOString()
-                }));
-            }
+        window.startSkill = function(skillId) {
+            console.log('Starting skill:', skillId);
             window.location.href = `skill-engine.html?skill=${encodeURIComponent(skillId)}`;
         };
 
@@ -822,43 +592,11 @@
                             ${skill.description}
                         </div>
                         
-                        <div class="options-section">
-                            <div class="options-title">
-                                <span>✨ Choose what works for you:</span>
-                            </div>
-                            <div class="options-grid">
-                                ${skill.options.map(opt => `
-                                    <button class="option-btn" onclick="startSkill('${skill.id}', '${opt.text.replace(/'/g, "\\'")}')">
-                                        ${opt.emoji} ${opt.text}
-                                    </button>
-                                `).join('')}
-                            </div>
-                            
-                            <div class="custom-option">
-                                <input type="text" 
-                                       id="custom-${skill.id}" 
-                                       class="custom-input" 
-                                       placeholder="Something else..." 
-                                       value="">
-                                <button class="add-btn" 
-                                        onclick="
-                                            const val = document.getElementById('custom-${skill.id}').value;
-                                            if(val.trim()) {
-                                                startSkill('${skill.id}', val.trim());
-                                                document.getElementById('custom-${skill.id}').value = '';
-                                            } else {
-                                                showToast('Type what you want to try');
-                                            }">
-                                    ➕ Use this
-                                </button>
-                            </div>
-                        </div>
-                        
                         <div class="skill-footer">
                             <span class="duration">⏱️ ${skill.duration}</span>
                             ${inToolkit ? 
-                                '<span class="skill-badge badge-toolkit">✓ IN TOOLKIT</span>' : 
-                                '<span class="skill-badge badge-learn">LEARN →</span>'
+                                `<span class="badge-toolkit">✓ IN TOOLKIT</span>` : 
+                                `<button class="btn-learn" onclick="startSkill('${skill.id}')">LEARN →</button>`
                             }
                         </div>
                     </div>
