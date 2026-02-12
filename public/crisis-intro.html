@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#0f172a">
+    <title>Crisis Resilience · MPHaven</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            position: fixed;
+            background: #0f172a;
+            color: rgb(241, 245, 249);
+        }
+
+        .container {
+            width: 100%;
+            height: 100vh;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .app-wrapper {
+            width: 100%;
+            max-width: 28rem;
+            height: 100%;
+            margin: 0 auto;
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            border-left: 1px solid rgba(30, 41, 59, 0.5);
+            border-right: 1px solid rgba(30, 41, 59, 0.5);
+        }
+
+        .bg-blur-1, .bg-blur-2 {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(140px);
+            -webkit-filter: blur(140px);
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.6;
+        }
+        .bg-blur-1 {
+            top: -10%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 22rem;
+            height: 22rem;
+            background: rgba(14, 116, 144, 0.08);
+        }
+        .bg-blur-2 {
+            bottom: -10%;
+            right: -10%;
+            width: 18rem;
+            height: 18rem;
+            background: rgba(217, 119, 6, 0.08);
+        }
+
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+            z-index: 1;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+        .main-content::-webkit-scrollbar {
+            display: none;
+        }
+
+        .content-wrapper {
+            padding: max(1.5rem, env(safe-area-inset-top)) 1.25rem max(2rem, env(safe-area-inset-bottom));
+            min-height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .header-icon {
+            width: 5rem;
+            height: 5rem;
+            margin: 0 auto 1rem;
+            background: linear-gradient(135deg, rgba(14,116,144,0.15), rgba(217,119,6,0.10));
+            border-radius: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+        }
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: rgb(241, 245, 249);
+            margin-bottom: 0.5rem;
+        }
+        .header p {
+            color: rgb(148, 163, 184);
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .crisis-warning {
+            background: rgba(239, 68, 68, 0.12);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 1rem;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+        .crisis-title {
+            color: rgb(252, 165, 165);
+            font-weight: 700;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+        .crisis-text {
+            color: rgb(203, 213, 225);
+            font-size: 0.8125rem;
+            line-height: 1.5;
+        }
+        .crisis-number {
+            color: rgb(252, 165, 165);
+            font-weight: 700;
+        }
+
+        .section {
+            margin-bottom: 1.5rem;
+        }
+        .section-title {
+            color: rgb(241, 245, 249);
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+        .section-text {
+            color: rgb(203, 213, 225);
+            font-size: 0.9375rem;
+            line-height: 1.6;
+        }
+
+        .level-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.65), rgba(15, 23, 42, 0.45));
+            border: 1px solid rgba(51, 65, 85, 0.4);
+            border-radius: 1.25rem;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .level-card:active {
+            transform: scale(0.98);
+        }
+        .level-icon {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+        }
+        .level-title {
+            color: rgb(241, 245, 249);
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .level-desc {
+            color: rgb(148, 163, 184);
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        .level-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .level-badge {
+            padding: 0.375rem 0.75rem;
+            background: rgba(14, 116, 144, 0.2);
+            border: 1px solid rgba(14, 116, 144, 0.3);
+            border-radius: 9999px;
+            color: rgb(165, 243, 252);
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .level-arrow {
+            color: rgb(100, 116, 139);
+            font-size: 1.25rem;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, rgba(14,116,144,0.15), rgba(217,119,6,0.10));
+            border: 1px solid rgba(14, 116, 144, 0.25);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin: 1.5rem 0;
+        }
+        .info-box p {
+            color: rgb(165, 243, 252);
+            font-size: 0.8125rem;
+            line-height: 1.5;
+        }
+
+        .disclaimer {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(51, 65, 85, 0.4);
+        }
+        .disclaimer-text {
+            color: rgb(100, 116, 139);
+            font-size: 0.75rem;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #0e7490, #d97706);
+            border: none;
+            border-radius: 0.75rem;
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: all 0.2s ease;
+        }
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        @media (min-width: 640px) {
+            .app-wrapper {
+                border-radius: 2rem;
+                margin: 1rem 0;
+                height: calc(100dvh - 2rem);
+                max-height: 844px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="app-wrapper">
+            <div class="bg-blur-1"></div>
+            <div class="bg-blur-2"></div>
+            <div class="main-content">
+                <div class="content-wrapper">
+                    <div class="header">
+                        <div class="header-icon">🛡️</div>
+                        <h1>Crisis Resilience</h1>
+                        <p>Learn to survive intense emotional moments</p>
+                    </div>
+
+                    <div class="crisis-warning">
+                        <div class="crisis-title">⚠️ IF YOU'RE IN CRISIS NOW</div>
+                        <div class="crisis-text">
+                            If you're thinking about harming yourself or others, call <span class="crisis-number">988</span> (Suicide & Crisis Lifeline) or text <span class="crisis-number">HELLO to 741741</span> immediately. This app provides educational wellness strategies, not emergency support.
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <div class="section-title">What is Crisis Resilience?</div>
+                        <div class="section-text">
+                            Crisis resilience skills help you survive intense emotional moments without making things worse. These are emergency tools for when feelings become overwhelming and you need to get through the next hour without acting on harmful urges.
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <div class="section-title">Two paths, one goal</div>
+                        
+                        <div class="level-card" onclick="window.location.href='distress-main.html'">
+                            <div class="level-icon">🚨</div>
+                            <div class="level-title">Level 1: Survival Toolkit</div>
+                            <div class="level-desc">
+                                For intense emotional moments when you need immediate relief. Change your focus, calm your body, challenge thoughts, and reset your state.
+                            </div>
+                            <div class="level-meta">
+                                <span class="level-badge">5 families · 27 skills</span>
+                                <span class="level-arrow">→</span>
+                            </div>
+                        </div>
+
+                        <div class="level-card" onclick="window.location.href='distress-level2.html'">
+                            <div class="level-icon">🕊️</div>
+                            <div class="level-title">Level 2: Acceptance Path</div>
+                            <div class="level-desc">
+                                For situations you cannot change. Find peace with painful realities, stop fighting what is, and reduce suffering through acceptance.
+                            </div>
+                            <div class="level-meta">
+                                <span class="level-badge">5 skills</span>
+                                <span class="level-arrow">→</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-box">
+                        <p>
+                            These skills don't solve problems—they help you survive them. For ongoing support, please work with a qualified mental health professional.
+                        </p>
+                    </div>
+
+                    <div class="disclaimer">
+                        <div class="disclaimer-text">
+                            This app provides educational wellness content only. It is not a substitute for professional mental health care, medical advice, diagnosis, or treatment. Always consult qualified professionals for mental health concerns.
+                        </div>
+                    </div>
+
+                    <button class="btn-primary" onclick="markIntroSeen()">
+                        Begin your journey →
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function markIntroSeen() {
+            localStorage.setItem('crisis_intro_seen', 'true');
+            window.location.href = 'distress-main.html';
+        }
+
+        // Prevent zoom
+        document.addEventListener('touchstart', (e) => {
+            if (e.touches.length > 1) e.preventDefault();
+        }, { passive: false });
+
+        // Check if already seen
+        if (localStorage.getItem('crisis_intro_seen') === 'true') {
+            window.location.href = 'distress-main.html';
+        }
+    </script>
+</body>
+</html>
