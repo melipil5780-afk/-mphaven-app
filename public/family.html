@@ -6,7 +6,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#0f172a">
-    <title>My Toolkit · MPHaven</title>
+    <title>Skill Family · MPHaven</title>
     <style>
         * {
             margin: 0;
@@ -94,83 +94,73 @@
         }
 
         .header {
-            margin-bottom: 2rem;
-        }
-        .header h1 {
-            font-size: 2rem;
-            font-weight: 800;
-            color: rgb(241, 245, 249);
-            margin-bottom: 0.5rem;
             display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-        .header p {
-            color: rgb(148, 163, 184);
-            font-size: 1rem;
-            line-height: 1.5;
-        }
-
-        .empty-state {
-            background: linear-gradient(135deg, rgba(30, 41, 59, 0.65), rgba(15, 23, 42, 0.45));
-            border: 1px solid rgba(51, 65, 85, 0.4);
-            border-radius: 1.5rem;
-            padding: 3rem 1.5rem;
-            text-align: center;
-            margin: 2rem 0;
-        }
-        .empty-emoji {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-        }
-        .empty-title {
-            color: rgb(241, 245, 249);
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-        .empty-text {
-            color: rgb(148, 163, 184);
-            font-size: 0.875rem;
+            align-items: flex-start;
+            gap: 1rem;
             margin-bottom: 1.5rem;
-        }
-
-        .family-section {
-            margin-bottom: 2rem;
-        }
-        .family-header {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
+            padding-bottom: 1rem;
             border-bottom: 1px solid rgba(51, 65, 85, 0.4);
         }
-        .family-icon {
-            font-size: 1.5rem;
-        }
-        .family-title {
-            font-size: 1.125rem;
-            font-weight: 700;
-        }
-        .family-count {
-            color: rgb(148, 163, 184);
-            font-size: 0.875rem;
-            font-weight: 600;
-            margin-left: auto;
-        }
-
-        .toolkit-card {
-            background: linear-gradient(135deg, rgba(30, 41, 59, 0.65), rgba(15, 23, 42, 0.45));
-            border: 1px solid rgba(51, 65, 85, 0.4);
-            border-radius: 1rem;
-            padding: 1.25rem;
-            margin-bottom: 0.75rem;
+        .family-icon-large {
+            width: 5rem;
+            height: 5rem;
+            border-radius: 1.5rem;
             display: flex;
             align-items: center;
-            gap: 1rem;
+            justify-content: center;
+            font-size: 2.5rem;
+            flex-shrink: 0;
+        }
+        .header-text {
+            flex: 1;
+        }
+        .family-name {
+            font-size: 1.75rem;
+            font-weight: 800;
+            margin-bottom: 0.25rem;
+        }
+        .family-description {
+            color: rgb(148, 163, 184);
+            font-size: 0.9375rem;
+            line-height: 1.4;
         }
 
+        .progress-box {
+            background: linear-gradient(135deg, rgba(14,116,144,0.15), rgba(217,119,6,0.10));
+            border: 1px solid rgba(14, 116, 144, 0.3);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .progress-text {
+            color: rgb(165, 243, 252);
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .skill-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.65), rgba(15, 23, 42, 0.45));
+            border: 1px solid rgba(51, 65, 85, 0.4);
+            border-radius: 1.25rem;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.2s ease;
+        }
+        .skill-card.in-toolkit {
+            border: 1px solid rgba(139, 92, 246, 0.4);
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.12), rgba(139, 92, 246, 0.05));
+        }
+        .skill-card.recommended {
+            border: 2px solid rgba(14, 116, 144, 0.5);
+        }
+
+        .skill-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
         .skill-icon {
             width: 3rem;
             height: 3rem;
@@ -181,114 +171,97 @@
             font-size: 1.5rem;
             flex-shrink: 0;
         }
-
-        .skill-info {
+        .skill-title {
             flex: 1;
         }
         .skill-name {
             color: rgb(241, 245, 249);
-            font-size: 1.125rem;
+            font-size: 1.25rem;
             font-weight: 700;
             margin-bottom: 0.25rem;
         }
-        .skill-quick {
+        .skill-tagline {
             color: rgb(165, 243, 252);
             font-size: 0.8125rem;
         }
-        .skill-practiced {
+
+        .skill-description {
             color: rgb(148, 163, 184);
-            font-size: 0.75rem;
-            margin-top: 0.25rem;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
         }
 
-        .btn-use {
+        .skill-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.5rem;
+        }
+        .duration {
+            color: rgb(100, 116, 139);
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        .badge-toolkit {
             padding: 0.5rem 1rem;
-            background: linear-gradient(135deg, #0e7490, #d97706);
-            border: none;
-            border-radius: 0.75rem;
-            color: white;
-            font-size: 0.8125rem;
-            font-weight: 600;
-            cursor: pointer;
+            background: rgba(139, 92, 246, 0.2);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 9999px;
+            color: rgb(196, 181, 253);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
             white-space: nowrap;
         }
-        .btn-use:active {
-            transform: scale(0.95);
-        }
-
-        .btn-review {
-            padding: 0.5rem 1rem;
+        .btn-learn {
+            padding: 0.5rem 1.25rem;
             background: rgba(14, 116, 144, 0.2);
             border: 1px solid rgba(14, 116, 144, 0.3);
-            border-radius: 0.75rem;
+            border-radius: 9999px;
             color: rgb(165, 243, 252);
-            font-size: 0.8125rem;
-            font-weight: 600;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
             cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            font-family: inherit;
             white-space: nowrap;
         }
-        .btn-review:active {
+        .btn-learn:active {
             transform: scale(0.95);
-            background: rgba(14, 116, 144, 0.3);
+            background: rgba(14, 116, 144, 0.4);
+        }
+        .button-group {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
         }
 
-        .btn-remove {
-            width: 2rem;
-            height: 2rem;
-            border-radius: 0.5rem;
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            color: rgb(252, 165, 165);
-            font-size: 1.25rem;
-            font-weight: 600;
+        .back-button {
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-            flex-shrink: 0;
-        }
-        .btn-remove:active {
-            transform: scale(0.95);
-            background: rgba(239, 68, 68, 0.2);
-        }
-
-        .btn-primary {
-            width: 100%;
-            padding: 1rem;
-            background: linear-gradient(135deg, #0e7490, #d97706);
-            border: none;
-            border-radius: 0.75rem;
-            color: white;
-            font-weight: 700;
-            font-size: 1rem;
-            cursor: pointer;
-            margin-top: 1rem;
-        }
-        .btn-primary:active {
-            transform: scale(0.98);
-        }
-
-        .btn-secondary {
-            width: 100%;
+            gap: 0.5rem;
             padding: 1rem;
             background: rgba(30, 41, 59, 0.5);
             border: 1px solid rgba(51, 65, 85, 0.4);
             border-radius: 0.75rem;
             color: rgb(148, 163, 184);
+            font-size: 0.875rem;
             font-weight: 600;
-            font-size: 0.9375rem;
             cursor: pointer;
-            margin-top: 0.75rem;
+            width: 100%;
+            margin-top: 1rem;
+            transition: all 0.2s ease;
+            font-family: inherit;
         }
-        .btn-secondary:active {
+        .back-button:active {
             transform: scale(0.98);
             background: rgba(30, 41, 59, 0.7);
-        }
-
-        .button-group {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
         }
 
         .toast {
@@ -341,10 +314,196 @@
         // FAMILY META - 4 families
         // ============================================
         const FAMILY_META = {
-            refocus: { name: 'REFOCUS', icon: '🎯', color: '#0e7490' },
-            comfort: { name: 'COMFORT', icon: '🫂', color: '#7c3aed' },
-            weighit: { name: 'WEIGH IT', icon: '⚖️', color: '#d97706' },
-            pause: { name: 'PAUSE', icon: '🛑', color: '#0891b2' }
+            refocus: { 
+                name: 'REFOCUS', 
+                icon: '🎯', 
+                color: '#0e7490', 
+                description: 'Shift your attention' 
+            },
+            comfort: { 
+                name: 'COMFORT', 
+                icon: '🫂', 
+                color: '#7c3aed', 
+                description: 'Soothe your senses' 
+            },
+            weighit: { 
+                name: 'WEIGH IT', 
+                icon: '⚖️', 
+                color: '#d97706', 
+                description: 'Think before acting' 
+            },
+            pause: { 
+                name: 'PAUSE', 
+                icon: '🛑', 
+                color: '#0891b2', 
+                description: 'Stop and breathe' 
+            }
+        };
+
+        // ============================================
+        // ALL SKILLS - 19 skills, 4 families
+        // ============================================
+        const ALL_SKILLS = {
+            refocus: [
+                { 
+                    id: 'shortcircuit', 
+                    name: 'SHORT CIRCUIT', 
+                    icon: '⚡', 
+                    tagline: 'Break the thought loop in 20 seconds',
+                    description: 'When your thoughts are stuck in a loop, doing almost anything else can interrupt the pattern.',
+                    duration: '20 sec'
+                },
+                { 
+                    id: 'lendahand', 
+                    name: 'LEND A HAND', 
+                    icon: '🤝', 
+                    tagline: 'Do something for someone else',
+                    description: 'Shifting focus outward can shrink problems inward. Small acts create distance.',
+                    duration: '1-5 min'
+                },
+                { 
+                    id: 'lookback', 
+                    name: 'LOOK BACK', 
+                    icon: '📅', 
+                    tagline: 'Remember what you\'ve survived',
+                    description: 'Your brain forgets resilience. Actively recall past struggles you made it through.',
+                    duration: '1-2 min'
+                },
+                { 
+                    id: 'flipfeeling', 
+                    name: 'FLIP THE FEELING', 
+                    icon: '🎭', 
+                    tagline: 'Change your emotional channel',
+                    description: 'You can\'t always change the situation, but you can shift your emotional state.',
+                    duration: '2-5 min'
+                },
+                { 
+                    id: 'setitdown', 
+                    name: 'SET IT DOWN', 
+                    icon: '📦', 
+                    tagline: 'Leave the problem for now',
+                    description: 'You can come back to it later. Right now, give yourself permission to put it away.',
+                    duration: '1-2 min'
+                },
+                { 
+                    id: 'swapthought', 
+                    name: 'SWAP THE THOUGHT', 
+                    icon: '🔄', 
+                    tagline: 'Replace it with another',
+                    description: 'You don\'t have to believe every thought. Try swapping it for a different one.',
+                    duration: '1-2 min'
+                },
+                { 
+                    id: 'feelsomething', 
+                    name: 'FEEL SOMETHING', 
+                    icon: '❄️', 
+                    tagline: 'Wake up your senses when numb',
+                    description: 'When you feel numb or disconnected, strong sensations can bring you back to your body.',
+                    duration: '15-30 sec'
+                }
+            ],
+            comfort: [
+                { 
+                    id: 'safebase', 
+                    name: 'SAFE BASE', 
+                    icon: '🏝️', 
+                    tagline: 'Visit your inner sanctuary',
+                    description: 'Close your eyes and picture a place where you feel completely at ease.',
+                    duration: '2-3 min'
+                },
+                { 
+                    id: 'findlesson', 
+                    name: 'FIND THE LESSON', 
+                    icon: '📘', 
+                    tagline: 'Turn pain into growth',
+                    description: 'Hard moments can teach us something. Not because they should happen, but because we can grow.',
+                    duration: '2-3 min'
+                },
+                { 
+                    id: 'release', 
+                    name: 'RELEASE', 
+                    icon: '🕊️', 
+                    tagline: 'Let go of what you can\'t control',
+                    description: 'Some things are not yours to carry right now. Give yourself permission to put them down.',
+                    duration: '1-2 min'
+                },
+                { 
+                    id: 'soothe', 
+                    name: 'SOOTHE', 
+                    icon: '🧘', 
+                    tagline: 'Calm your nervous system',
+                    description: 'Your senses are a direct line to your nervous system. Feed them calm.',
+                    duration: '1-3 min'
+                },
+                { 
+                    id: 'onefocus', 
+                    name: 'ONE FOCUS', 
+                    icon: '🎯', 
+                    tagline: 'Shrink overwhelm to one thing',
+                    description: 'Your mind can only hold so much. For now, focus on one thing.',
+                    duration: '1-2 min'
+                },
+                { 
+                    id: 'timeout', 
+                    name: 'TIME OUT', 
+                    icon: '🚶', 
+                    tagline: 'Strategic pause, not escape',
+                    description: 'You don\'t have to leave forever. Just 5-15 minutes away can change everything.',
+                    duration: '5-15 min'
+                },
+                { 
+                    id: 'befriend', 
+                    name: 'BE A FRIEND', 
+                    icon: '💗', 
+                    tagline: 'Talk to yourself like someone you love',
+                    description: 'Would you say this to someone you love? If not, change the words.',
+                    duration: '1-2 min'
+                }
+            ],
+            weighit: [
+                { 
+                    id: 'clarityscale', 
+                    name: 'CLARITY SCALE', 
+                    icon: '⚖️', 
+                    tagline: 'Compare options honestly',
+                    description: 'When urges are strong, writing down the pros and cons can slow you down enough to choose wisely.',
+                    duration: '2-3 min'
+                }
+            ],
+            pause: [
+                { 
+                    id: 'hold', 
+                    name: 'HOLD', 
+                    icon: '❄️', 
+                    tagline: 'Freeze before you react',
+                    description: 'The moment between urge and action is where your power lives. Just freeze for 5-10 seconds.',
+                    duration: '10 sec'
+                },
+                { 
+                    id: 'distance', 
+                    name: 'DISTANCE', 
+                    icon: '👣', 
+                    tagline: 'Create space before deciding',
+                    description: 'Take a breath. Step away from the situation. Even one step changes your perspective.',
+                    duration: '30-60 sec'
+                },
+                { 
+                    id: 'observe', 
+                    name: 'OBSERVE', 
+                    icon: '👓', 
+                    tagline: 'Watch thoughts without grabbing them',
+                    description: 'You are not your thoughts. You are the one noticing them. Just observe without judgment.',
+                    duration: '1-2 min'
+                },
+                { 
+                    id: 'wisemove', 
+                    name: 'WISE MOVE', 
+                    icon: '🎯', 
+                    tagline: 'Act with intention, not reaction',
+                    description: 'Now that you\'ve paused, what\'s the wise next step? Not perfect — just wise.',
+                    duration: '1 min'
+                }
+            ]
         };
 
         // ============================================
@@ -358,13 +517,16 @@
             }
         }
 
-        function saveToolkit(toolkit) {
-            localStorage.setItem('mphaven_toolkit', JSON.stringify(toolkit));
+        function isInToolkit(skillId) {
+            const toolkit = getToolkit();
+            return toolkit[skillId] !== undefined;
         }
 
-        // ============================================
-        // UI FUNCTIONS
-        // ============================================
+        function getToolkitCountForFamily(familyId) {
+            const toolkit = getToolkit();
+            return Object.values(toolkit).filter(skill => skill.familyId === familyId).length;
+        }
+
         function showToast(message) {
             const toast = document.getElementById('toast');
             toast.textContent = message;
@@ -372,133 +534,92 @@
             setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
-        function useSkill(skillId) {
-            window.location.href = `quick-use.html?skill=${skillId}`;
-        }
+        // ============================================
+        // SKILL ACTIONS - GLOBAL
+        // ============================================
+        window.startSkill = function(skillId) {
+            console.log('Starting skill:', skillId);
+            window.location.href = `skill-engine.html?skill=${encodeURIComponent(skillId)}`;
+        };
 
-        function reviewSkill(skillId) {
-            window.location.href = `skill-engine.html?skill=${skillId}`;
-        }
-
-        function removeSkill(skillId) {
-            const toolkit = getToolkit();
-            delete toolkit[skillId];
-            saveToolkit(toolkit);
-            showToast('Removed from toolkit');
-            render();
-        }
-
-        window.useSkill = useSkill;
-        window.reviewSkill = reviewSkill;
-        window.removeSkill = removeSkill;
+        window.showToast = showToast;
 
         // ============================================
         // RENDER
         // ============================================
         function render() {
-            const toolkit = getToolkit();
-            const skills = Object.values(toolkit);
+            const urlParams = new URLSearchParams(window.location.search);
+            const familyId = urlParams.get('id');
             
-            const content = document.getElementById('mainContent');
-            
-            if (skills.length === 0) {
-                content.innerHTML = `
-                    <div class="content-wrapper">
-                        <div class="header">
-                            <h1>🧰 My Toolkit</h1>
-                            <p>Your go-to skills when you need them most</p>
-                        </div>
-                        
-                        <div class="empty-state">
-                            <div class="empty-emoji">🧰</div>
-                            <div class="empty-title">Your toolkit is empty</div>
-                            <div class="empty-text">Learn skills and add them to your toolkit for quick access</div>
-                            <button class="btn-primary" onclick="location.href='academy.html'">
-                                + Learn Skills
-                            </button>
-                        </div>
-                        
-                        <button class="btn-secondary" onclick="location.href='distress-main.html'">
-                            ← Back to Crisis Resilience
-                        </button>
-                    </div>
-                `;
+            if (!familyId || !FAMILY_META[familyId]) {
+                window.location.href = 'academy.html';
                 return;
             }
 
-            const grouped = {};
-            skills.forEach(skill => {
-                const familyId = skill.familyId || 'refocus';
-                if (!grouped[familyId]) {
-                    grouped[familyId] = [];
-                }
-                grouped[familyId].push(skill);
-            });
-
+            const family = FAMILY_META[familyId];
+            const skills = ALL_SKILLS[familyId] || [];
+            const toolkitCount = getToolkitCountForFamily(familyId);
+            
             let html = `
                 <div class="content-wrapper">
                     <div class="header">
-                        <h1>🧰 My Toolkit</h1>
-                        <p>${skills.length} ${skills.length === 1 ? 'skill' : 'skills'} ready to use</p>
+                        <div class="family-icon-large" style="background: ${family.color}20; color: ${family.color}">
+                            ${family.icon}
+                        </div>
+                        <div class="header-text">
+                            <div class="family-name" style="color: ${family.color}">${family.name}</div>
+                            <div class="family-description">${family.description}</div>
+                        </div>
+                    </div>
+
+                    <div class="progress-box">
+                        <span class="progress-text">
+                            🧰 ${toolkitCount} of ${skills.length} skills in your toolkit
+                        </span>
                     </div>
             `;
 
-            Object.entries(grouped).forEach(([familyId, familySkills]) => {
-                const family = FAMILY_META[familyId] || { 
-                    name: familyId.toUpperCase(), 
-                    icon: '📚', 
-                    color: '#0e7490' 
-                };
+            skills.forEach((skill, index) => {
+                const inToolkit = isInToolkit(skill.id);
+                const isFirst = index === 0 && toolkitCount === 0;
                 
                 html += `
-                    <div class="family-section">
-                        <div class="family-header">
-                            <span class="family-icon" style="color: ${family.color}">${family.icon}</span>
-                            <span class="family-title" style="color: ${family.color}">${family.name}</span>
-                            <span class="family-count">${familySkills.length}</span>
-                        </div>
-                `;
-
-                familySkills.forEach(skill => {
-                    const times = skill.timesPracticed || 0;
-                    
-                    html += `
-                        <div class="toolkit-card">
+                    <div class="skill-card ${inToolkit ? 'in-toolkit' : ''} ${isFirst ? 'recommended' : ''}">
+                        <div class="skill-header">
                             <div class="skill-icon" style="background: ${family.color}20; color: ${family.color}">
-                                ${skill.icon || '🛠️'}
+                                ${skill.icon}
                             </div>
-                            <div class="skill-info">
+                            <div class="skill-title">
                                 <div class="skill-name">${skill.name}</div>
-                                <div class="skill-quick">${skill.quick || 'Ready when you are'}</div>
-                                ${times > 0 ? `
-                                    <div class="skill-practiced">
-                                        Practiced ${times} time${times !== 1 ? 's' : ''}
-                                    </div>
-                                ` : ''}
-                            </div>
-                            <div class="button-group">
-                                <button class="btn-use" onclick="useSkill('${skill.id}')">Use</button>
-                                <button class="btn-review" onclick="reviewSkill('${skill.id}')">📘 Review</button>
-                                <button class="btn-remove" onclick="removeSkill('${skill.id}')">×</button>
+                                <div class="skill-tagline">${skill.tagline}</div>
                             </div>
                         </div>
-                    `;
-                });
-
-                html += `</div>`;
+                        
+                        <div class="skill-description">
+                            ${skill.description}
+                        </div>
+                        
+                        <div class="skill-footer">
+                            <span class="duration">⏱️ ${skill.duration}</span>
+                            <div class="button-group">
+                                ${inToolkit ? '<span class="badge-toolkit">✓ IN TOOLKIT</span>' : ''}
+                                <button class="btn-learn" onclick="startSkill('${skill.id}')">
+                                    ${inToolkit ? 'REVIEW →' : 'LEARN →'}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
             });
 
             html += `
-                    <button class="btn-secondary" onclick="location.href='academy.html'">
-                        + Learn More Skills
-                    </button>
-                    <button class="btn-secondary" onclick="location.href='distress-main.html'">
-                        ← Back to Crisis Resilience
+                    <button class="back-button" onclick="window.location.href='academy.html'">
+                        ← Back to Survival Toolkit
                     </button>
                 </div>
             `;
 
-            content.innerHTML = html;
+            document.getElementById('mainContent').innerHTML = html;
             
             setTimeout(() => {
                 const mainContent = document.querySelector('.main-content');
@@ -506,6 +627,9 @@
             }, 50);
         }
 
+        // ============================================
+        // INIT
+        // ============================================
         function init() {
             document.addEventListener('touchstart', (e) => {
                 if (e.touches.length > 1) e.preventDefault();
