@@ -1,0 +1,1494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#0f172a">
+    <title>Skill Engine · MPHaven</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            position: fixed;
+            background: #0f172a;
+            color: rgb(241, 245, 249);
+        }
+
+        .container {
+            width: 100%;
+            height: 100vh;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .app-wrapper {
+            width: 100%;
+            max-width: 28rem;
+            height: 100%;
+            margin: 0 auto;
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            border-left: 1px solid rgba(30, 41, 59, 0.5);
+            border-right: 1px solid rgba(30, 41, 59, 0.5);
+        }
+
+        .bg-blur-1, .bg-blur-2 {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(140px);
+            -webkit-filter: blur(140px);
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.6;
+        }
+        .bg-blur-1 {
+            top: -10%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 22rem;
+            height: 22rem;
+            background: rgba(14, 116, 144, 0.08);
+        }
+        .bg-blur-2 {
+            bottom: -10%;
+            right: -10%;
+            width: 18rem;
+            height: 18rem;
+            background: rgba(217, 119, 6, 0.08);
+        }
+
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+            z-index: 1;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+        .main-content::-webkit-scrollbar {
+            display: none;
+        }
+
+        .content-wrapper {
+            padding: max(1.5rem, env(safe-area-inset-top)) 1.25rem max(2rem, env(safe-area-inset-bottom));
+            min-height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            margin-bottom: 2rem;
+        }
+        .progress-steps {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .progress-dot {
+            flex: 1;
+            height: 4px;
+            background: rgba(51, 65, 85, 0.4);
+            border-radius: 2px;
+        }
+        .progress-dot.active {
+            background: linear-gradient(135deg, #0e7490, #d97706);
+        }
+        .progress-text {
+            color: rgb(148, 163, 184);
+            font-size: 0.8125rem;
+            font-weight: 600;
+        }
+
+        /* Header */
+        .skill-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .skill-icon-large {
+            width: 5rem;
+            height: 5rem;
+            border-radius: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            flex-shrink: 0;
+        }
+        .skill-info {
+            flex: 1;
+        }
+        .family-badge {
+            display: inline-block;
+            padding: 0.375rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.6875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+        .skill-name {
+            font-size: 2rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 0.25rem;
+        }
+        .skill-tagline {
+            color: rgb(165, 243, 252);
+            font-size: 0.9375rem;
+        }
+
+        /* Cards */
+        .card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.65), rgba(15, 23, 42, 0.45));
+            border: 1px solid rgba(51, 65, 85, 0.4);
+            border-radius: 1.25rem;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: rgb(241, 245, 249);
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        .card-text {
+            color: rgb(203, 213, 225);
+            font-size: 0.9375rem;
+            line-height: 1.6;
+        }
+
+        /* Visual Screen */
+        .visual-container {
+            text-align: center;
+            padding: 2rem 0;
+        }
+        .visual-emoji {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+        }
+        .visual-quote {
+            background: rgba(14, 116, 144, 0.15);
+            border: 1px solid rgba(14, 116, 144, 0.3);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        .visual-quote p {
+            color: rgb(165, 243, 252);
+            font-size: 1.125rem;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+
+        /* Steps */
+        .steps-list {
+            list-style: none;
+        }
+        .steps-list li {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            color: rgb(203, 213, 225);
+            font-size: 0.9375rem;
+            line-height: 1.5;
+        }
+        .step-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 1.75rem;
+            height: 1.75rem;
+            background: rgba(14, 116, 144, 0.2);
+            color: rgb(165, 243, 252);
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        /* Stress Slider */
+        .stress-section {
+            margin-bottom: 2rem;
+        }
+        .stress-label {
+            display: flex;
+            justify-content: space-between;
+            color: rgb(148, 163, 184);
+            font-size: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+        input[type=range] {
+            width: 100%;
+            height: 6px;
+            -webkit-appearance: none;
+            background: rgba(51, 65, 85, 0.4);
+            border-radius: 3px;
+            outline: none;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 1.5rem;
+            height: 1.5rem;
+            background: linear-gradient(135deg, #0e7490, #d97706);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(14, 116, 144, 0.3);
+        }
+        .stress-value {
+            text-align: center;
+            color: rgb(165, 243, 252);
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-top: 0.5rem;
+        }
+
+        /* Timer */
+        .timer-container {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(51, 65, 85, 0.4);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            text-align: center;
+            margin: 1.5rem 0;
+        }
+        .timer-prompt {
+            color: rgb(203, 213, 225);
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+        }
+        .timer-instruction {
+            color: rgb(165, 243, 252);
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+        .timer-display {
+            font-size: 4rem;
+            font-weight: 800;
+            color: rgb(165, 243, 252);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Rating Buttons */
+        .rating-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        .rating-btn {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(51, 65, 85, 0.4);
+            border-radius: 1rem;
+            padding: 1.25rem 0.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .rating-btn:active {
+            transform: scale(0.95);
+            background: rgba(30, 41, 59, 0.8);
+            border-color: rgba(14, 116, 144, 0.5);
+        }
+        .rating-emoji {
+            font-size: 2rem;
+        }
+        .rating-label {
+            color: rgb(203, 213, 225);
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* Completion Screen */
+        .completion-container {
+            text-align: center;
+            padding: 2rem 0;
+        }
+        .checkmark {
+            font-size: 5rem;
+            color: rgb(74, 222, 128);
+            margin-bottom: 1rem;
+        }
+        .completion-title {
+            font-size: 1.75rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+        .completion-sub {
+            color: rgb(148, 163, 184);
+            font-size: 1rem;
+            margin-bottom: 2rem;
+        }
+        .stress-drop {
+            background: rgba(34, 197, 94, 0.12);
+            border: 1px solid rgba(74, 222, 128, 0.3);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .stress-drop-text {
+            color: rgb(74, 222, 128);
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .works-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: rgba(14, 116, 144, 0.15);
+            border: 1px solid rgba(14, 116, 144, 0.3);
+            border-radius: 9999px;
+            color: rgb(165, 243, 252);
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        /* Buttons */
+        .btn-primary {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #0e7490, #d97706);
+            border: none;
+            border-radius: 0.75rem;
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-bottom: 0.75rem;
+            transition: all 0.2s ease;
+        }
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+        .btn-secondary {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(51, 65, 85, 0.4);
+            border-radius: 0.75rem;
+            color: rgb(148, 163, 184);
+            font-weight: 600;
+            font-size: 0.9375rem;
+            cursor: pointer;
+            margin-bottom: 0.75rem;
+            transition: all 0.2s ease;
+        }
+        .btn-secondary:active {
+            transform: scale(0.98);
+            background: rgba(30, 41, 59, 0.7);
+        }
+        .btn-text {
+            width: 100%;
+            padding: 1rem;
+            background: none;
+            border: none;
+            color: rgb(148, 163, 184);
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: max(6rem, env(safe-area-inset-bottom) + 4rem);
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: rgba(30, 41, 59, 0.95);
+            border: 1px solid rgba(14, 116, 144, 0.3);
+            border-radius: 0.75rem;
+            padding: 0.875rem 1.25rem;
+            color: white;
+            font-weight: 600;
+            z-index: 10000;
+            opacity: 0;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            max-width: calc(100vw - 2rem);
+            text-align: center;
+            font-size: 0.875rem;
+        }
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        @media (min-width: 640px) {
+            .app-wrapper {
+                border-radius: 2rem;
+                margin: 1rem 0;
+                height: calc(100dvh - 2rem);
+                max-height: 844px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="app-wrapper">
+            <div class="bg-blur-1"></div>
+            <div class="bg-blur-2"></div>
+            <div id="mainContent" class="main-content"></div>
+        </div>
+    </div>
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // ============================================
+        // ALL SKILLS DATA - 27 Skills Complete
+        // ============================================
+        const ALL_SKILLS = {
+            shift: [
+                { 
+                    id: 'give', 
+                    name: 'GIVE', 
+                    icon: '🤝', 
+                    familyId: 'shift',
+                    familyName: 'SHIFT',
+                    familyColor: '#0e7490',
+                    tagline: 'Do something for someone else',
+                    what: 'When you\'re stuck ruminating on yourself, doing something for another person shifts your focus outward. Small acts interrupt the spiral.',
+                    when: 'You\'re overthinking, feeling useless, or trapped in negative thoughts about yourself.',
+                    why: 'When you\'re stuck ruminating, your attention is entirely focused inward. Doing something for another person creates an external focal point that interrupts the self-focused loop. Your nervous system can\'t think its way calm. It needs a physical signal.',
+                    visual: '🤝 💬 ✨',
+                    steps: [
+                        'Pick one person you care about',
+                        'Do something small for them',
+                        'Send a message, give a compliment, or offer help'
+                    ],
+                    practicePrompt: 'Who could you do something for right now?',
+                    practiceInstruction: 'Text someone a genuine compliment',
+                    duration: 45,
+                    quick: 'Text someone a genuine compliment right now'
+                },
+                { 
+                    id: 'recall', 
+                    name: 'RECALL', 
+                    icon: '📊', 
+                    familyId: 'shift',
+                    familyName: 'SHIFT',
+                    familyColor: '#0e7490',
+                    tagline: 'Remember you\'ve survived worse',
+                    what: 'Your brain forgets past resilience. Actively recall specific times you got through something hard.',
+                    when: 'You feel hopeless, like you\'ve never coped and never will.',
+                    why: 'Memory is state-dependent. When you\'re distressed, you can\'t access memories of coping. Actively recalling specific past successes builds evidence that you can survive this too.',
+                    visual: '📊 🧠 💪',
+                    steps: [
+                        'Think of a past difficult situation',
+                        'Remember exactly how you got through it',
+                        'Name what strength you used'
+                    ],
+                    practicePrompt: 'Think of one time you survived something hard',
+                    practiceInstruction: 'What got you through it?',
+                    duration: 60,
+                    quick: 'Name one past challenge you survived'
+                },
+                { 
+                    id: 'reverse', 
+                    name: 'REVERSE', 
+                    icon: '🔄', 
+                    familyId: 'shift',
+                    familyName: 'SHIFT',
+                    familyColor: '#0e7490',
+                    tagline: 'Do the opposite of your urge',
+                    what: 'If your urge is to withdraw, reach out. If it\'s to lash out, step back. Break the pattern.',
+                    when: 'You feel stuck in a repeating cycle of harmful urges or avoidance.',
+                    why: 'Opposite action breaks the feedback loop between emotion and behavior. By acting opposite to the urge, you weaken the emotional habit over time.',
+                    visual: '🔄 🚶 → 🫂',
+                    steps: [
+                        'Notice the urge',
+                        'Identify what the opposite would be',
+                        'Do the opposite, even just a little'
+                    ],
+                    practicePrompt: 'What is your urge right now?',
+                    practiceInstruction: 'Do the opposite, even for 30 seconds',
+                    duration: 30,
+                    quick: 'Do the opposite of what your urge tells you'
+                },
+                { 
+                    id: 'box', 
+                    name: 'BOX', 
+                    icon: '📦', 
+                    familyId: 'shift',
+                    familyName: 'SHIFT',
+                    familyColor: '#0e7490',
+                    tagline: 'Put the problem away for later',
+                    what: 'Visualize placing the worry in a container and setting it on a shelf. You can come back to it.',
+                    when: 'You\'re ruminating on a problem you can\'t solve right now.',
+                    why: 'The act of containment signals to your brain that the problem is stored, not lost. This reduces the urgency to keep thinking about it.',
+                    visual: '📦 🗄️ 🧠',
+                    steps: [
+                        'Imagine a container - a box, drawer, or locker',
+                        'Place the worry inside it',
+                        'Set it on a shelf or close the lid'
+                    ],
+                    practicePrompt: 'What do you need to put away right now?',
+                    practiceInstruction: 'Visualize placing it in a box on a high shelf',
+                    duration: 40,
+                    quick: 'Imagine putting it in a box on a high shelf'
+                },
+                { 
+                    id: 'count', 
+                    name: 'COUNT', 
+                    icon: '🔢', 
+                    familyId: 'shift',
+                    familyName: 'SHIFT',
+                    familyColor: '#0e7490',
+                    tagline: 'Count objects around you',
+                    what: 'Ground yourself by counting things you can see, hear, or touch. Simple numbers anchor you.',
+                    when: 'You feel spaced out, disconnected, or overwhelmed by thoughts.',
+                    why: 'Counting engages the prefrontal cortex and pulls attention away from the emotional centers of the brain. It\'s a simple cognitive task that grounds you in the present.',
+                    visual: '👁️ 🔢 🧮',
+                    steps: [
+                        'Look around your environment',
+                        'Pick a category (colors, shapes, objects)',
+                        'Count 5-10 things in that category'
+                    ],
+                    practicePrompt: 'What can you see around you?',
+                    practiceInstruction: 'Count 10 things you can see right now',
+                    duration: 30,
+                    quick: 'Count 10 things you can see right now'
+                },
+                { 
+                    id: 'jolt', 
+                    name: 'JOLT', 
+                    icon: '⚡', 
+                    familyId: 'shift',
+                    familyName: 'SHIFT',
+                    familyColor: '#0e7490',
+                    tagline: 'Intense sensation to reset',
+                    what: 'A sudden physical sensation can interrupt an emotional spiral. Use cold, sour, or movement.',
+                    when: 'You feel dissociated, panicked, or stuck in intense emotion.',
+                    why: 'Intense physical sensations activate the somatosensory cortex and interrupt the emotional cascade. It\'s like hitting a reset button.',
+                    visual: '💧 🧊 ⚡',
+                    steps: [
+                        'Choose a strong sensation - cold, sour, or intense',
+                        'Apply it briefly',
+                        'Notice the shift in your body'
+                    ],
+                    practicePrompt: 'What intense sensation can you use?',
+                    practiceInstruction: 'Splash cold water on your face',
+                    duration: 15,
+                    quick: 'Splash cold water on your face'
+                }
+            ],
+            soothe: [
+                { 
+                    id: 'vision', 
+                    name: 'VISION', 
+                    icon: '👁️', 
+                    familyId: 'soothe',
+                    familyName: 'SOOTHE',
+                    familyColor: '#7c3aed',
+                    tagline: 'Soothing things to look at',
+                    what: 'Your visual system connects directly to your nervous system. Feed it calm.',
+                    when: 'You feel agitated, overstimulated, or need a visual break.',
+                    why: 'The visual system is directly linked to the autonomic nervous system. Seeing calming images can lower heart rate and reduce stress hormones.',
+                    visual: '☁️ 🌳 🖼️',
+                    steps: [
+                        'Find something soothing to look at',
+                        'Spend 1-2 minutes really looking',
+                        'Notice colors, patterns, movement'
+                    ],
+                    practicePrompt: 'What soothes your eyes?',
+                    practiceInstruction: 'Look at something beautiful or calming',
+                    duration: 60,
+                    quick: 'Look at something beautiful or calming'
+                },
+                { 
+                    id: 'hearing', 
+                    name: 'HEARING', 
+                    icon: '👂', 
+                    familyId: 'soothe',
+                    familyName: 'SOOTHE',
+                    familyColor: '#7c3aed',
+                    tagline: 'Soothing sounds',
+                    what: 'Certain frequencies calm the autonomic nervous system. Find your comfort sound.',
+                    when: 'You feel on edge, overwhelmed by noise, or need to shift your mood.',
+                    why: 'Rhythmic, predictable sounds signal safety to the brain. Slow tempos can entrain heart rate and breathing.',
+                    visual: '🌧️ 🎵 🐦',
+                    steps: [
+                        'Find a sound that calms you',
+                        'Close your eyes and listen',
+                        'Let the sound fill your attention'
+                    ],
+                    practicePrompt: 'What sound calms you?',
+                    practiceInstruction: 'Listen to rain, waves, or quiet music',
+                    duration: 60,
+                    quick: 'Listen to rain, waves, or quiet music'
+                },
+                { 
+                    id: 'smell', 
+                    name: 'SMELL', 
+                    icon: '👃', 
+                    familyId: 'soothe',
+                    familyName: 'SOOTHE',
+                    familyColor: '#7c3aed',
+                    tagline: 'Calming scents',
+                    what: 'Olfactory nerves connect directly to the emotion centers of your brain.',
+                    when: 'You feel anxious, unfocused, or need quick grounding.',
+                    why: 'Smell is the only sense that bypasses the thalamus and goes straight to the amygdala and hippocampus. It\'s a direct line to emotion and memory.',
+                    visual: '🌸 🍊 ☕',
+                    steps: [
+                        'Find a scent you find pleasant',
+                        'Bring it close',
+                        'Take slow, mindful sniffs'
+                    ],
+                    practicePrompt: 'What scent is available to you?',
+                    practiceInstruction: 'Smell lavender, citrus, or a comforting scent',
+                    duration: 30,
+                    quick: 'Smell lavender, citrus, or a comforting scent'
+                },
+                { 
+                    id: 'taste', 
+                    name: 'TASTE', 
+                    icon: '👅', 
+                    familyId: 'soothe',
+                    familyName: 'SOOTHE',
+                    familyColor: '#7c3aed',
+                    tagline: 'Soothing flavors',
+                    what: 'Mindful tasting can ground you in the present moment.',
+                    when: 'You feel disconnected, numb, or want to practice mindfulness.',
+                    why: 'Intense focus on taste sensation pulls attention away from rumination and into the present moment.',
+                    visual: '🍫 🍵 🍓',
+                    steps: [
+                        'Choose something to taste',
+                        'Take a small amount',
+                        'Focus completely on the flavor'
+                    ],
+                    practicePrompt: 'What can you taste right now?',
+                    practiceInstruction: 'Savor a small piece of chocolate or tea',
+                    duration: 45,
+                    quick: 'Savor a small piece of chocolate or tea'
+                },
+                { 
+                    id: 'touch', 
+                    name: 'TOUCH', 
+                    icon: '🖐️', 
+                    familyId: 'soothe',
+                    familyName: 'SOOTHE',
+                    familyColor: '#7c3aed',
+                    tagline: 'Comfort through texture',
+                    what: 'Physical sensation can signal safety to your nervous system.',
+                    when: 'You feel disconnected from your body or need comfort.',
+                    why: 'Gentle, pleasant touch releases oxytocin and reduces cortisol. It\'s a biological signal of safety.',
+                    visual: '🧸 🛏️ 🐈',
+                    steps: [
+                        'Find something with a comforting texture',
+                        'Focus on how it feels',
+                        'Move your fingers slowly over it'
+                    ],
+                    practicePrompt: 'What comforting texture can you find?',
+                    practiceInstruction: 'Hold something soft, warm, or textured',
+                    duration: 30,
+                    quick: 'Hold something soft, warm, or textured'
+                },
+                { 
+                    id: 'movement', 
+                    name: 'MOVEMENT', 
+                    icon: '🧘', 
+                    familyId: 'soothe',
+                    familyName: 'SOOTHE',
+                    familyColor: '#7c3aed',
+                    tagline: 'Soothing movement',
+                    what: 'Gentle, rhythmic movement regulates the nervous system.',
+                    when: 'You feel restless, agitated, or stuck in your body.',
+                    why: 'Slow, predictable movement activates the parasympathetic nervous system. It\'s a signal to the body that it\'s safe to rest.',
+                    visual: '🧘 🤲 🚶',
+                    steps: [
+                        'Start with gentle movement',
+                        'Rock, sway, or stretch slowly',
+                        'Repeat the movement rhythmically'
+                    ],
+                    practicePrompt: 'What gentle movement feels good?',
+                    practiceInstruction: 'Rock gently, stretch, or sway',
+                    duration: 60,
+                    quick: 'Rock gently, stretch, or sway'
+                }
+            ],
+            flip: [
+                { 
+                    id: 'prove', 
+                    name: 'PROVE', 
+                    icon: '🔍', 
+                    familyId: 'flip',
+                    familyName: 'FLIP',
+                    familyColor: '#d97706',
+                    tagline: 'Find evidence against the thought',
+                    what: 'Your thoughts aren\'t facts. Look for evidence that contradicts the negative belief.',
+                    when: 'You\'re stuck in a thought that feels true but might not be.',
+                    why: 'Cognitive therapy works by examining evidence. When you actively look for disconfirming evidence, you weaken the grip of automatic negative thoughts.',
+                    visual: '🔍 📄 ❌',
+                    steps: [
+                        'Write down the negative thought',
+                        'Ask: What contradicts this?',
+                        'List at least one piece of counter-evidence'
+                    ],
+                    practicePrompt: 'What\'s the thought you\'re stuck on?',
+                    practiceInstruction: 'Find one fact that disproves this thought',
+                    duration: 60,
+                    quick: 'What\'s one fact that disproves this thought?'
+                },
+                { 
+                    id: 'reframe', 
+                    name: 'REFRAME', 
+                    icon: '🖼️', 
+                    familyId: 'flip',
+                    familyName: 'FLIP',
+                    familyColor: '#d97706',
+                    tagline: 'Look at it differently',
+                    what: 'Change the meaning of the situation. What\'s another interpretation?',
+                    when: 'You\'re seeing a situation through only one, negative lens.',
+                    why: 'The meaning we assign to events drives our emotions, not the events themselves. Changing the frame changes the feeling.',
+                    visual: '🖼️ 🔄 🎭',
+                    steps: [
+                        'Name your current interpretation',
+                        'Brainstorm 2-3 other interpretations',
+                        'Choose one that feels possible'
+                    ],
+                    practicePrompt: 'How are you seeing this?',
+                    practiceInstruction: 'How would a friend see this?',
+                    duration: 45,
+                    quick: 'How would a friend see this?'
+                },
+                { 
+                    id: 'compassion', 
+                    name: 'COMPASSION', 
+                    icon: '💗', 
+                    familyId: 'flip',
+                    familyName: 'FLIP',
+                    familyColor: '#d97706',
+                    tagline: 'Talk to yourself like a friend',
+                    what: 'Would you say this to someone you love? If not, change the words.',
+                    when: 'You\'re being harsh, critical, or unforgiving with yourself.',
+                    why: 'Self-compassion activates the care-giving system and reduces threat responses. It\'s a skill that can be learned and strengthened.',
+                    visual: '💗 💬 🤗',
+                    steps: [
+                        'Notice your self-talk',
+                        'Imagine a friend in your situation',
+                        'Speak to yourself as you would to them'
+                    ],
+                    practicePrompt: 'What do you need to hear right now?',
+                    practiceInstruction: 'What would you tell a friend in this situation?',
+                    duration: 50,
+                    quick: 'What would you tell a friend in this situation?'
+                },
+                { 
+                    id: 'observer', 
+                    name: 'OBSERVER', 
+                    icon: '👓', 
+                    familyId: 'flip',
+                    familyName: 'FLIP',
+                    familyColor: '#d97706',
+                    tagline: 'Watch thoughts like clouds',
+                    what: 'You are not your thoughts. Watch them pass by without engaging.',
+                    when: 'You\'re caught up in thoughts, believing everything they say.',
+                    why: 'Defusion techniques create distance between you and your thoughts. You can\'t stop thoughts, but you can change your relationship to them.',
+                    visual: '☁️ 👓 🍃',
+                    steps: [
+                        'Notice the thought',
+                        'Label it: "I notice I\'m having the thought that..."',
+                        'Let it float away'
+                    ],
+                    practicePrompt: 'What thought is here right now?',
+                    practiceInstruction: 'Notice it, label it, let it go',
+                    duration: 40,
+                    quick: 'Notice the thought, label it, let it go'
+                },
+                { 
+                    id: 'timeline', 
+                    name: 'TIMELINE', 
+                    icon: '⏳', 
+                    familyId: 'flip',
+                    familyName: 'FLIP',
+                    familyColor: '#d97706',
+                    tagline: 'Will this matter in a year?',
+                    what: 'Zoom out. Most moments of panic fade with perspective.',
+                    when: 'You\'re catastrophizing or blowing things out of proportion.',
+                    why: 'Temporal distancing helps shrink problems to their actual size. The brain treats near-future events as more emotionally intense than far-future ones.',
+                    visual: '⏳ 📅 🔭',
+                    steps: [
+                        'Ask: Will I remember this in 1 week?',
+                        'In 1 month?',
+                        'In 1 year?'
+                    ],
+                    practicePrompt: 'How will you feel about this tomorrow?',
+                    practiceInstruction: 'Ask: Will I remember this in a year?',
+                    duration: 30,
+                    quick: 'Ask: Will I remember this in a year?'
+                },
+                { 
+                    id: 'bestfriend', 
+                    name: 'BEST FRIEND', 
+                    icon: '👯', 
+                    familyId: 'flip',
+                    familyName: 'FLIP',
+                    familyColor: '#d97706',
+                    tagline: 'What would they say?',
+                    what: 'Channel someone who loves you unconditionally.',
+                    when: 'You can\'t access compassion for yourself.',
+                    why: 'We often have more compassion for others than ourselves. Borrowing their voice can bypass your own critical inner voice.',
+                    visual: '👯 💬 ❤️',
+                    steps: [
+                        'Think of someone who loves you',
+                        'Imagine what they would say',
+                        'Let their voice be your voice'
+                    ],
+                    practicePrompt: 'Who loves you unconditionally?',
+                    practiceInstruction: 'Imagine your best friend is here. What do they say?',
+                    duration: 45,
+                    quick: 'Imagine your best friend is here. What do they say?'
+                }
+            ],
+            reset: [
+                { 
+                    id: 'coldwater', 
+                    name: 'COLD WATER', 
+                    icon: '💧', 
+                    familyId: 'reset',
+                    familyName: 'RESET',
+                    familyColor: '#0891b2',
+                    tagline: 'Dive reflex',
+                    what: 'Cold water on your face triggers the mammalian dive reflex, slowing heart rate.',
+                    when: 'You feel panicked, activated, or overwhelmed.',
+                    why: 'The dive reflex is an ancient physiological response. Cold water on the face activates the vagus nerve and immediately slows heart rate.',
+                    visual: '💧 🧊 ❄️',
+                    steps: [
+                        'Turn on cold water',
+                        'Splash water on your face',
+                        'Hold your breath for a few seconds'
+                    ],
+                    practicePrompt: 'Can you access cold water?',
+                    practiceInstruction: 'Splash cold water on your face',
+                    duration: 15,
+                    quick: 'Splash cold water on your face'
+                },
+                { 
+                    id: 'breath', 
+                    name: 'BREATH', 
+                    icon: '🌬️', 
+                    familyId: 'reset',
+                    familyName: 'RESET',
+                    familyColor: '#0891b2',
+                    tagline: 'Extended exhale',
+                    what: 'Longer exhales activate the parasympathetic nervous system.',
+                    when: 'You feel anxious, stressed, or need to calm down.',
+                    why: 'The breath is the only autonomic function you can consciously control. Long exhales signal safety to the brain.',
+                    visual: '🌬️ 4️⃣ 6️⃣',
+                    steps: [
+                        'Inhale through nose for 4 counts',
+                        'Exhale through mouth for 6 counts',
+                        'Repeat 5 times'
+                    ],
+                    practicePrompt: 'Can you lengthen your exhale?',
+                    practiceInstruction: 'Inhale 4, exhale 6. Repeat 5 times.',
+                    duration: 50,
+                    quick: 'Inhale 4, exhale 6. Repeat 5 times.'
+                },
+                { 
+                    id: 'movementreset', 
+                    name: 'MOVEMENT', 
+                    icon: '🏃', 
+                    familyId: 'reset',
+                    familyName: 'RESET',
+                    familyColor: '#0891b2',
+                    tagline: 'Change your state',
+                    what: 'Intense emotions live in the body. Move to shift them.',
+                    when: 'You feel stuck, frozen, or trapped in your body.',
+                    why: 'Physical movement changes physiology. It burns off stress hormones and shifts your body out of freeze mode.',
+                    visual: '🏃 🦵 🫨',
+                    steps: [
+                        'Stand up',
+                        'Move vigorously for 30 seconds',
+                        'Notice how your body feels'
+                    ],
+                    practicePrompt: 'Can you move your body?',
+                    practiceInstruction: 'Jump, shake, or run in place for 30 seconds',
+                    duration: 30,
+                    quick: 'Jump, shake, or run in place for 30 seconds'
+                },
+                { 
+                    id: 'temperature', 
+                    name: 'TEMPERATURE', 
+                    icon: '🌡️', 
+                    familyId: 'reset',
+                    familyName: 'RESET',
+                    familyColor: '#0891b2',
+                    tagline: 'Hot or cold shift',
+                    what: 'Extreme temperature can interrupt dissociation and panic.',
+                    when: 'You feel numb, disconnected, or panicked.',
+                    why: 'Temperature sensation is one of the strongest somatic signals. It forces the brain to attend to the body.',
+                    visual: '🌡️ ❄️ 🔥',
+                    steps: [
+                        'Choose hot or cold',
+                        'Apply briefly to hands or face',
+                        'Notice the sensation'
+                    ],
+                    practicePrompt: 'What temperature can you access?',
+                    practiceInstruction: 'Hold an ice cube or warm your hands',
+                    duration: 20,
+                    quick: 'Hold an ice cube or warm your hands'
+                },
+                { 
+                    id: 'pressure', 
+                    name: 'PRESSURE', 
+                    icon: '⚖️', 
+                    familyId: 'reset',
+                    familyName: 'RESET',
+                    familyColor: '#0891b2',
+                    tagline: 'Deep pressure',
+                    what: 'Firm, even pressure on your body can feel grounding and safe.',
+                    when: 'You feel anxious, ungrounded, or need comfort.',
+                    why: 'Deep pressure stimulation releases serotonin and dopamine. It\'s the same mechanism behind swaddling and weighted blankets.',
+                    visual: '⚖️ 🛏️ 🫂',
+                    steps: [
+                        'Find something that provides pressure',
+                        'Apply firm, even pressure',
+                        'Hold for 1-2 minutes'
+                    ],
+                    practicePrompt: 'What can provide pressure?',
+                    practiceInstruction: 'Wrap yourself in a blanket or hug yourself tightly',
+                    duration: 45,
+                    quick: 'Wrap yourself in a blanket or hug yourself tightly'
+                },
+                { 
+                    id: 'rhythm', 
+                    name: 'RHYTHM', 
+                    icon: '🥁', 
+                    familyId: 'reset',
+                    familyName: 'RESET',
+                    familyColor: '#0891b2',
+                    tagline: 'Repetitive motion',
+                    what: 'Steady, predictable rhythms soothe the nervous system.',
+                    when: 'You feel dysregulated, scattered, or agitated.',
+                    why: 'The brain entrains to rhythmic stimuli. Steady rhythm organizes neural firing and promotes regulation.',
+                    visual: '🥁 🦵 💓',
+                    steps: [
+                        'Start a steady rhythm',
+                        'Tap your leg, walk, or rock',
+                        'Match your breath to the rhythm'
+                    ],
+                    practicePrompt: 'Can you find a steady rhythm?',
+                    practiceInstruction: 'Tap your leg in a steady pattern',
+                    duration: 40,
+                    quick: 'Tap your leg in a steady pattern'
+                }
+            ],
+            decide: [
+                { 
+                    id: 'procon', 
+                    name: 'PRO/CON', 
+                    icon: '📋', 
+                    familyId: 'decide',
+                    familyName: 'DECIDE',
+                    familyColor: '#7c3aed',
+                    tagline: 'Weigh your options',
+                    what: 'When urges are strong, write down the pros and cons of acting vs. not acting.',
+                    when: 'You feel an urge to do something you might regret.',
+                    why: 'Urges are emotional, not logical. Writing pros and cons engages the prefrontal cortex and slows down impulsive action.',
+                    visual: '📋 ✅ ❌',
+                    steps: [
+                        'Draw a line down the middle',
+                        'Label one side "Act" and one "Don\'t act"',
+                        'List pros and cons for each'
+                    ],
+                    practicePrompt: 'What decision are you facing?',
+                    practiceInstruction: 'Quick list: What helps? What hurts?',
+                    duration: 60,
+                    quick: 'Quick list: What helps? What hurts?'
+                },
+                { 
+                    id: 'delay', 
+                    name: 'DELAY', 
+                    icon: '⏰', 
+                    familyId: 'decide',
+                    familyName: 'DECIDE',
+                    familyColor: '#7c3aed',
+                    tagline: 'Wait 10 minutes',
+                    what: 'Urges peak and pass like waves. Delay gives time for the intensity to drop.',
+                    when: 'You feel an intense urge that you know will pass.',
+                    why: 'The intensity of urges is time-limited. If you can ride the wave for 10-20 minutes, the peak usually passes.',
+                    visual: '⏰ 🌊 ⏳',
+                    steps: [
+                        'Notice the urge',
+                        'Set a timer for 10 minutes',
+                        'Do something else until it goes off'
+                    ],
+                    practicePrompt: 'Can you wait 10 minutes?',
+                    practiceInstruction: 'Set a timer for 10 minutes before deciding',
+                    duration: 600,
+                    quick: 'Set a timer for 10 minutes before deciding'
+                },
+                { 
+                    id: 'wise', 
+                    name: 'WISE MIND', 
+                    icon: '🧠', 
+                    familyId: 'decide',
+                    familyName: 'DECIDE',
+                    familyColor: '#7c3aed',
+                    tagline: 'What\'s the wise choice?',
+                    what: 'Between emotion mind and logic mind is wise mind. Ask: What\'s effective right now?',
+                    when: 'You feel pulled between what you want and what you "should" do.',
+                    why: 'Wise mind integrates emotion and reason. It\'s the part of you that knows what\'s truly effective, not just what feels good or looks right.',
+                    visual: '🧠 ⚖️ 🎯',
+                    steps: [
+                        'Acknowledge emotion mind',
+                        'Acknowledge logic mind',
+                        'Ask: What\'s the wise thing to do?'
+                    ],
+                    practicePrompt: 'What does wise mind say?',
+                    practiceInstruction: 'Take a breath. Ask: What\'s the wise thing to do?',
+                    duration: 30,
+                    quick: 'Take a breath. Ask: What\'s the wise thing to do?'
+                }
+            ]
+        };
+
+        // ============================================
+        // APP STATE
+        // ============================================
+        const AppState = {
+            skill: null,
+            currentStep: 1,
+            sudsBefore: 5,
+            sudsAfter: null,
+            rating: null,
+            timer: null,
+            timerSeconds: 0,
+            timerRunning: false,
+            practiced: false,
+
+            // Load skill from URL
+            loadSkill() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const skillId = urlParams.get('skill');
+                
+                if (!skillId) {
+                    showToast('No skill selected');
+                    setTimeout(() => window.location.href = 'academy.html', 1500);
+                    return;
+                }
+
+                // Find skill in ALL_SKILLS
+                for (const familyId in ALL_SKILLS) {
+                    const found = ALL_SKILLS[familyId].find(s => s.id === skillId);
+                    if (found) {
+                        this.skill = JSON.parse(JSON.stringify(found));
+                        break;
+                    }
+                }
+
+                if (!this.skill) {
+                    showToast('Skill not found');
+                    setTimeout(() => window.location.href = 'academy.html', 1500);
+                    return;
+                }
+
+                this.currentStep = 1;
+                this.sudsBefore = 5;
+                this.sudsAfter = null;
+                this.rating = null;
+                this.practiced = false;
+                this.timerSeconds = this.skill.duration || 45;
+                this.render();
+            },
+
+            // Navigation
+            nextStep() {
+                if (this.currentStep < 7) {
+                    this.currentStep++;
+                    this.render();
+                }
+            },
+
+            prevStep() {
+                if (this.currentStep > 1) {
+                    this.currentStep--;
+                    this.render();
+                }
+            },
+
+            // Stress ratings
+            setSudsBefore(value) {
+                this.sudsBefore = parseInt(value);
+                this.render();
+            },
+
+            setSudsAfter(value) {
+                this.sudsAfter = parseInt(value);
+                this.render();
+            },
+
+            setRating(value) {
+                this.rating = value;
+                this.render();
+            },
+
+            // Timer
+            startTimer() {
+                if (this.timerRunning) return;
+                
+                this.timerRunning = true;
+                this.timer = setInterval(() => {
+                    this.timerSeconds--;
+                    if (this.timerSeconds <= 0) {
+                        this.stopTimer();
+                        this.practiced = true;
+                        showToast('Time’s up! 🌊');
+                    }
+                    this.render();
+                }, 1000);
+                this.render();
+            },
+
+            stopTimer() {
+                if (this.timer) {
+                    clearInterval(this.timer);
+                    this.timer = null;
+                }
+                this.timerRunning = false;
+                this.render();
+            },
+
+            skipTimer() {
+                this.stopTimer();
+                this.practiced = true;
+                this.nextStep();
+            },
+
+            // Add to toolkit
+            addToToolkit() {
+                const toolkit = JSON.parse(localStorage.getItem('mphaven_toolkit') || '{}');
+                
+                toolkit[this.skill.id] = {
+                    id: this.skill.id,
+                    name: this.skill.name,
+                    familyId: this.skill.familyId,
+                    icon: this.skill.icon,
+                    quick: this.skill.quick,
+                    savedAt: new Date().toISOString(),
+                    timesPracticed: (toolkit[this.skill.id]?.timesPracticed || 0) + 1
+                };
+                
+                localStorage.setItem('mphaven_toolkit', JSON.stringify(toolkit));
+                showToast(`✓ ${this.skill.name} added to toolkit`);
+                this.render();
+            },
+
+            // Navigation
+            goToToolkit() {
+                window.location.href = 'my-toolkit.html';
+            },
+
+            tryQuickVersion() {
+                window.location.href = `quick-use.html?skill=${this.skill.id}`;
+            },
+
+            // Format time
+            formatTime(seconds) {
+                const mins = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+            },
+
+            // Render current screen
+            render() {
+                if (!this.skill) return;
+                
+                const content = document.getElementById('mainContent');
+                const s = this.skill;
+                const step = this.currentStep;
+                
+                let html = `<div class="content-wrapper">`;
+
+                // Progress bar
+                html += `
+                    <div class="progress-container">
+                        <div class="progress-steps">
+                            ${[1,2,3,4,5,6,7].map(i => 
+                                `<div class="progress-dot ${i <= step ? 'active' : ''}"></div>`
+                            ).join('')}
+                        </div>
+                        <div class="progress-text">Step ${step}/7</div>
+                    </div>
+                `;
+
+                // SCREEN 1: Intro
+                if (step === 1) {
+                    html += `
+                        <div class="skill-header">
+                            <div class="skill-icon-large" style="background: ${s.familyColor}20; color: ${s.familyColor}">
+                                ${s.icon}
+                            </div>
+                            <div class="skill-info">
+                                <span class="family-badge" style="background: ${s.familyColor}20; color: ${s.familyColor}">
+                                    ${s.familyName}
+                                </span>
+                                <div class="skill-name" style="color: ${s.familyColor}">${s.name}</div>
+                                <div class="skill-tagline">${s.tagline}</div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-title">📘 What it is</div>
+                            <div class="card-text">${s.what}</div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-title">⏰ When to use</div>
+                            <div class="card-text">${s.when}</div>
+                        </div>
+
+                        <div style="margin-top: 1.5rem;">
+                            <button class="btn-primary" onclick="AppState.nextStep()">How it works →</button>
+                            <button class="btn-secondary" onclick="window.location.href='family.html?id=${s.familyId}'">← Back</button>
+                        </div>
+                    `;
+                }
+                
+                // SCREEN 2: Why
+                else if (step === 2) {
+                    html += `
+                        <div class="card">
+                            <div class="card-title">🧠 Why it works</div>
+                            <div class="card-text">${s.why}</div>
+                        </div>
+
+                        <div style="margin-top: 1.5rem;">
+                            <button class="btn-primary" onclick="AppState.nextStep()">Continue →</button>
+                            <button class="btn-secondary" onclick="AppState.prevStep()">← Back</button>
+                        </div>
+                    `;
+                }
+
+                // SCREEN 3: Visual
+                else if (step === 3) {
+                    html += `
+                        <div class="visual-container">
+                            <div class="visual-emoji">${s.visual || s.icon}</div>
+                            <div class="skill-name" style="color: ${s.familyColor}">${s.name}</div>
+                            <div style="color: rgb(148, 163, 184); margin-top: 0.5rem;">${s.tagline}</div>
+                            
+                            <div class="visual-quote">
+                                <p>${s.practiceInstruction}</p>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 1.5rem;">
+                            <button class="btn-primary" onclick="AppState.nextStep()">Continue →</button>
+                            <button class="btn-secondary" onclick="AppState.prevStep()">← Back</button>
+                        </div>
+                    `;
+                }
+
+                // SCREEN 4: Steps
+                else if (step === 4) {
+                    html += `
+                        <div class="card">
+                            <div class="card-title">📋 Step by step</div>
+                            <ul class="steps-list">
+                                ${s.steps.map((step, index) => `
+                                    <li>
+                                        <span class="step-number">${index + 1}</span>
+                                        <span>${step}</span>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        </div>
+
+                        <div style="margin-top: 1.5rem;">
+                            <button class="btn-primary" onclick="AppState.nextStep()">Practice →</button>
+                            <button class="btn-secondary" onclick="AppState.prevStep()">← Back</button>
+                        </div>
+                    `;
+                }
+
+                // SCREEN 5: Practice
+                else if (step === 5) {
+                    html += `
+                        <div class="stress-section">
+                            <div class="card-title">⏱️ Before you start</div>
+                            <div class="stress-label">
+                                <span>Calm</span>
+                                <span>Panic</span>
+                            </div>
+                            <input type="range" min="0" max="10" value="${this.sudsBefore}" 
+                                   onchange="AppState.setSudsBefore(this.value)">
+                            <div class="stress-value">${this.sudsBefore}/10</div>
+                        </div>
+
+                        <div class="timer-container">
+                            <div class="timer-prompt">${s.practicePrompt}</div>
+                            <div class="timer-instruction">${s.practiceInstruction}</div>
+                            
+                            <div class="timer-display">${this.formatTime(this.timerSeconds)}</div>
+                            
+                            ${!this.timerRunning && this.timerSeconds > 0 ? `
+                                <button class="btn-primary" onclick="AppState.startTimer()">Start Timer</button>
+                            ` : ''}
+                            
+                            ${this.timerRunning ? `
+                                <button class="btn-primary" onclick="AppState.stopTimer()">Pause</button>
+                            ` : ''}
+                            
+                            ${this.timerSeconds === 0 ? `
+                                <button class="btn-primary" onclick="AppState.nextStep()">Continue →</button>
+                            ` : ''}
+                            
+                            <button class="btn-text" onclick="AppState.skipTimer()">Skip</button>
+                        </div>
+
+                        <div style="margin-top: 0.5rem;">
+                            <button class="btn-secondary" onclick="AppState.prevStep()">← Back</button>
+                        </div>
+                    `;
+                }
+
+                // SCREEN 6: Rate
+                else if (step === 6) {
+                    html += `
+                        <div class="card">
+                            <div class="card-title">📊 How do you feel now?</div>
+                            
+                            <div class="stress-section">
+                                <div class="stress-label">
+                                    <span>Calm</span>
+                                    <span>Panic</span>
+                                </div>
+                                <input type="range" min="0" max="10" value="${this.sudsAfter !== null ? this.sudsAfter : 3}" 
+                                       onchange="AppState.setSudsAfter(this.value)">
+                                <div class="stress-value">${this.sudsAfter !== null ? this.sudsAfter : 3}/10</div>
+                            </div>
+                            
+                            <div style="margin-top: 1.5rem;">
+                                <div class="card-title">How well did ${s.name} work?</div>
+                                <div class="rating-grid">
+                                    <div class="rating-btn" onclick="AppState.setRating('strong')">
+                                        <span class="rating-emoji">💪</span>
+                                        <span class="rating-label">Saved me</span>
+                                    </div>
+                                    <div class="rating-btn" onclick="AppState.setRating('moderate')">
+                                        <span class="rating-emoji">👍</span>
+                                        <span class="rating-label">Helped a bit</span>
+                                    </div>
+                                    <div class="rating-btn" onclick="AppState.setRating('weak')">
+                                        <span class="rating-emoji">🤚</span>
+                                        <span class="rating-label">Not for me</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 1.5rem;">
+                            <button class="btn-primary" onclick="AppState.nextStep()">Continue →</button>
+                            <button class="btn-secondary" onclick="AppState.prevStep()">← Back</button>
+                        </div>
+                    `;
+                }
+
+                // SCREEN 7: Save
+                else if (step === 7) {
+                    const stressDrop = this.sudsBefore - (this.sudsAfter !== null ? this.sudsAfter : 3);
+                    
+                    html += `
+                        <div class="completion-container">
+                            <div class="checkmark">✓</div>
+                            <div class="completion-title">Skill complete</div>
+                            <div class="completion-sub">You practiced ${s.name}</div>
+                            
+                            <div class="stress-drop">
+                                <div class="stress-drop-text">
+                                    ⬇️ Stress dropped ${stressDrop > 0 ? stressDrop : 2} points
+                                </div>
+                                <span class="works-badge">This works for you</span>
+                            </div>
+                            
+                            <button class="btn-primary" onclick="AppState.addToToolkit()">
+                                ✅ Yes, add to my plan
+                            </button>
+                            
+                            <button class="btn-secondary" onclick="AppState.tryQuickVersion()">
+                                ⚡ Try quick version
+                            </button>
+                            
+                            <button class="btn-text" onclick="AppState.goToToolkit()">
+                                ← Back to toolkit
+                            </button>
+                        </div>
+                    `;
+                }
+
+                html += `</div>`;
+                content.innerHTML = html;
+                
+                // Scroll to top
+                setTimeout(() => {
+                    const mainContent = document.querySelector('.main-content');
+                    if (mainContent) mainContent.scrollTop = 0;
+                }, 50);
+            }
+        };
+
+        // ============================================
+        // GLOBAL FUNCTIONS
+        // ============================================
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        window.AppState = AppState;
+        window.showToast = showToast;
+
+        // ============================================
+        // INIT
+        // ============================================
+        function init() {
+            // Prevent zoom
+            document.addEventListener('touchstart', (e) => {
+                if (e.touches.length > 1) e.preventDefault();
+            }, { passive: false });
+            
+            // Initialize toolkit if needed
+            if (!localStorage.getItem('mphaven_toolkit')) {
+                localStorage.setItem('mphaven_toolkit', '{}');
+            }
+            
+            // Load skill
+            AppState.loadSkill();
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
