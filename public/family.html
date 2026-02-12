@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#0f172a">
+    <title>Skill Family · MPHaven</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            position: fixed;
+            background: #0f172a;
+            color: rgb(241, 245, 249);
+        }
+
+        .container {
+            width: 100%;
+            height: 100vh;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .app-wrapper {
+            width: 100%;
+            max-width: 28rem;
+            height: 100%;
+            margin: 0 auto;
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            border-left: 1px solid rgba(30, 41, 59, 0.5);
+            border-right: 1px solid rgba(30, 41, 59, 0.5);
+        }
+
+        .bg-blur-1, .bg-blur-2 {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(140px);
+            -webkit-filter: blur(140px);
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.6;
+        }
+        .bg-blur-1 {
+            top: -10%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 22rem;
+            height: 22rem;
+            background: rgba(14, 116, 144, 0.08);
+        }
+        .bg-blur-2 {
+            bottom: -10%;
+            right: -10%;
+            width: 18rem;
+            height: 18rem;
+            background: rgba(217, 119, 6, 0.08);
+        }
+
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+            z-index: 1;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+        .main-content::-webkit-scrollbar {
+            display: none;
+        }
+
+        .content-wrapper {
+            padding: max(1.5rem, env(safe-area-inset-top)) 1.25rem max(2rem, env(safe-area-inset-bottom));
+            min-height: 100%;
+        }
+
+        .header {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(51, 65, 85, 0.4);
+        }
+        .family-icon-large {
+            width: 5rem;
+            height: 5rem;
+            border-radius: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            flex-shrink: 0;
+        }
+        .header-text {
+            flex: 1;
+        }
+        .family-name {
+            font-size: 1.75rem;
+            font-weight: 800;
+            margin-bottom: 0.25rem;
+        }
+        .family-description {
+            color: rgb(148, 163, 184);
+            font-size: 0.9375rem;
+            line-height: 1.4;
+        }
+
+        .progress-box {
+            background: linear-gradient(135deg, rgba(14,116,144,0.15), rgba(217,119,6,0.10));
+            border: 1px solid rgba(14, 116, 144, 0.3);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .progress-text {
+            color: rgb(165, 243, 252);
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .skill-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.65), rgba(15, 23, 42, 0.45));
+            border: 1px solid rgba(51, 65, 85, 0.4);
+            border-radius: 1.25rem;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .skill-card:active {
+            transform: scale(0.98);
+            background: rgba(30, 41, 59, 0.75);
+        }
+        .skill-card.in-toolkit {
+            border: 1px solid rgba(139, 92, 246, 0.4);
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.12), rgba(139, 92, 246, 0.05));
+        }
+        .skill-card.recommended {
+            border: 2px solid rgba(14, 116, 144, 0.5);
+        }
+
+        .skill-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+        .skill-icon {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+        .skill-title {
+            flex: 1;
+        }
+        .skill-name {
+            color: rgb(241, 245, 249);
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        .skill-tagline {
+            color: rgb(165, 243, 252);
+            font-size: 0.8125rem;
+        }
+
+        .skill-description {
+            color: rgb(148, 163, 184);
+            font-size: 0.875rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .quick-options {
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .quick-options-title {
+            color: rgb(203, 213, 225);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+        }
+        .option-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .option-chip {
+            padding: 0.5rem 1rem;
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(51, 65, 85, 0.4);
+            border-radius: 9999px;
+            color: rgb(203, 213, 225);
+            font-size: 0.8125rem;
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+            cursor: pointer;
+        }
+        .option-chip:active {
+            background: rgba(14, 116, 144, 0.3);
+            border-color: rgba(14, 116, 144, 0.5);
+        }
+        .option-chip.selected {
+            background: rgba(14, 116, 144, 0.4);
+            border-color: rgba(14, 116, 144, 0.6);
+            color: white;
+        }
+        .other-input {
+            margin-top: 0.75rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+        .other-field {
+            flex: 1;
+            padding: 0.5rem 0.75rem;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(51, 65, 85, 0.4);
+            border-radius: 0.5rem;
+            color: white;
+            font-size: 0.8125rem;
+        }
+        .other-field::placeholder {
+            color: rgb(100, 116, 139);
+        }
+
+        .skill-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.5rem;
+        }
+        .duration {
+            color: rgb(100, 116, 139);
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        .skill-badge {
+            padding: 0.375rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.6875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .badge-toolkit {
+            background: rgba(139, 92, 246, 0.2);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            color: rgb(196, 181, 253);
+        }
+        .badge-learn {
+            background: rgba(14, 116, 144, 0.2);
+            border: 1px solid rgba(14, 116, 144, 0.3);
+            color: rgb(165, 243, 252);
+        }
+
+        .back-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(51, 65, 85, 0.4);
+            border-radius: 0.75rem;
+            color: rgb(148, 163, 184);
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 1rem;
+            transition: all 0.2s ease;
+        }
+        .back-button:active {
+            transform: scale(0.98);
+            background: rgba(30, 41, 59, 0.7);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: max(6rem, env(safe-area-inset-bottom) + 4rem);
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: rgba(30, 41, 59, 0.95);
+            border: 1px solid rgba(14, 116, 144, 0.3);
+            border-radius: 0.75rem;
+            padding: 0.875rem 1.25rem;
+            color: white;
+            font-weight: 600;
+            z-index: 10000;
+            opacity: 0;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            max-width: calc(100vw - 2rem);
+            text-align: center;
+            font-size: 0.875rem;
+        }
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        @media (min-width: 640px) {
+            .app-wrapper {
+                border-radius: 2rem;
+                margin: 1rem 0;
+                height: calc(100dvh - 2rem);
+                max-height: 844px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="app-wrapper">
+            <div class="bg-blur-1"></div>
+            <div class="bg-blur-2"></div>
+            <div id="mainContent" class="main-content"></div>
+        </div>
+    </div>
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // ============================================
+        // ALL MICRO-SKILLS - 27 Total with Flexible Options
+        // ============================================
+        const ALL_SKILLS = {
+            shift: [
+                { 
+                    id: 'give', 
+                    name: 'GIVE', 
+                    icon: '🤝', 
+                    tagline: 'Do something for someone else',
+                    description: 'When you\'re stuck ruminating on yourself, doing something for another person shifts your focus outward.',
+                    duration: '1-5 min',
+                    options: [
+                        { emoji: '💬', text: 'Send a kind message' },
+                        { emoji: '📞', text: 'Call someone' },
+                        { emoji: '🤲', text: 'Offer help' },
+                        { emoji: '🎁', text: 'Give something' },
+                        { emoji: '👂', text: 'Just listen' },
+                        { emoji: '✍️', text: 'Write a note' }
+                    ]
+                },
+                { 
+                    id: 'recall', 
+                    name: 'RECALL', 
+                    icon: '📊', 
+                    tagline: 'Remember you\'ve survived worse',
+                    description: 'Your brain forgets past resilience. Actively recall specific times you got through something hard.',
+                    duration: '1-2 min',
+                    options: [
+                        { emoji: '💔', text: 'A past loss' },
+                        { emoji: '📉', text: 'A failure I bounced back from' },
+                        { emoji: '🗣️', text: 'A hard conversation' },
+                        { emoji: '🏥', text: 'A health scare' },
+                        { emoji: '💰', text: 'A financial struggle' },
+                        { emoji: '✍️', text: 'Write your own' }
+                    ]
+                },
+                { 
+                    id: 'reverse', 
+                    name: 'REVERSE', 
+                    icon: '🔄', 
+                    tagline: 'Do the opposite of your urge',
+                    description: 'If your urge is to withdraw, reach out. If it\'s to lash out, step back. Break the pattern.',
+                    duration: '30 sec',
+                    options: [
+                        { emoji: '🚶', text: 'Urge to isolate → Reach out' },
+                        { emoji: '😠', text: 'Urge to lash out → Step away' },
+                        { emoji: '🛏️', text: 'Urge to hide → Go outside' },
+                        { emoji: '🍔', text: 'Urge to binge → Pause' },
+                        { emoji: '📱', text: 'Urge to scroll → Put phone down' },
+                        { emoji: '✍️', text: 'Your opposite action' }
+                    ]
+                },
+                { 
+                    id: 'box', 
+                    name: 'BOX', 
+                    icon: '📦', 
+                    tagline: 'Put the problem away for later',
+                    description: 'Visualize placing the worry in a container and setting it on a shelf. You can come back to it.',
+                    duration: '1-2 min',
+                    options: [
+                        { emoji: '📦', text: 'Imagine a box on a high shelf' },
+                        { emoji: '🔒', text: 'Lock it in a drawer' },
+                        { emoji: '☁️', text: 'Place it on a cloud' },
+                        { emoji: '🌊', text: 'Let it float away on water' },
+                        { emoji: '📱', text: 'Write and save to drafts' },
+                        { emoji: '✍️', text: 'Your container' }
+                    ]
+                },
+                { 
+                    id: 'count', 
+                    name: 'COUNT', 
+                    icon: '🔢', 
+                    tagline: 'Count objects around you',
+                    description: 'Ground yourself by counting things you can see, hear, or touch. Simple numbers anchor you.',
+                    duration: '1-2 min',
+                    options: [
+                        { emoji: '👁️', text: 'Count 5 things you see' },
+                        { emoji: '👂', text: 'Count 4 sounds you hear' },
+                        { emoji: '🖐️', text: 'Count 3 things you can touch' },
+                        { emoji: '🔵', text: 'Count blue objects' },
+                        { emoji: '🪑', text: 'Count furniture' },
+                        { emoji: '✍️', text: 'Your own count' }
+                    ]
+                },
+                { 
+                    id: 'jolt', 
+                    name: 'JOLT', 
+                    icon: '⚡', 
+                    tagline: 'Intense sensation to reset',
+                    description: 'A sudden physical sensation can interrupt an emotional spiral.',
+                    duration: '15-30 sec',
+                    options: [
+                        { emoji: '💧', text: 'Splash cold water on face' },
+                        { emoji: '🧊', text: 'Hold an ice cube' },
+                        { emoji: '🍋', text: 'Eat something sour' },
+                        { emoji: '🚶', text: 'Step outside into cold air' },
+                        { emoji: '🎵', text: 'Loud music for 30 sec' },
+                        { emoji: '✍️', text: 'Your jolt' }
+                    ]
+                }
+            ],
+            soothe: [
+                { 
+                    id: 'vision', 
+                    name: 'VISION', 
+                    icon: '👁️', 
+                    tagline: 'Soothing things to look at',
+                    description: 'Your visual system connects directly to your nervous system. Feed it calm.',
+                    duration: '1-3 min',
+                    options: [
+                        { emoji: '☁️', text: 'Clouds / sky' },
+                        { emoji: '🌳', text: 'Trees / nature' },
+                        { emoji: '🖼️', text: 'Art / photos' },
+                        { emoji: '🕯️', text: 'Candle flame' },
+                        { emoji: '🐈', text: 'Pet / animal' },
+                        { emoji: '✍️', text: 'Something else' }
+                    ]
+                },
+                { 
+                    id: 'hearing', 
+                    name: 'HEARING', 
+                    icon: '👂', 
+                    tagline: 'Soothing sounds',
+                    description: 'Certain sounds calm the autonomic nervous system.',
+                    duration: '1-3 min',
+                    options: [
+                        { emoji: '🌧️', text: 'Rain / water' },
+                        { emoji: '🎵', text: 'Quiet music' },
+                        { emoji: '🐦', text: 'Birds / nature' },
+                        { emoji: '🤫', text: 'Silence' },
+                        { emoji: '🔁', text: 'Repetitive sound' },
+                        { emoji: '✍️', text: 'Your sound' }
+                    ]
+                },
+                { 
+                    id: 'smell', 
+                    name: 'SMELL', 
+                    icon: '👃', 
+                    tagline: 'Calming scents',
+                    description: 'Olfactory nerves connect directly to emotion centers in your brain.',
+                    duration: '30 sec',
+                    options: [
+                        { emoji: '🌸', text: 'Lavender' },
+                        { emoji: '🍊', text: 'Citrus' },
+                        { emoji: '☕', text: 'Coffee' },
+                        { emoji: '🌿', text: 'Fresh air' },
+                        { emoji: '🕯️', text: 'Candle' },
+                        { emoji: '✍️', text: 'Your scent' }
+                    ]
+                },
+                { 
+                    id: 'taste', 
+                    name: 'TASTE', 
+                    icon: '👅', 
+                    tagline: 'Soothing flavors',
+                    description: 'Mindful tasting can ground you in the present moment.',
+                    duration: '1-2 min',
+                    options: [
+                        { emoji: '🍫', text: 'Chocolate' },
+                        { emoji: '🍵', text: 'Warm tea' },
+                        { emoji: '🍓', text: 'A fruit' },
+                        { emoji: '🧊', text: 'Cold water' },
+                        { emoji: '🍬', text: 'Mint' },
+                        { emoji: '✍️', text: 'Your taste' }
+                    ]
+                },
+                { 
+                    id: 'touch', 
+                    name: 'TOUCH', 
+                    icon: '🖐️', 
+                    tagline: 'Comfort through texture',
+                    description: 'Physical sensation can signal safety to your nervous system.',
+                    duration: '1-2 min',
+                    options: [
+                        { emoji: '🧸', text: 'Something soft' },
+                        { emoji: '🛏️', text: 'Warm blanket' },
+                        { emoji: '🐈', text: 'Pet an animal' },
+                        { emoji: '💧', text: 'Running water' },
+                        { emoji: '🌿', text: 'Textured object' },
+                        { emoji: '✍️', text: 'Your texture' }
+                    ]
+                },
+                { 
+                    id: 'movement', 
+                    name: 'MOVEMENT', 
+                    icon: '🧘', 
+                    tagline: 'Soothing movement',
+                    description: 'Gentle, rhythmic movement regulates the nervous system.',
+                    duration: '1-3 min',
+                    options: [
+                        { emoji: '🪑', text: 'Rock gently' },
+                        { emoji: '🧘', text: 'Stretch' },
+                        { emoji: '🚶', text: 'Slow walk' },
+                        { emoji: '🤲', text: 'Sway' },
+                        { emoji: '🫂', text: 'Self-hug' },
+                        { emoji: '✍️', text: 'Your movement' }
+                    ]
+                }
+            ],
+            flip: [
+                { 
+                    id: 'prove', 
+                    name: 'PROVE', 
+                    icon: '🔍', 
+                    tagline: 'Find evidence against the thought',
+                    description: 'Your thoughts aren\'t facts. Look for evidence that contradicts the negative belief.',
+                    duration: '2-3 min',
+                    options: [
+                        { emoji: '🔍', text: 'What contradicts this?' },
+                        { emoji: '📸', text: 'What did I miss?' },
+                        { emoji: '👥', text: 'What would a friend say?' },
+                        { emoji: '📊', text: 'Is this 100% true?' },
+                        { emoji: '📝', text: 'Write the counter-evidence' },
+                        { emoji: '✍️', text: 'Your proof' }
+                    ]
+                },
+                { 
+                    id: 'reframe', 
+                    name: 'REFRAME', 
+                    icon: '🖼️', 
+                    tagline: 'Look at it differently',
+                    description: 'Change the meaning of the situation. What\'s another interpretation?',
+                    duration: '1-2 min',
+                    options: [
+                        { emoji: '👯', text: 'What would a friend say?' },
+                        { emoji: '🗣️', text: 'What would I tell someone else?' },
+                        { emoji: '❓', text: 'Is this the only explanation?' },
+                        { emoji: '📅', text: 'Will this matter in 5 years?' },
+                        { emoji: '🎭', text: 'What\'s the opposite meaning?' },
+                        { emoji: '✍️', text: 'Your reframe' }
+                    ]
+                },
+                { 
+                    id: 'compassion', 
+                    name: 'COMPASSION', 
+                    icon: '💗', 
+                    tagline: 'Talk to yourself like a friend',
+                    description: 'Would you say this to someone you love? If not, change the words.',
+                    duration: '1-2 min',
+                    options: [
+                        { emoji: '💬', text: 'What do you need to hear?' },
+                        { emoji: '🤗', text: 'I\'m here for you' },
+                        { emoji: '💪', text: 'You\'re doing your best' },
+                        { emoji: '🌱', text: 'This is temporary' },
+                        { emoji: '❤️', text: 'You deserve kindness' },
+                        { emoji: '✍️', text: 'Your compassionate words' }
+                    ]
+                },
+                { 
+                    id: 'observer', 
+                    name: 'OBSERVER', 
+                    icon: '👓', 
+                    tagline: 'Watch thoughts like clouds',
+                    description: 'You are not your thoughts. Watch them pass by without engaging.',
+                    duration: '1-2 min',
+                    options: [
+                        { emoji: '☁️', text: 'Imagine thoughts as clouds' },
+                        { emoji: '🍂', text: 'Leaves on a stream' },
+                        { emoji: '🚂', text: 'Trains passing by' },
+                        { emoji: '📺', text: 'TV channel you don\'t watch' },
+                        { emoji: '🏷️', text: 'Label it "thinking"' },
+                        { emoji: '✍️', text: 'Your observer image' }
+                    ]
+                },
+                { 
+                    id: 'timeline', 
+                    name: 'TIMELINE', 
+                    icon: '⏳', 
+                    tagline: 'Will this matter in a year?',
+                    description: 'Zoom out. Most moments of panic fade with perspective.',
+                    duration: '30 sec',
+                    options: [
+                        { emoji: '📅', text: 'Will I remember this in 1 week?' },
+                        { emoji: '🗓️', text: 'In 1 month?' },
+                        { emoji: '📆', text: 'In 1 year?' },
+                        { emoji: '🎂', text: 'In 5 years?' },
+                        { emoji: '👵', text: 'Future me looking back' },
+                        { emoji: '✍️', text: 'Your perspective' }
+                    ]
+                },
+                { 
+                    id: 'bestfriend', 
+                    name: 'BEST FRIEND', 
+                    icon: '👯', 
+                    tagline: 'What would they say?',
+                    description: 'Channel someone who loves you unconditionally.',
+                    duration: '1 min',
+                    options: [
+                        { emoji: '👤', text: 'Imagine your best friend' },
+                        { emoji: '💬', text: 'What would they tell you?' },
+                        { emoji: '🤗', text: 'How would they comfort you?' },
+                        { emoji: '📞', text: 'Call or text them' },
+                        { emoji: '📝', text: 'Write what they\'d say' },
+                        { emoji: '✍️', text: 'Your person' }
+                    ]
+                }
+            ],
+            reset: [
+                { 
+                    id: 'coldwater', 
+                    name: 'COLD WATER', 
+                    icon: '💧', 
+                    tagline: 'Dive reflex to slow heart rate',
+                    description: 'Cold water on your face triggers the mammalian dive reflex, slowing your heart rate.',
+                    duration: '15 sec',
+                    options: [
+                        { emoji: '💧', text: 'Splash cold water on face' },
+                        { emoji: '🧊', text: 'Hold ice cube' },
+                        { emoji: '🥤', text: 'Cold drink' },
+                        { emoji: '🚿', text: '30 sec cold shower' },
+                        { emoji: '🧣', text: 'Cold pack on wrists' },
+                        { emoji: '✍️', text: 'Your cold reset' }
+                    ]
+                },
+                { 
+                    id: 'breath', 
+                    name: 'BREATH', 
+                    icon: '🌬️', 
+                    tagline: 'Extended exhale',
+                    description: 'Longer exhales activate the parasympathetic nervous system.',
+                    duration: '1-2 min',
+                    options: [
+                        { emoji: '4️⃣', text: 'Inhale 4, exhale 6' },
+                        { emoji: '🫁', text: 'Box breathing: 4-4-4-4' },
+                        { emoji: '😮‍💨', text: 'Sigh out slowly' },
+                        { emoji: '🧘', text: 'Count each breath to 10' },
+                        { emoji: '🌬️', text: 'Blow out like through a straw' },
+                        { emoji: '✍️', text: 'Your breath pattern' }
+                    ]
+                },
+                { 
+                    id: 'movementreset', 
+                    name: 'MOVEMENT', 
+                    icon: '🏃', 
+                    tagline: 'Change your state through movement',
+                    description: 'Intense emotions live in the body. Move to shift them.',
+                    duration: '30 sec',
+                    options: [
+                        { emoji: '🦵', text: 'Jumping jacks' },
+                        { emoji: '🏃', text: 'Run in place' },
+                        { emoji: '🫨', text: 'Shake out your body' },
+                        { emoji: '🧍', text: 'Stand up and stretch' },
+                        { emoji: '🚶', text: 'Walk around the room' },
+                        { emoji: '✍️', text: 'Your movement' }
+                    ]
+                },
+                { 
+                    id: 'temperature', 
+                    name: 'TEMPERATURE', 
+                    icon: '🌡️', 
+                    tagline: 'Hot or cold shift',
+                    description: 'Extreme temperature can interrupt dissociation and panic.',
+                    duration: '30 sec',
+                    options: [
+                        { emoji: '🧊', text: 'Hold ice cube' },
+                        { emoji: '☕', text: 'Warm hands on mug' },
+                        { emoji: '🚿', text: 'Warm shower' },
+                        { emoji: '❄️', text: 'Step into cold air' },
+                        { emoji: '🔥', text: 'Near a heater' },
+                        { emoji: '✍️', text: 'Your temperature shift' }
+                    ]
+                },
+                { 
+                    id: 'pressure', 
+                    name: 'PRESSURE', 
+                    icon: '⚖️', 
+                    tagline: 'Deep pressure',
+                    description: 'Firm, even pressure on your body can feel grounding and safe.',
+                    duration: '1-2 min',
+                    options: [
+                        { emoji: '🛏️', text: 'Wrap in a blanket' },
+                        { emoji: '🫂', text: 'Hug yourself tightly' },
+                        { emoji: '🪑', text: 'Press back into chair' },
+                        { emoji: '🧸', text: 'Hold something heavy' },
+                        { emoji: '🐕', text: 'Pet rests on you' },
+                        { emoji: '✍️', text: 'Your pressure' }
+                    ]
+                },
+                { 
+                    id: 'rhythm', 
+                    name: 'RHYTHM', 
+                    icon: '🥁', 
+                    tagline: 'Repetitive motion',
+                    description: 'Steady, predictable rhythms soothe the nervous system.',
+                    duration: '1-2 min',
+                    options: [
+                        { emoji: '🦵', text: 'Tap your leg steadily' },
+                        { emoji: '🤲', text: 'Rub thumbs together' },
+                        { emoji: '🎵', text: 'Listen to rhythmic music' },
+                        { emoji: '🚶', text: 'Walk in a steady pace' },
+                        { emoji: '💓', text: 'Feel your heartbeat' },
+                        { emoji: '✍️', text: 'Your rhythm' }
+                    ]
+                }
+            ],
+            decide: [
+                { 
+                    id: 'procon', 
+                    name: 'PRO/CON', 
+                    icon: '📋', 
+                    tagline: 'Weigh your options',
+                    description: 'When urges are strong, write down the pros and cons of acting vs. not acting.',
+                    duration: '2-3 min',
+                    options: [
+                        { emoji: '✅', text: 'Pros of acting' },
+                        { emoji: '❌', text: 'Cons of acting' },
+                        { emoji: '🟢', text: 'Pros of waiting' },
+                        { emoji: '🔴', text: 'Cons of waiting' },
+                        { emoji: '📝', text: 'Quick list' },
+                        { emoji: '✍️', text: 'Your pros/cons' }
+                    ]
+                },
+                { 
+                    id: 'delay', 
+                    name: 'DELAY', 
+                    icon: '⏰', 
+                    tagline: 'Wait 10 minutes',
+                    description: 'Urges peak and pass like waves. Delay gives time for the intensity to drop.',
+                    duration: '10 min',
+                    options: [
+                        { emoji: '⏰', text: 'Set a 10 min timer' },
+                        { emoji: '📱', text: 'Distract yourself' },
+                        { emoji: '🚶', text: 'Take a short walk' },
+                        { emoji: '📖', text: 'Read something' },
+                        { emoji: '🧘', text: 'Breathe' },
+                        { emoji: '✍️', text: 'Your delay activity' }
+                    ]
+                },
+                { 
+                    id: 'wise', 
+                    name: 'WISE MIND', 
+                    icon: '🧠', 
+                    tagline: 'What\'s the wise choice?',
+                    description: 'Between emotion mind and logic mind is wise mind. Ask: What\'s effective right now?',
+                    duration: '1 min',
+                    options: [
+                        { emoji: '🧠', text: 'What\'s the wise choice?' },
+                        { emoji: '🎯', text: 'What\'s effective right now?' },
+                        { emoji: '⚖️', text: 'Balance emotion and logic' },
+                        { emoji: '👤', text: 'What would a mentor say?' },
+                        { emoji: '🕯️', text: 'Quiet yourself and listen' },
+                        { emoji: '✍️', text: 'Your wise mind' }
+                    ]
+                }
+            ]
+        };
+
+        // ============================================
+        // FAMILY META DATA
+        // ============================================
+        const FAMILY_META = {
+            shift: { name: 'SHIFT', icon: '🎯', color: '#0e7490', description: 'Change your focus' },
+            soothe: { name: 'SOOTHE', icon: '🫂', color: '#7c3aed', description: 'Calm your nervous system' },
+            flip: { name: 'FLIP', icon: '💭', color: '#d97706', description: 'Challenge your thoughts' },
+            reset: { name: 'RESET', icon: '⚡', color: '#0891b2', description: 'Change your body state' },
+            decide: { name: 'DECIDE', icon: '⚖️', color: '#7c3aed', description: 'Think before acting' }
+        };
+
+        // ============================================
+        // TOOLKIT STORAGE
+        // ============================================
+        function getToolkit() {
+            try {
+                return JSON.parse(localStorage.getItem('mphaven_toolkit') || '{}');
+            } catch (e) {
+                return {};
+            }
+        }
+
+        function isInToolkit(skillId) {
+            const toolkit = getToolkit();
+            return toolkit[skillId] !== undefined;
+        }
+
+        function getToolkitCountForFamily(familyId) {
+            const toolkit = getToolkit();
+            return Object.values(toolkit).filter(skill => skill.familyId === familyId).length;
+        }
+
+        // ============================================
+        // UI HELPERS
+        // ============================================
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // ============================================
+        // SKILL ACTIONS
+        // ============================================
+        function startSkill(skillId, selectedOption = null) {
+            // Store selected option if any
+            if (selectedOption) {
+                localStorage.setItem('last_selected_option', JSON.stringify({
+                    skillId: skillId,
+                    option: selectedOption,
+                    timestamp: new Date().toISOString()
+                }));
+            }
+            
+            // Navigate to skill engine
+            window.location.href = `skill-engine.html?skill=${skillId}`;
+        }
+
+        // Make function global
+        window.startSkill = startSkill;
+        window.showToast = showToast;
+
+        // ============================================
+        // RENDER
+        // ============================================
+        function render() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const familyId = urlParams.get('id');
+            
+            if (!familyId || !FAMILY_META[familyId]) {
+                window.location.href = 'academy.html';
+                return;
+            }
+
+            const family = FAMILY_META[familyId];
+            const skills = ALL_SKILLS[familyId] || [];
+            const toolkitCount = getToolkitCountForFamily(familyId);
+            
+            let html = `
+                <div class="content-wrapper">
+                    <div class="header">
+                        <div class="family-icon-large" style="background: ${family.color}20; color: ${family.color}">
+                            ${family.icon}
+                        </div>
+                        <div class="header-text">
+                            <div class="family-name" style="color: ${family.color}">${family.name}</div>
+                            <div class="family-description">${family.description}</div>
+                        </div>
+                    </div>
+
+                    <div class="progress-box">
+                        <span class="progress-text">
+                            🧰 ${toolkitCount} of ${skills.length} skills in your toolkit
+                        </span>
+                    </div>
+            `;
+
+            skills.forEach(skill => {
+                const inToolkit = isInToolkit(skill.id);
+                const isFirst = skills[0].id === skill.id && toolkitCount === 0;
+                
+                html += `
+                    <div class="skill-card ${inToolkit ? 'in-toolkit' : ''} ${isFirst ? 'recommended' : ''}">
+                        <div class="skill-header">
+                            <div class="skill-icon" style="background: ${family.color}20; color: ${family.color}">
+                                ${skill.icon}
+                            </div>
+                            <div class="skill-title">
+                                <div class="skill-name">${skill.name}</div>
+                                <div class="skill-tagline">${skill.tagline}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="skill-description">
+                            ${skill.description}
+                        </div>
+                        
+                        <div class="quick-options">
+                            <div class="quick-options-title">Choose what works for you:</div>
+                            <div class="option-grid">
+                                ${skill.options.map(opt => `
+                                    <div class="option-chip" onclick="event.stopPropagation(); startSkill('${skill.id}', '${opt.text}')">
+                                        ${opt.emoji} ${opt.text}
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <div class="other-input">
+                                <input type="text" class="other-field" placeholder="Something else..." id="other-${skill.id}">
+                                <div class="option-chip" onclick="event.stopPropagation(); 
+                                    const val = document.getElementById('other-${skill.id}').value;
+                                    if(val) startSkill('${skill.id}', val);
+                                ">➕ Add</div>
+                            </div>
+                        </div>
+                        
+                        <div class="skill-footer">
+                            <span class="duration">⏱️ ${skill.duration}</span>
+                            ${inToolkit ? 
+                                '<span class="skill-badge badge-toolkit">✓ IN TOOLKIT</span>' : 
+                                '<span class="skill-badge badge-learn">LEARN →</span>'
+                            }
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `
+                    <div class="back-button" onclick="window.location.href='academy.html'">
+                        ← Back to Survival Toolkit
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('mainContent').innerHTML = html;
+            
+            // Scroll to top
+            setTimeout(() => {
+                const mainContent = document.querySelector('.main-content');
+                if (mainContent) mainContent.scrollTop = 0;
+            }, 50);
+        }
+
+        // ============================================
+        // INIT
+        // ============================================
+        function init() {
+            // Prevent zoom
+            document.addEventListener('touchstart', (e) => {
+                if (e.touches.length > 1) e.preventDefault();
+            }, { passive: false });
+            
+            render();
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
