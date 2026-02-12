@@ -145,11 +145,7 @@
             border-radius: 1.25rem;
             padding: 1.5rem;
             margin-bottom: 1rem;
-            cursor: pointer;
             transition: all 0.2s ease;
-        }
-        .skill-card:active {
-            transform: scale(0.98);
         }
         .skill-card.in-toolkit {
             border: 1px solid rgba(139, 92, 246, 0.4);
@@ -230,6 +226,7 @@
             gap: 0.375rem;
             cursor: pointer;
             transition: all 0.2s ease;
+            font-family: inherit;
         }
         .option-btn:active {
             background: rgba(14, 116, 144, 0.3);
@@ -271,6 +268,7 @@
             gap: 0.25rem;
             cursor: pointer;
             white-space: nowrap;
+            font-family: inherit;
         }
         .add-btn:active {
             background: rgba(14, 116, 144, 0.5);
@@ -323,6 +321,7 @@
             width: 100%;
             margin-top: 1rem;
             transition: all 0.2s ease;
+            font-family: inherit;
         }
         .back-button:active {
             transform: scale(0.98);
@@ -376,8 +375,7 @@
 
     <script>
         // ============================================
-        // FAMILY META - 4 families with correct IDs
-        // Matches skill-engine.html and quick-use.html
+        // FAMILY META - 4 families
         // ============================================
         const FAMILY_META = {
             refocus: { 
@@ -408,12 +406,8 @@
 
         // ============================================
         // ALL SKILLS - 19 skills, 4 families
-        // IDs match skill-engine.html and quick-use.html
         // ============================================
         const ALL_SKILLS = {
-            // -------------------------------------------------
-            // FAMILY 1: REFOCUS - 7 skills
-            // -------------------------------------------------
             refocus: [
                 { 
                     id: 'getbusy', 
@@ -528,10 +522,6 @@
                     ]
                 }
             ],
-
-            // -------------------------------------------------
-            // FAMILY 2: COMFORT - 7 skills
-            // -------------------------------------------------
             comfort: [
                 { 
                     id: 'safeplace', 
@@ -646,10 +636,6 @@
                     ]
                 }
             ],
-
-            // -------------------------------------------------
-            // FAMILY 3: WEIGH IT - 1 skill
-            // -------------------------------------------------
             weighit: [
                 { 
                     id: 'listitout', 
@@ -668,10 +654,6 @@
                     ]
                 }
             ],
-
-            // -------------------------------------------------
-            // FAMILY 4: PAUSE - 4 skills
-            // -------------------------------------------------
             pause: [
                 { 
                     id: 'freeze', 
@@ -761,9 +743,6 @@
             return Object.values(toolkit).filter(skill => skill.familyId === familyId).length;
         }
 
-        // ============================================
-        // UI FUNCTIONS
-        // ============================================
         function showToast(message) {
             const toast = document.getElementById('toast');
             toast.textContent = message;
@@ -772,20 +751,20 @@
         }
 
         // ============================================
-        // SKILL ACTIONS - Passes custom text to skill engine
+        // SKILL ACTIONS - FIXED, GLOBAL
         // ============================================
-        function startSkill(skillId, customAction = null) {
-            if (customAction) {
+        window.startSkill = function(skillId, customAction = null) {
+            console.log('Starting skill:', skillId, customAction);
+            if (customAction && customAction.trim()) {
                 localStorage.setItem('last_custom_action', JSON.stringify({
                     skillId: skillId,
-                    action: customAction,
+                    action: customAction.trim(),
                     timestamp: new Date().toISOString()
                 }));
             }
-            window.location.href = `skill-engine.html?skill=${skillId}`;
-        }
+            window.location.href = `skill-engine.html?skill=${encodeURIComponent(skillId)}`;
+        };
 
-        window.startSkill = startSkill;
         window.showToast = showToast;
 
         // ============================================
@@ -849,9 +828,9 @@
                             </div>
                             <div class="options-grid">
                                 ${skill.options.map(opt => `
-                                    <div class="option-btn" onclick="event.stopPropagation(); startSkill('${skill.id}', '${opt.text.replace(/'/g, "\\'")}')">
+                                    <button class="option-btn" onclick="startSkill('${skill.id}', '${opt.text.replace(/'/g, "\\'")}')">
                                         ${opt.emoji} ${opt.text}
-                                    </div>
+                                    </button>
                                 `).join('')}
                             </div>
                             
@@ -862,14 +841,14 @@
                                        placeholder="Something else..." 
                                        value="">
                                 <button class="add-btn" 
-                                        onclick="event.stopPropagation(); 
-                                                 const val = document.getElementById('custom-${skill.id}').value;
-                                                 if(val.trim()) {
-                                                     startSkill('${skill.id}', val.trim());
-                                                     document.getElementById('custom-${skill.id}').value = '';
-                                                 } else {
-                                                     showToast('Type what you want to try');
-                                                 }">
+                                        onclick="
+                                            const val = document.getElementById('custom-${skill.id}').value;
+                                            if(val.trim()) {
+                                                startSkill('${skill.id}', val.trim());
+                                                document.getElementById('custom-${skill.id}').value = '';
+                                            } else {
+                                                showToast('Type what you want to try');
+                                            }">
                                     ➕ Use this
                                 </button>
                             </div>
@@ -887,9 +866,9 @@
             });
 
             html += `
-                    <div class="back-button" onclick="window.location.href='academy.html'">
+                    <button class="back-button" onclick="window.location.href='academy.html'">
                         ← Back to Survival Toolkit
-                    </div>
+                    </button>
                 </div>
             `;
 
