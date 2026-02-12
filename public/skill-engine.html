@@ -95,7 +95,6 @@
             flex-direction: column;
         }
 
-        /* Progress Bar */
         .progress-container {
             margin-bottom: 2rem;
         }
@@ -119,7 +118,6 @@
             font-weight: 600;
         }
 
-        /* Header */
         .skill-header {
             display: flex;
             align-items: center;
@@ -159,7 +157,6 @@
             font-size: 0.9375rem;
         }
 
-        /* Cards */
         .card {
             background: linear-gradient(135deg, rgba(30, 41, 59, 0.65), rgba(15, 23, 42, 0.45));
             border: 1px solid rgba(51, 65, 85, 0.4);
@@ -182,7 +179,6 @@
             line-height: 1.6;
         }
 
-        /* Visual Screen */
         .visual-container {
             text-align: center;
             padding: 2rem 0;
@@ -205,7 +201,6 @@
             line-height: 1.5;
         }
 
-        /* Steps */
         .steps-list {
             list-style: none;
         }
@@ -231,7 +226,6 @@
             flex-shrink: 0;
         }
 
-        /* Stress Slider */
         .stress-section {
             margin-bottom: 2rem;
         }
@@ -267,7 +261,6 @@
             margin-top: 0.5rem;
         }
 
-        /* Timer */
         .timer-container {
             background: rgba(15, 23, 42, 0.6);
             border: 1px solid rgba(51, 65, 85, 0.4);
@@ -294,7 +287,6 @@
             margin-bottom: 1.5rem;
         }
 
-        /* Rating Buttons */
         .rating-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -316,7 +308,6 @@
         .rating-btn:active {
             transform: scale(0.95);
             background: rgba(30, 41, 59, 0.8);
-            border-color: rgba(14, 116, 144, 0.5);
         }
         .rating-emoji {
             font-size: 2rem;
@@ -327,7 +318,6 @@
             font-weight: 600;
         }
 
-        /* Completion Screen */
         .completion-container {
             text-align: center;
             padding: 2rem 0;
@@ -371,7 +361,6 @@
             font-weight: 600;
         }
 
-        /* Buttons */
         .btn-primary {
             width: 100%;
             padding: 1rem;
@@ -431,7 +420,6 @@
             opacity: 0;
             transition: all 0.3s ease;
             backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
             max-width: calc(100vw - 2rem);
             text-align: center;
             font-size: 0.875rem;
@@ -463,605 +451,437 @@
 
     <script>
         // ============================================
-        // ALL SKILLS DATA - 27 Skills Complete
+        // FAMILY META - 4 families (MATCHES family.html)
+        // ============================================
+        const FAMILY_META = {
+            refocus: { name: 'REFOCUS', icon: '🎯', color: '#0e7490' },
+            comfort: { name: 'COMFORT', icon: '🫂', color: '#7c3aed' },
+            weighit: { name: 'WEIGH IT', icon: '⚖️', color: '#d97706' },
+            pause: { name: 'PAUSE', icon: '🛑', color: '#0891b2' }
+        };
+
+        // ============================================
+        // ALL SKILLS - 19 skills, 4 families (MATCHES family.html)
         // ============================================
         const ALL_SKILLS = {
-            shift: [
+            refocus: [
                 { 
-                    id: 'give', 
-                    name: 'GIVE', 
-                    icon: '🤝', 
-                    familyId: 'shift',
-                    familyName: 'SHIFT',
+                    id: 'getbusy', 
+                    name: 'GET BUSY', 
+                    icon: '🏃', 
+                    familyId: 'refocus',
+                    familyName: 'REFOCUS',
                     familyColor: '#0e7490',
-                    tagline: 'Do something for someone else',
-                    what: 'When you\'re stuck ruminating on yourself, doing something for another person shifts your focus outward. Small acts interrupt the spiral.',
-                    when: 'You\'re overthinking, feeling useless, or trapped in negative thoughts about yourself.',
-                    why: 'When you\'re stuck ruminating, your attention is entirely focused inward. Doing something for another person creates an external focal point that interrupts the self-focused loop. Your nervous system can\'t think its way calm. It needs a physical signal.',
-                    visual: '🤝 💬 ✨',
+                    tagline: 'Do something to occupy your mind',
+                    what: 'When your thoughts are stuck in a loop, doing almost anything else can interrupt the pattern.',
+                    when: 'You are ruminating, overthinking, or stuck in a thought spiral.',
+                    why: 'The brain has limited attention. Activating a different neural pathway—through movement, counting, or a task—disrupts the rumination loop.',
+                    visual: '🔢 🧊 🏃',
                     steps: [
-                        'Pick one person you care about',
-                        'Do something small for them',
-                        'Send a message, give a compliment, or offer help'
+                        'Notice you are stuck in a thought loop',
+                        'Choose a simple, neutral task',
+                        'Do it for 1-3 minutes'
                     ],
-                    practicePrompt: 'Who could you do something for right now?',
-                    practiceInstruction: 'Text someone a genuine compliment',
+                    practicePrompt: 'What can you do right now to occupy your mind?',
+                    practiceInstruction: 'Count 10 things you can see',
                     duration: 45,
-                    quick: 'Text someone a genuine compliment right now'
+                    quick: 'Count 10 things you can see'
                 },
                 { 
-                    id: 'recall', 
-                    name: 'RECALL', 
-                    icon: '📊', 
-                    familyId: 'shift',
-                    familyName: 'SHIFT',
+                    id: 'lendahand', 
+                    name: 'LEND A HAND', 
+                    icon: '🤝', 
+                    familyId: 'refocus',
+                    familyName: 'REFOCUS',
                     familyColor: '#0e7490',
-                    tagline: 'Remember you\'ve survived worse',
-                    what: 'Your brain forgets past resilience. Actively recall specific times you got through something hard.',
-                    when: 'You feel hopeless, like you\'ve never coped and never will.',
-                    why: 'Memory is state-dependent. When you\'re distressed, you can\'t access memories of coping. Actively recalling specific past successes builds evidence that you can survive this too.',
-                    visual: '📊 🧠 💪',
+                    tagline: 'Do something for someone else',
+                    what: 'Shifting focus outward can shrink problems inward. Small acts create distance.',
+                    when: 'You are stuck in self-focus, feeling worthless, or isolated.',
+                    why: 'Altruistic behavior activates reward centers and shifts attention away from self-focused rumination.',
+                    visual: '💬 📞 🤲',
+                    steps: [
+                        'Think of one person you care about',
+                        'Do one small thing for them',
+                        'Notice how it shifts your focus'
+                    ],
+                    practicePrompt: 'Who could use a kind message right now?',
+                    practiceInstruction: 'Send someone a genuine compliment',
+                    duration: 60,
+                    quick: 'Send someone a genuine compliment'
+                },
+                { 
+                    id: 'lookback', 
+                    name: 'LOOK BACK', 
+                    icon: '📅', 
+                    familyId: 'refocus',
+                    familyName: 'REFOCUS',
+                    familyColor: '#0e7490',
+                    tagline: 'Remember what you\'ve survived',
+                    what: 'Your brain forgets resilience. Actively recall past struggles you made it through.',
+                    when: 'You feel hopeless, like you have never coped and never will.',
+                    why: 'Memory is state-dependent. Actively recalling past coping builds evidence that you can survive this too.',
+                    visual: '💔 📉 🗣️',
                     steps: [
                         'Think of a past difficult situation',
-                        'Remember exactly how you got through it',
-                        'Name what strength you used'
+                        'Remember how you got through it',
+                        'Name one strength you used'
                     ],
                     practicePrompt: 'Think of one time you survived something hard',
                     practiceInstruction: 'What got you through it?',
-                    duration: 60,
+                    duration: 45,
                     quick: 'Name one past challenge you survived'
                 },
                 { 
-                    id: 'reverse', 
-                    name: 'REVERSE', 
-                    icon: '🔄', 
-                    familyId: 'shift',
-                    familyName: 'SHIFT',
+                    id: 'flipfeeling', 
+                    name: 'FLIP THE FEELING', 
+                    icon: '🎭', 
+                    familyId: 'refocus',
+                    familyName: 'REFOCUS',
                     familyColor: '#0e7490',
-                    tagline: 'Do the opposite of your urge',
-                    what: 'If your urge is to withdraw, reach out. If it\'s to lash out, step back. Break the pattern.',
-                    when: 'You feel stuck in a repeating cycle of harmful urges or avoidance.',
-                    why: 'Opposite action breaks the feedback loop between emotion and behavior. By acting opposite to the urge, you weaken the emotional habit over time.',
-                    visual: '🔄 🚶 → 🫂',
+                    tagline: 'Change your emotional channel',
+                    what: 'You can\'t always change the situation, but you can shift your emotional state. Give your brain something else to feel.',
+                    when: 'You are stuck in sadness, anger, or anxiety and need a break.',
+                    why: 'Emotions are state-dependent. Comedy, cute animals, and uplifting music can trigger genuine emotional shifts.',
+                    visual: '😂 🎵 🐈',
                     steps: [
-                        'Notice the urge',
-                        'Identify what the opposite would be',
-                        'Do the opposite, even just a little'
+                        'Choose something that creates a different feeling',
+                        'Engage with it for 2-5 minutes',
+                        'Notice the shift'
                     ],
-                    practicePrompt: 'What is your urge right now?',
-                    practiceInstruction: 'Do the opposite, even for 30 seconds',
-                    duration: 30,
-                    quick: 'Do the opposite of what your urge tells you'
+                    practicePrompt: 'What could flip your emotional channel?',
+                    practiceInstruction: 'Watch something funny or cute',
+                    duration: 120,
+                    quick: 'Watch something funny or look at cute animals'
                 },
                 { 
-                    id: 'box', 
-                    name: 'BOX', 
+                    id: 'setitdown', 
+                    name: 'SET IT DOWN', 
                     icon: '📦', 
-                    familyId: 'shift',
-                    familyName: 'SHIFT',
+                    familyId: 'refocus',
+                    familyName: 'REFOCUS',
                     familyColor: '#0e7490',
-                    tagline: 'Put the problem away for later',
-                    what: 'Visualize placing the worry in a container and setting it on a shelf. You can come back to it.',
-                    when: 'You\'re ruminating on a problem you can\'t solve right now.',
-                    why: 'The act of containment signals to your brain that the problem is stored, not lost. This reduces the urgency to keep thinking about it.',
-                    visual: '📦 🗄️ 🧠',
+                    tagline: 'Leave the problem for now',
+                    what: 'You can come back to it later. Right now, give yourself permission to put it away.',
+                    when: 'You are ruminating on a problem you cannot solve right now.',
+                    why: 'Imaginal containment reduces the brain\'s urgency to keep a problem in working memory.',
+                    visual: '📦 🔒 ☁️',
                     steps: [
-                        'Imagine a container - a box, drawer, or locker',
-                        'Place the worry inside it',
-                        'Set it on a shelf or close the lid'
+                        'Imagine a container',
+                        'Place the worry inside',
+                        'Set it aside for later'
                     ],
-                    practicePrompt: 'What do you need to put away right now?',
-                    practiceInstruction: 'Visualize placing it in a box on a high shelf',
-                    duration: 40,
+                    practicePrompt: 'What do you need to put down right now?',
+                    practiceInstruction: 'Imagine placing it in a box on a high shelf',
+                    duration: 30,
                     quick: 'Imagine putting it in a box on a high shelf'
                 },
                 { 
-                    id: 'count', 
-                    name: 'COUNT', 
-                    icon: '🔢', 
-                    familyId: 'shift',
-                    familyName: 'SHIFT',
+                    id: 'swapthought', 
+                    name: 'SWAP THE THOUGHT', 
+                    icon: '🔄', 
+                    familyId: 'refocus',
+                    familyName: 'REFOCUS',
                     familyColor: '#0e7490',
-                    tagline: 'Count objects around you',
-                    what: 'Ground yourself by counting things you can see, hear, or touch. Simple numbers anchor you.',
-                    when: 'You feel spaced out, disconnected, or overwhelmed by thoughts.',
-                    why: 'Counting engages the prefrontal cortex and pulls attention away from the emotional centers of the brain. It\'s a simple cognitive task that grounds you in the present.',
-                    visual: '👁️ 🔢 🧮',
+                    tagline: 'Replace it with another',
+                    what: 'You don\'t have to believe every thought. Try swapping it for a different one.',
+                    when: 'You are stuck on a thought that feels true but is unhelpful.',
+                    why: 'Cognitive reappraisal weakens automatic negative thoughts. Deliberately replacing a thought creates a new neural pathway.',
+                    visual: '👯 ❓ 📝',
                     steps: [
-                        'Look around your environment',
-                        'Pick a category (colors, shapes, objects)',
-                        'Count 5-10 things in that category'
+                        'Notice the thought',
+                        'Ask: Is this 100% true?',
+                        'Choose a more helpful thought'
                     ],
-                    practicePrompt: 'What can you see around you?',
-                    practiceInstruction: 'Count 10 things you can see right now',
-                    duration: 30,
-                    quick: 'Count 10 things you can see right now'
+                    practicePrompt: 'What thought could you swap?',
+                    practiceInstruction: 'What would a friend say instead?',
+                    duration: 40,
+                    quick: 'What would a friend say?'
                 },
                 { 
-                    id: 'jolt', 
-                    name: 'JOLT', 
+                    id: 'feelsomething', 
+                    name: 'FEEL SOMETHING', 
                     icon: '⚡', 
-                    familyId: 'shift',
-                    familyName: 'SHIFT',
+                    familyId: 'refocus',
+                    familyName: 'REFOCUS',
                     familyColor: '#0e7490',
-                    tagline: 'Intense sensation to reset',
-                    what: 'A sudden physical sensation can interrupt an emotional spiral. Use cold, sour, or movement.',
-                    when: 'You feel dissociated, panicked, or stuck in intense emotion.',
-                    why: 'Intense physical sensations activate the somatosensory cortex and interrupt the emotional cascade. It\'s like hitting a reset button.',
-                    visual: '💧 🧊 ⚡',
+                    tagline: 'Wake up your senses',
+                    what: 'When you feel numb or disconnected, strong sensations can bring you back to your body.',
+                    when: 'You feel dissociated, numb, or unreal.',
+                    why: 'Strong physical sensations activate the somatosensory cortex and interrupt dissociation.',
+                    visual: '💧 🧊 🍋',
                     steps: [
-                        'Choose a strong sensation - cold, sour, or intense',
+                        'Choose a strong sensation',
                         'Apply it briefly',
-                        'Notice the shift in your body'
+                        'Notice the shift'
                     ],
-                    practicePrompt: 'What intense sensation can you use?',
-                    practiceInstruction: 'Splash cold water on your face',
+                    practicePrompt: 'What sensation can you feel right now?',
+                    practiceInstruction: 'Splash cold water or hold an ice cube',
                     duration: 15,
                     quick: 'Splash cold water on your face'
                 }
             ],
-            soothe: [
+            comfort: [
                 { 
-                    id: 'vision', 
-                    name: 'VISION', 
-                    icon: '👁️', 
-                    familyId: 'soothe',
-                    familyName: 'SOOTHE',
+                    id: 'safeplace', 
+                    name: 'SAFE PLACE', 
+                    icon: '🏝️', 
+                    familyId: 'comfort',
+                    familyName: 'COMFORT',
                     familyColor: '#7c3aed',
-                    tagline: 'Soothing things to look at',
-                    what: 'Your visual system connects directly to your nervous system. Feed it calm.',
-                    when: 'You feel agitated, overstimulated, or need a visual break.',
-                    why: 'The visual system is directly linked to the autonomic nervous system. Seeing calming images can lower heart rate and reduce stress hormones.',
-                    visual: '☁️ 🌳 🖼️',
+                    tagline: 'Imagine somewhere calm',
+                    what: 'Close your eyes and picture a place where you feel completely at ease. It can be real or imagined.',
+                    when: 'You feel anxious, overwhelmed, or need a mental escape.',
+                    why: 'Imaginal exposure to safety cues activates the parasympathetic nervous system.',
+                    visual: '🏖️ 🌲 🛋️',
                     steps: [
-                        'Find something soothing to look at',
-                        'Spend 1-2 minutes really looking',
-                        'Notice colors, patterns, movement'
+                        'Close your eyes',
+                        'Imagine a place where you feel completely safe',
+                        'Engage all your senses'
                     ],
-                    practicePrompt: 'What soothes your eyes?',
-                    practiceInstruction: 'Look at something beautiful or calming',
+                    practicePrompt: 'Where is your safe place?',
+                    practiceInstruction: 'Imagine yourself there for 2 minutes',
+                    duration: 90,
+                    quick: 'Close your eyes and imagine your safe place'
+                },
+                { 
+                    id: 'findlesson', 
+                    name: 'FIND THE LESSON', 
+                    icon: '📘', 
+                    familyId: 'comfort',
+                    familyName: 'COMFORT',
+                    familyColor: '#7c3aed',
+                    tagline: 'Look for meaning',
+                    what: 'Hard moments can teach us something. Not because they should happen, but because we can grow from them.',
+                    when: 'You feel bitter, resentful, or stuck in "why me?"',
+                    why: 'Meaning-making transforms suffering into growth. Finding a lesson doesn\'t justify the pain, but it reduces helplessness.',
+                    visual: '💪 🎯 🌱',
+                    steps: [
+                        'Acknowledge the pain',
+                        'Ask: What might this teach me?',
+                        'Write down one insight'
+                    ],
+                    practicePrompt: 'What could this situation teach you?',
+                    practiceInstruction: 'Name one potential lesson or strength',
+                    duration: 60,
+                    quick: 'What is one thing this could teach you?'
+                },
+                { 
+                    id: 'letgo', 
+                    name: 'LET GO', 
+                    icon: '🕊️', 
+                    familyId: 'comfort',
+                    familyName: 'COMFORT',
+                    familyColor: '#7c3aed',
+                    tagline: 'Release what you cannot control',
+                    what: 'Some things are not yours to carry right now. Give yourself permission to put them down.',
+                    when: 'You are holding onto something you cannot change.',
+                    why: 'Radical acceptance reduces suffering. Letting go is an active process, not passive resignation.',
+                    visual: '🍃 🌬️ 🎈',
+                    steps: [
+                        'Identify what you cannot control',
+                        'Say "I release this"',
+                        'Imagine it floating away'
+                    ],
+                    practicePrompt: 'What are you holding that you can let go?',
+                    practiceInstruction: 'Say "I release this" and imagine it floating away',
+                    duration: 30,
+                    quick: 'Say "I release this" and breathe out'
+                },
+                { 
+                    id: 'calmdown', 
+                    name: 'CALM DOWN', 
+                    icon: '🧘', 
+                    familyId: 'comfort',
+                    familyName: 'COMFORT',
+                    familyColor: '#7c3aed',
+                    tagline: 'Soothe your body',
+                    what: 'Your senses are a direct line to your nervous system. Feed them calm.',
+                    when: 'You feel agitated, on edge, or overstimulated.',
+                    why: 'Sensory soothing (soft textures, gentle sounds, calming scents) directly activates the parasympathetic nervous system.',
+                    visual: '👁️ 👂 👃',
+                    steps: [
+                        'Choose one sense',
+                        'Find something calming for that sense',
+                        'Focus on it for 1-3 minutes'
+                    ],
+                    practicePrompt: 'What sense can you soothe right now?',
+                    practiceInstruction: 'Look at something beautiful or listen to calming sounds',
                     duration: 60,
                     quick: 'Look at something beautiful or calming'
                 },
                 { 
-                    id: 'hearing', 
-                    name: 'HEARING', 
-                    icon: '👂', 
-                    familyId: 'soothe',
-                    familyName: 'SOOTHE',
+                    id: 'onething', 
+                    name: 'ONE THING', 
+                    icon: '🎯', 
+                    familyId: 'comfort',
+                    familyName: 'COMFORT',
                     familyColor: '#7c3aed',
-                    tagline: 'Soothing sounds',
-                    what: 'Certain frequencies calm the autonomic nervous system. Find your comfort sound.',
-                    when: 'You feel on edge, overwhelmed by noise, or need to shift your mood.',
-                    why: 'Rhythmic, predictable sounds signal safety to the brain. Slow tempos can entrain heart rate and breathing.',
-                    visual: '🌧️ 🎵 🐦',
+                    tagline: 'Focus on just this moment',
+                    what: 'Your mind can only hold so much. For now, focus on one thing. Just this breath. Just this moment.',
+                    when: 'You feel scattered, overwhelmed, or pulled in many directions.',
+                    why: 'Mono-tasking reduces cognitive load and anxiety. The brain is not designed for multitasking.',
+                    visual: '🫁 👁️ 👂',
                     steps: [
-                        'Find a sound that calms you',
-                        'Close your eyes and listen',
-                        'Let the sound fill your attention'
+                        'Choose one thing',
+                        'Focus all attention on it',
+                        'When the mind wanders, gently return'
                     ],
-                    practicePrompt: 'What sound calms you?',
-                    practiceInstruction: 'Listen to rain, waves, or quiet music',
-                    duration: 60,
-                    quick: 'Listen to rain, waves, or quiet music'
+                    practicePrompt: 'What one thing can you focus on?',
+                    practiceInstruction: 'Count 5 breaths, from 1 to 5',
+                    duration: 40,
+                    quick: 'Count 5 breaths, from 1 to 5'
                 },
                 { 
-                    id: 'smell', 
-                    name: 'SMELL', 
-                    icon: '👃', 
-                    familyId: 'soothe',
-                    familyName: 'SOOTHE',
+                    id: 'stepaway', 
+                    name: 'STEP AWAY', 
+                    icon: '🚶', 
+                    familyId: 'comfort',
+                    familyName: 'COMFORT',
                     familyColor: '#7c3aed',
-                    tagline: 'Calming scents',
-                    what: 'Olfactory nerves connect directly to the emotion centers of your brain.',
-                    when: 'You feel anxious, unfocused, or need quick grounding.',
-                    why: 'Smell is the only sense that bypasses the thalamus and goes straight to the amygdala and hippocampus. It\'s a direct line to emotion and memory.',
-                    visual: '🌸 🍊 ☕',
+                    tagline: 'Take a short break',
+                    what: 'You don\'t have to leave forever. Just 5-15 minutes away can change everything.',
+                    when: 'You are in a situation that is escalating and need a pause.',
+                    why: 'Time out interrupts the escalation cycle. It gives the nervous system time to down-regulate.',
+                    visual: '🚪 🌳 🎧',
                     steps: [
-                        'Find a scent you find pleasant',
-                        'Bring it close',
-                        'Take slow, mindful sniffs'
+                        'Recognize you need a break',
+                        'Step away physically',
+                        'Give yourself 5-15 minutes'
                     ],
-                    practicePrompt: 'What scent is available to you?',
-                    practiceInstruction: 'Smell lavender, citrus, or a comforting scent',
-                    duration: 30,
-                    quick: 'Smell lavender, citrus, or a comforting scent'
+                    practicePrompt: 'Where could you step away to?',
+                    practiceInstruction: 'Go to another room or step outside',
+                    duration: 300,
+                    quick: 'Step into another room for 5 minutes'
                 },
                 { 
-                    id: 'taste', 
-                    name: 'TASTE', 
-                    icon: '👅', 
-                    familyId: 'soothe',
-                    familyName: 'SOOTHE',
-                    familyColor: '#7c3aed',
-                    tagline: 'Soothing flavors',
-                    what: 'Mindful tasting can ground you in the present moment.',
-                    when: 'You feel disconnected, numb, or want to practice mindfulness.',
-                    why: 'Intense focus on taste sensation pulls attention away from rumination and into the present moment.',
-                    visual: '🍫 🍵 🍓',
-                    steps: [
-                        'Choose something to taste',
-                        'Take a small amount',
-                        'Focus completely on the flavor'
-                    ],
-                    practicePrompt: 'What can you taste right now?',
-                    practiceInstruction: 'Savor a small piece of chocolate or tea',
-                    duration: 45,
-                    quick: 'Savor a small piece of chocolate or tea'
-                },
-                { 
-                    id: 'touch', 
-                    name: 'TOUCH', 
-                    icon: '🖐️', 
-                    familyId: 'soothe',
-                    familyName: 'SOOTHE',
-                    familyColor: '#7c3aed',
-                    tagline: 'Comfort through texture',
-                    what: 'Physical sensation can signal safety to your nervous system.',
-                    when: 'You feel disconnected from your body or need comfort.',
-                    why: 'Gentle, pleasant touch releases oxytocin and reduces cortisol. It\'s a biological signal of safety.',
-                    visual: '🧸 🛏️ 🐈',
-                    steps: [
-                        'Find something with a comforting texture',
-                        'Focus on how it feels',
-                        'Move your fingers slowly over it'
-                    ],
-                    practicePrompt: 'What comforting texture can you find?',
-                    practiceInstruction: 'Hold something soft, warm, or textured',
-                    duration: 30,
-                    quick: 'Hold something soft, warm, or textured'
-                },
-                { 
-                    id: 'movement', 
-                    name: 'MOVEMENT', 
-                    icon: '🧘', 
-                    familyId: 'soothe',
-                    familyName: 'SOOTHE',
-                    familyColor: '#7c3aed',
-                    tagline: 'Soothing movement',
-                    what: 'Gentle, rhythmic movement regulates the nervous system.',
-                    when: 'You feel restless, agitated, or stuck in your body.',
-                    why: 'Slow, predictable movement activates the parasympathetic nervous system. It\'s a signal to the body that it\'s safe to rest.',
-                    visual: '🧘 🤲 🚶',
-                    steps: [
-                        'Start with gentle movement',
-                        'Rock, sway, or stretch slowly',
-                        'Repeat the movement rhythmically'
-                    ],
-                    practicePrompt: 'What gentle movement feels good?',
-                    practiceInstruction: 'Rock gently, stretch, or sway',
-                    duration: 60,
-                    quick: 'Rock gently, stretch, or sway'
-                }
-            ],
-            flip: [
-                { 
-                    id: 'prove', 
-                    name: 'PROVE', 
-                    icon: '🔍', 
-                    familyId: 'flip',
-                    familyName: 'FLIP',
-                    familyColor: '#d97706',
-                    tagline: 'Find evidence against the thought',
-                    what: 'Your thoughts aren\'t facts. Look for evidence that contradicts the negative belief.',
-                    when: 'You\'re stuck in a thought that feels true but might not be.',
-                    why: 'Cognitive therapy works by examining evidence. When you actively look for disconfirming evidence, you weaken the grip of automatic negative thoughts.',
-                    visual: '🔍 📄 ❌',
-                    steps: [
-                        'Write down the negative thought',
-                        'Ask: What contradicts this?',
-                        'List at least one piece of counter-evidence'
-                    ],
-                    practicePrompt: 'What\'s the thought you\'re stuck on?',
-                    practiceInstruction: 'Find one fact that disproves this thought',
-                    duration: 60,
-                    quick: 'What\'s one fact that disproves this thought?'
-                },
-                { 
-                    id: 'reframe', 
-                    name: 'REFRAME', 
-                    icon: '🖼️', 
-                    familyId: 'flip',
-                    familyName: 'FLIP',
-                    familyColor: '#d97706',
-                    tagline: 'Look at it differently',
-                    what: 'Change the meaning of the situation. What\'s another interpretation?',
-                    when: 'You\'re seeing a situation through only one, negative lens.',
-                    why: 'The meaning we assign to events drives our emotions, not the events themselves. Changing the frame changes the feeling.',
-                    visual: '🖼️ 🔄 🎭',
-                    steps: [
-                        'Name your current interpretation',
-                        'Brainstorm 2-3 other interpretations',
-                        'Choose one that feels possible'
-                    ],
-                    practicePrompt: 'How are you seeing this?',
-                    practiceInstruction: 'How would a friend see this?',
-                    duration: 45,
-                    quick: 'How would a friend see this?'
-                },
-                { 
-                    id: 'compassion', 
-                    name: 'COMPASSION', 
+                    id: 'beownfriend', 
+                    name: 'BE YOUR OWN FRIEND', 
                     icon: '💗', 
-                    familyId: 'flip',
-                    familyName: 'FLIP',
-                    familyColor: '#d97706',
-                    tagline: 'Talk to yourself like a friend',
+                    familyId: 'comfort',
+                    familyName: 'COMFORT',
+                    familyColor: '#7c3aed',
+                    tagline: 'Talk to yourself with kindness',
                     what: 'Would you say this to someone you love? If not, change the words.',
-                    when: 'You\'re being harsh, critical, or unforgiving with yourself.',
-                    why: 'Self-compassion activates the care-giving system and reduces threat responses. It\'s a skill that can be learned and strengthened.',
-                    visual: '💗 💬 🤗',
+                    when: 'You are being self-critical, harsh, or perfectionistic.',
+                    why: 'Self-compassion activates care-giving neural circuits and reduces threat responses.',
+                    visual: '💬 🤗 💪',
                     steps: [
                         'Notice your self-talk',
                         'Imagine a friend in your situation',
                         'Speak to yourself as you would to them'
                     ],
                     practicePrompt: 'What do you need to hear right now?',
-                    practiceInstruction: 'What would you tell a friend in this situation?',
-                    duration: 50,
-                    quick: 'What would you tell a friend in this situation?'
-                },
-                { 
-                    id: 'observer', 
-                    name: 'OBSERVER', 
-                    icon: '👓', 
-                    familyId: 'flip',
-                    familyName: 'FLIP',
-                    familyColor: '#d97706',
-                    tagline: 'Watch thoughts like clouds',
-                    what: 'You are not your thoughts. Watch them pass by without engaging.',
-                    when: 'You\'re caught up in thoughts, believing everything they say.',
-                    why: 'Defusion techniques create distance between you and your thoughts. You can\'t stop thoughts, but you can change your relationship to them.',
-                    visual: '☁️ 👓 🍃',
-                    steps: [
-                        'Notice the thought',
-                        'Label it: "I notice I\'m having the thought that..."',
-                        'Let it float away'
-                    ],
-                    practicePrompt: 'What thought is here right now?',
-                    practiceInstruction: 'Notice it, label it, let it go',
-                    duration: 40,
-                    quick: 'Notice the thought, label it, let it go'
-                },
-                { 
-                    id: 'timeline', 
-                    name: 'TIMELINE', 
-                    icon: '⏳', 
-                    familyId: 'flip',
-                    familyName: 'FLIP',
-                    familyColor: '#d97706',
-                    tagline: 'Will this matter in a year?',
-                    what: 'Zoom out. Most moments of panic fade with perspective.',
-                    when: 'You\'re catastrophizing or blowing things out of proportion.',
-                    why: 'Temporal distancing helps shrink problems to their actual size. The brain treats near-future events as more emotionally intense than far-future ones.',
-                    visual: '⏳ 📅 🔭',
-                    steps: [
-                        'Ask: Will I remember this in 1 week?',
-                        'In 1 month?',
-                        'In 1 year?'
-                    ],
-                    practicePrompt: 'How will you feel about this tomorrow?',
-                    practiceInstruction: 'Ask: Will I remember this in a year?',
-                    duration: 30,
-                    quick: 'Ask: Will I remember this in a year?'
-                },
-                { 
-                    id: 'bestfriend', 
-                    name: 'BEST FRIEND', 
-                    icon: '👯', 
-                    familyId: 'flip',
-                    familyName: 'FLIP',
-                    familyColor: '#d97706',
-                    tagline: 'What would they say?',
-                    what: 'Channel someone who loves you unconditionally.',
-                    when: 'You can\'t access compassion for yourself.',
-                    why: 'We often have more compassion for others than ourselves. Borrowing their voice can bypass your own critical inner voice.',
-                    visual: '👯 💬 ❤️',
-                    steps: [
-                        'Think of someone who loves you',
-                        'Imagine what they would say',
-                        'Let their voice be your voice'
-                    ],
-                    practicePrompt: 'Who loves you unconditionally?',
-                    practiceInstruction: 'Imagine your best friend is here. What do they say?',
+                    practiceInstruction: 'Say "I am doing my best. This is temporary."',
                     duration: 45,
-                    quick: 'Imagine your best friend is here. What do they say?'
+                    quick: 'Say "I am doing my best. This is temporary."'
                 }
             ],
-            reset: [
+            weighit: [
                 { 
-                    id: 'coldwater', 
-                    name: 'COLD WATER', 
-                    icon: '💧', 
-                    familyId: 'reset',
-                    familyName: 'RESET',
-                    familyColor: '#0891b2',
-                    tagline: 'Dive reflex',
-                    what: 'Cold water on your face triggers the mammalian dive reflex, slowing heart rate.',
-                    when: 'You feel panicked, activated, or overwhelmed.',
-                    why: 'The dive reflex is an ancient physiological response. Cold water on the face activates the vagus nerve and immediately slows heart rate.',
-                    visual: '💧 🧊 ❄️',
-                    steps: [
-                        'Turn on cold water',
-                        'Splash water on your face',
-                        'Hold your breath for a few seconds'
-                    ],
-                    practicePrompt: 'Can you access cold water?',
-                    practiceInstruction: 'Splash cold water on your face',
-                    duration: 15,
-                    quick: 'Splash cold water on your face'
-                },
-                { 
-                    id: 'breath', 
-                    name: 'BREATH', 
-                    icon: '🌬️', 
-                    familyId: 'reset',
-                    familyName: 'RESET',
-                    familyColor: '#0891b2',
-                    tagline: 'Extended exhale',
-                    what: 'Longer exhales activate the parasympathetic nervous system.',
-                    when: 'You feel anxious, stressed, or need to calm down.',
-                    why: 'The breath is the only autonomic function you can consciously control. Long exhales signal safety to the brain.',
-                    visual: '🌬️ 4️⃣ 6️⃣',
-                    steps: [
-                        'Inhale through nose for 4 counts',
-                        'Exhale through mouth for 6 counts',
-                        'Repeat 5 times'
-                    ],
-                    practicePrompt: 'Can you lengthen your exhale?',
-                    practiceInstruction: 'Inhale 4, exhale 6. Repeat 5 times.',
-                    duration: 50,
-                    quick: 'Inhale 4, exhale 6. Repeat 5 times.'
-                },
-                { 
-                    id: 'movementreset', 
-                    name: 'MOVEMENT', 
-                    icon: '🏃', 
-                    familyId: 'reset',
-                    familyName: 'RESET',
-                    familyColor: '#0891b2',
-                    tagline: 'Change your state',
-                    what: 'Intense emotions live in the body. Move to shift them.',
-                    when: 'You feel stuck, frozen, or trapped in your body.',
-                    why: 'Physical movement changes physiology. It burns off stress hormones and shifts your body out of freeze mode.',
-                    visual: '🏃 🦵 🫨',
-                    steps: [
-                        'Stand up',
-                        'Move vigorously for 30 seconds',
-                        'Notice how your body feels'
-                    ],
-                    practicePrompt: 'Can you move your body?',
-                    practiceInstruction: 'Jump, shake, or run in place for 30 seconds',
-                    duration: 30,
-                    quick: 'Jump, shake, or run in place for 30 seconds'
-                },
-                { 
-                    id: 'temperature', 
-                    name: 'TEMPERATURE', 
-                    icon: '🌡️', 
-                    familyId: 'reset',
-                    familyName: 'RESET',
-                    familyColor: '#0891b2',
-                    tagline: 'Hot or cold shift',
-                    what: 'Extreme temperature can interrupt dissociation and panic.',
-                    when: 'You feel numb, disconnected, or panicked.',
-                    why: 'Temperature sensation is one of the strongest somatic signals. It forces the brain to attend to the body.',
-                    visual: '🌡️ ❄️ 🔥',
-                    steps: [
-                        'Choose hot or cold',
-                        'Apply briefly to hands or face',
-                        'Notice the sensation'
-                    ],
-                    practicePrompt: 'What temperature can you access?',
-                    practiceInstruction: 'Hold an ice cube or warm your hands',
-                    duration: 20,
-                    quick: 'Hold an ice cube or warm your hands'
-                },
-                { 
-                    id: 'pressure', 
-                    name: 'PRESSURE', 
-                    icon: '⚖️', 
-                    familyId: 'reset',
-                    familyName: 'RESET',
-                    familyColor: '#0891b2',
-                    tagline: 'Deep pressure',
-                    what: 'Firm, even pressure on your body can feel grounding and safe.',
-                    when: 'You feel anxious, ungrounded, or need comfort.',
-                    why: 'Deep pressure stimulation releases serotonin and dopamine. It\'s the same mechanism behind swaddling and weighted blankets.',
-                    visual: '⚖️ 🛏️ 🫂',
-                    steps: [
-                        'Find something that provides pressure',
-                        'Apply firm, even pressure',
-                        'Hold for 1-2 minutes'
-                    ],
-                    practicePrompt: 'What can provide pressure?',
-                    practiceInstruction: 'Wrap yourself in a blanket or hug yourself tightly',
-                    duration: 45,
-                    quick: 'Wrap yourself in a blanket or hug yourself tightly'
-                },
-                { 
-                    id: 'rhythm', 
-                    name: 'RHYTHM', 
-                    icon: '🥁', 
-                    familyId: 'reset',
-                    familyName: 'RESET',
-                    familyColor: '#0891b2',
-                    tagline: 'Repetitive motion',
-                    what: 'Steady, predictable rhythms soothe the nervous system.',
-                    when: 'You feel dysregulated, scattered, or agitated.',
-                    why: 'The brain entrains to rhythmic stimuli. Steady rhythm organizes neural firing and promotes regulation.',
-                    visual: '🥁 🦵 💓',
-                    steps: [
-                        'Start a steady rhythm',
-                        'Tap your leg, walk, or rock',
-                        'Match your breath to the rhythm'
-                    ],
-                    practicePrompt: 'Can you find a steady rhythm?',
-                    practiceInstruction: 'Tap your leg in a steady pattern',
-                    duration: 40,
-                    quick: 'Tap your leg in a steady pattern'
-                }
-            ],
-            decide: [
-                { 
-                    id: 'procon', 
-                    name: 'PRO/CON', 
+                    id: 'listitout', 
+                    name: 'LIST IT OUT', 
                     icon: '📋', 
-                    familyId: 'decide',
-                    familyName: 'DECIDE',
-                    familyColor: '#7c3aed',
-                    tagline: 'Weigh your options',
-                    what: 'When urges are strong, write down the pros and cons of acting vs. not acting.',
-                    when: 'You feel an urge to do something you might regret.',
-                    why: 'Urges are emotional, not logical. Writing pros and cons engages the prefrontal cortex and slows down impulsive action.',
-                    visual: '📋 ✅ ❌',
+                    familyId: 'weighit',
+                    familyName: 'WEIGH IT',
+                    familyColor: '#d97706',
+                    tagline: 'Compare helping vs hurting',
+                    what: 'When urges are strong, writing down the pros and cons can slow you down enough to choose wisely.',
+                    when: 'You feel an urge to do something impulsive that you might regret.',
+                    why: 'Urges are emotional, not logical. Writing pros and cons engages the prefrontal cortex and reduces impulsivity.',
+                    visual: '✅ ❌ 📝',
                     steps: [
-                        'Draw a line down the middle',
-                        'Label one side "Act" and one "Don\'t act"',
+                        'Draw a line down the paper',
+                        'Label: Act vs. Don\'t act',
                         'List pros and cons for each'
                     ],
                     practicePrompt: 'What decision are you facing?',
                     practiceInstruction: 'Quick list: What helps? What hurts?',
-                    duration: 60,
+                    duration: 90,
                     quick: 'Quick list: What helps? What hurts?'
-                },
+                }
+            ],
+            pause: [
                 { 
-                    id: 'delay', 
-                    name: 'DELAY', 
-                    icon: '⏰', 
-                    familyId: 'decide',
-                    familyName: 'DECIDE',
-                    familyColor: '#7c3aed',
-                    tagline: 'Wait 10 minutes',
-                    what: 'Urges peak and pass like waves. Delay gives time for the intensity to drop.',
-                    when: 'You feel an intense urge that you know will pass.',
-                    why: 'The intensity of urges is time-limited. If you can ride the wave for 10-20 minutes, the peak usually passes.',
-                    visual: '⏰ 🌊 ⏳',
+                    id: 'freeze', 
+                    name: 'FREEZE', 
+                    icon: '❄️', 
+                    familyId: 'pause',
+                    familyName: 'PAUSE',
+                    familyColor: '#0891b2',
+                    tagline: 'Stop. Don\'t move. Don\'t react.',
+                    what: 'The moment between urge and action is where your power lives. Just freeze for 5-10 seconds.',
+                    when: 'You are about to react automatically and want to choose differently.',
+                    why: 'Freezing interrupts the automatic action chain. It creates space for choice.',
+                    visual: '⏸️ 🧊 🤚',
                     steps: [
-                        'Notice the urge',
-                        'Set a timer for 10 minutes',
-                        'Do something else until it goes off'
+                        'Notice the urge to act',
+                        'Stop all movement',
+                        'Count to 5'
                     ],
-                    practicePrompt: 'Can you wait 10 minutes?',
-                    practiceInstruction: 'Set a timer for 10 minutes before deciding',
-                    duration: 600,
-                    quick: 'Set a timer for 10 minutes before deciding'
+                    practicePrompt: 'Can you freeze for 5 seconds?',
+                    practiceInstruction: 'Stop. Don\'t move. Count to 5.',
+                    duration: 10,
+                    quick: 'Stop. Don\'t move. Count to 5.'
                 },
                 { 
-                    id: 'wise', 
-                    name: 'WISE MIND', 
-                    icon: '🧠', 
-                    familyId: 'decide',
-                    familyName: 'DECIDE',
-                    familyColor: '#7c3aed',
-                    tagline: 'What\'s the wise choice?',
-                    what: 'Between emotion mind and logic mind is wise mind. Ask: What\'s effective right now?',
-                    when: 'You feel pulled between what you want and what you "should" do.',
-                    why: 'Wise mind integrates emotion and reason. It\'s the part of you that knows what\'s truly effective, not just what feels good or looks right.',
-                    visual: '🧠 ⚖️ 🎯',
+                    id: 'stepback', 
+                    name: 'STEP BACK', 
+                    icon: '👣', 
+                    familyId: 'pause',
+                    familyName: 'PAUSE',
+                    familyColor: '#0891b2',
+                    tagline: 'Create space between you and the urge',
+                    what: 'Take a breath. Step away from the situation. Even one step changes your perspective.',
+                    when: 'You are emotionally flooded and need distance.',
+                    why: 'Physical distance creates psychological distance. It signals safety to the brain.',
+                    visual: '🫁 🚶 🧘',
                     steps: [
-                        'Acknowledge emotion mind',
-                        'Acknowledge logic mind',
+                        'Take one deep breath',
+                        'Physically step back',
+                        'Pause and notice'
+                    ],
+                    practicePrompt: 'Can you step back?',
+                    practiceInstruction: 'Take one step back and breathe',
+                    duration: 20,
+                    quick: 'Take one step back and breathe'
+                },
+                { 
+                    id: 'notice', 
+                    name: 'NOTICE', 
+                    icon: '👓', 
+                    familyId: 'pause',
+                    familyName: 'PAUSE',
+                    familyColor: '#0891b2',
+                    tagline: 'Watch what\'s happening inside',
+                    what: 'You are not your thoughts. You are the one noticing them. Just observe without judgment.',
+                    when: 'You are caught up in thoughts, believing everything they say.',
+                    why: 'Cognitive defusion creates distance. You can\'t stop thoughts, but you can change your relationship to them.',
+                    visual: '☁️ 🌊 🏷️',
+                    steps: [
+                        'Notice the thought or feeling',
+                        'Label it: "I notice I am thinking..."',
+                        'Let it pass like a cloud'
+                    ],
+                    practicePrompt: 'What thought is here right now?',
+                    practiceInstruction: 'Label it: "I notice I am thinking..."',
+                    duration: 40,
+                    quick: 'Label your thought: "I notice I am thinking..."'
+                },
+                { 
+                    id: 'moveforward', 
+                    name: 'MOVE FORWARD', 
+                    icon: '🎯', 
+                    familyId: 'pause',
+                    familyName: 'PAUSE',
+                    familyColor: '#0891b2',
+                    tagline: 'Act with intention',
+                    what: 'Now that you\'ve paused, what\'s the wise next step? Not perfect — just wise.',
+                    when: 'You have paused and now need to choose what to do next.',
+                    why: 'After pause, intention is key. Wise mind integrates emotion and reason.',
+                    visual: '🧠 ⚖️ 🕯️',
+                    steps: [
+                        'Acknowledge emotion',
+                        'Acknowledge logic',
                         'Ask: What\'s the wise thing to do?'
                     ],
                     practicePrompt: 'What does wise mind say?',
@@ -1086,10 +906,11 @@
             timerRunning: false,
             practiced: false,
 
-            // Load skill from URL
             loadSkill() {
                 const urlParams = new URLSearchParams(window.location.search);
                 const skillId = urlParams.get('skill');
+                
+                console.log('Loading skill:', skillId);
                 
                 if (!skillId) {
                     showToast('No skill selected');
@@ -1097,21 +918,22 @@
                     return;
                 }
 
-                // Find skill in ALL_SKILLS
+                let foundSkill = null;
                 for (const familyId in ALL_SKILLS) {
                     const found = ALL_SKILLS[familyId].find(s => s.id === skillId);
                     if (found) {
-                        this.skill = JSON.parse(JSON.stringify(found));
+                        foundSkill = JSON.parse(JSON.stringify(found));
                         break;
                     }
                 }
 
-                if (!this.skill) {
+                if (!foundSkill) {
                     showToast('Skill not found');
                     setTimeout(() => window.location.href = 'academy.html', 1500);
                     return;
                 }
 
+                this.skill = foundSkill;
                 this.currentStep = 1;
                 this.sudsBefore = 5;
                 this.sudsAfter = null;
@@ -1121,7 +943,6 @@
                 this.render();
             },
 
-            // Navigation
             nextStep() {
                 if (this.currentStep < 7) {
                     this.currentStep++;
@@ -1136,7 +957,6 @@
                 }
             },
 
-            // Stress ratings
             setSudsBefore(value) {
                 this.sudsBefore = parseInt(value);
                 this.render();
@@ -1152,7 +972,6 @@
                 this.render();
             },
 
-            // Timer
             startTimer() {
                 if (this.timerRunning) return;
                 
@@ -1184,7 +1003,6 @@
                 this.nextStep();
             },
 
-            // Add to toolkit
             addToToolkit() {
                 const toolkit = JSON.parse(localStorage.getItem('mphaven_toolkit') || '{}');
                 
@@ -1203,7 +1021,6 @@
                 this.render();
             },
 
-            // Navigation
             goToToolkit() {
                 window.location.href = 'my-toolkit.html';
             },
@@ -1212,14 +1029,12 @@
                 window.location.href = `quick-use.html?skill=${this.skill.id}`;
             },
 
-            // Format time
             formatTime(seconds) {
                 const mins = Math.floor(seconds / 60);
                 const secs = seconds % 60;
                 return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
             },
 
-            // Render current screen
             render() {
                 if (!this.skill) return;
                 
@@ -1229,7 +1044,6 @@
                 
                 let html = `<div class="content-wrapper">`;
 
-                // Progress bar
                 html += `
                     <div class="progress-container">
                         <div class="progress-steps">
@@ -1241,7 +1055,6 @@
                     </div>
                 `;
 
-                // SCREEN 1: Intro
                 if (step === 1) {
                     html += `
                         <div class="skill-header">
@@ -1272,10 +1085,7 @@
                             <button class="btn-secondary" onclick="window.location.href='family.html?id=${s.familyId}'">← Back</button>
                         </div>
                     `;
-                }
-                
-                // SCREEN 2: Why
-                else if (step === 2) {
+                } else if (step === 2) {
                     html += `
                         <div class="card">
                             <div class="card-title">🧠 Why it works</div>
@@ -1287,10 +1097,7 @@
                             <button class="btn-secondary" onclick="AppState.prevStep()">← Back</button>
                         </div>
                     `;
-                }
-
-                // SCREEN 3: Visual
-                else if (step === 3) {
+                } else if (step === 3) {
                     html += `
                         <div class="visual-container">
                             <div class="visual-emoji">${s.visual || s.icon}</div>
@@ -1307,10 +1114,7 @@
                             <button class="btn-secondary" onclick="AppState.prevStep()">← Back</button>
                         </div>
                     `;
-                }
-
-                // SCREEN 4: Steps
-                else if (step === 4) {
+                } else if (step === 4) {
                     html += `
                         <div class="card">
                             <div class="card-title">📋 Step by step</div>
@@ -1329,10 +1133,7 @@
                             <button class="btn-secondary" onclick="AppState.prevStep()">← Back</button>
                         </div>
                     `;
-                }
-
-                // SCREEN 5: Practice
-                else if (step === 5) {
+                } else if (step === 5) {
                     html += `
                         <div class="stress-section">
                             <div class="card-title">⏱️ Before you start</div>
@@ -1370,10 +1171,7 @@
                             <button class="btn-secondary" onclick="AppState.prevStep()">← Back</button>
                         </div>
                     `;
-                }
-
-                // SCREEN 6: Rate
-                else if (step === 6) {
+                } else if (step === 6) {
                     html += `
                         <div class="card">
                             <div class="card-title">📊 How do you feel now?</div>
@@ -1412,10 +1210,7 @@
                             <button class="btn-secondary" onclick="AppState.prevStep()">← Back</button>
                         </div>
                     `;
-                }
-
-                // SCREEN 7: Save
-                else if (step === 7) {
+                } else if (step === 7) {
                     const stressDrop = this.sudsBefore - (this.sudsAfter !== null ? this.sudsAfter : 3);
                     
                     html += `
@@ -1449,7 +1244,6 @@
                 html += `</div>`;
                 content.innerHTML = html;
                 
-                // Scroll to top
                 setTimeout(() => {
                     const mainContent = document.querySelector('.main-content');
                     if (mainContent) mainContent.scrollTop = 0;
@@ -1457,9 +1251,6 @@
             }
         };
 
-        // ============================================
-        // GLOBAL FUNCTIONS
-        // ============================================
         function showToast(message) {
             const toast = document.getElementById('toast');
             toast.textContent = message;
@@ -1470,21 +1261,15 @@
         window.AppState = AppState;
         window.showToast = showToast;
 
-        // ============================================
-        // INIT
-        // ============================================
         function init() {
-            // Prevent zoom
             document.addEventListener('touchstart', (e) => {
                 if (e.touches.length > 1) e.preventDefault();
             }, { passive: false });
             
-            // Initialize toolkit if needed
             if (!localStorage.getItem('mphaven_toolkit')) {
                 localStorage.setItem('mphaven_toolkit', '{}');
             }
             
-            // Load skill
             AppState.loadSkill();
         }
 
