@@ -216,6 +216,22 @@
             transform: scale(0.95);
         }
 
+        .btn-review {
+            padding: 0.5rem 1rem;
+            background: rgba(14, 116, 144, 0.2);
+            border: 1px solid rgba(14, 116, 144, 0.3);
+            border-radius: 0.75rem;
+            color: rgb(165, 243, 252);
+            font-size: 0.8125rem;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .btn-review:active {
+            transform: scale(0.95);
+            background: rgba(14, 116, 144, 0.3);
+        }
+
         .btn-remove {
             width: 2rem;
             height: 2rem;
@@ -269,6 +285,12 @@
             background: rgba(30, 41, 59, 0.7);
         }
 
+        .button-group {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
         .toast {
             position: fixed;
             bottom: max(6rem, env(safe-area-inset-bottom) + 4rem);
@@ -316,7 +338,7 @@
 
     <script>
         // ============================================
-        // FAMILY META - UPDATED with 4 families
+        // FAMILY META - 4 families
         // ============================================
         const FAMILY_META = {
             refocus: { name: 'REFOCUS', icon: '🎯', color: '#0e7490' },
@@ -354,6 +376,10 @@
             window.location.href = `quick-use.html?skill=${skillId}`;
         }
 
+        function reviewSkill(skillId) {
+            window.location.href = `skill-engine.html?skill=${skillId}`;
+        }
+
         function removeSkill(skillId) {
             const toolkit = getToolkit();
             delete toolkit[skillId];
@@ -362,8 +388,11 @@
             render();
         }
 
+        // Make functions global
         window.useSkill = useSkill;
+        window.reviewSkill = reviewSkill;
         window.removeSkill = removeSkill;
+        window.showToast = showToast;
 
         // ============================================
         // RENDER
@@ -374,6 +403,7 @@
             
             const content = document.getElementById('mainContent');
             
+            // Empty state
             if (skills.length === 0) {
                 content.innerHTML = `
                     <div class="content-wrapper">
@@ -399,6 +429,7 @@
                 return;
             }
 
+            // Group skills by family
             const grouped = {};
             skills.forEach(skill => {
                 const familyId = skill.familyId || 'refocus';
@@ -416,6 +447,7 @@
                     </div>
             `;
 
+            // Render each family group
             Object.entries(grouped).forEach(([familyId, familySkills]) => {
                 const family = FAMILY_META[familyId] || { 
                     name: familyId.toUpperCase(), 
@@ -449,8 +481,11 @@
                                     </div>
                                 ` : ''}
                             </div>
-                            <button class="btn-use" onclick="useSkill('${skill.id}')">Use</button>
-                            <button class="btn-remove" onclick="removeSkill('${skill.id}')">×</button>
+                            <div class="button-group">
+                                <button class="btn-use" onclick="useSkill('${skill.id}')">Use</button>
+                                <button class="btn-review" onclick="reviewSkill('${skill.id}')">📘 Review</button>
+                                <button class="btn-remove" onclick="removeSkill('${skill.id}')">×</button>
+                            </div>
                         </div>
                     `;
                 });
@@ -470,13 +505,18 @@
 
             content.innerHTML = html;
             
+            // Scroll to top
             setTimeout(() => {
                 const mainContent = document.querySelector('.main-content');
                 if (mainContent) mainContent.scrollTop = 0;
             }, 50);
         }
 
+        // ============================================
+        // INIT
+        // ============================================
         function init() {
+            // Prevent zoom on double tap
             document.addEventListener('touchstart', (e) => {
                 if (e.touches.length > 1) e.preventDefault();
             }, { passive: false });
