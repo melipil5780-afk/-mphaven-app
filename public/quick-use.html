@@ -1,1 +1,588 @@
-o
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#0f172a">
+    <title>Quick Use · MPHaven</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            position: fixed;
+            background: #0f172a;
+            color: rgb(241, 245, 249);
+        }
+
+        .container {
+            width: 100%;
+            height: 100vh;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .app-wrapper {
+            width: 100%;
+            max-width: 28rem;
+            height: 100%;
+            margin: 0 auto;
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            border-left: 1px solid rgba(30, 41, 59, 0.5);
+            border-right: 1px solid rgba(30, 41, 59, 0.5);
+        }
+
+        .bg-blur-1, .bg-blur-2 {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(140px);
+            -webkit-filter: blur(140px);
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.6;
+        }
+        .bg-blur-1 {
+            top: -10%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 22rem;
+            height: 22rem;
+            background: rgba(14, 116, 144, 0.08);
+        }
+        .bg-blur-2 {
+            bottom: -10%;
+            right: -10%;
+            width: 18rem;
+            height: 18rem;
+            background: rgba(217, 119, 6, 0.08);
+        }
+
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+            z-index: 1;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .main-content::-webkit-scrollbar {
+            display: none;
+        }
+
+        .content-wrapper {
+            padding: max(1.5rem, env(safe-area-inset-top)) 1.25rem max(2rem, env(safe-area-inset-bottom));
+            width: 100%;
+            text-align: center;
+        }
+
+        .skill-icon {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+        }
+
+        .skill-name {
+            font-size: 2rem;
+            font-weight: 800;
+            color: rgb(241, 245, 249);
+            margin-bottom: 0.5rem;
+        }
+
+        .family-badge {
+            display: inline-block;
+            padding: 0.375rem 0.75rem;
+            background: rgba(14, 116, 144, 0.15);
+            border: 1px solid rgba(14, 116, 144, 0.3);
+            border-radius: 9999px;
+            color: rgb(165, 243, 252);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .quick-action {
+            color: rgb(165, 243, 252);
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            padding: 0 1rem;
+            word-break: break-word;
+        }
+
+        .timer-container {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(51, 65, 85, 0.4);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .timer-display {
+            font-size: 4rem;
+            font-weight: 800;
+            color: rgb(165, 243, 252);
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #0e7490, #d97706);
+            border: none;
+            border-radius: 0.75rem;
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-bottom: 0.75rem;
+        }
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+        .btn-primary:disabled {
+            opacity: 0.5;
+            transform: none;
+        }
+
+        .btn-secondary {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(51, 65, 85, 0.4);
+            border-radius: 0.75rem;
+            color: rgb(148, 163, 184);
+            font-weight: 600;
+            font-size: 0.9375rem;
+            cursor: pointer;
+        }
+        .btn-secondary:active {
+            transform: scale(0.98);
+        }
+
+        .btn-text {
+            background: none;
+            border: none;
+            color: rgb(148, 163, 184);
+            font-size: 0.875rem;
+            font-weight: 600;
+            padding: 1rem;
+            cursor: pointer;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: max(6rem, env(safe-area-inset-bottom) + 4rem);
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: rgba(30, 41, 59, 0.95);
+            border: 1px solid rgba(14, 116, 144, 0.3);
+            border-radius: 0.75rem;
+            padding: 0.875rem 1.25rem;
+            color: white;
+            font-weight: 600;
+            z-index: 10000;
+            opacity: 0;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            max-width: calc(100vw - 2rem);
+            text-align: center;
+            font-size: 0.875rem;
+        }
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        @media (min-width: 640px) {
+            .app-wrapper {
+                border-radius: 2rem;
+                margin: 1rem 0;
+                height: calc(100dvh - 2rem);
+                max-height: 844px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="app-wrapper">
+            <div class="bg-blur-1"></div>
+            <div class="bg-blur-2"></div>
+            <div id="mainContent" class="main-content"></div>
+        </div>
+    </div>
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // ============================================
+        // QUICK SKILLS - 19 skills, 4 families
+        // IDs EXACTLY match family.html and skill-engine.html
+        // ============================================
+        const QUICK_SKILLS = {
+            // REFOCUS (7 skills)
+            getbusy: { 
+                id: 'getbusy',
+                name: 'GET BUSY', 
+                icon: '🏃', 
+                family: 'REFOCUS', 
+                familyColor: '#0e7490', 
+                quick: 'Do something to occupy your mind', 
+                duration: 60 
+            },
+            lendahand: { 
+                id: 'lendahand',
+                name: 'LEND A HAND', 
+                icon: '🤝', 
+                family: 'REFOCUS', 
+                familyColor: '#0e7490', 
+                quick: 'Do something for someone else', 
+                duration: 60 
+            },
+            lookback: { 
+                id: 'lookback',
+                name: 'LOOK BACK', 
+                icon: '📅', 
+                family: 'REFOCUS', 
+                familyColor: '#0e7490', 
+                quick: 'Remember what you\'ve survived', 
+                duration: 60 
+            },
+            flipfeeling: { 
+                id: 'flipfeeling',
+                name: 'FLIP THE FEELING', 
+                icon: '🎭', 
+                family: 'REFOCUS', 
+                familyColor: '#0e7490', 
+                quick: 'Change your emotional channel', 
+                duration: 120 
+            },
+            setitdown: { 
+                id: 'setitdown',
+                name: 'SET IT DOWN', 
+                icon: '📦', 
+                family: 'REFOCUS', 
+                familyColor: '#0e7490', 
+                quick: 'Leave the problem for now', 
+                duration: 60 
+            },
+            swapthought: { 
+                id: 'swapthought',
+                name: 'SWAP THE THOUGHT', 
+                icon: '🔄', 
+                family: 'REFOCUS', 
+                familyColor: '#0e7490', 
+                quick: 'Replace it with another', 
+                duration: 60 
+            },
+            feelsomething: { 
+                id: 'feelsomething',
+                name: 'FEEL SOMETHING', 
+                icon: '⚡', 
+                family: 'REFOCUS', 
+                familyColor: '#0e7490', 
+                quick: 'Wake up your senses', 
+                duration: 30 
+            },
+            
+            // COMFORT (7 skills)
+            safeplace: { 
+                id: 'safeplace',
+                name: 'SAFE PLACE', 
+                icon: '🏝️', 
+                family: 'COMFORT', 
+                familyColor: '#7c3aed', 
+                quick: 'Imagine somewhere calm', 
+                duration: 120 
+            },
+            findlesson: { 
+                id: 'findlesson',
+                name: 'FIND THE LESSON', 
+                icon: '📘', 
+                family: 'COMFORT', 
+                familyColor: '#7c3aed', 
+                quick: 'Look for meaning', 
+                duration: 120 
+            },
+            letgo: { 
+                id: 'letgo',
+                name: 'LET GO', 
+                icon: '🕊️', 
+                family: 'COMFORT', 
+                familyColor: '#7c3aed', 
+                quick: 'Release what you cannot control', 
+                duration: 60 
+            },
+            calmdown: { 
+                id: 'calmdown',
+                name: 'CALM DOWN', 
+                icon: '🧘', 
+                family: 'COMFORT', 
+                familyColor: '#7c3aed', 
+                quick: 'Soothe your body', 
+                duration: 120 
+            },
+            onething: { 
+                id: 'onething',
+                name: 'ONE THING', 
+                icon: '🎯', 
+                family: 'COMFORT', 
+                familyColor: '#7c3aed', 
+                quick: 'Focus on just this moment', 
+                duration: 60 
+            },
+            stepaway: { 
+                id: 'stepaway',
+                name: 'STEP AWAY', 
+                icon: '🚶', 
+                family: 'COMFORT', 
+                familyColor: '#7c3aed', 
+                quick: 'Take a short break', 
+                duration: 300 
+            },
+            beownfriend: { 
+                id: 'beownfriend',
+                name: 'BE YOUR OWN FRIEND', 
+                icon: '💗', 
+                family: 'COMFORT', 
+                familyColor: '#7c3aed', 
+                quick: 'Talk to yourself with kindness', 
+                duration: 60 
+            },
+            
+            // WEIGH IT (1 skill)
+            listitout: { 
+                id: 'listitout',
+                name: 'LIST IT OUT', 
+                icon: '📋', 
+                family: 'WEIGH IT', 
+                familyColor: '#d97706', 
+                quick: 'Compare helping vs hurting', 
+                duration: 120 
+            },
+            
+            // PAUSE (4 skills)
+            freeze: { 
+                id: 'freeze',
+                name: 'FREEZE', 
+                icon: '❄️', 
+                family: 'PAUSE', 
+                familyColor: '#0891b2', 
+                quick: 'Stop. Don\'t move. Don\'t react.', 
+                duration: 10 
+            },
+            stepback: { 
+                id: 'stepback',
+                name: 'STEP BACK', 
+                icon: '👣', 
+                family: 'PAUSE', 
+                familyColor: '#0891b2', 
+                quick: 'Create space between you and the urge', 
+                duration: 30 
+            },
+            notice: { 
+                id: 'notice',
+                name: 'NOTICE', 
+                icon: '👓', 
+                family: 'PAUSE', 
+                familyColor: '#0891b2', 
+                quick: 'Watch what\'s happening inside', 
+                duration: 60 
+            },
+            moveforward: { 
+                id: 'moveforward',
+                name: 'MOVE FORWARD', 
+                icon: '🎯', 
+                family: 'PAUSE', 
+                familyColor: '#0891b2', 
+                quick: 'Act with intention', 
+                duration: 60 
+            }
+        };
+
+        const DEFAULT_SKILL = {
+            id: 'getbusy',
+            name: 'GET BUSY',
+            icon: '🏃',
+            family: 'REFOCUS',
+            familyColor: '#0e7490',
+            quick: 'Do something to occupy your mind',
+            duration: 60
+        };
+
+        // ============================================
+        // APP STATE
+        // ============================================
+        const AppState = {
+            skill: null,
+            timer: null,
+            timerSeconds: 0,
+            timerRunning: false,
+
+            loadSkill() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const skillId = urlParams.get('skill');
+                
+                console.log('Quick use loading skill:', skillId);
+                
+                if (!skillId) {
+                    window.location.href = 'my-toolkit.html';
+                    return;
+                }
+                
+                this.skill = QUICK_SKILLS[skillId] || DEFAULT_SKILL;
+                this.timerSeconds = this.skill.duration || 60;
+                this.timerRunning = false;
+                this.render();
+            },
+
+            formatTime(seconds) {
+                if (seconds >= 60) {
+                    const mins = Math.floor(seconds / 60);
+                    const secs = seconds % 60;
+                    return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+                }
+                return `0:${seconds < 10 ? '0' : ''}${seconds}`;
+            },
+
+            startTimer() {
+                if (this.timerRunning) return;
+                
+                this.timerRunning = true;
+                this.timer = setInterval(() => {
+                    this.timerSeconds--;
+                    
+                    if (this.timerSeconds <= 0) {
+                        this.stopTimer();
+                        showToast('Done! 🌊');
+                        this.markPracticed();
+                    }
+                    
+                    this.render();
+                }, 1000);
+                
+                this.render();
+            },
+
+            stopTimer() {
+                if (this.timer) {
+                    clearInterval(this.timer);
+                    this.timer = null;
+                }
+                this.timerRunning = false;
+                this.render();
+            },
+
+            resetTimer() {
+                this.stopTimer();
+                this.timerSeconds = this.skill.duration || 60;
+                this.render();
+            },
+
+            markPracticed() {
+                const toolkit = JSON.parse(localStorage.getItem('mphaven_toolkit') || '{}');
+                if (toolkit[this.skill.id]) {
+                    toolkit[this.skill.id].timesPracticed = (toolkit[this.skill.id].timesPracticed || 0) + 1;
+                    toolkit[this.skill.id].lastPracticed = new Date().toISOString();
+                    localStorage.setItem('mphaven_toolkit', JSON.stringify(toolkit));
+                }
+            },
+
+            markDone() {
+                this.markPracticed();
+                showToast(`✓ ${this.skill.name} completed`);
+                setTimeout(() => {
+                    window.location.href = 'my-toolkit.html';
+                }, 1500);
+            },
+
+            render() {
+                const content = document.getElementById('mainContent');
+                if (!this.skill) return;
+                
+                content.innerHTML = `
+                    <div class="content-wrapper">
+                        <div class="skill-icon">${this.skill.icon}</div>
+                        <span class="family-badge" style="background: ${this.skill.familyColor}20; color: ${this.skill.familyColor}">
+                            ${this.skill.family}
+                        </span>
+                        <div class="skill-name" style="color: ${this.skill.familyColor}">${this.skill.name}</div>
+                        <div class="quick-action">${this.skill.quick}</div>
+                        
+                        <div class="timer-container">
+                            <div class="timer-display">${this.formatTime(this.timerSeconds)}</div>
+                            
+                            ${!this.timerRunning && this.timerSeconds > 0 ? `
+                                <button class="btn-primary" onclick="AppState.startTimer()">Start</button>
+                            ` : ''}
+                            
+                            ${this.timerRunning ? `
+                                <button class="btn-primary" onclick="AppState.stopTimer()">Pause</button>
+                            ` : ''}
+                            
+                            ${this.timerSeconds === 0 ? `
+                                <button class="btn-primary" onclick="AppState.markDone()">✓ Done</button>
+                            ` : ''}
+                            
+                            ${!this.timerRunning && this.timerSeconds < (this.skill.duration || 60) && this.timerSeconds > 0 ? `
+                                <button class="btn-secondary" onclick="AppState.resetTimer()">Reset</button>
+                            ` : ''}
+                        </div>
+                        
+                        <button class="btn-text" onclick="location.href='my-toolkit.html'">
+                            ← Back to toolkit
+                        </button>
+                    </div>
+                `;
+            }
+        };
+
+        // ============================================
+        // GLOBAL FUNCTIONS
+        // ============================================
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        window.AppState = AppState;
+        window.showToast = showToast;
+
+        // ============================================
+        // INIT
+        // ============================================
+        function init() {
+            document.addEventListener('touchstart', (e) => {
+                if (e.touches.length > 1) e.preventDefault();
+            }, { passive: false });
+            
+            AppState.loadSkill();
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
