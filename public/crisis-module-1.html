@@ -7,7 +7,6 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#0f172a">
 <title>Module 1: Why Your Brain Goes Haywire</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
     --bg-dark: #0f172a;
@@ -19,1239 +18,1949 @@
     --primary-teal: #0e7490;
     --primary-teal-dark: #0c627a;
     --accent-amber: #d97706;
-    --accent-amber-dark: #b45309;
     --text-primary: rgb(241, 245, 249);
     --text-secondary: rgb(203, 213, 225);
     --text-muted: rgb(148, 163, 184);
-    --text-teal-light: rgb(165, 243, 252);
     --text-teal: rgb(94, 234, 212);
     --text-amber: rgb(251, 191, 36);
     --success-emerald: rgb(74, 222, 128);
     --success-bg: rgba(34, 197, 94, 0.12);
+    --crisis-red: #dc2626;
+    --crisis-bg: rgba(220, 38, 38, 0.08);
     --gradient-main: linear-gradient(135deg, #0e7490, #d97706);
     --gradient-subtle: linear-gradient(135deg, rgba(14,116,144,0.15), rgba(217,119,6,0.10));
-    --crisis-red: #dc2626;
-    --crisis-red-dark: #b91c1c;
-    --crisis-bg: rgba(220, 38, 38, 0.08);
 }
 
-* { 
-    margin: 0; 
-    padding: 0; 
-    box-sizing: border-box; 
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
-    -webkit-tap-highlight-color: transparent; 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-font-smoothing: antialiased;
 }
 
-html, body { 
-    width: 100%; 
-    height: 100%; 
-    overflow: hidden; 
-    background: var(--bg-dark); 
-    color: var(--text-primary); 
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: var(--bg-dark);
+    color: var(--text-primary);
 }
 
-.container { 
-    width: 100%; 
-    height: 100vh; 
-    display: flex; 
-    flex-direction: column; 
-}
-
-.app-wrapper { 
-    width: 100%; 
-    max-width: 28rem; 
-    height: 100%; 
-    margin: 0 auto; 
-    background: var(--bg-card); 
-    display: flex; 
-    flex-direction: column; 
-    position: relative; 
-    overflow: hidden; 
-}
-
-.bg-blur-1, .bg-blur-2 { 
-    position: absolute; 
-    border-radius: 50%; 
-    pointer-events: none; 
-    z-index: 0; 
-    opacity: 0.3; 
-}
-
-.bg-blur-1 { 
-    top: -5%; 
-    left: 50%; 
-    transform: translateX(-50%); 
-    width: 22rem; 
-    height: 22rem; 
-    background: rgba(14, 116, 144, 0.15); 
-}
-
-.bg-blur-2 { 
-    bottom: -5%; 
-    right: -5%; 
-    width: 18rem; 
-    height: 18rem; 
-    background: rgba(217, 119, 6, 0.15); 
-}
-
-.main-content { 
-    flex: 1; 
-    overflow-y: auto; 
-    -webkit-overflow-scrolling: touch; 
-    scrollbar-width: none; 
-    position: relative; 
-    z-index: 1; 
-}
-
-.main-content::-webkit-scrollbar { 
-    display: none; 
-}
-
-.content-wrapper { 
-    padding: 1rem 1.25rem 2rem; 
-    padding-bottom: calc(2rem + env(safe-area-inset-bottom)); 
-}
-
-/* ===== CRISIS BANNER - EVERY PAGE ===== */
-.crisis-banner {
-    background: var(--crisis-bg);
-    border: 1px solid var(--crisis-red);
-    border-radius: 0.75rem;
-    padding: 0.75rem 1rem;
-    margin-bottom: 1rem;
+.container {
+    width: 100%;
+    height: 100vh;
+    height: -webkit-fill-available;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    flex-direction: column;
 }
 
-.crisis-banner span {
-    color: #fca5a5;
-    font-size: 0.8125rem;
-    font-weight: 600;
-}
-
-.crisis-banner a {
-    color: #fca5a5;
-    font-weight: 700;
-    text-decoration: none;
-    background: rgba(220,38,38,0.2);
-    padding: 0.375rem 0.75rem;
-    border-radius: 2rem;
-    font-size: 0.75rem;
-}
-
-.nav-header {
+.app-wrapper {
+    width: 100%;
+    max-width: 28rem;
+    height: 100%;
+    margin: 0 auto;
+    background: var(--bg-card);
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 1rem;
-}
-
-.back-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--text-muted);
-    text-decoration: none;
-    font-size: 0.875rem;
-    font-weight: 500;
-}
-
-.module-badge {
-    background: var(--gradient-subtle);
-    color: var(--text-teal-light);
-    padding: 0.375rem 0.875rem;
-    border-radius: 2rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    border: 1px solid rgba(14,116,144,0.25);
-}
-
-.module-title {
-    font-size: 1.75rem;
-    font-weight: 800;
-    margin-bottom: 0.25rem;
-    background: var(--gradient-main);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.module-subtitle {
-    color: var(--text-secondary);
-    font-size: 0.9375rem;
-    margin-bottom: 1.5rem;
-}
-
-.progress-container {
-    margin: 1rem 0 2rem;
-}
-
-.progress-label {
-    display: flex;
-    justify-content: space-between;
-    color: var(--text-muted);
-    font-size: 0.75rem;
-    margin-bottom: 0.375rem;
-}
-
-.progress-bar {
-    background: rgba(30,41,59,0.8);
-    height: 0.5rem;
-    border-radius: 1rem;
+    flex-direction: column;
+    position: relative;
     overflow: hidden;
 }
 
-.progress-fill {
-    width: 20%;
-    height: 100%;
-    background: var(--gradient-main);
-    border-radius: 1rem;
+.bg-blur-1, .bg-blur-2 {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.3;
 }
 
+.bg-blur-1 {
+    top: -5%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 22rem;
+    height: 22rem;
+    background: rgba(14, 116, 144, 0.15);
+}
+
+.bg-blur-2 {
+    bottom: -5%;
+    right: -5%;
+    width: 18rem;
+    height: 18rem;
+    background: rgba(217, 119, 6, 0.15);
+}
+
+.main-content {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    position: relative;
+    z-index: 1;
+}
+
+.main-content::-webkit-scrollbar {
+    display: none;
+}
+
+.content-wrapper {
+    padding: 1.25rem;
+    padding-bottom: calc(2rem + env(safe-area-inset-bottom));
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Crisis Banner - Only on first page */
+.crisis-banner {
+    background: var(--crisis-bg);
+    border: 1px solid var(--crisis-red);
+    border-radius: 0.875rem;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.crisis-banner__text {
+    color: #fca5a5;
+    font-size: 0.875rem;
+    font-weight: 600;
+    flex: 1;
+    min-width: 180px;
+}
+
+.crisis-banner__actions {
+    display: flex;
+    gap: 0.625rem;
+}
+
+.crisis-banner__link {
+    color: white;
+    background: var(--crisis-red);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    transition: all 0.2s;
+}
+
+.crisis-banner__link:active {
+    background: #b91c1c;
+    transform: scale(0.97);
+}
+
+/* Header */
+.header {
+    background: linear-gradient(135deg, var(--bg-card-light), var(--bg-card-dark));
+    border: 1px solid var(--border-softer);
+    border-radius: 1rem;
+    padding: 1.25rem;
+    margin-bottom: 1.25rem;
+}
+
+.header__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.back-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.25rem;
+    line-height: 1;
+    transition: all 0.2s;
+}
+
+.back-btn:active {
+    transform: scale(0.9);
+}
+
+.step-indicator {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.progress-dots {
+    display: flex;
+    gap: 0.375rem;
+    margin-bottom: 1rem;
+}
+
+.progress-dot {
+    flex: 1;
+    height: 0.5rem;
+    background: rgba(148, 163, 184, 0.2);
+    border-radius: 1rem;
+    transition: all 0.3s;
+}
+
+.progress-dot.active {
+    background: var(--gradient-main);
+}
+
+.step-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    background: var(--gradient-main);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+}
+
+.step-subtitle {
+    color: var(--text-secondary);
+    font-size: 0.9375rem;
+}
+
+/* Card */
 .card {
     background: linear-gradient(135deg, var(--bg-card-light), var(--bg-card-dark));
     border: 1px solid var(--border-softer);
     border-radius: 1.25rem;
-    padding: 1.5rem;
+    padding: 1.75rem 1.5rem;
     margin-bottom: 1.25rem;
 }
 
-.card-title {
-    font-size: 1.25rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--text-primary);
+.card--highlight {
+    background: var(--gradient-subtle);
+    border: 1px solid rgba(14, 116, 144, 0.3);
 }
 
-/* ===== BRAIN DIAGRAM WITH ANIMATION ===== */
-.brain-diagram {
-    background: rgba(15,23,42,0.6);
-    border-radius: 1rem;
-    padding: 1.5rem;
+.card__icon {
+    font-size: 3rem;
+    text-align: center;
+    margin-bottom: 1rem;
+    line-height: 1;
+}
+
+.card__title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 1.25rem;
+    line-height: 1.3;
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+}
+
+.card__content {
+    color: var(--text-secondary);
+    line-height: 1.7;
+    font-size: 1rem;
+}
+
+.card__content p {
+    margin-bottom: 1.25rem;
+}
+
+.card__content p:last-child {
+    margin-bottom: 0;
+}
+
+.card__content strong {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.card__content ol {
     margin: 1.25rem 0;
+    padding-left: 1.5rem;
+}
+
+.card__content ol li {
+    margin-bottom: 1rem;
+    padding-left: 0.5rem;
+}
+
+.card__content ol li:last-child {
+    margin-bottom: 0;
+}
+
+/* Callout */
+.callout {
+    background: var(--crisis-bg);
+    border-left: 4px solid var(--crisis-red);
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+    margin: 1.5rem 0;
+}
+
+.callout p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.callout strong {
+    color: var(--text-primary);
+    font-weight: 700;
+}
+
+/* Interactive Brain */
+.brain-container {
+    background: rgba(15, 23, 42, 0.6);
+    border-radius: 1rem;
+    padding: 1.75rem;
     text-align: center;
 }
 
 .brain-svg {
     width: 100%;
-    max-width: 240px;
-    margin-bottom: 1rem;
+    max-width: 260px;
+    height: auto;
+    margin: 0 auto 1.5rem;
+    display: block;
 }
 
-.brain-state {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--border-softer);
-}
-
-.brain-label {
-    text-align: center;
-    flex: 1;
-}
-
-.brain-label .name {
-    font-weight: 700;
-    font-size: 0.8125rem;
-}
-
-.brain-label .desc {
-    color: var(--text-muted);
-    font-size: 0.6875rem;
-}
-
-.crisis-trigger-btn {
+.brain-btn {
     background: var(--crisis-red);
     color: white;
     border: none;
-    padding: 0.75rem 1.5rem;
+    padding: 1rem 2rem;
     border-radius: 2rem;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin: 1.25rem 0;
+    transition: all 0.2s;
+    width: 100%;
+    max-width: 280px;
+    position: relative;
+}
+
+/* Pulsing hint animation */
+@keyframes pulse-hint {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); }
+    50% { box-shadow: 0 0 0 8px rgba(220, 38, 38, 0); }
+}
+
+.brain-btn.pulse {
+    animation: pulse-hint 2s infinite;
+}
+
+.brain-btn:active {
+    background: #b91c1c;
+    transform: scale(0.98);
+}
+
+.brain-btn.active {
+    background: var(--primary-teal);
+    animation: none;
+}
+
+.btn-hint {
+    display: block;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.8125rem;
+    margin-top: 0.5rem;
+    font-style: italic;
+}
+
+.brain-states {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-softer);
+}
+
+.brain-state {
+    text-align: center;
+}
+
+.brain-state__name {
     font-weight: 700;
     font-size: 0.9375rem;
-    cursor: pointer;
-    margin: 1rem 0 0.5rem;
-    box-shadow: 0 4px 12px var(--crisis-glow);
+    margin-bottom: 0.375rem;
+}
+
+.brain-state__desc {
+    color: var(--text-muted);
+    font-size: 0.8125rem;
 }
 
 .action-urges {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-    margin: 1rem 0;
-    justify-content: center;
+    display: none;
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    background: var(--bg-card-dark);
+    border-radius: 1rem;
+    animation: slideDown 0.3s ease-out;
 }
 
-.urge-btn {
-    background: rgba(220,38,38,0.15);
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.action-urges.show {
+    display: block;
+}
+
+.action-urges__title {
+    color: #fca5a5;
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.action-urges__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+}
+
+.urge-badge {
+    background: rgba(220, 38, 38, 0.15);
     color: #fca5a5;
     border: 1px solid var(--crisis-red);
-    padding: 0.625rem 1.25rem;
+    padding: 0.75rem;
     border-radius: 2rem;
     font-weight: 600;
     font-size: 0.875rem;
-    cursor: pointer;
-    transition: all 0.2s;
+    text-align: center;
 }
 
-.urge-btn:hover {
-    background: rgba(220,38,38,0.25);
-}
-
-/* ===== EMOTIONAL WAVE GRAPH ===== */
+/* Wave Container */
 .wave-container {
-    background: rgba(15,23,42,0.6);
+    background: rgba(15, 23, 42, 0.6);
     border-radius: 1rem;
-    padding: 1.5rem;
-    margin: 1.25rem 0;
+    padding: 1.75rem;
 }
 
 .wave-svg {
     width: 100%;
+    max-width: 100%;
     height: auto;
-    margin-bottom: 1rem;
+    margin-bottom: 1.25rem;
 }
 
-.scenario-buttons {
+.wave-legend {
     display: flex;
-    gap: 0.75rem;
-    margin: 1rem 0;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.875rem;
+    flex-wrap: wrap;
+}
+
+.scenario-question {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    font-size: 1rem;
+}
+
+.scenario-btns {
+    display: grid;
+    gap: 0.875rem;
+    margin-bottom: 1.25rem;
 }
 
 .scenario-btn {
-    flex: 1;
-    padding: 0.875rem;
-    border-radius: 0.75rem;
+    padding: 1rem 1.25rem;
+    border-radius: 0.875rem;
     font-weight: 600;
-    font-size: 0.875rem;
+    font-size: 0.9375rem;
     cursor: pointer;
-    border: none;
+    border: 2px solid;
+    transition: all 0.2s;
+    text-align: left;
+    position: relative;
 }
 
-.scenario-btn.red {
-    background: rgba(220,38,38,0.15);
+.scenario-btn.pulse {
+    animation: pulse-hint 2s infinite;
+}
+
+.scenario-btn--red {
+    background: rgba(220, 38, 38, 0.12);
     color: #fca5a5;
-    border: 1px solid var(--crisis-red);
+    border-color: var(--crisis-red);
 }
 
-.scenario-btn.green {
-    background: rgba(14,116,144,0.15);
+.scenario-btn--red:active {
+    background: rgba(220, 38, 38, 0.2);
+    transform: scale(0.98);
+}
+
+.scenario-btn--red.pulse {
+    animation: pulse-hint 2s infinite;
+}
+
+.scenario-btn--green {
+    background: rgba(14, 116, 144, 0.12);
     color: var(--text-teal);
-    border: 1px solid var(--primary-teal);
+    border-color: var(--primary-teal);
+}
+
+.scenario-btn--green:active {
+    background: rgba(14, 116, 144, 0.2);
+    transform: scale(0.98);
+}
+
+.scenario-btn--green.pulse {
+    animation: pulse-hint 2s infinite;
 }
 
 .scenario-feedback {
-    margin-top: 1rem;
-    padding: 1rem;
-    background: rgba(15,23,42,0.6);
-    border-radius: 0.75rem;
-    font-size: 0.875rem;
-    color: var(--text-secondary);
+    padding: 1.25rem;
+    background: var(--bg-card-dark);
+    border-radius: 0.875rem;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    min-height: 70px;
 }
 
-/* ===== CHECKBOX GRID ===== */
+/* Checkbox Grid */
 .checkbox-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.75rem;
-    margin: 1.25rem 0;
+    grid-template-columns: 1fr;
+    gap: 0.875rem;
+    margin: 1.5rem 0;
+}
+
+.checkbox-item {
+    position: relative;
+}
+
+.checkbox-item input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    z-index: 1;
 }
 
 .checkbox-label {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.875rem;
-    background: rgba(15,23,42,0.6);
-    border: 1px solid var(--border-softer);
-    border-radius: 0.75rem;
+    gap: 0.875rem;
+    padding: 1rem 1.25rem;
+    background: rgba(30, 41, 59, 0.5);
+    border: 2px solid var(--border-softer);
+    border-radius: 0.875rem;
     cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.9375rem;
     color: var(--text-secondary);
-    font-size: 0.875rem;
 }
 
-.checkbox-label.checked {
+.checkbox-item input[type="checkbox"]:checked + .checkbox-label {
+    background: rgba(14, 116, 144, 0.15);
     border-color: var(--primary-teal);
-    background: rgba(14,116,144,0.15);
     color: var(--text-primary);
 }
 
-input[type="checkbox"] {
-    width: 1.125rem;
-    height: 1.125rem;
-    accent-color: var(--primary-teal);
-}
-
-/* ===== WINDOW OF TOLERANCE ===== */
-.window-diagram {
+.checkbox-visual {
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--border-softer);
+    border-radius: 6px;
+    flex-shrink: 0;
     display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    margin: 1.5rem 0;
-}
-
-.window-zone {
-    padding: 1rem;
-    border-radius: 0.75rem;
-    border-left-width: 4px;
-    border-left-style: solid;
-    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-card-dark);
     transition: all 0.2s;
 }
 
-.window-zone:hover {
+.checkbox-item input[type="checkbox"]:checked + .checkbox-label .checkbox-visual {
+    background: var(--primary-teal);
+    border-color: var(--primary-teal);
+}
+
+.checkbox-visual::after {
+    content: '✓';
+    color: white;
+    font-weight: 700;
+    font-size: 14px;
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.15s;
+}
+
+.checkbox-item input[type="checkbox"]:checked + .checkbox-label .checkbox-visual::after {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Window Zones */
+.zone-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.zone {
+    padding: 1.5rem;
+    border-radius: 0.875rem;
+    border-left: 4px solid;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+}
+
+.zone.pulse {
+    animation: pulse-hint 2s infinite;
+}
+
+.zone:active {
     transform: translateX(4px);
 }
 
-.zone-hyper {
-    background: rgba(220,38,38,0.1);
+.zone--hyper {
+    background: rgba(220, 38, 38, 0.08);
     border-left-color: var(--crisis-red);
 }
 
-.zone-window {
-    background: rgba(14,116,144,0.15);
+.zone--hyper.pulse {
+    box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7);
+}
+
+.zone--optimal {
+    background: rgba(14, 116, 144, 0.12);
     border-left-color: var(--primary-teal);
 }
 
-.zone-hypo {
-    background: rgba(100,116,139,0.15);
+.zone--optimal.pulse {
+    box-shadow: 0 0 0 0 rgba(14, 116, 144, 0.7);
+}
+
+.zone--hypo {
+    background: rgba(100, 116, 139, 0.12);
     border-left-color: var(--text-muted);
 }
 
-.zone-title {
-    font-weight: 700;
-    margin-bottom: 0.25rem;
+.zone--hypo.pulse {
+    box-shadow: 0 0 0 0 rgba(100, 116, 139, 0.7);
 }
 
-.zone-desc {
+.zone__title {
+    font-weight: 700;
+    font-size: 1.0625rem;
+    margin-bottom: 0.625rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.zone__desc {
     color: var(--text-secondary);
-    font-size: 0.8125rem;
+    font-size: 0.875rem;
+    line-height: 1.6;
 }
 
 .zone-feedback {
-    margin-top: 1rem;
-    padding: 1rem;
-    background: rgba(15,23,42,0.6);
-    border-radius: 0.75rem;
-    font-size: 0.875rem;
+    margin-top: 1.25rem;
+    padding: 1.25rem;
+    background: var(--bg-card-dark);
+    border-radius: 0.875rem;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    min-height: 80px;
 }
 
-/* ===== QUIZ ===== */
+.interaction-hint {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.8125rem;
+    margin-top: 1rem;
+    font-style: italic;
+}
+
+/* Quiz */
+.quiz-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
 .quiz-item {
-    background: rgba(15,23,42,0.6);
+    background: rgba(30, 41, 59, 0.5);
     border: 1px solid var(--border-softer);
-    border-radius: 0.75rem;
-    padding: 1.25rem;
-    margin-bottom: 1rem;
+    border-radius: 0.875rem;
+    padding: 1.5rem;
 }
 
 .quiz-question {
     font-weight: 600;
     color: var(--text-primary);
-    margin-bottom: 0.75rem;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+}
+
+.quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
 }
 
 .quiz-option {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem;
-    background: rgba(15,23,42,0.4);
-    border: 1px solid var(--border-softer);
-    border-radius: 0.5rem;
-    margin-bottom: 0.5rem;
-    cursor: pointer;
-}
-
-.quiz-option.correct {
-    background: rgba(34,197,94,0.15);
-    border-color: var(--success-emerald);
+    position: relative;
 }
 
 .quiz-option input[type="radio"] {
-    accent-color: var(--primary-teal);
-    width: 1rem;
-    height: 1rem;
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.quiz-option-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.875rem;
+    padding: 1rem;
+    background: var(--bg-card-dark);
+    border: 2px solid var(--border-softer);
+    border-radius: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.9375rem;
+}
+
+.quiz-option input[type="radio"]:checked + .quiz-option-label {
+    border-color: var(--primary-teal);
+    background: rgba(14, 116, 144, 0.12);
+}
+
+.quiz-option.correct .quiz-option-label {
+    border-color: var(--success-emerald);
+    background: var(--success-bg);
+}
+
+.quiz-option.incorrect .quiz-option-label {
+    border-color: var(--crisis-red);
+    background: var(--crisis-bg);
+}
+
+.quiz-radio {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--border-softer);
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-card);
+    margin-top: 2px;
+}
+
+.quiz-option input[type="radio"]:checked + .quiz-option-label .quiz-radio {
+    border-color: var(--primary-teal);
+}
+
+.quiz-radio::after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--primary-teal);
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.15s;
+}
+
+.quiz-option input[type="radio"]:checked + .quiz-option-label .quiz-radio::after {
+    opacity: 1;
+    transform: scale(1);
 }
 
 .quiz-feedback {
-    margin-top: 0.75rem;
-    padding: 0.75rem;
-    border-radius: 0.5rem;
-    font-size: 0.8125rem;
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
     display: none;
+}
+
+.quiz-feedback.show {
+    display: block;
+    animation: slideDown 0.3s ease-out;
 }
 
 .quiz-feedback.correct {
     background: var(--success-bg);
     color: var(--success-emerald);
-    display: block;
+    border: 1px solid rgba(74, 222, 128, 0.3);
 }
 
 .quiz-feedback.incorrect {
-    background: rgba(220,38,38,0.15);
+    background: var(--crisis-bg);
     color: #fca5a5;
-    display: block;
+    border: 1px solid rgba(220, 38, 38, 0.3);
 }
 
-/* ===== SUMMARY CARD ===== */
+/* Summary */
 .summary-card {
     background: var(--gradient-subtle);
-    border: 1px solid rgba(14,116,144,0.3);
-    border-radius: 1rem;
-    padding: 1.5rem;
-    margin: 1.5rem 0;
+    border: 1px solid rgba(14, 116, 144, 0.3);
+    border-radius: 1.25rem;
+    padding: 2rem 1.75rem;
+}
+
+.summary-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.summary-icon {
+    font-size: 1.75rem;
 }
 
 .summary-title {
-    font-size: 1.125rem;
+    font-size: 1.25rem;
     font-weight: 700;
-    color: var(--text-teal-light);
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    color: rgb(165, 243, 252);
 }
 
 .summary-list {
     list-style: none;
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.75rem;
 }
 
 .summary-list li {
     display: flex;
     align-items: flex-start;
-    gap: 0.5rem;
-    margin-bottom: 0.75rem;
+    gap: 0.875rem;
+    margin-bottom: 1rem;
     color: var(--text-secondary);
-    font-size: 0.875rem;
-}
-
-.summary-list li:before {
-    content: "•";
-    color: var(--text-teal);
-    font-weight: 700;
-}
-
-/* ===== SAVE BUTTON - ONLY TWO IN MODULE 1 ===== */
-.btn-save {
-    background: var(--gradient-subtle);
-    color: var(--text-teal-light);
-    border: 1px solid rgba(14,116,144,0.35);
-    padding: 0.875rem 1.5rem;
-    border-radius: 2rem;
-    font-weight: 600;
-    font-size: 0.875rem;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    width: 100%;
-}
-
-.btn-save:hover {
-    background: rgba(14,116,144,0.25);
-    border-color: rgba(14,116,144,0.5);
-}
-
-.btn-save.saved {
-    background: var(--success-bg);
-    color: var(--success-emerald);
-    border-color: rgba(74,222,128,0.35);
-}
-
-/* ===== NAVIGATION ===== */
-.btn-group {
-    display: flex;
-    gap: 1rem;
-    margin: 2rem 0 1rem;
-}
-
-.btn {
-    flex: 1;
-    padding: 1rem;
-    border-radius: 0.75rem;
-    font-weight: 600;
     font-size: 0.9375rem;
+    line-height: 1.6;
+}
+
+.summary-list li::before {
+    content: '•';
+    color: var(--text-teal);
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+/* Buttons */
+.btn {
+    width: 100%;
+    padding: 1.125rem 1.5rem;
+    border-radius: 1rem;
+    font-size: 1rem;
+    font-weight: 600;
     cursor: pointer;
     border: none;
-    text-decoration: none;
-    text-align: center;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.625rem;
 }
 
-.btn-primary {
+.btn--primary {
     background: var(--gradient-main);
     color: white;
 }
 
-.btn-secondary {
-    background: var(--bg-card-dark);
+.btn--primary:active {
+    transform: scale(0.98);
+    opacity: 0.9;
+}
+
+.btn--save {
+    background: var(--gradient-subtle);
+    color: rgb(165, 243, 252);
+    border: 1px solid rgba(14, 116, 144, 0.3);
+}
+
+.btn--save:active {
+    background: rgba(14, 116, 144, 0.2);
+}
+
+.btn--save.saved {
+    background: var(--success-bg);
+    color: var(--success-emerald);
+    border-color: rgba(74, 222, 128, 0.3);
+}
+
+.btn-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.btn--secondary {
+    background: rgba(30, 41, 59, 0.6);
     color: var(--text-secondary);
     border: 1px solid var(--border-softer);
 }
 
-.footer {
-    text-align: center;
-    color: var(--text-dim);
-    font-size: 0.6875rem;
-    margin-top: 2rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--border-subtle);
+.btn--secondary:active {
+    background: rgba(30, 41, 59, 0.8);
+    transform: scale(0.98);
 }
 
+.save-feedback {
+    color: var(--success-emerald);
+    font-size: 0.875rem;
+    text-align: center;
+    margin-top: 0.875rem;
+    display: none;
+}
+
+.save-feedback.show {
+    display: block;
+    animation: slideDown 0.3s ease-out;
+}
+
+/* Practice Button */
+.practice-section {
+    text-align: center;
+    margin: 1.25rem 0;
+}
+
+.practice-btn {
+    background: var(--success-bg);
+    color: var(--success-emerald);
+    border: 1px solid rgba(74, 222, 128, 0.3);
+    padding: 0.875rem 2rem;
+    border-radius: 2rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+}
+
+.practice-btn:active {
+    background: rgba(34, 197, 94, 0.2);
+    transform: scale(0.97);
+}
+
+.practice-btn.marked {
+    background: rgba(34, 197, 94, 0.25);
+}
+
+/* Footer */
+.footer {
+    margin-top: auto;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-subtle);
+    text-align: center;
+}
+
+.footer__warning {
+    color: #fca5a5;
+    font-weight: 600;
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+}
+
+.footer__resources {
+    color: var(--text-muted);
+    font-size: 0.8125rem;
+    line-height: 1.8;
+}
+
+.footer__resources p {
+    margin-bottom: 0.5rem;
+}
+
+.footer__link {
+    color: var(--text-muted);
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.footer__link:active {
+    color: var(--text-secondary);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.step-content {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Mobile Adjustments */
 @media (max-width: 640px) {
-    .checkbox-grid { grid-template-columns: 1fr; }
-    .btn-group { flex-direction: column; }
-    .scenario-buttons { flex-direction: column; }
+    .btn-group {
+        grid-template-columns: 1fr;
+    }
+    
+    .brain-states {
+        grid-template-columns: 1fr;
+    }
+    
+    .action-urges__grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* iOS Safe Area */
+@supports (-webkit-touch-callout: none) {
+    .container {
+        height: -webkit-fill-available;
+    }
 }
 </style>
 </head>
 <body>
 <div class="container">
-  <div class="app-wrapper">
-    <div class="bg-blur-1"></div>
-    <div class="bg-blur-2"></div>
-    <div class="main-content">
-      <div class="content-wrapper">
-
-        <!-- CRISIS BANNER - EVERY PAGE -->
-        <div class="crisis-banner">
-          <span>🚨 In crisis? Help is available 24/7</span>
-          <span style="display: flex; gap: 0.5rem;">
-            <a href="tel:988">Call 988</a>
-            <a href="sms:988">Text 988</a>
-          </span>
+    <div class="app-wrapper">
+        <div class="bg-blur-1"></div>
+        <div class="bg-blur-2"></div>
+        <div class="main-content" id="mainContent">
+            <div class="content-wrapper" id="content">
+                <!-- Content will be rendered here by JavaScript -->
+            </div>
         </div>
-
-        <!-- HEADER -->
-        <div class="nav-header">
-          <a href="crisis-intro.html" class="back-link">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M19 12H5M12 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            Course Home
-          </a>
-          <span class="module-badge">Module 1 of 5</span>
-        </div>
-
-        <h1 class="module-title">Why Your Brain Goes Haywire</h1>
-        <p class="module-subtitle">8 minutes • Understanding your crisis response</p>
-
-        <!-- PROGRESS -->
-        <div class="progress-container">
-          <div class="progress-label">
-            <span>Course progress</span>
-            <span>20%</span>
-          </div>
-          <div class="progress-bar">
-            <div class="progress-fill" style="width: 20%;"></div>
-          </div>
-        </div>
-
-        <!-- ===== SECTION 1.1: THE ALARM SYSTEM ===== -->
-        <div class="card">
-          <div class="card-title">
-            <span>🧠</span>
-            Section 1.1: The Alarm System
-          </div>
-          
-          <div style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.5rem;">
-            <p style="margin-bottom: 1rem;">"Meet your <strong style="color: var(--text-teal);">amygdala</strong> — your brain's smoke detector. Its job is to keep you alive by detecting threats. The problem? <strong style="color: var(--text-primary);">It can't tell the difference between a tiger and a text message.</strong>"</p>
-            
-            <p>When it fires, three things happen:</p>
-            
-            <ol style="margin: 1rem 0 1rem 1.5rem; color: var(--text-secondary);">
-              <li style="margin-bottom: 0.5rem;">Your <strong>thinking brain (prefrontal cortex) goes partially offline</strong></li>
-              <li style="margin-bottom: 0.5rem;">Your body floods with <strong>stress chemicals</strong> (adrenaline, cortisol)</li>
-              <li style="margin-bottom: 0.5rem;">You get powerful <strong>action urges</strong> (fight, flee, freeze, or other impulsive behaviors)</li>
-            </ol>
-            
-            <p style="background: rgba(220,38,38,0.1); padding: 1rem; border-radius: 0.75rem; border-left: 4px solid var(--crisis-red);">
-              <strong>This is why you can't 'logic yourself out' of panic.</strong> Your logic center is literally impaired.
-            </p>
-          </div>
-
-          <!-- INTERACTIVE BRAIN DIAGRAM -->
-          <div class="brain-diagram">
-            <svg class="brain-svg" viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <!-- Brain outline -->
-              <path id="brainOutline" d="M40 40 Q60 20, 100 20 Q140 20, 160 40 Q170 60, 160 80 Q140 100, 100 100 Q60 100, 40 80 Q30 60, 40 40" 
-                    stroke="rgba(14,116,144,0.5)" stroke-width="2" fill="rgba(14,116,144,0.1)"/>
-              <!-- Prefrontal cortex - calms down when crisis triggered -->
-              <path id="pfc" d="M70 30 L90 30 L85 50 L75 50 Z" fill="rgba(94,234,212,0.3)" stroke="var(--text-teal)" stroke-width="1.5"/>
-              <!-- Amygdala - flashes red when crisis triggered -->
-              <circle id="amygdala" cx="110" cy="70" r="12" fill="rgba(220,38,38,0.3)" stroke="#991b1b" stroke-width="1.5"/>
-              <text x="110" y="74" font-size="10" text-anchor="middle" fill="#fca5a5" id="amygdalaIcon">⚠️</text>
-            </svg>
-            
-            <button id="crisisTriggerBtn" class="crisis-trigger-btn">🔥 CRISIS TRIGGER</button>
-            
-            <div class="brain-state">
-              <div class="brain-label">
-                <div class="name" style="color: var(--text-teal);" id="pfcLabel">🧠 Prefrontal Cortex</div>
-                <div class="desc" id="pfcDesc">Thinking brain • ONLINE</div>
-              </div>
-              <div class="brain-label">
-                <div class="name" style="color: #fca5a5;" id="amygdalaLabel">⚠️ Amygdala</div>
-                <div class="desc" id="amygdalaDesc">Alarm system • STANDBY</div>
-              </div>
-            </div>
-            
-            <!-- ACTION URGES - APPEAR WHEN CRISIS TRIGGERED -->
-            <div id="actionUrgesContainer" style="display: none; margin-top: 1.5rem;">
-              <p style="color: #fca5a5; font-weight: 700; margin-bottom: 0.75rem;">⚡ ACTION URGES:</p>
-              <div class="action-urges">
-                <button class="urge-btn" disabled>🏃 RUN!</button>
-                <button class="urge-btn" disabled>⚔️ FIGHT!</button>
-                <button class="urge-btn" disabled>❄️ SHUT DOWN!</button>
-                <button class="urge-btn" disabled>🔥 DO SOMETHING NOW!</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ===== SECTION 1.2: THE EMOTIONAL WAVE ===== -->
-        <div class="card">
-          <div class="card-title">
-            <span>🌊</span>
-            Section 1.2: The Emotional Wave
-          </div>
-          
-          <div style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.5rem;">
-            <p style="margin-bottom: 1rem;">"Here's the most important thing to understand: <strong style="color: var(--text-primary);">Emotions are temporary.</strong> They feel permanent, but they're not. Every emotion follows a predictable pattern - it rises, peaks, and falls. This is called habituation."</p>
-            
-            <p>The peak usually happens around <strong style="color: var(--text-teal);">10-20 minutes</strong>. If you can survive those 20 minutes without acting on destructive urges, the intensity WILL decrease. This isn't positive thinking - it's neuroscience.</p>
-          </div>
-
-          <!-- INTERACTIVE WAVE GRAPH -->
-          <div class="wave-container">
-            <svg class="wave-svg" viewBox="0 0 300 120" preserveAspectRatio="xMidYMid meet">
-              <!-- Axes -->
-              <line x1="30" y1="100" x2="280" y2="100" stroke="var(--text-muted)" stroke-width="1" stroke-dasharray="2"/>
-              <line x1="30" y1="20" x2="30" y2="100" stroke="var(--text-muted)" stroke-width="1" stroke-dasharray="2"/>
-              
-              <!-- Y-axis label -->
-              <text x="10" y="60" font-size="8" fill="var(--text-muted)" transform="rotate(-90 10,60)">Intensity (0-10)</text>
-              <text x="280" y="115" font-size="8" fill="var(--text-muted)" text-anchor="end">Time (minutes) →</text>
-              
-              <!-- X-axis labels -->
-              <text x="30" y="115" font-size="7" fill="var(--text-muted)">0</text>
-              <text x="110" y="115" font-size="7" fill="var(--text-muted)">10</text>
-              <text x="190" y="115" font-size="7" fill="var(--text-muted)">20</text>
-              <text x="270" y="115" font-size="7" fill="var(--text-muted)">30</text>
-              
-              <!-- Base wave (green - using skills) -->
-              <path id="waveGreen" d="M30 90 Q70 50, 110 60 Q150 70, 190 50 Q230 30, 270 40" 
-                    stroke="var(--text-teal)" stroke-width="2.5" fill="none" opacity="0.8"/>
-              
-              <!-- Red wave (acting on urge) - hidden by default -->
-              <path id="waveRed" d="M30 90 Q70 30, 110 40 Q150 80, 190 90 Q230 70, 270 60" 
-                    stroke="#fca5a5" stroke-width="2.5" fill="none" opacity="0" stroke-dasharray="4"/>
-              
-              <!-- Peak marker -->
-              <circle cx="190" cy="50" r="4" fill="var(--accent-amber)"/>
-              <text x="190" y="40" font-size="8" fill="var(--text-amber)" text-anchor="middle">Peak ~20min</text>
-            </svg>
-            
-            <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 1rem; text-align: center;">
-              <span style="color: var(--text-teal);">● Using skills</span> 
-              <span style="color: #fca5a5; margin-left: 1rem;" id="redWaveLabel">● Acting on urge (hidden)</span>
-            </p>
-            
-            <p style="font-weight: 600; margin-bottom: 0.75rem;">Scenario: You're at intensity level 8. You want to send an angry text. What happens?</p>
-            
-            <div class="scenario-buttons">
-              <button id="scenarioRedBtn" class="scenario-btn red">Send the text</button>
-              <button id="scenarioGreenBtn" class="scenario-btn green">Use a skill and wait</button>
-            </div>
-            
-            <div id="scenarioFeedback" class="scenario-feedback">
-              Click a scenario to see what happens.
-            </div>
-          </div>
-        </div>
-
-        <!-- ===== REFLECTION QUESTION: ACTION URGES ===== -->
-        <div class="card" style="border: 2px solid rgba(14,116,144,0.3);">
-          <div class="card-title">
-            <span>⚡</span>
-            Reflection: What does YOUR amygdala tell you to do?
-          </div>
-          
-          <p style="color: var(--text-secondary); margin-bottom: 1.25rem;">"What does YOUR amygdala tell you to do in crisis? (What's your action urge?)"</p>
-          
-          <div class="checkbox-grid" id="urgeCheckboxes">
-            <label class="checkbox-label">
-              <input type="checkbox" value="Escape/run away"> 
-              <span>Escape/run away</span>
-            </label>
-            <label class="checkbox-label">
-              <input type="checkbox" value="Hurt myself"> 
-              <span>Hurt myself</span>
-            </label>
-            <label class="checkbox-label">
-              <input type="checkbox" value="Lash out at others"> 
-              <span>Lash out at others</span>
-            </label>
-            <label class="checkbox-label">
-              <input type="checkbox" value="Use substances"> 
-              <span>Use substances</span>
-            </label>
-            <label class="checkbox-label">
-              <input type="checkbox" value="Shut down completely"> 
-              <span>Shut down completely</span>
-            </label>
-            <label class="checkbox-label">
-              <input type="checkbox" value="Other"> 
-              <span>Other: __________</span>
-            </label>
-          </div>
-          
-          <!-- ===== SAVE POINT #1: ACTION URGES ===== -->
-          <button id="saveUrgesBtn" class="btn-save" style="margin-top: 0.5rem;">
-            <span>📋</span> Save My Action Urges to Crisis Plan
-          </button>
-          <p id="urgesSaveFeedback" style="color: var(--success-emerald); font-size: 0.75rem; margin-top: 0.5rem; text-align: center; display: none;"></p>
-        </div>
-
-        <!-- ===== SECTION 1.3: YOUR WINDOW OF TOLERANCE ===== -->
-        <div class="card">
-          <div class="card-title">
-            <span>🎯</span>
-            Section 1.3: Your Window of Tolerance
-          </div>
-          
-          <div style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.5rem;">
-            <p style="margin-bottom: 1rem;">"Imagine you have an optimal zone where you can function well - not too activated, not too shut down. This is your <strong style="color: var(--text-primary);">window of tolerance</strong> (concept from Dan Siegel).</p>
-            
-            <p>Crisis skills are about getting back INTO your window, not about becoming perfectly calm."</p>
-          </div>
-
-          <!-- INTERACTIVE WINDOW ASSESSMENT -->
-          <div class="window-diagram">
-            <div id="zoneHyper" class="window-zone zone-hyper">
-              <div class="zone-title" style="color: #fca5a5;">🔥 HYPERAROUSAL (Above Window)</div>
-              <div class="zone-desc">• Racing heart • Can't sit still • Mind racing • Feel like you'll explode • Panic/rage</div>
-            </div>
-            
-            <div id="zoneWindow" class="window-zone zone-window">
-              <div class="zone-title" style="color: var(--text-teal);">🎯 WINDOW OF TOLERANCE</div>
-              <div class="zone-desc">• Can think clearly • Feel emotions but not overwhelmed • Can make choices • Connected to body and surroundings</div>
-            </div>
-            
-            <div id="zoneHypo" class="window-zone zone-hypo">
-              <div class="zone-title" style="color: var(--text-muted);">❄️ HYPOAROUSAL (Below Window)</div>
-              <div class="zone-desc">• Numb/disconnected • Foggy thinking • Very low energy • Feel nothing • Want to sleep/disappear</div>
-            </div>
-          </div>
-          
-          <div id="zoneFeedback" class="zone-feedback">
-            Click the zone that describes you RIGHT NOW.
-          </div>
-        </div>
-
-        <!-- ===== SECTION 1.4: KEY TAKEAWAYS - QUIZ ===== -->
-        <div class="card">
-          <div class="card-title">
-            <span>📝</span>
-            Section 1.4: Quick Check
-          </div>
-          
-          <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">"Quick check - do you understand the science?"</p>
-          
-          <!-- QUIZ QUESTION 1 -->
-          <div class="quiz-item">
-            <div class="quiz-question">1. Why can't you think clearly in crisis?</div>
-            <div class="quiz-option" data-question="1" data-correct="false">
-              <input type="radio" name="q1" value="wrong1"> You're not trying hard enough
-            </div>
-            <div class="quiz-option" data-question="1" data-correct="true">
-              <input type="radio" name="q1" value="correct"> Your prefrontal cortex is partially offline
-            </div>
-            <div class="quiz-option" data-question="1" data-correct="false">
-              <input type="radio" name="q1" value="wrong2"> You're weak
-            </div>
-            <div id="quizFeedback1" class="quiz-feedback"></div>
-          </div>
-          
-          <!-- QUIZ QUESTION 2 -->
-          <div class="quiz-item">
-            <div class="quiz-question">2. How long do emotional peaks typically last?</div>
-            <div class="quiz-option" data-question="2" data-correct="false">
-              <input type="radio" name="q2" value="wrong1"> Hours
-            </div>
-            <div class="quiz-option" data-question="2" data-correct="true">
-              <input type="radio" name="q2" value="correct"> 10-20 minutes
-            </div>
-            <div class="quiz-option" data-question="2" data-correct="false">
-              <input type="radio" name="q2" value="wrong2"> Days
-            </div>
-            <div id="quizFeedback2" class="quiz-feedback"></div>
-          </div>
-          
-          <!-- QUIZ QUESTION 3 -->
-          <div class="quiz-item">
-            <div class="quiz-question">3. What's the goal of crisis skills?</div>
-            <div class="quiz-option" data-question="3" data-correct="false">
-              <input type="radio" name="q3" value="wrong1"> Make emotions go away permanently
-            </div>
-            <div class="quiz-option" data-question="3" data-correct="true">
-              <input type="radio" name="q3" value="correct"> Survive the peak without making things worse
-            </div>
-            <div class="quiz-option" data-question="3" data-correct="false">
-              <input type="radio" name="q3" value="wrong2"> Fix all your problems
-            </div>
-            <div id="quizFeedback3" class="quiz-feedback"></div>
-          </div>
-        </div>
-
-        <!-- ===== SUMMARY CARD - SAVE POINT #2 ===== -->
-        <div class="summary-card">
-          <div class="summary-title">
-            <span>🧠</span>
-            CRISIS BRAIN FACTS
-          </div>
-          
-          <ul class="summary-list">
-            <li>Your thinking brain goes offline</li>
-            <li>Emotions peak in 10-20 minutes</li>
-            <li>Your body can calm your mind</li>
-            <li>You can't logic your way out</li>
-            <li>The wave WILL pass if you wait</li>
-          </ul>
-          
-          <!-- ===== SAVE POINT #2: SUMMARY CARD ===== -->
-          <button id="saveSummaryBtn" class="btn-save">
-            <span>📋</span> Save Crisis Brain Facts to Toolkit
-          </button>
-          <p id="summarySaveFeedback" style="color: var(--success-emerald); font-size: 0.75rem; margin-top: 0.5rem; text-align: center; display: none;"></p>
-        </div>
-
-        <!-- ===== NAVIGATION BUTTONS ===== -->
-        <div class="btn-group">
-          <a href="crisis-intro.html" class="btn btn-secondary">← Previous</a>
-          <a href="crisis-module-2.html" class="btn btn-primary">Continue to Module 2 →</a>
-        </div>
-
-        <!-- ===== MARK AS PRACTICED ===== -->
-        <div style="display: flex; justify-content: center; margin: 0.5rem 0 1.5rem;">
-          <button id="markPracticedBtn" style="background: var(--success-bg); color: var(--success-emerald); border: 1px solid rgba(74,222,128,0.3); padding: 0.75rem 2rem; border-radius: 2rem; font-size: 0.8125rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem;">
-            ✓ I've practiced this module
-          </button>
-        </div>
-
-        <!-- ===== FOOTER ===== -->
-        <div class="footer">
-          <p style="color: #fca5a5; font-weight: 600; margin-bottom: 0.5rem;">⚠️ EDUCATIONAL ONLY — NOT THERAPY</p>
-          <p>988 Suicide & Crisis Lifeline: Call or text 988</p>
-          <p style="margin-top: 0.5rem;">Crisis Text Line: Text HOME to 741741</p>
-        </div>
-
-      </div>
     </div>
-  </div>
 </div>
 
 <script>
 (function() {
-  // ===== CHECK DISCLAIMER ACKNOWLEDGMENT =====
-  const acknowledged = localStorage.getItem('crisis_disclaimer_acknowledged');
-  if (!acknowledged) {
-    window.location.href = 'crisis-intro.html';
-    return;
-  }
-
-  // ===== 1.1 INTERACTIVE BRAIN =====
-  const crisisBtn = document.getElementById('crisisTriggerBtn');
-  const pfc = document.getElementById('pfc');
-  const amygdala = document.getElementById('amygdala');
-  const pfcLabel = document.getElementById('pfcDesc');
-  const amygdalaLabel = document.getElementById('amygdalaDesc');
-  const amygdalaIcon = document.getElementById('amygdalaIcon');
-  const actionUrges = document.getElementById('actionUrgesContainer');
-  
-  let crisisActive = false;
-  
-  if (crisisBtn) {
-    crisisBtn.addEventListener('click', function() {
-      crisisActive = !crisisActive;
-      
-      if (crisisActive) {
-        // Crisis mode - amygdala flashes, PFC dims
-        amygdala.setAttribute('fill', 'rgba(220,38,38,0.8)');
-        amygdala.setAttribute('stroke', '#dc2626');
-        pfc.setAttribute('fill', 'rgba(94,234,212,0.1)');
-        pfc.setAttribute('stroke', 'rgba(94,234,212,0.5)');
-        pfcLabel.innerHTML = 'Thinking brain • OFFLINE';
-        amygdalaLabel.innerHTML = 'Alarm system • ACTIVATED';
-        crisisBtn.innerHTML = '😮‍💨 RESET BRAIN';
-        actionUrges.style.display = 'block';
-      } else {
-        // Calm mode
-        amygdala.setAttribute('fill', 'rgba(220,38,38,0.3)');
-        amygdala.setAttribute('stroke', '#991b1b');
-        pfc.setAttribute('fill', 'rgba(94,234,212,0.3)');
-        pfc.setAttribute('stroke', 'var(--text-teal)');
-        pfcLabel.innerHTML = 'Thinking brain • ONLINE';
-        amygdalaLabel.innerHTML = 'Alarm system • STANDBY';
-        crisisBtn.innerHTML = '🔥 CRISIS TRIGGER';
-        actionUrges.style.display = 'none';
-      }
-    });
-  }
-
-  // ===== 1.2 EMOTIONAL WAVE SCENARIOS =====
-  const redBtn = document.getElementById('scenarioRedBtn');
-  const greenBtn = document.getElementById('scenarioGreenBtn');
-  const waveRed = document.getElementById('waveRed');
-  const redLabel = document.getElementById('redWaveLabel');
-  const scenarioFeedback = document.getElementById('scenarioFeedback');
-  
-  if (redBtn) {
-    redBtn.addEventListener('click', function() {
-      waveRed.style.opacity = '1';
-      redLabel.style.opacity = '1';
-      scenarioFeedback.innerHTML = '<span style="color: #fca5a5;">❌ You felt relief for 30 seconds. Now you\'ve got regret on top of your original feeling. Intensity: 9/10</span>';
-    });
-  }
-  
-  if (greenBtn) {
-    greenBtn.addEventListener('click', function() {
-      waveRed.style.opacity = '0';
-      redLabel.style.opacity = '0.5';
-      scenarioFeedback.innerHTML = '<span style="color: var(--text-teal);">✅ You rode the wave. It was hard, but you didn\'t make it worse. Intensity: 5/10</span>';
-    });
-  }
-
-  // ===== 1.3 WINDOW OF TOLERANCE =====
-  const zoneHyper = document.getElementById('zoneHyper');
-  const zoneWindow = document.getElementById('zoneWindow');
-  const zoneHypo = document.getElementById('zoneHypo');
-  const zoneFeedback = document.getElementById('zoneFeedback');
-  
-  if (zoneHyper) {
-    zoneHyper.addEventListener('click', function() {
-      zoneFeedback.innerHTML = '<span style="color: #fca5a5;">🔥 Hyperarousal: Module 2 (Physical Reset) will be most helpful. You need to bring energy DOWN. Cold water, paced breathing, intense exercise.</span>';
-    });
-  }
-  
-  if (zoneWindow) {
-    zoneWindow.addEventListener('click', function() {
-      zoneFeedback.innerHTML = '<span style="color: var(--text-teal);">✅ Window of Tolerance: Perfect time to practice and learn! Module 2 and 3 both appropriate.</span>';
-    });
-  }
-  
-  if (zoneHypo) {
-    zoneHypo.addEventListener('click', function() {
-      zoneFeedback.innerHTML = '<span style="color: var(--text-muted);">❄️ Hypoarousal: You need to bring energy UP. Module 2 has techniques for this (intense exercise, cold water, temperature shock).</span>';
-    });
-  }
-
-  // ===== QUIZ FUNCTIONALITY =====
-  const quizOptions = document.querySelectorAll('.quiz-option');
-  
-  quizOptions.forEach(option => {
-    option.addEventListener('click', function() {
-      const questionNum = this.dataset.question;
-      const isCorrect = this.dataset.correct === 'true';
-      const radio = this.querySelector('input[type="radio"]');
-      radio.checked = true;
-      
-      // Remove correct class from siblings
-      const siblings = this.parentElement.querySelectorAll('.quiz-option');
-      siblings.forEach(sib => sib.classList.remove('correct'));
-      
-      // Add correct class if answer is correct
-      if (isCorrect) {
-        this.classList.add('correct');
-      }
-      
-      // Show feedback
-      const feedback = document.getElementById(`quizFeedback${questionNum}`);
-      if (isCorrect) {
-        feedback.className = 'quiz-feedback correct';
-        if (questionNum === '1') feedback.innerHTML = '✓ Correct! Your prefrontal cortex goes offline during crisis.';
-        if (questionNum === '2') feedback.innerHTML = '✓ Correct! Emotional peaks typically last 10-20 minutes.';
-        if (questionNum === '3') feedback.innerHTML = '✓ Correct! Crisis skills help you survive the peak without making things worse.';
-      } else {
-        feedback.className = 'quiz-feedback incorrect';
-        if (questionNum === '1') feedback.innerHTML = '✗ Not quite. Your thinking brain is literally impaired during crisis.';
-        if (questionNum === '2') feedback.innerHTML = '✗ Not quite. Emotions peak quickly - usually within 10-20 minutes.';
-        if (questionNum === '3') feedback.innerHTML = '✗ Not quite. Crisis skills are about survival, not fixing everything.';
-      }
-    });
-  });
-
-  // ===== CHECKBOX VISUAL STATE =====
-  const checkboxes = document.querySelectorAll('.checkbox-label input[type="checkbox"]');
-  checkboxes.forEach(cb => {
-    cb.addEventListener('change', function() {
-      const label = this.closest('.checkbox-label');
-      if (this.checked) {
-        label.classList.add('checked');
-      } else {
-        label.classList.remove('checked');
-      }
-    });
-  });
-
-  // ===== SAVE POINT #1: ACTION URGES (YOUR SPEC) =====
-  const saveUrgesBtn = document.getElementById('saveUrgesBtn');
-  const urgesFeedback = document.getElementById('urgesSaveFeedback');
-  
-  if (saveUrgesBtn) {
-    saveUrgesBtn.addEventListener('click', function() {
-      const checkedBoxes = document.querySelectorAll('#urgeCheckboxes input[type="checkbox"]:checked');
-      const urges = Array.from(checkedBoxes).map(cb => {
-        const label = cb.closest('.checkbox-label');
-        return label ? label.querySelector('span').textContent.trim() : cb.value;
-      });
-      
-      if (urges.length === 0) {
-        alert('Please select at least one action urge.');
-        return;
-      }
-      
-      // Save to crisis plan in localStorage
-      let crisisPlan = JSON.parse(localStorage.getItem('crisis_plan') || '{}');
-      if (!crisisPlan.actionUrges) crisisPlan.actionUrges = [];
-      crisisPlan.actionUrges = urges;
-      crisisPlan.lastUpdated = new Date().toISOString();
-      localStorage.setItem('crisis_plan', JSON.stringify(crisisPlan));
-      
-      // Also save to toolkit
-      let toolkit = JSON.parse(localStorage.getItem('crisis_toolkit') || '[]');
-      
-      // Remove old action urges entry if exists
-      toolkit = toolkit.filter(item => item.id !== 'action-urges');
-      
-      toolkit.push({
-        id: 'action-urges',
-        category: 'My Crisis Profile',
-        name: 'My Action Urges',
-        description: urges.join(', '),
-        date: new Date().toISOString()
-      });
-      
-      localStorage.setItem('crisis_toolkit', JSON.stringify(toolkit));
-      
-      // Visual feedback
-      saveUrgesBtn.classList.add('saved');
-      saveUrgesBtn.innerHTML = '<span>✓</span> Saved to Crisis Plan';
-      urgesFeedback.style.display = 'block';
-      urgesFeedback.textContent = '✓ Your action urges have been saved to your crisis plan.';
-      
-      setTimeout(() => {
-        saveUrgesBtn.classList.remove('saved');
-        saveUrgesBtn.innerHTML = '<span>📋</span> Save My Action Urges to Crisis Plan';
-        urgesFeedback.style.display = 'none';
-      }, 3000);
-    });
-  }
-
-  // ===== SAVE POINT #2: SUMMARY CARD (YOUR SPEC) =====
-  const saveSummaryBtn = document.getElementById('saveSummaryBtn');
-  const summaryFeedback = document.getElementById('summarySaveFeedback');
-  
-  if (saveSummaryBtn) {
-    saveSummaryBtn.addEventListener('click', function() {
-      let toolkit = JSON.parse(localStorage.getItem('crisis_toolkit') || '[]');
-      
-      // Remove old summary card if exists
-      toolkit = toolkit.filter(item => item.id !== 'crisis-brain-facts');
-      
-      toolkit.push({
-        id: 'crisis-brain-facts',
-        category: 'Module 1: Crisis Science',
-        name: 'Crisis Brain Facts',
-        description: '• Your thinking brain goes offline\n• Emotions peak in 10-20 minutes\n• Your body can calm your mind\n• You can\'t logic your way out\n• The wave WILL pass if you wait',
-        date: new Date().toISOString()
-      });
-      
-      localStorage.setItem('crisis_toolkit', JSON.stringify(toolkit));
-      
-      // Visual feedback
-      saveSummaryBtn.classList.add('saved');
-      saveSummaryBtn.innerHTML = '<span>✓</span> Saved to Toolkit';
-      summaryFeedback.style.display = 'block';
-      summaryFeedback.textContent = '✓ Crisis Brain Facts saved to your toolkit.';
-      
-      setTimeout(() => {
-        saveSummaryBtn.classList.remove('saved');
-        saveSummaryBtn.innerHTML = '<span>📋</span> Save Crisis Brain Facts to Toolkit';
-        summaryFeedback.style.display = 'none';
-      }, 3000);
-    });
-  }
-
-  // ===== MARK AS PRACTICED =====
-  const markBtn = document.getElementById('markPracticedBtn');
-  
-  if (markBtn) {
-    markBtn.addEventListener('click', function() {
-      let progress = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
-      if (!progress.practicedModules) progress.practicedModules = [];
-      
-      if (!progress.practicedModules.includes('module1')) {
-        progress.practicedModules.push('module1');
-      }
-      
-      progress.lastPracticed = new Date().toISOString();
-      progress.currentModule = 1;
-      
-      localStorage.setItem('crisis_course_progress', JSON.stringify(progress));
-      
-      markBtn.innerHTML = '✓ Module 1 marked as practiced';
-      markBtn.style.background = 'rgba(74,222,128,0.25)';
-      
-      setTimeout(() => {
-        markBtn.innerHTML = '✓ I\'ve practiced this module';
-        markBtn.style.background = 'rgba(34,197,94,0.12)';
-      }, 2000);
-    });
-  }
-
-  // ===== LOAD SAVED URGES IF THEY EXIST =====
-  function loadSavedUrges() {
-    const crisisPlan = JSON.parse(localStorage.getItem('crisis_plan') || '{}');
-    const savedUrges = crisisPlan.actionUrges || [];
+    'use strict';
     
-    if (savedUrges.length > 0) {
-      const checkboxes = document.querySelectorAll('#urgeCheckboxes .checkbox-label');
-      checkboxes.forEach(label => {
-        const span = label.querySelector('span');
-        if (!span) return;
-        
-        const text = span.textContent.trim();
-        if (savedUrges.includes(text)) {
-          const cb = label.querySelector('input[type="checkbox"]');
-          if (cb) {
-            cb.checked = true;
-            label.classList.add('checked');
-          }
+    // State
+    let currentStep = 1;
+    const totalSteps = 8;
+    let userData = {
+        actionUrges: [],
+        windowZone: null,
+        quizAnswers: {}
+    };
+    
+    // Titles for each step
+    const stepTitles = {
+        1: 'Section 1.1: The Alarm System',
+        2: 'Section 1.1: The Alarm System',
+        3: 'Section 1.2: The Emotional Wave',
+        4: 'Reflection: Your Action Urges',
+        5: 'Section 1.3: Window of Tolerance',
+        6: 'Section 1.4: Quick Check',
+        7: 'Crisis Brain Facts',
+        8: 'Module Complete!'
+    };
+    
+    // Storage helpers
+    function saveProgress() {
+        try {
+            const data = {
+                step: currentStep,
+                userData: userData,
+                timestamp: Date.now()
+            };
+            localStorage.setItem('crisis_module1_progress', JSON.stringify(data));
+            return true;
+        } catch (e) {
+            console.error('Save failed:', e);
+            return false;
         }
-      });
     }
-  }
-
-  // ===== UPDATE PROGRESS =====
-  let progress = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
-  progress.currentModule = 1;
-  progress.lastAccessed = new Date().toISOString();
-  localStorage.setItem('crisis_course_progress', JSON.stringify(progress));
-  
-  // Load saved data
-  loadSavedUrges();
+    
+    function loadProgress() {
+        try {
+            const saved = localStorage.getItem('crisis_module1_progress');
+            if (saved) {
+                const data = JSON.parse(saved);
+                if (Date.now() - data.timestamp < 24 * 60 * 60 * 1000) {
+                    currentStep = data.step;
+                    userData = data.userData;
+                    return true;
+                }
+            }
+        } catch (e) {
+            console.error('Load failed:', e);
+        }
+        return false;
+    }
+    
+    function saveToCrisisPlan(key, value) {
+        try {
+            let plan = JSON.parse(localStorage.getItem('crisis_plan') || '{}');
+            plan[key] = value;
+            plan.lastUpdated = new Date().toISOString();
+            localStorage.setItem('crisis_plan', JSON.stringify(plan));
+            return true;
+        } catch (e) {
+            console.error('Save to crisis plan failed:', e);
+            return false;
+        }
+    }
+    
+    function saveToToolkit(item) {
+        try {
+            let toolkit = JSON.parse(localStorage.getItem('crisis_toolkit') || '[]');
+            toolkit = toolkit.filter(t => t.id !== item.id);
+            toolkit.push({
+                ...item,
+                date: new Date().toISOString()
+            });
+            localStorage.setItem('crisis_toolkit', JSON.stringify(toolkit));
+            return true;
+        } catch (e) {
+            console.error('Save to toolkit failed:', e);
+            return false;
+        }
+    }
+    
+    // Navigation with proper scroll
+    function scrollToTop() {
+        const mainContent = document.getElementById('mainContent');
+        if (mainContent) {
+            mainContent.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+    }
+    
+    function goToStep(step) {
+        if (step < 1 || step > totalSteps) return;
+        currentStep = step;
+        saveProgress();
+        render();
+        scrollToTop();
+    }
+    
+    function nextStep() {
+        if (currentStep < totalSteps) {
+            goToStep(currentStep + 1);
+        }
+    }
+    
+    function previousStep() {
+        if (currentStep > 1) {
+            goToStep(currentStep - 1);
+        } else {
+            window.location.href = 'crisis-intro.html';
+        }
+    }
+    
+    // Render functions
+    function renderHeader(showCrisis = false) {
+        return `
+            ${showCrisis ? `
+            <div class="crisis-banner">
+                <span class="crisis-banner__text">🚨 In crisis? Help is available 24/7</span>
+                <div class="crisis-banner__actions">
+                    <a href="tel:988" class="crisis-banner__link">Call 988</a>
+                    <a href="sms:988" class="crisis-banner__link">Text 988</a>
+                </div>
+            </div>
+            ` : ''}
+            
+            <div class="header">
+                <div class="header__top">
+                    <button class="back-btn" onclick="previousStep()" aria-label="Go back">←</button>
+                    <span class="step-indicator">${currentStep} / ${totalSteps}</span>
+                </div>
+                <div class="progress-dots">
+                    ${Array(totalSteps).fill(0).map((_, i) => 
+                        `<div class="progress-dot ${i < currentStep ? 'active' : ''}"></div>`
+                    ).join('')}
+                </div>
+                <h1 class="step-title">${stepTitles[currentStep]}</h1>
+                <p class="step-subtitle">Module 1: Why Your Brain Goes Haywire</p>
+            </div>
+        `;
+    }
+    
+    function renderStep1() {
+        return `
+            <div class="step-content">
+                ${renderHeader(true)}
+                
+                <div class="card">
+                    <div class="card__icon">🧠</div>
+                    <div class="card__content">
+                        <p>Meet your <strong>amygdala</strong> — your brain's smoke detector. Its job is to keep you alive by detecting threats.</p>
+                        
+                        <p>The problem? <strong>It can't tell the difference between a tiger and a text message.</strong></p>
+                        
+                        <p>When it fires, three things happen:</p>
+                        
+                        <ol>
+                            <li>Your <strong>thinking brain (prefrontal cortex) goes partially offline</strong></li>
+                            <li>Your body floods with <strong>stress chemicals</strong> (adrenaline, cortisol)</li>
+                            <li>You get powerful <strong>action urges</strong> (fight, flee, freeze, or other impulsive behaviors)</li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <button class="btn btn--primary" onclick="nextStep()">
+                    <span>Continue</span>
+                    <span>→</span>
+                </button>
+                
+                ${renderFooter()}
+            </div>
+        `;
+    }
+    
+    function renderStep2() {
+        setTimeout(() => {
+            initBrainInteraction();
+        }, 100);
+        
+        return `
+            <div class="step-content">
+                ${renderHeader()}
+                
+                <div class="card">
+                    <div class="card__content">
+                        <div class="callout">
+                            <p><strong>This is why you can't 'logic yourself out' of panic.</strong> Your logic center is literally impaired.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="brain-container">
+                        <svg class="brain-svg" viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path id="brainOutline" d="M40 40 Q60 20, 100 20 Q140 20, 160 40 Q170 60, 160 80 Q140 100, 100 100 Q60 100, 40 80 Q30 60, 40 40" 
+                                  stroke="rgba(14,116,144,0.5)" stroke-width="2.5" fill="rgba(14,116,144,0.08)"/>
+                            
+                            <path id="pfc" d="M70 30 L90 30 L85 50 L75 50 Z" 
+                                  fill="rgba(94,234,212,0.4)" stroke="#0e7490" stroke-width="2"
+                                  style="transition: opacity 0.3s ease;"/>
+                            
+                            <circle id="amygdala" cx="110" cy="70" r="13" 
+                                    fill="rgba(220,38,38,0.3)" stroke="#991b1b" stroke-width="2"
+                                    style="transition: fill 0.3s ease;"/>
+                            
+                            <text x="110" y="75" font-size="12" text-anchor="middle" fill="#fca5a5" font-weight="bold">⚠️</text>
+                        </svg>
+                        
+                        <button id="brainBtn" class="brain-btn pulse">
+                            <span id="brainBtnText">🔥 Trigger Crisis Mode</span>
+                        </button>
+                        <p class="btn-hint">👆 Tap to see what happens in your brain during crisis</p>
+                        
+                        <div class="brain-states">
+                            <div class="brain-state">
+                                <div class="brain-state__name" style="color: #5eead4;">🧠 Prefrontal Cortex</div>
+                                <div class="brain-state__desc" id="pfcDesc">Thinking brain • ONLINE</div>
+                            </div>
+                            <div class="brain-state">
+                                <div class="brain-state__name" style="color: #fca5a5;">⚠️ Amygdala</div>
+                                <div class="brain-state__desc" id="amygdalaDesc">Alarm system • STANDBY</div>
+                            </div>
+                        </div>
+                        
+                        <div id="actionUrges" class="action-urges">
+                            <div class="action-urges__title">⚡ ACTION URGES:</div>
+                            <div class="action-urges__grid">
+                                <div class="urge-badge">🏃 RUN!</div>
+                                <div class="urge-badge">⚔️ FIGHT!</div>
+                                <div class="urge-badge">❄️ SHUT DOWN!</div>
+                                <div class="urge-badge">🔥 DO SOMETHING!</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="btn btn--primary" onclick="nextStep()">
+                    <span>Continue</span>
+                    <span>→</span>
+                </button>
+                
+                ${renderFooter()}
+            </div>
+        `;
+    }
+    
+    function renderStep3() {
+        setTimeout(() => {
+            initWaveInteraction();
+        }, 100);
+        
+        return `
+            <div class="step-content">
+                ${renderHeader()}
+                
+                <div class="card">
+                    <div class="card__title">
+                        <span>🌊</span>
+                        <span>The Emotional Wave</span>
+                    </div>
+                    <div class="card__content">
+                        <p>Here's the most important thing to understand: <strong>Emotions are temporary.</strong></p>
+                        
+                        <p>They feel permanent, but they're not. Every emotion follows a predictable pattern - it rises, peaks, and falls. This is called habituation.</p>
+                        
+                        <p>The peak usually happens around <strong>10-20 minutes</strong>. If you can survive those 20 minutes without acting on destructive urges, the intensity WILL decrease.</p>
+                        
+                        <p>This isn't positive thinking - it's neuroscience.</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="wave-container">
+                        <svg class="wave-svg" viewBox="0 0 300 120" preserveAspectRatio="xMidYMid meet">
+                            <line x1="30" y1="100" x2="280" y2="100" stroke="#94a3b8" stroke-width="1" stroke-dasharray="2"/>
+                            <line x1="30" y1="20" x2="30" y2="100" stroke="#94a3b8" stroke-width="1" stroke-dasharray="2"/>
+                            
+                            <text x="10" y="60" font-size="8" fill="#94a3b8" transform="rotate(-90 10,60)">Intensity</text>
+                            <text x="280" y="115" font-size="8" fill="#94a3b8" text-anchor="end">Time (min) →</text>
+                            
+                            <text x="30" y="115" font-size="7" fill="#94a3b8">0</text>
+                            <text x="110" y="115" font-size="7" fill="#94a3b8">10</text>
+                            <text x="190" y="115" font-size="7" fill="#94a3b8">20</text>
+                            <text x="270" y="115" font-size="7" fill="#94a3b8">30</text>
+                            
+                            <path id="waveGreen" d="M30 90 Q70 50, 110 60 Q150 70, 190 75 Q230 85, 270 90" 
+                                  stroke="#5eead4" stroke-width="3" fill="none" stroke-linecap="round"/>
+                            
+                            <path id="waveRed" d="M30 90 Q70 30, 110 35 Q150 75, 190 85 Q230 65, 270 55" 
+                                  stroke="#ef4444" stroke-width="3" fill="none" opacity="0" stroke-dasharray="6 4" stroke-linecap="round"
+                                  style="transition: opacity 0.3s ease;"/>
+                            
+                            <circle cx="110" cy="60" r="5" fill="#fbbf24"/>
+                            <text x="110" y="48" font-size="9" fill="#fbbf24" text-anchor="middle" font-weight="600">Peak</text>
+                            <text x="110" y="35" font-size="8" fill="#94a3b8" text-anchor="middle">~10-20min</text>
+                        </svg>
+                        
+                        <div class="wave-legend">
+                            <div style="color: #5eead4;">● Using skills</div>
+                            <div id="redWaveLegend" style="color: #fca5a5; opacity: 0.4; transition: opacity 0.3s ease;">● Acting on urge</div>
+                        </div>
+                        
+                        <p class="scenario-question">Scenario: You're at intensity level 8. You want to send an angry text. What happens?</p>
+                        
+                        <div class="scenario-btns">
+                            <button id="scenarioRed" class="scenario-btn scenario-btn--red pulse">
+                                📱 Send the text
+                            </button>
+                            <button id="scenarioGreen" class="scenario-btn scenario-btn--green pulse">
+                                🧘 Use a skill and wait
+                            </button>
+                        </div>
+                        <p class="interaction-hint">👆 Tap each option to see what happens</p>
+                        
+                        <div id="scenarioFeedback" class="scenario-feedback">
+                            Click a scenario to see what happens to your emotional wave.
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="btn btn--primary" onclick="nextStep()">
+                    <span>Continue</span>
+                    <span>→</span>
+                </button>
+                
+                ${renderFooter()}
+            </div>
+        `;
+    }
+    
+    function renderStep4() {
+        setTimeout(() => {
+            initUrgeCheckboxes();
+        }, 100);
+        
+        return `
+            <div class="step-content">
+                ${renderHeader()}
+                
+                <div class="card card--highlight">
+                    <div class="card__icon">⚡</div>
+                    <div class="card__title">What Are Your Action Urges?</div>
+                    <div class="card__content">
+                        <p>When your amygdala fires in crisis, what does it tell you to do?</p>
+                        
+                        <p>Understanding your specific action urges is the first step in managing them.</p>
+                    </div>
+                    
+                    <div class="checkbox-grid">
+                        ${[
+                            'Escape/run away',
+                            'Hurt myself',
+                            'Lash out at others',
+                            'Use substances',
+                            'Shut down completely',
+                            'Other destructive behavior'
+                        ].map((urge, i) => `
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="urge${i}" value="${urge}">
+                                <label for="urge${i}" class="checkbox-label">
+                                    <span class="checkbox-visual"></span>
+                                    <span>${urge}</span>
+                                </label>
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    <button id="saveUrgesBtn" class="btn btn--save">
+                        <span>📋</span>
+                        <span>Save My Action Urges</span>
+                    </button>
+                    <div id="urgesFeedback" class="save-feedback"></div>
+                </div>
+                
+                <button class="btn btn--primary" onclick="nextStep()">
+                    <span>Continue</span>
+                    <span>→</span>
+                </button>
+                
+                ${renderFooter()}
+            </div>
+        `;
+    }
+    
+    function renderStep5() {
+        setTimeout(() => {
+            initWindowZones();
+        }, 100);
+        
+        return `
+            <div class="step-content">
+                ${renderHeader()}
+                
+                <div class="card">
+                    <div class="card__icon">🎯</div>
+                    <div class="card__title">Your Window of Tolerance</div>
+                    <div class="card__content">
+                        <p>Imagine you have an optimal zone where you can function well - not too activated, not too shut down.</p>
+                        
+                        <p>This is your <strong>window of tolerance</strong> (concept from Dr. Dan Siegel).</p>
+                        
+                        <p>Crisis skills are about getting back INTO your window, not about becoming perfectly calm.</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="zone-list">
+                        <button id="zoneHyper" class="zone zone--hyper pulse">
+                            <div class="zone__title" style="color: #fca5a5;">
+                                <span>🔥</span>
+                                <span>HYPERAROUSAL</span>
+                            </div>
+                            <div class="zone__desc">Racing heart • Can't sit still • Mind racing • Feel like you'll explode • Panic/rage</div>
+                        </button>
+                        
+                        <button id="zoneOptimal" class="zone zone--optimal pulse">
+                            <div class="zone__title" style="color: #5eead4;">
+                                <span>🎯</span>
+                                <span>WINDOW OF TOLERANCE</span>
+                            </div>
+                            <div class="zone__desc">Can think clearly • Feel emotions but not overwhelmed • Can make choices • Connected to body and surroundings</div>
+                        </button>
+                        
+                        <button id="zoneHypo" class="zone zone--hypo pulse">
+                            <div class="zone__title" style="color: #94a3b8;">
+                                <span>❄️</span>
+                                <span>HYPOAROUSAL</span>
+                            </div>
+                            <div class="zone__desc">Numb/disconnected • Foggy thinking • Very low energy • Feel nothing • Want to sleep/disappear</div>
+                        </button>
+                    </div>
+                    <p class="interaction-hint">👆 Tap the zone that describes you RIGHT NOW</p>
+                    
+                    <div id="zoneFeedback" class="zone-feedback">
+                        Click the zone that describes you to get personalized guidance.
+                    </div>
+                </div>
+                
+                <button class="btn btn--primary" onclick="nextStep()">
+                    <span>Continue</span>
+                    <span>→</span>
+                </button>
+                
+                ${renderFooter()}
+            </div>
+        `;
+    }
+    
+    function renderStep6() {
+        setTimeout(() => {
+            initQuiz();
+        }, 100);
+        
+        return `
+            <div class="step-content">
+                ${renderHeader()}
+                
+                <div class="card">
+                    <div class="card__title">Quick Knowledge Check</div>
+                    <div class="card__content">
+                        <p>Let's make sure you understand the core concepts. Answer these questions to check your understanding.</p>
+                    </div>
+                </div>
+                
+                <div class="quiz-list">
+                    ${[
+                        {
+                            q: '1. Why can\'t you think clearly in crisis?',
+                            options: [
+                                { text: 'You\'re not trying hard enough', correct: false },
+                                { text: 'Your prefrontal cortex is partially offline', correct: true },
+                                { text: 'You\'re weak or flawed', correct: false }
+                            ],
+                            correctFeedback: '✓ Correct! Your prefrontal cortex (thinking brain) is partially offline during crisis.',
+                            incorrectFeedback: '✗ Not quite. Your thinking brain is literally impaired during crisis due to your amygdala taking over.'
+                        },
+                        {
+                            q: '2. How long do emotional peaks typically last?',
+                            options: [
+                                { text: 'Several hours', correct: false },
+                                { text: '10-20 minutes', correct: true },
+                                { text: 'Several days', correct: false }
+                            ],
+                            correctFeedback: '✓ Correct! Emotional peaks typically last 10-20 minutes, then naturally decline.',
+                            incorrectFeedback: '✗ Not quite. Emotions peak quickly — usually within 10-20 minutes.'
+                        },
+                        {
+                            q: '3. What\'s the goal of crisis skills?',
+                            options: [
+                                { text: 'Make emotions go away permanently', correct: false },
+                                { text: 'Survive the peak without making things worse', correct: true },
+                                { text: 'Fix all your problems instantly', correct: false }
+                            ],
+                            correctFeedback: '✓ Correct! Crisis skills help you survive the peak without making things worse.',
+                            incorrectFeedback: '✗ Not quite. Crisis skills are about survival and harm reduction, not fixing everything.'
+                        }
+                    ].map((quiz, qNum) => `
+                        <div class="quiz-item">
+                            <div class="quiz-question">${quiz.q}</div>
+                            <div class="quiz-options">
+                                ${quiz.options.map((opt, oNum) => `
+                                    <div class="quiz-option" data-question="${qNum}" data-correct="${opt.correct}">
+                                        <input type="radio" name="q${qNum}" id="q${qNum}_${oNum}">
+                                        <label for="q${qNum}_${oNum}" class="quiz-option-label">
+                                            <span class="quiz-radio"></span>
+                                            <span>${opt.text}</span>
+                                        </label>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <div id="feedback${qNum}" class="quiz-feedback" data-correct="${quiz.correctFeedback}" data-incorrect="${quiz.incorrectFeedback}"></div>
+                        </div>
+                    `).join('')}
+                </div>
+                
+                <button class="btn btn--primary" onclick="nextStep()">
+                    <span>Continue</span>
+                    <span>→</span>
+                </button>
+                
+                ${renderFooter()}
+            </div>
+        `;
+    }
+    
+    function renderStep7() {
+        setTimeout(() => {
+            initSummaryCard();
+        }, 100);
+        
+        return `
+            <div class="step-content">
+                ${renderHeader()}
+                
+                <div class="summary-card">
+                    <div class="summary-header">
+                        <span class="summary-icon">🧠</span>
+                        <h2 class="summary-title">Crisis Brain Facts</h2>
+                    </div>
+                    
+                    <ul class="summary-list">
+                        <li>Your thinking brain goes offline during crisis</li>
+                        <li>Emotions peak in 10-20 minutes, then naturally decline</li>
+                        <li>Your body can calm your mind (Module 2 will teach you how)</li>
+                        <li>You can't logic your way out of a crisis state</li>
+                        <li>The emotional wave WILL pass if you wait and use skills</li>
+                    </ul>
+                    
+                    <button id="saveSummaryBtn" class="btn btn--save">
+                        <span>📋</span>
+                        <span>Save to Toolkit</span>
+                    </button>
+                    <div id="summaryFeedback" class="save-feedback"></div>
+                </div>
+                
+                <button class="btn btn--primary" onclick="nextStep()">
+                    <span>Continue</span>
+                    <span>→</span>
+                </button>
+                
+                ${renderFooter()}
+            </div>
+        `;
+    }
+    
+    function renderStep8() {
+        setTimeout(() => {
+            initPracticeBtn();
+        }, 100);
+        
+        return `
+            <div class="step-content">
+                ${renderHeader()}
+                
+                <div class="card card--highlight">
+                    <div class="card__icon">✅</div>
+                    <div class="card__title">Module 1 Complete!</div>
+                    <div class="card__content">
+                        <p>You now understand why your brain goes haywire in crisis.</p>
+                        
+                        <p><strong>Next:</strong> Module 2 will teach you the physical reset techniques to bring your brain back online.</p>
+                    </div>
+                </div>
+                
+                <div class="practice-section">
+                    <button id="practiceBtn" class="practice-btn">
+                        <span>✓</span>
+                        <span>Mark Module as Practiced</span>
+                    </button>
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn btn--secondary" onclick="previousStep()">
+                        <span>←</span>
+                        <span>Back</span>
+                    </button>
+                    <a href="crisis-module-2.html" class="btn btn--primary">
+                        <span>Module 2</span>
+                        <span>→</span>
+                    </a>
+                </div>
+                
+                ${renderFooter()}
+            </div>
+        `;
+    }
+    
+    function renderFooter() {
+        return `
+            <div class="footer">
+                <p class="footer__warning">⚠️ EDUCATIONAL ONLY — NOT THERAPY</p>
+                <div class="footer__resources">
+                    <p><span class="footer__link" onclick="showCrisisInfo()">Crisis resources available 24/7</span></p>
+                </div>
+            </div>
+        `;
+    }
+    
+    function showCrisisInfo() {
+        alert('🚨 CRISIS RESOURCES 24/7\n\n988 Suicide & Crisis Lifeline:\nCall or text 988\n\nCrisis Text Line:\nText HOME to 741741');
+    }
+    
+    // Interactive functionality
+    function initBrainInteraction() {
+        const btn = document.getElementById('brainBtn');
+        const btnText = document.getElementById('brainBtnText');
+        const pfc = document.getElementById('pfc');
+        const amygdala = document.getElementById('amygdala');
+        const pfcDesc = document.getElementById('pfcDesc');
+        const amygdalaDesc = document.getElementById('amygdalaDesc');
+        const urges = document.getElementById('actionUrges');
+        
+        let active = false;
+        
+        if (btn) {
+            btn.addEventListener('click', () => {
+                active = !active;
+                
+                // Remove pulse animation after first click
+                btn.classList.remove('pulse');
+                
+                if (active) {
+                    pfc.style.opacity = '0.3';
+                    amygdala.setAttribute('fill', 'rgba(220,38,38,0.9)');
+                    pfcDesc.textContent = 'Thinking brain • OFFLINE';
+                    amygdalaDesc.textContent = 'Alarm system • ACTIVATED';
+                    btnText.textContent = '😮‍💨 Reset Brain';
+                    btn.classList.add('active');
+                    urges.classList.add('show');
+                } else {
+                    pfc.style.opacity = '1';
+                    amygdala.setAttribute('fill', 'rgba(220,38,38,0.3)');
+                    pfcDesc.textContent = 'Thinking brain • ONLINE';
+                    amygdalaDesc.textContent = 'Alarm system • STANDBY';
+                    btnText.textContent = '🔥 Trigger Crisis Mode';
+                    btn.classList.remove('active');
+                    urges.classList.remove('show');
+                }
+            });
+        }
+    }
+    
+    function initWaveInteraction() {
+        const redBtn = document.getElementById('scenarioRed');
+        const greenBtn = document.getElementById('scenarioGreen');
+        const waveRed = document.getElementById('waveRed');
+        const legend = document.getElementById('redWaveLegend');
+        const feedback = document.getElementById('scenarioFeedback');
+        
+        if (redBtn) {
+            redBtn.addEventListener('click', () => {
+                // Remove pulse from both buttons
+                redBtn.classList.remove('pulse');
+                greenBtn.classList.remove('pulse');
+                
+                waveRed.style.opacity = '1';
+                legend.style.opacity = '1';
+                feedback.innerHTML = '<span style="color: #fca5a5;"><strong>❌ Result:</strong> You felt relief for 30 seconds. Now you have regret on top of your original feeling. <strong>Intensity: 9/10</strong> — and you may have damaged a relationship.</span>';
+            });
+        }
+        
+        if (greenBtn) {
+            greenBtn.addEventListener('click', () => {
+                // Remove pulse from both buttons
+                redBtn.classList.remove('pulse');
+                greenBtn.classList.remove('pulse');
+                
+                waveRed.style.opacity = '0.2';
+                legend.style.opacity = '0.4';
+                feedback.innerHTML = '<span style="color: #5eead4;"><strong>✅ Result:</strong> You rode the wave. It was hard, but you didn\'t make things worse. After 20 minutes, <strong>intensity: 4/10</strong> — and no regrets or relationship damage.</span>';
+            });
+        }
+    }
+    
+    function initUrgeCheckboxes() {
+        const saveBtn = document.getElementById('saveUrgesBtn');
+        const feedback = document.getElementById('urgesFeedback');
+        const checkboxes = document.querySelectorAll('.checkbox-item input[type="checkbox"]');
+        
+        // Load saved urges
+        if (userData.actionUrges.length > 0) {
+            checkboxes.forEach(cb => {
+                if (userData.actionUrges.includes(cb.value)) {
+                    cb.checked = true;
+                }
+            });
+        }
+        
+        if (saveBtn) {
+            saveBtn.addEventListener('click', () => {
+                const selected = Array.from(checkboxes)
+                    .filter(cb => cb.checked)
+                    .map(cb => cb.value);
+                
+                if (selected.length === 0) {
+                    feedback.textContent = 'Please select at least one action urge.';
+                    feedback.classList.add('show');
+                    setTimeout(() => feedback.classList.remove('show'), 3000);
+                    return;
+                }
+                
+                userData.actionUrges = selected;
+                
+                saveToCrisisPlan('actionUrges', selected);
+                
+                saveToToolkit({
+                    id: 'action-urges',
+                    category: 'My Crisis Profile',
+                    name: 'My Action Urges',
+                    description: selected.join(', ')
+                });
+                
+                saveBtn.classList.add('saved');
+                saveBtn.innerHTML = '<span>✓</span><span>Saved!</span>';
+                feedback.textContent = '✓ Saved to your crisis plan and toolkit.';
+                feedback.classList.add('show');
+                
+                setTimeout(() => {
+                    saveBtn.classList.remove('saved');
+                    saveBtn.innerHTML = '<span>📋</span><span>Save My Action Urges</span>';
+                    feedback.classList.remove('show');
+                }, 3000);
+            });
+        }
+    }
+    
+    function initWindowZones() {
+        const zones = ['zoneHyper', 'zoneOptimal', 'zoneHypo'];
+        const feedback = document.getElementById('zoneFeedback');
+        
+        const feedbackText = {
+            zoneHyper: '<span style="color: #fca5a5;"><strong>🔥 Hyperarousal:</strong> You need to bring your energy DOWN. Module 2 will teach you techniques like cold water immersion, intense physical exercise, and paced breathing to help you return to your window.</span>',
+            zoneOptimal: '<span style="color: #5eead4;"><strong>✅ Window of Tolerance:</strong> Great! You\'re in an optimal state for learning. This is the perfect time to practice the skills you\'ll learn in Modules 2 and 3, so they\'re ready when you need them.</span>',
+            zoneHypo: '<span style="color: #94a3b8;"><strong>❄️ Hypoarousal:</strong> You need to bring your energy UP. Module 2 includes activation techniques like intense movement, temperature shock, and strong sensory input to help you reconnect.</span>'
+        };
+        
+        zones.forEach(zoneId => {
+            const zone = document.getElementById(zoneId);
+            if (zone) {
+                zone.addEventListener('click', () => {
+                    // Remove pulse from all zones
+                    zones.forEach(z => {
+                        const zoneEl = document.getElementById(z);
+                        if (zoneEl) zoneEl.classList.remove('pulse');
+                    });
+                    
+                    userData.windowZone = zoneId;
+                    feedback.innerHTML = feedbackText[zoneId];
+                });
+            }
+        });
+    }
+    
+    function initQuiz() {
+        const options = document.querySelectorAll('.quiz-option');
+        
+        options.forEach(option => {
+            const radio = option.querySelector('input[type="radio"]');
+            
+            if (radio) {
+                radio.addEventListener('change', () => {
+                    const qNum = option.dataset.question;
+                    const isCorrect = option.dataset.correct === 'true';
+                    const feedback = document.getElementById(`feedback${qNum}`);
+                    
+                    document.querySelectorAll(`.quiz-option[data-question="${qNum}"]`).forEach(opt => {
+                        opt.classList.remove('correct', 'incorrect');
+                    });
+                    
+                    if (isCorrect) {
+                        option.classList.add('correct');
+                        feedback.className = 'quiz-feedback correct show';
+                        feedback.textContent = feedback.dataset.correct;
+                    } else {
+                        option.classList.add('incorrect');
+                        feedback.className = 'quiz-feedback incorrect show';
+                        feedback.textContent = feedback.dataset.incorrect;
+                    }
+                    
+                    userData.quizAnswers[qNum] = isCorrect;
+                });
+            }
+        });
+    }
+    
+    function initSummaryCard() {
+        const saveBtn = document.getElementById('saveSummaryBtn');
+        const feedback = document.getElementById('summaryFeedback');
+        
+        if (saveBtn) {
+            saveBtn.addEventListener('click', () => {
+                saveToToolkit({
+                    id: 'crisis-brain-facts',
+                    category: 'Module 1: Crisis Science',
+                    name: 'Crisis Brain Facts',
+                    description: 'Your thinking brain goes offline • Emotions peak in 10-20 minutes • Your body can calm your mind • You can\'t logic your way out • The wave WILL pass'
+                });
+                
+                saveBtn.classList.add('saved');
+                saveBtn.innerHTML = '<span>✓</span><span>Saved!</span>';
+                feedback.textContent = '✓ Saved to your toolkit.';
+                feedback.classList.add('show');
+                
+                setTimeout(() => {
+                    saveBtn.classList.remove('saved');
+                    saveBtn.innerHTML = '<span>📋</span><span>Save to Toolkit</span>';
+                    feedback.classList.remove('show');
+                }, 3000);
+            });
+        }
+    }
+    
+    function initPracticeBtn() {
+        const btn = document.getElementById('practiceBtn');
+        
+        let progress = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
+        if (progress.practicedModules && progress.practicedModules.includes('module1')) {
+            btn.classList.add('marked');
+            btn.innerHTML = '<span>✓</span><span>Module 1 Practiced</span>';
+        }
+        
+        if (btn) {
+            btn.addEventListener('click', () => {
+                if (!progress.practicedModules) {
+                    progress.practicedModules = [];
+                }
+                
+                if (!progress.practicedModules.includes('module1')) {
+                    progress.practicedModules.push('module1');
+                    progress.lastPracticed = new Date().toISOString();
+                    localStorage.setItem('crisis_course_progress', JSON.stringify(progress));
+                    
+                    btn.classList.add('marked');
+                    btn.innerHTML = '<span>✓</span><span>Module 1 Practiced</span>';
+                }
+            });
+        }
+    }
+    
+    // Main render
+    function render() {
+        const content = document.getElementById('content');
+        
+        let html = '';
+        switch(currentStep) {
+            case 1: html = renderStep1(); break;
+            case 2: html = renderStep2(); break;
+            case 3: html = renderStep3(); break;
+            case 4: html = renderStep4(); break;
+            case 5: html = renderStep5(); break;
+            case 6: html = renderStep6(); break;
+            case 7: html = renderStep7(); break;
+            case 8: html = renderStep8(); break;
+            default: html = renderStep1();
+        }
+        
+        content.innerHTML = html;
+        
+        let courseProgress = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
+        courseProgress.currentModule = 1;
+        courseProgress.lastAccessed = new Date().toISOString();
+        localStorage.setItem('crisis_course_progress', JSON.stringify(courseProgress));
+    }
+    
+    // Expose functions globally
+    window.nextStep = nextStep;
+    window.previousStep = previousStep;
+    window.goToStep = goToStep;
+    window.showCrisisInfo = showCrisisInfo;
+    
+    // Initialize
+    loadProgress();
+    render();
 })();
 </script>
-
 </body>
 </html>
