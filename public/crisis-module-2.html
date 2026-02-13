@@ -186,9 +186,6 @@ html, body {
     padding: 0.25rem;
     line-height: 1;
     transition: all 0.2s;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
 }
 
 .back-btn:active {
@@ -736,49 +733,250 @@ html, body {
     <div class="app-wrapper">
         <div class="bg-blur-1"></div>
         <div class="bg-blur-2"></div>
-        <div class="main-content">
-            <div class="content-wrapper">
+        <div class="main-content" id="mainContent">
+            <div class="content-wrapper" id="content">
+                <!-- Content will be rendered here by JavaScript -->
+            </div>
+        </div>
+    </div>
+</div>
 
-                <!-- CRISIS BANNER -->
-                <div class="crisis-banner">
-                    <span class="crisis-banner__text">🚨 In crisis? Help is available 24/7</span>
-                    <div class="crisis-banner__actions">
-                        <a href="tel:988" class="crisis-banner__link">Call 988</a>
-                        <a href="sms:988" class="crisis-banner__link">Text 988</a>
-                    </div>
+<script>
+(function() {
+    'use strict';
+    
+    // Check disclaimer acknowledgment
+    const acknowledged = localStorage.getItem('crisis_disclaimer_acknowledged');
+    if (!acknowledged) {
+        window.location.href = 'crisis-intro.html';
+        return;
+    }
+
+    // State
+    let currentStep = 1;
+    const totalSteps = 9;
+    let userData = {
+        coldWaterBefore: 5,
+        coldWaterAfter: 5,
+        energyBefore: 5,
+        energyAfter: 5,
+        clarityAfter: 5,
+        tensionBefore: 5,
+        tensionAfter: 5,
+        pmrBefore: 5,
+        pmrAfter: 5,
+        selectedTechniques: []
+    };
+    
+    // Step titles
+    const stepTitles = {
+        1: 'Introduction',
+        2: 'Cold Water — The Dive Reflex',
+        3: 'Cold Water Practice',
+        4: 'Intense Exercise',
+        5: 'Paced Breathing',
+        6: 'Progressive Muscle Relaxation',
+        7: 'Temperature Shock',
+        8: 'Your Top Techniques',
+        9: 'Module Complete!'
+    };
+    
+    // Storage helpers
+    function saveProgress() {
+        try {
+            const data = {
+                step: currentStep,
+                userData: userData,
+                timestamp: Date.now()
+            };
+            localStorage.setItem('crisis_module2_progress', JSON.stringify(data));
+            return true;
+        } catch (e) {
+            console.error('Save failed:', e);
+            return false;
+        }
+    }
+    
+    function loadProgress() {
+        try {
+            const saved = localStorage.getItem('crisis_module2_progress');
+            if (saved) {
+                const data = JSON.parse(saved);
+                if (Date.now() - data.timestamp < 24 * 60 * 60 * 1000) {
+                    currentStep = data.step;
+                    userData = data.userData;
+                    return true;
+                }
+            }
+        } catch (e) {
+            console.error('Load failed:', e);
+        }
+        return false;
+    }
+    
+    function saveToCrisisPlan(key, value) {
+        try {
+            let plan = JSON.parse(localStorage.getItem('crisis_plan') || '{}');
+            plan[key] = value;
+            plan.lastUpdated = new Date().toISOString();
+            localStorage.setItem('crisis_plan', JSON.stringify(plan));
+            return true;
+        } catch (e) {
+            console.error('Save to crisis plan failed:', e);
+            return false;
+        }
+    }
+    
+    function saveToToolkit(item) {
+        try {
+            let toolkit = JSON.parse(localStorage.getItem('crisis_toolkit') || '[]');
+            toolkit = toolkit.filter(t => t.id !== item.id);
+            toolkit.push({
+                ...item,
+                date: new Date().toISOString()
+            });
+            localStorage.setItem('crisis_toolkit', JSON.stringify(toolkit));
+            return true;
+        } catch (e) {
+            console.error('Save to toolkit failed:', e);
+            return false;
+        }
+    }
+    
+    // Navigation
+    function scrollToTop() {
+        const mainContent = document.getElementById('mainContent');
+        if (mainContent) {
+            mainContent.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+    }
+    
+    function goToStep(step) {
+        if (step < 1 || step > totalSteps) return;
+        currentStep = step;
+        saveProgress();
+        render();
+        scrollToTop();
+    }
+    
+    function nextStep() {
+        if (currentStep < totalSteps) {
+            goToStep(currentStep + 1);
+        }
+    }
+    
+    function previousStep() {
+        if (currentStep > 1) {
+            goToStep(currentStep - 1);
+        } else {
+            window.location.href = 'crisis-module-1.html';
+        }
+    }
+    
+    // Update progress
+    let progress = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
+    progress.currentModule = 2;
+    progress.lastAccessed = new Date().toISOString();
+    localStorage.setItem('crisis_course_progress', JSON.stringify(progress));
+    
+    // Render functions
+    function renderHeader(showCrisis = false) {
+        return `
+            ${showCrisis ? `
+            <div class="crisis-banner">
+                <span class="crisis-banner__text">🚨 In crisis? Help is available 24/7</span>
+                <div class="crisis-banner__actions">
+                    <a href="tel:988" class="crisis-banner__link">Call 988</a>
+                    <a href="sms:988" class="crisis-banner__link">Text 988</a>
                 </div>
-
-                <!-- HEADER -->
-                <div class="header">
-                    <div class="header__top">
-                        <a href="crisis-intro.html" class="back-btn">←</a>
-                        <span class="step-indicator">Module 2 of 5</span>
-                    </div>
-                    <div class="progress-dots">
-                        <div class="progress-dot"></div>
-                        <div class="progress-dot active"></div>
-                        <div class="progress-dot"></div>
-                        <div class="progress-dot"></div>
-                        <div class="progress-dot"></div>
-                    </div>
-                    <h1 class="step-title">Physical Reset — Body to Brain</h1>
-                    <p class="step-subtitle">18 minutes • Emergency tools that work when your thinking brain is offline</p>
+            </div>
+            ` : ''}
+            
+            <div class="header">
+                <div class="header__top">
+                    <button class="back-btn" onclick="previousStep()">←</button>
+                    <span class="step-indicator">${currentStep} / ${totalSteps}</span>
                 </div>
-
-                <!-- INTRODUCTION -->
+                <div class="progress-dots">
+                    ${Array(totalSteps).fill(0).map((_, i) => 
+                        `<div class="progress-dot ${i < currentStep ? 'active' : ''}"></div>`
+                    ).join('')}
+                </div>
+                <h1 class="step-title">${stepTitles[currentStep]}</h1>
+                <p class="step-subtitle">Module 2: Physical Reset — Body to Brain</p>
+            </div>
+        `;
+    }
+    
+    function renderFooter() {
+        return `
+            <div class="footer">
+                <p class="footer__warning">⚠️ EDUCATIONAL ONLY — NOT THERAPY</p>
+                <div class="footer__resources">
+                    <p>988 Suicide & Crisis Lifeline: Call or text 988</p>
+                    <p>Crisis Text Line: Text HOME to 741741</p>
+                </div>
+            </div>
+        `;
+    }
+    
+    function renderStep1() {
+        return `
+            <div class="step-content">
+                ${renderHeader(true)}
+                
                 <div class="card">
-                    <div class="section-header">
-                        <span class="section-icon">🔄</span>
-                        <span class="section-title-text">Introduction</span>
-                    </div>
+                    <div class="card__icon">🔄</div>
                     <div class="card__content">
                         <p style="font-size: 1.05rem; color: var(--text-teal-light); font-style: italic;">
                             "Your body has hardwired responses that can override your emotional state. These aren't distractions — they're biological circuit breakers. When your alarm system is screaming, you need to speak its language: physical sensation."
                         </p>
                     </div>
                 </div>
-
-                <!-- COLD WATER -->
+                
+                <div class="card">
+                    <div class="card__title">
+                        <span>💡</span>
+                        <span>Why Physical Reset Works</span>
+                    </div>
+                    <div class="card__content">
+                        <p>Remember from Module 1: when you're in crisis, your <strong>thinking brain is offline</strong>.</p>
+                        
+                        <p>These techniques work because they:</p>
+                        
+                        <p><strong>1. Bypass your thinking brain entirely</strong><br>
+                        They trigger automatic nervous system responses</p>
+                        
+                        <p><strong>2. Metabolize stress chemicals</strong><br>
+                        Burn through the adrenaline and cortisol flooding your system</p>
+                        
+                        <p><strong>3. Give you something to DO</strong><br>
+                        Action urges need an outlet — these provide safe ones</p>
+                    </div>
+                </div>
+                
+                <button class="btn btn--primary" onclick="nextStep()">
+                    <span>Continue</span>
+                    <span>→</span>
+                </button>
+                
+                ${renderFooter()}
+            </div>
+        `;
+    }
+    
+    function renderStep2() {
+        setTimeout(() => {
+            initColdWaterSave();
+        }, 100);
+        
+        return `
+            <div class="step-content">
+                ${renderHeader()}
+                
                 <div class="card">
                     <div class="section-header">
                         <span class="section-icon">🧊</span>
@@ -837,85 +1035,142 @@ html, body {
                     <div class="safety-note">
                         <strong>⚠️ Safety Notes:</strong> Don't do this if you have heart conditions. Don't hold breath for more than 30 seconds. If you feel dizzy, stop.
                     </div>
+                </div>
+                
+                <button id="saveColdWaterBtn" class="btn btn--save">
+                    <span>🧊</span> Save Cold Water to Toolkit
+                </button>
+                <div id="coldWaterSaveFeedback" class="save-feedback"></div>
+                
+                <div class="btn-group" style="margin-top: 2rem;">
+                    <button class="btn btn--secondary" onclick="previousStep()">
+                        <span>←</span>
+                        <span>Back</span>
+                    </button>
+                    <button class="btn btn--primary" onclick="nextStep()">
+                        <span>Try It Now</span>
+                        <span>→</span>
+                    </button>
+                </div>
+                
+                ${renderFooter()}
+            </div>
+        `;
+    }
+    
+    function renderStep3() {
+        setTimeout(() => {
+            initColdWaterPractice();
+        }, 100);
+        
+        return `
+            <div class="step-content">
+                ${renderHeader()}
+                
+                <div class="card card--highlight">
+                    <div class="card__icon">🧊</div>
+                    <div class="card__title">Let's Try Cold Water</div>
+                    <div class="card__content">
+                        <p>This is <strong>optional</strong> — you can skip if you don't have supplies or aren't ready. But practicing now helps your brain remember this tool when you actually need it.</p>
+                    </div>
+                </div>
+                
+                <div class="practice-card" id="coldWaterPractice">
+                    <div class="practice-title">
+                        <span>🧊</span>
+                        PRACTICE NOW
+                    </div>
                     
-                    <div class="practice-card" id="coldWaterPractice">
-                        <div class="practice-title">
-                            <span>🧊</span>
-                            TRY IT NOW
-                        </div>
-                        
-                        <div style="margin-bottom: 1rem;">
-                            <p style="color: var(--text-secondary); margin-bottom: 1rem;">Do you have access to:</p>
-                            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1rem;">
-                                <label class="reflection-checkbox" style="flex: 1;">
-                                    <input type="checkbox" id="iceBowl"> Ice and bowl
-                                </label>
-                                <label class="reflection-checkbox" style="flex: 1;">
-                                    <input type="checkbox" id="icePack"> Ice pack
-                                </label>
-                                <label class="reflection-checkbox" style="flex: 1;">
-                                    <input type="checkbox" id="coldSink"> Cold water from sink
-                                </label>
-                            </div>
-                        </div>
-                        
-                        <div class="practice-buttons">
-                            <button id="coldWaterGuideBtn" class="btn-practice btn-practice-primary">Yes - Guide Me</button>
-                            <button id="coldWaterSkipBtn" class="btn-practice btn-practice-secondary">No - Skip Practice</button>
-                        </div>
-                        
-                        <div id="coldWaterGuided" style="display: none; margin-top: 1.5rem;">
-                            <p style="color: var(--text-secondary); margin-bottom: 1rem;">
-                                <strong>Step 1:</strong> Rate your current intensity (0-10)
-                            </p>
-                            <input type="range" id="coldWaterBeforeSlider" min="0" max="10" value="5" step="1" style="width: 100%; margin-bottom: 1rem;">
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem;">
-                                <span style="color: var(--text-muted); font-size: 0.75rem;">0 - Calm</span>
-                                <span style="color: var(--text-teal); font-weight: 700;" id="coldWaterBeforeValue">5</span>
-                                <span style="color: var(--text-muted); font-size: 0.75rem;">10 - Overwhelming</span>
-                            </div>
-                            
-                            <p style="color: var(--text-secondary); margin-bottom: 1rem;">
-                                <strong>Step 2:</strong> Get your cold water ready. We'll wait.
-                            </p>
-                            
-                            <button id="coldWaterReadyBtn" class="btn-practice btn-practice-primary" style="margin-bottom: 1rem;">Ready! →</button>
-                            
-                            <div id="coldWaterTimer" style="display: none;">
-                                <p style="color: var(--text-secondary); margin-bottom: 1rem;">
-                                    <strong>Step 3:</strong> Take a normal breath in. Hold it. Dunk your face or apply ice pack for 15 seconds.
-                                </p>
-                                <div class="timer-container">
-                                    <div class="timer-display" id="coldWaterTimerDisplay">15</div>
-                                    <button id="coldWaterStartTimer" class="btn-practice btn-practice-primary">Start Timer</button>
-                                </div>
-                            </div>
-                            
-                            <div id="coldWaterAfter" style="display: none; margin-top: 1.5rem;">
-                                <p style="color: var(--text-secondary); margin-bottom: 1rem;">
-                                    <strong>Step 4:</strong> Rate your intensity now (0-10)
-                                </p>
-                                <input type="range" id="coldWaterAfterSlider" min="0" max="10" value="5" step="1" style="width: 100%; margin-bottom: 1rem;">
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem;">
-                                    <span style="color: var(--text-muted); font-size: 0.75rem;">0 - Calm</span>
-                                    <span style="color: var(--text-teal); font-weight: 700;" id="coldWaterAfterValue">5</span>
-                                    <span style="color: var(--text-muted); font-size: 0.75rem;">10 - Overwhelming</span>
-                                </div>
-                                
-                                <div id="coldWaterResult" style="background: rgba(14,116,144,0.15); padding: 1rem; border-radius: 0.75rem; margin-bottom: 1rem;">
-                                    <p style="color: var(--text-teal-light);">Your result will appear here.</p>
-                                </div>
-                            </div>
+                    <div style="margin-bottom: 1rem;">
+                        <p style="color: var(--text-secondary); margin-bottom: 1rem;">Do you have access to:</p>
+                        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1rem;">
+                            <label class="reflection-checkbox" style="flex: 1;">
+                                <input type="checkbox" id="iceBowl"> Ice and bowl
+                            </label>
+                            <label class="reflection-checkbox" style="flex: 1;">
+                                <input type="checkbox" id="icePack"> Ice pack
+                            </label>
+                            <label class="reflection-checkbox" style="flex: 1;">
+                                <input type="checkbox" id="coldSink"> Cold water
+                            </label>
                         </div>
                     </div>
                     
-                    <button id="saveColdWaterBtn" class="btn btn--save">
-                        <span>🧊</span> Save Cold Water to Toolkit
-                    </button>
-                    <div id="coldWaterSaveFeedback" class="save-feedback"></div>
+                    <div class="practice-buttons">
+                        <button id="coldWaterGuideBtn" class="btn-practice btn-practice-primary">Yes - Guide Me</button>
+                        <button id="coldWaterSkipBtn" class="btn-practice btn-practice-secondary">Skip for Now</button>
+                    </div>
+                    
+                    <div id="coldWaterGuided" style="display: none; margin-top: 1.5rem;">
+                        <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                            <strong>Step 1:</strong> Rate your current intensity (0-10)
+                        </p>
+                        <input type="range" id="coldWaterBeforeSlider" min="0" max="10" value="5" step="1" style="width: 100%; margin-bottom: 1rem;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem;">
+                            <span style="color: var(--text-muted); font-size: 0.75rem;">0 - Calm</span>
+                            <span style="color: var(--text-teal); font-weight: 700;" id="coldWaterBeforeValue">5</span>
+                            <span style="color: var(--text-muted); font-size: 0.75rem;">10 - Overwhelming</span>
+                        </div>
+                        
+                        <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                            <strong>Step 2:</strong> Get your cold water ready. We'll wait.
+                        </p>
+                        
+                        <button id="coldWaterReadyBtn" class="btn-practice btn-practice-primary" style="margin-bottom: 1rem;">Ready! →</button>
+                        
+                        <div id="coldWaterTimer" style="display: none;">
+                            <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                                <strong>Step 3:</strong> Take a normal breath in. Hold it. Dunk your face or apply ice pack for 15 seconds.
+                            </p>
+                            <div class="timer-container">
+                                <div class="timer-display" id="coldWaterTimerDisplay">15</div>
+                                <button id="coldWaterStartTimer" class="btn-practice btn-practice-primary">Start Timer</button>
+                            </div>
+                        </div>
+                        
+                        <div id="coldWaterAfter" style="display: none; margin-top: 1.5rem;">
+                            <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                                <strong>Step 4:</strong> Rate your intensity now (0-10)
+                            </p>
+                            <input type="range" id="coldWaterAfterSlider" min="0" max="10" value="5" step="1" style="width: 100%; margin-bottom: 1rem;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem;">
+                                <span style="color: var(--text-muted); font-size: 0.75rem;">0 - Calm</span>
+                                <span style="color: var(--text-teal); font-weight: 700;" id="coldWaterAfterValue">5</span>
+                                <span style="color: var(--text-muted); font-size: 0.75rem;">10 - Overwhelming</span>
+                            </div>
+                            
+                            <div id="coldWaterResult" style="background: rgba(14,116,144,0.15); padding: 1rem; border-radius: 0.75rem; margin-bottom: 1rem;">
+                                <p style="color: var(--text-teal-light);">Your result will appear here.</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-                <!-- INTENSE EXERCISE -->
+                
+                <div class="btn-group" style="margin-top: 2rem;">
+                    <button class="btn btn--secondary" onclick="previousStep()">
+                        <span>←</span>
+                        <span>Back</span>
+                    </button>
+                    <button class="btn btn--primary" onclick="nextStep()">
+                        <span>Continue</span>
+                        <span>→</span>
+                    </button>
+                </div>
+                
+                ${renderFooter()}
+            </div>
+        `;
+    }
+    
+    function renderStep4() {
+        setTimeout(() => {
+            initExercise();
+        }, 100);
+        
+        return `
+            <div class="step-content">
+                ${renderHeader()}
+                
                 <div class="card">
                     <div class="section-header">
                         <span class="section-icon">💪</span>
@@ -962,95 +1217,42 @@ html, body {
                     <p style="color: var(--text-teal); font-size: 0.875rem; font-weight: 600; margin: 0.75rem 0;">
                         The Key: It needs to be intense enough that you can't think about anything else. You should be breathing hard.
                     </p>
-                    
-                    <div class="practice-card" id="exercisePractice">
-                        <div class="practice-title">
-                            <span>💪</span>
-                            PRACTICE NOW
-                        </div>
-                        
-                        <div style="margin-bottom: 1rem;">
-                            <p style="color: var(--text-secondary); margin-bottom: 1rem;">Can you do 2 minutes of movement?</p>
-                            <div class="practice-buttons">
-                                <button id="exerciseYesBtn" class="btn-practice btn-practice-primary">Yes - Let's Do It</button>
-                                <button id="exerciseNoBtn" class="btn-practice btn-practice-secondary">Not Right Now</button>
-                            </div>
-                        </div>
-                        
-                        <div id="exerciseGuided" style="display: none;">
-                            <p style="color: var(--text-secondary); margin-bottom: 1rem;">
-                                <strong>Step 1:</strong> Rate your current energy (0-10)
-                            </p>
-                            <input type="range" id="energyBeforeSlider" min="0" max="10" value="5" step="1" style="width: 100%; margin-bottom: 1rem;">
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem;">
-                                <span style="color: var(--text-muted); font-size: 0.75rem;">0 - Low</span>
-                                <span style="color: var(--text-teal); font-weight: 700;" id="energyBeforeValue">5</span>
-                                <span style="color: var(--text-muted); font-size: 0.75rem;">10 - High</span>
-                            </div>
-                            
-                            <p style="color: var(--text-secondary); margin-bottom: 1rem;">
-                                <strong>Step 2:</strong> Choose your exercise
-                            </p>
-                            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
-                                <button class="reflection-checkbox">Jumping Jacks</button>
-                                <button class="reflection-checkbox">Run in Place</button>
-                                <button class="reflection-checkbox">Stairs</button>
-                                <button class="reflection-checkbox">Other</button>
-                            </div>
-                            
-                            <p style="color: var(--text-secondary); margin-bottom: 1rem;">
-                                <strong>Step 3:</strong> Intervals — 30 seconds INTENSE movement, 30 seconds rest, repeat 4 times
-                            </p>
-                            
-                            <button id="startWorkoutBtn" class="btn-practice btn-practice-primary" style="margin-bottom: 1rem;">Start Workout →</button>
-                            
-                            <div id="workoutTimer" style="display: none;">
-                                <div class="timer-container">
-                                    <div style="font-size: 1.25rem; font-weight: 700; color: var(--text-teal); margin-bottom: 0.5rem;" id="workoutPhase">GO!</div>
-                                    <div class="timer-display" id="workoutTimerDisplay">30</div>
-                                    <div style="color: var(--text-muted); margin-bottom: 1rem;" id="workoutRound">Round 1 of 4</div>
-                                </div>
-                            </div>
-                            
-                            <div id="exerciseAfter" style="display: none; margin-top: 1.5rem;">
-                                <p style="color: var(--text-secondary); margin-bottom: 1rem;">
-                                    <strong>Step 4:</strong> Rate your energy now (0-10)
-                                </p>
-                                <input type="range" id="energyAfterSlider" min="0" max="10" value="5" step="1" style="width: 100%; margin-bottom: 1rem;">
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
-                                    <span style="color: var(--text-muted); font-size: 0.75rem;">0 - Low</span>
-                                    <span style="color: var(--text-teal); font-weight: 700;" id="energyAfterValue">5</span>
-                                    <span style="color: var(--text-muted); font-size: 0.75rem;">10 - High</span>
-                                </div>
-                                
-                                <p style="color: var(--text-secondary); margin-bottom: 1rem;">
-                                    Rate your mental clarity (0-10)
-                                </p>
-                                <input type="range" id="clarityAfterSlider" min="0" max="10" value="5" step="1" style="width: 100%; margin-bottom: 1rem;">
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem;">
-                                    <span style="color: var(--text-muted); font-size: 0.75rem;">0 - Foggy</span>
-                                    <span style="color: var(--text-teal); font-weight: 700;" id="clarityAfterValue">5</span>
-                                    <span style="color: var(--text-muted); font-size: 0.75rem;">10 - Clear</span>
-                                </div>
-                                
-                                <div id="exerciseResult" style="background: rgba(14,116,144,0.15); padding: 1rem; border-radius: 0.75rem;">
-                                    <p style="color: var(--text-teal-light);">Your result will appear here.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <button id="saveExerciseBtn" class="btn btn--save">
-                        <span>💪</span> Save Intense Exercise to Toolkit
-                    </button>
-                    <div id="exerciseSaveFeedback" class="save-feedback"></div>
                 </div>
-
-                <!-- PACED BREATHING -->
+                
+                <button id="saveExerciseBtn" class="btn btn--save">
+                    <span>💪</span> Save Intense Exercise to Toolkit
+                </button>
+                <div id="exerciseSaveFeedback" class="save-feedback"></div>
+                
+                <div class="btn-group" style="margin-top: 2rem;">
+                    <button class="btn btn--secondary" onclick="previousStep()">
+                        <span>←</span>
+                        <span>Back</span>
+                    </button>
+                    <button class="btn btn--primary" onclick="nextStep()">
+                        <span>Continue</span>
+                        <span>→</span>
+                    </button>
+                </div>
+                
+                ${renderFooter()}
+            </div>
+        `;
+    }
+    
+    function renderStep5() {
+        setTimeout(() => {
+            initBreathing();
+        }, 100);
+        
+        return `
+            <div class="step-content">
+                ${renderHeader()}
+                
                 <div class="card">
                     <div class="section-header">
                         <span class="section-icon">🌬️</span>
-                        <span class="section-title-text">Paced Breathing — The Exhale Advantage</span>
+                        <span class="section-title-text">Paced Breathing</span>
                     </div>
                     
                     <div class="card__content">
@@ -1091,67 +1293,164 @@ html, body {
                         Key Principle: Exhale should be longer than inhale.
                     </p>
                     
-                    <div class="practice-card">
-                        <div class="practice-title">
-                            <span>🌬️</span>
-                            GUIDED BREATHING PRACTICE
+                    <div class="safety-note" style="margin-top: 1rem;">
+                        <strong>⚠️ Note:</strong> Some people feel MORE anxious focusing on breath. If that's you, skip this and use other tools.
+                    </div>
+                </div>
+                
+                <button id="saveBreathingBtn" class="btn btn--save">
+                    <span>🌬️</span> Save Paced Breathing to Toolkit
+                </button>
+                <div id="breathingSaveFeedback" class="save-feedback"></div>
+                
+                <div class="btn-group" style="margin-top: 2rem;">
+                    <button class="btn btn--secondary" onclick="previousStep()">
+                        <span>←</span>
+                        <span>Back</span>
+                    </button>
+                    <button class="btn btn--primary" onclick="nextStep()">
+                        <span>Continue</span>
+                        <span>→</span>
+                    </button>
+                </div>
+                
+                ${renderFooter()}
+            </div>
+        `;
+    }
+    
+    function renderStep6() {
+        setTimeout(() => {
+            initPMR();
+        }, 100);
+        
+        return `
+            <div class="step-content">
+                ${renderHeader()}
+                
+                <div class="card">
+                    <div class="section-header">
+                        <span class="section-icon">🌬️</span>
+                        <span class="section-title-text">Paced Breathing</span>
+                    </div>
+                    
+                    <div class="card__content">
+                        <p>
+                            "Your heart rate and breathing are connected through your autonomic nervous system. When you breathe in, your heart speeds up slightly. When you breathe out, it slows down. By making your <strong>exhales longer than your inhales</strong>, you activate your body's natural calming system."
+                        </p>
+                    </div>
+                    
+                    <div class="technique-stats">
+                        <div class="stat">
+                            <div class="stat-label">Speed</div>
+                            <div class="stat-value">⚡ 2-3 min</div>
                         </div>
-                        
-                        <p style="color: var(--text-secondary); margin-bottom: 1rem;">Let's practice together for 3 minutes.</p>
-                        
-                        <button id="startBreathingBtn" class="btn-practice btn-practice-primary" style="margin-bottom: 1rem;">Start Breathing Practice →</button>
-                        
-                        <div id="breathingPractice" style="display: none;">
-                            <p style="color: var(--text-secondary); margin-bottom: 1rem;">
-                                <strong>Before we start:</strong> Rate your current tension (0-10)
-                            </p>
-                            <input type="range" id="tensionBeforeSlider" min="0" max="10" value="5" step="1" style="width: 100%; margin-bottom: 1rem;">
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem;">
-                                <span style="color: var(--text-muted); font-size: 0.75rem;">0 - Calm</span>
-                                <span style="color: var(--text-teal); font-weight: 700;" id="tensionBeforeValue">5</span>
-                                <span style="color: var(--text-muted); font-size: 0.75rem;">10 - Tense</span>
-                            </div>
-                            
-                            <div style="text-align: center; margin-bottom: 1.5rem;">
-                                <div style="width: 100px; height: 100px; border-radius: 50%; background: var(--gradient-subtle); margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; transition: all 4s;" id="breathCircle">
-                                    <span style="font-size: 1.5rem; color: var(--text-teal);" id="breathInstruction">Ready</span>
-                                </div>
-                                
-                                <div style="display: flex; gap: 0.5rem; justify-content: center;">
-                                    <button id="beginBreathCycle" class="btn-practice btn-practice-primary">Begin</button>
-                                    <button id="stopBreathCycle" class="btn-practice btn-practice-secondary" style="display: none;">Stop</button>
-                                </div>
-                            </div>
-                            
-                            <div id="breathingAfter" style="display: none; margin-top: 1.5rem;">
-                                <p style="color: var(--text-secondary); margin-bottom: 1rem;">
-                                    <strong>After practice:</strong> Rate your tension now (0-10)
-                                </p>
-                                <input type="range" id="tensionAfterSlider" min="0" max="10" value="5" step="1" style="width: 100%; margin-bottom: 1rem;">
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem;">
-                                    <span style="color: var(--text-muted); font-size: 0.75rem;">0 - Calm</span>
-                                    <span style="color: var(--text-teal); font-weight: 700;" id="tensionAfterValue">5</span>
-                                    <span style="color: var(--text-muted); font-size: 0.75rem;">10 - Tense</span>
-                                </div>
-                                
-                                <div id="breathingResult" style="background: rgba(14,116,144,0.15); padding: 1rem; border-radius: 0.75rem;">
-                                    <p style="color: var(--text-teal-light);">Your result will appear here.</p>
-                                </div>
-                            </div>
+                        <div class="stat">
+                            <div class="stat-label">Best for</div>
+                            <div class="stat-value">🎯 Moderate anxiety</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">Intensity</div>
+                            <div class="stat-value">💪 Low</div>
                         </div>
                     </div>
+                    
+                    <div class="instruction-box">
+                        <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 0.75rem;">How To Do It:</p>
+                        
+                        <p style="color: var(--text-teal-light); font-weight: 600; margin: 0.75rem 0 0.25rem;">The 4-6-8 Pattern (recommended)</p>
+                        <p style="color: var(--text-secondary); font-size: 0.875rem;">Breathe IN for 4 seconds → HOLD for 6 seconds → Breathe OUT for 8 seconds</p>
+                        
+                        <p style="color: var(--text-teal-light); font-weight: 600; margin: 1rem 0 0.25rem;">Box Breathing</p>
+                        <p style="color: var(--text-secondary); font-size: 0.875rem;">IN for 4 → HOLD for 4 → OUT for 4 → HOLD for 4</p>
+                        
+                        <p style="color: var(--text-teal-light); font-weight: 600; margin: 1rem 0 0.25rem;">4-7-8 (sleep-focused)</p>
+                        <p style="color: var(--text-secondary); font-size: 0.875rem;">IN for 4 → HOLD for 7 → OUT for 8</p>
+                    </div>
+                    
+                    <p style="color: var(--text-teal); font-size: 0.875rem; font-weight: 600; margin: 0.75rem 0;">
+                        Key Principle: Exhale should be longer than inhale.
+                    </p>
                     
                     <div class="safety-note" style="margin-top: 1rem;">
                         <strong>⚠️ Note:</strong> Some people feel MORE anxious focusing on breath. If that's you, skip this and use other tools.
                     </div>
-                    
-                    <button id="saveBreathingBtn" class="btn btn--save">
-                        <span>🌬️</span> Save Paced Breathing to Toolkit
-                    </button>
-                    <div id="breathingSaveFeedback" class="save-feedback"></div>
                 </div>
-
-                <!-- PROGRESSIVE MUSCLE RELAXATION -->
+                
+                <div class="card" style="margin-top: 2rem;">
+                    <div class="section-header">
+                        <span class="section-icon">💆</span>
+                        <span class="section-title-text">Progressive Muscle Relaxation</span>
+                    </div>
+                    
+                    <div class="card__content">
+                        <p>
+                            "You can't be physically tense and mentally relaxed at the same time. PMR works by deliberately tensing then releasing muscle groups, which teaches your body what 'relaxed' actually feels like. Many people hold chronic tension without realizing it."
+                        </p>
+                    </div>
+                    
+                    <div class="technique-stats">
+                        <div class="stat">
+                            <div class="stat-label">Speed</div>
+                            <div class="stat-value">⚡ 5-10 min</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">Best for</div>
+                            <div class="stat-value">🎯 Physical tension</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">Intensity</div>
+                            <div class="stat-value">💪 Low</div>
+                        </div>
+                    </div>
+                    
+                    <div class="instruction-box">
+                        <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 0.75rem;">Quick Version (2 minutes):</p>
+                        <ul class="instruction-list">
+                            <li>Hands: Clench fists tight for 5 seconds, release</li>
+                            <li>Arms: Tense biceps, release</li>
+                            <li>Shoulders: Pull shoulders to ears, release</li>
+                            <li>Face: Scrunch face tight, release</li>
+                            <li>Legs: Point toes and tense legs, release</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <button id="saveBreathingBtn" class="btn btn--save">
+                    <span>🌬️</span> Save Paced Breathing to Toolkit
+                </button>
+                <div id="breathingSaveFeedback" class="save-feedback"></div>
+                
+                <button id="savePMRBtn" class="btn btn--save" style="margin-top: 1rem;">
+                    <span>💆</span> Save PMR to Toolkit
+                </button>
+                <div id="pmrSaveFeedback" class="save-feedback"></div>
+                
+                <div class="btn-group" style="margin-top: 2rem;">
+                    <button class="btn btn--secondary" onclick="previousStep()">
+                        <span>←</span>
+                        <span>Back</span>
+                    </button>
+                    <button class="btn btn--primary" onclick="nextStep()">
+                        <span>Continue</span>
+                        <span>→</span>
+                    </button>
+                </div>
+                
+                ${renderFooter()}
+            </div>
+        `;
+    }
+    
+    function renderStep6() {
+        setTimeout(() => {
+            initPMR();
+        }, 100);
+        
+        return `
+            <div class="step-content">
+                ${renderHeader()}
+                
                 <div class="card">
                     <div class="section-header">
                         <span class="section-icon">💆</span>
@@ -1189,59 +1488,38 @@ html, body {
                             <li>Legs: Point toes and tense legs, release</li>
                         </ul>
                     </div>
-                    
-                    <div class="practice-card">
-                        <div class="practice-title">
-                            <span>💆</span>
-                            TRY QUICK PMR (2 min)
-                        </div>
-                        
-                        <button id="startPMRBtn" class="btn-practice btn-practice-primary" style="margin-bottom: 1rem;">Start Guided Practice</button>
-                        
-                        <div id="pmrPractice" style="display: none;">
-                            <p style="color: var(--text-secondary); margin-bottom: 1rem;">
-                                Rate your tension (0-10)
-                            </p>
-                            <input type="range" id="pmrBeforeSlider" min="0" max="10" value="5" step="1" style="width: 100%; margin-bottom: 1rem;">
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem;">
-                                <span style="color: var(--text-muted); font-size: 0.75rem;">0 - Relaxed</span>
-                                <span style="color: var(--text-teal); font-weight: 700;" id="pmrBeforeValue">5</span>
-                                <span style="color: var(--text-muted); font-size: 0.75rem;">10 - Tense</span>
-                            </div>
-                            
-                            <div id="pmrGuided" style="background: rgba(15,23,42,0.6); padding: 1.25rem; border-radius: 0.75rem;">
-                                <p style="color: var(--text-teal-light); margin-bottom: 0.75rem; font-weight: 600;" id="pmrInstruction">Hands: Make tight fists… tighter… hold…</p>
-                                <div style="display: flex; justify-content: space-between; align-items: center;">
-                                    <span style="color: var(--text-muted);" id="pmrTimer">5</span>
-                                    <button id="pmrNextBtn" class="btn-practice btn-practice-primary" style="width: auto; padding: 0.5rem 1.5rem;">Next →</button>
-                                </div>
-                            </div>
-                            
-                            <div id="pmrAfter" style="display: none; margin-top: 1.5rem;">
-                                <p style="color: var(--text-secondary); margin-bottom: 1rem;">
-                                    Rate your tension now (0-10)
-                                </p>
-                                <input type="range" id="pmrAfterSlider" min="0" max="10" value="5" step="1" style="width: 100%; margin-bottom: 1rem;">
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem;">
-                                    <span style="color: var(--text-muted); font-size: 0.75rem;">0 - Relaxed</span>
-                                    <span style="color: var(--text-teal); font-weight: 700;" id="pmrAfterValue">5</span>
-                                    <span style="color: var(--text-muted); font-size: 0.75rem;">10 - Tense</span>
-                                </div>
-                                
-                                <div id="pmrResult" style="background: rgba(14,116,144,0.15); padding: 1rem; border-radius: 0.75rem;">
-                                    <p style="color: var(--text-teal-light);">Your result will appear here.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <button id="savePMRBtn" class="btn btn--save">
-                        <span>💆</span> Save PMR to Toolkit
-                    </button>
-                    <div id="pmrSaveFeedback" class="save-feedback"></div>
                 </div>
-
-                <!-- TEMPERATURE SHOCK -->
+                
+                <button id="savePMRBtn" class="btn btn--save">
+                    <span>💆</span> Save PMR to Toolkit
+                </button>
+                <div id="pmrSaveFeedback" class="save-feedback"></div>
+                
+                <div class="btn-group" style="margin-top: 2rem;">
+                    <button class="btn btn--secondary" onclick="previousStep()">
+                        <span>←</span>
+                        <span>Back</span>
+                    </button>
+                    <button class="btn btn--primary" onclick="nextStep()">
+                        <span>Continue</span>
+                        <span>→</span>
+                    </button>
+                </div>
+                
+                ${renderFooter()}
+            </div>
+        `;
+    }
+    
+    function renderStep7() {
+        setTimeout(() => {
+            initTemperature();
+        }, 100);
+        
+        return `
+            <div class="step-content">
+                ${renderHeader()}
+                
                 <div class="card">
                     <div class="section-header">
                         <span class="section-icon">🔥</span>
@@ -1254,7 +1532,7 @@ html, body {
                         </p>
                     </div>
                     
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0;">
                         <div style="background: rgba(14,116,144,0.1); padding: 1rem; border-radius: 0.75rem;">
                             <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 0.5rem;">❄️ Cold</p>
                             <ul style="color: var(--text-secondary); font-size: 0.8125rem; list-style-position: inside;">
@@ -1283,14 +1561,111 @@ html, body {
                     <div class="safety-note">
                         <strong>⚠️ Important:</strong> This is about sensation, not harm. Don't use temperatures that cause injury.
                     </div>
-                    
-                    <button id="saveTempBtn" class="btn btn--save">
-                        <span>🌡️</span> Save Temperature Techniques to Toolkit
-                    </button>
-                    <div id="tempSaveFeedback" class="save-feedback"></div>
                 </div>
-
-                <!-- MODULE SUMMARY -->
+                
+                <button id="saveTempBtn" class="btn btn--save">
+                    <span>🌡️</span> Save Temperature Techniques to Toolkit
+                </button>
+                <div id="tempSaveFeedback" class="save-feedback"></div>
+                
+                <div class="btn-group" style="margin-top: 2rem;">
+                    <button class="btn btn--secondary" onclick="previousStep()">
+                        <span>←</span>
+                        <span>Back</span>
+                    </button>
+                    <button class="btn btn--primary" onclick="nextStep()">
+                        <span>Continue</span>
+                        <span>→</span>
+                    </button>
+                </div>
+                
+                ${renderFooter()}
+            </div>
+        `;
+    }
+    
+    function renderStep7() {
+        setTimeout(() => {
+            initTemperature();
+        }, 100);
+        
+        return `
+            <div class="step-content">
+                ${renderHeader()}
+                
+                <div class="card">
+                    <div class="section-header">
+                        <span class="section-icon">🔥</span>
+                        <span class="section-title-text">Temperature Shock</span>
+                    </div>
+                    
+                    <div class="card__content">
+                        <p>
+                            "Extreme temperature changes create immediate physical sensations that can interrupt emotional overwhelm. Your brain has limited processing capacity — intense physical sensation takes up 'bandwidth' that would otherwise spiral into panic."
+                        </p>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0;">
+                        <div style="background: rgba(14,116,144,0.1); padding: 1rem; border-radius: 0.75rem;">
+                            <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 0.5rem;">❄️ Cold</p>
+                            <ul style="color: var(--text-secondary); font-size: 0.8125rem; list-style-position: inside;">
+                                <li>Ice cubes in hands</li>
+                                <li>Cold shower</li>
+                                <li>Walk outside in cold</li>
+                            </ul>
+                        </div>
+                        <div style="background: rgba(217,119,6,0.1); padding: 1rem; border-radius: 0.75rem;">
+                            <p style="color: var(--text-amber); font-weight: 700; margin-bottom: 0.5rem;">🔥 Heat</p>
+                            <ul style="color: var(--text-secondary); font-size: 0.8125rem; list-style-position: inside;">
+                                <li>Very hot (not burning) shower</li>
+                                <li>Heating pad on chest</li>
+                                <li>Hands under hot water</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div style="background: rgba(14,116,144,0.1); padding: 1rem; border-radius: 0.75rem; margin-bottom: 0.5rem;">
+                        <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 0.25rem;">When to Use:</p>
+                        <p style="color: var(--text-secondary); font-size: 0.875rem;">• When numb/dissociated (temperature brings you back to body)</p>
+                        <p style="color: var(--text-secondary); font-size: 0.875rem;">• When emotionally overwhelmed</p>
+                        <p style="color: var(--text-secondary); font-size: 0.875rem;">• When physical pain urges arise (this is a safe intense sensation)</p>
+                    </div>
+                    
+                    <div class="safety-note">
+                        <strong>⚠️ Important:</strong> This is about sensation, not harm. Don't use temperatures that cause injury.
+                    </div>
+                </div>
+                
+                <button id="saveTempBtn" class="btn btn--save">
+                    <span>🌡️</span> Save Temperature Techniques to Toolkit
+                </button>
+                <div id="tempSaveFeedback" class="save-feedback"></div>
+                
+                <div class="btn-group" style="margin-top: 2rem;">
+                    <button class="btn btn--secondary" onclick="previousStep()">
+                        <span>←</span>
+                        <span>Back</span>
+                    </button>
+                    <button class="btn btn--primary" onclick="nextStep()">
+                        <span>Continue</span>
+                        <span>→</span>
+                    </button>
+                </div>
+                
+                ${renderFooter()}
+            </div>
+        `;
+    }
+    
+    function renderStep8() {
+        setTimeout(() => {
+            initReflection();
+        }, 100);
+        
+        return `
+            <div class="step-content">
+                ${renderHeader()}
+                
                 <div class="reference-card">
                     <div class="reference-title">
                         <span>🚨</span>
@@ -1374,560 +1749,593 @@ html, body {
                     </button>
                     <div id="reflectionSaveFeedback" class="save-feedback"></div>
                 </div>
-
-                <!-- NAVIGATION -->
-                <div class="btn-group">
-                    <a href="crisis-module-1.html" class="btn btn--secondary">
+                
+                <div class="btn-group" style="margin-top: 2rem;">
+                    <button class="btn btn--secondary" onclick="previousStep()">
                         <span>←</span>
-                        <span>Module 1</span>
-                    </a>
+                        <span>Back</span>
+                    </button>
+                    <button class="btn btn--primary" onclick="nextStep()">
+                        <span>Continue</span>
+                        <span>→</span>
+                    </button>
+                </div>
+                
+                ${renderFooter()}
+            </div>
+        `;
+    }
+    
+    function renderStep8() {
+        setTimeout(() => {
+            initReflection();
+        }, 100);
+        
+        return `
+            <div class="step-content">
+                ${renderHeader()}
+                
+                <div class="reference-card">
+                    <div class="reference-title">
+                        <span>🚨</span>
+                        PHYSICAL RESET TOOLS — Quick Reference
+                    </div>
+                    
+                    <div class="reference-grid">
+                        <div class="reference-item">
+                            <span class="reference-icon">🧊</span>
+                            <div class="reference-content">
+                                <div class="reference-name">Cold Water</div>
+                                <div class="reference-use">30 sec • Panic, rage, instant calm</div>
+                            </div>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-icon">💪</span>
+                            <div class="reference-content">
+                                <div class="reference-name">Intense Exercise</div>
+                                <div class="reference-use">5 min • Restless energy, want to explode</div>
+                            </div>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-icon">🌬️</span>
+                            <div class="reference-content">
+                                <div class="reference-name">Paced Breathing</div>
+                                <div class="reference-use">3 min • Moderate anxiety, racing thoughts</div>
+                            </div>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-icon">💆</span>
+                            <div class="reference-content">
+                                <div class="reference-name">Muscle Relaxation</div>
+                                <div class="reference-use">2-10 min • Physical tension, mild anxiety</div>
+                            </div>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-icon">🌡️</span>
+                            <div class="reference-content">
+                                <div class="reference-name">Temperature Shock</div>
+                                <div class="reference-use">1-2 min • Numbness, dissociation</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border-softer);">
+                        <p style="color: var(--text-primary); font-weight: 700; margin-bottom: 1rem;">
+                            "Which 2-3 techniques felt most accessible to you?"
+                        </p>
+                        
+                        <div class="reflection-grid" id="techniqueCheckboxes">
+                            <label class="reflection-checkbox">
+                                <input type="checkbox" value="Cold Water"> Cold water
+                            </label>
+                            <label class="reflection-checkbox">
+                                <input type="checkbox" value="Intense Exercise"> Intense exercise
+                            </label>
+                            <label class="reflection-checkbox">
+                                <input type="checkbox" value="Paced Breathing"> Paced breathing
+                            </label>
+                            <label class="reflection-checkbox">
+                                <input type="checkbox" value="Muscle Relaxation"> Muscle relaxation
+                            </label>
+                            <label class="reflection-checkbox">
+                                <input type="checkbox" value="Temperature Shock"> Temperature shock
+                            </label>
+                        </div>
+                        
+                        <div style="background: rgba(217,119,6,0.1); padding: 1.25rem; border-radius: 0.75rem; margin-top: 1.5rem;">
+                            <p style="color: var(--text-amber-light); font-weight: 600; margin-bottom: 1rem; text-align: center;">
+                                "Crisis skills only work if you practice when calm. Will you commit to practicing your top 2 techniques this week?"
+                            </p>
+                            <div style="display: flex; gap: 0.75rem;">
+                                <button id="commitYesBtn" class="btn-practice btn-practice-primary" style="flex: 1;">Yes, I Commit</button>
+                                <button id="commitLaterBtn" class="btn-practice btn-practice-secondary" style="flex: 1;">Maybe Later</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button id="saveReflectionBtn" class="btn btn--save" style="margin-top: 1.5rem;">
+                        <span>📋</span> Save My Top Techniques to Toolkit
+                    </button>
+                    <div id="reflectionSaveFeedback" class="save-feedback"></div>
+                </div>
+                
+                <div class="btn-group" style="margin-top: 2rem;">
+                    <button class="btn btn--secondary" onclick="previousStep()">
+                        <span>←</span>
+                        <span>Back</span>
+                    </button>
+                    <button class="btn btn--primary" onclick="nextStep()">
+                        <span>Continue</span>
+                        <span>→</span>
+                    </button>
+                </div>
+                
+                ${renderFooter()}
+            </div>
+        `;
+    }
+    
+    function renderStep9() {
+        setTimeout(() => {
+            initComplete();
+        }, 100);
+        
+        return `
+            <div class="step-content">
+                ${renderHeader()}
+                
+                <div class="card card--highlight">
+                    <div class="card__icon">✅</div>
+                    <div class="card__title">Module 2 Complete!</div>
+                    <div class="card__content">
+                        <p>You now have physical tools to reset your nervous system when your thinking brain is offline.</p>
+                        
+                        <p><strong>Next:</strong> Module 3 will teach you grounding and distraction techniques for when you need to shift your mental focus.</p>
+                    </div>
+                </div>
+                
+                <div class="practice-section">
+                    <button id="practiceBtn" class="practice-btn">
+                        <span>✓</span>
+                        <span>Mark Module as Practiced</span>
+                    </button>
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn btn--secondary" onclick="previousStep()">
+                        <span>←</span>
+                        <span>Back</span>
+                    </button>
                     <a href="crisis-module-3.html" class="btn btn--primary">
                         <span>Module 3</span>
                         <span>→</span>
                     </a>
                 </div>
-
-                <!-- PRACTICE BUTTON -->
-                <div class="practice-section">
-                    <button id="markPracticedBtn" class="practice-btn">
-                        <span>✓</span>
-                        <span>I've practiced this module</span>
-                    </button>
-                </div>
-
-                <!-- FOOTER -->
-                <div class="footer">
-                    <p class="footer__warning">⚠️ EDUCATIONAL ONLY — NOT THERAPY</p>
-                    <div class="footer__resources">
-                        <p>988 Suicide & Crisis Lifeline: Call or text 988</p>
-                        <p>Crisis Text Line: Text HOME to 741741</p>
+                
+                ${renderFooter()}
+            </div>
+        `;
+    }
+    
+    function renderStep9() {
+        setTimeout(() => {
+            initComplete();
+        }, 100);
+        
+        return `
+            <div class="step-content">
+                ${renderHeader()}
+                
+                <div class="card card--highlight">
+                    <div class="card__icon">✅</div>
+                    <div class="card__title">Module 2 Complete!</div>
+                    <div class="card__content">
+                        <p>You now have physical tools to reset your nervous system when your thinking brain is offline.</p>
+                        
+                        <p><strong>Next:</strong> Module 3 will teach you grounding and distraction techniques for when you need to shift your mental focus.</p>
                     </div>
                 </div>
-
+                
+                <div class="practice-section">
+                    <button id="practiceBtn" class="practice-btn">
+                        <span>✓</span>
+                        <span>Mark Module as Practiced</span>
+                    </button>
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn btn--secondary" onclick="previousStep()">
+                        <span>←</span>
+                        <span>Back</span>
+                    </button>
+                    <a href="crisis-module-3.html" class="btn btn--primary">
+                        <span>Module 3</span>
+                        <span>→</span>
+                    </a>
+                </div>
+                
+                ${renderFooter()}
             </div>
-        </div>
-    </div>
-</div>
-
-<script>
-(function() {
-    'use strict';
-    
-    // Check disclaimer acknowledgment
-    const acknowledged = localStorage.getItem('crisis_disclaimer_acknowledged');
-    if (!acknowledged) {
-        window.location.href = 'crisis-intro.html';
-        return;
-    }
-
-    // Update progress
-    let progress = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
-    progress.currentModule = 2;
-    progress.lastAccessed = new Date().toISOString();
-    localStorage.setItem('crisis_course_progress', JSON.stringify(progress));
-
-    // Storage helpers
-    function saveToCrisisPlan(key, value) {
-        try {
-            let plan = JSON.parse(localStorage.getItem('crisis_plan') || '{}');
-            plan[key] = value;
-            plan.lastUpdated = new Date().toISOString();
-            localStorage.setItem('crisis_plan', JSON.stringify(plan));
-            return true;
-        } catch (e) {
-            console.error('Save to crisis plan failed:', e);
-            return false;
-        }
+        `;
     }
     
-    function saveToToolkit(item) {
-        try {
-            let toolkit = JSON.parse(localStorage.getItem('crisis_toolkit') || '[]');
-            toolkit = toolkit.filter(t => t.id !== item.id);
-            toolkit.push({
-                ...item,
-                date: new Date().toISOString()
-            });
-            localStorage.setItem('crisis_toolkit', JSON.stringify(toolkit));
-            return true;
-        } catch (e) {
-            console.error('Save to toolkit failed:', e);
-            return false;
-        }
-    }
-
-    // Slider updates
-    function setupSlider(sliderId, valueId) {
-        const slider = document.getElementById(sliderId);
-        const value = document.getElementById(valueId);
-        if (slider && value) {
-            slider.addEventListener('input', function() {
-                value.textContent = this.value;
-            });
-        }
-    }
-
-    setupSlider('coldWaterBeforeSlider', 'coldWaterBeforeValue');
-    setupSlider('coldWaterAfterSlider', 'coldWaterAfterValue');
-    setupSlider('energyBeforeSlider', 'energyBeforeValue');
-    setupSlider('energyAfterSlider', 'energyAfterValue');
-    setupSlider('clarityAfterSlider', 'clarityAfterValue');
-    setupSlider('tensionBeforeSlider', 'tensionBeforeValue');
-    setupSlider('tensionAfterSlider', 'tensionAfterValue');
-    setupSlider('pmrBeforeSlider', 'pmrBeforeValue');
-    setupSlider('pmrAfterSlider', 'pmrAfterValue');
-
-    // Cold Water Practice
-    const coldGuideBtn = document.getElementById('coldWaterGuideBtn');
-    const coldSkipBtn = document.getElementById('coldWaterSkipBtn');
-    const coldGuided = document.getElementById('coldWaterGuided');
-    
-    if (coldGuideBtn) {
-        coldGuideBtn.addEventListener('click', function() {
-            coldGuided.style.display = 'block';
-            coldGuideBtn.style.display = 'none';
-            coldSkipBtn.style.display = 'none';
-        });
-    }
-    
-    if (coldSkipBtn) {
-        coldSkipBtn.addEventListener('click', function() {
-            this.textContent = 'Skipped';
-            this.disabled = true;
-        });
-    }
-
-    const coldReadyBtn = document.getElementById('coldWaterReadyBtn');
-    const coldTimer = document.getElementById('coldWaterTimer');
-    
-    if (coldReadyBtn) {
-        coldReadyBtn.addEventListener('click', function() {
-            coldTimer.style.display = 'block';
-            coldReadyBtn.style.display = 'none';
-        });
-    }
-
-    const coldStartTimer = document.getElementById('coldWaterStartTimer');
-    const coldTimerDisplay = document.getElementById('coldWaterTimerDisplay');
-    const coldAfter = document.getElementById('coldWaterAfter');
-    const coldResult = document.getElementById('coldWaterResult');
-    
-    if (coldStartTimer) {
-        coldStartTimer.addEventListener('click', function() {
-            let timeLeft = 15;
-            coldTimerDisplay.textContent = timeLeft;
-            coldStartTimer.disabled = true;
-            
-            const interval = setInterval(function() {
-                timeLeft--;
-                coldTimerDisplay.textContent = timeLeft;
-                
-                if (timeLeft <= 0) {
-                    clearInterval(interval);
-                    coldStartTimer.style.display = 'none';
-                    coldAfter.style.display = 'block';
-                    
-                    const before = parseInt(document.getElementById('coldWaterBeforeSlider')?.value || '5');
-                    const after = parseInt(document.getElementById('coldWaterAfterSlider')?.value || '3');
-                    coldResult.innerHTML = `<p style="color: var(--text-teal-light);">You went from ${before} to ${after}. Your heart rate likely slowed — that's the dive reflex working.</p>`;
-                }
-            }, 1000);
-        });
-    }
-
-    // Exercise Practice
-    const exerciseYesBtn = document.getElementById('exerciseYesBtn');
-    const exerciseNoBtn = document.getElementById('exerciseNoBtn');
-    const exerciseGuided = document.getElementById('exerciseGuided');
-    
-    if (exerciseYesBtn) {
-        exerciseYesBtn.addEventListener('click', function() {
-            exerciseGuided.style.display = 'block';
-            exerciseYesBtn.style.display = 'none';
-            exerciseNoBtn.style.display = 'none';
-        });
-    }
-    
-    if (exerciseNoBtn) {
-        exerciseNoBtn.addEventListener('click', function() {
-            this.textContent = 'Skipped';
-            this.disabled = true;
-        });
-    }
-
-    const startWorkoutBtn = document.getElementById('startWorkoutBtn');
-    const workoutTimer = document.getElementById('workoutTimer');
-    const workoutPhase = document.getElementById('workoutPhase');
-    const workoutTimerDisplay = document.getElementById('workoutTimerDisplay');
-    const workoutRound = document.getElementById('workoutRound');
-    const exerciseAfter = document.getElementById('exerciseAfter');
-    const exerciseResult = document.getElementById('exerciseResult');
-    
-    if (startWorkoutBtn) {
-        startWorkoutBtn.addEventListener('click', function() {
-            workoutTimer.style.display = 'block';
-            startWorkoutBtn.style.display = 'none';
-            
-            let round = 1;
-            let isWorkout = true;
-            let timeLeft = 30;
-            
-            const interval = setInterval(function() {
-                timeLeft--;
-                workoutTimerDisplay.textContent = timeLeft;
-                
-                if (timeLeft <= 0) {
-                    if (isWorkout) {
-                        isWorkout = false;
-                        timeLeft = 30;
-                        workoutPhase.textContent = 'REST';
-                        workoutPhase.style.color = 'var(--text-amber)';
-                    } else {
-                        isWorkout = true;
-                        timeLeft = 30;
-                        round++;
-                        workoutPhase.textContent = 'GO!';
-                        workoutPhase.style.color = 'var(--text-teal)';
-                        workoutRound.textContent = `Round ${round} of 4`;
-                    }
-                    
-                    if (round > 4) {
-                        clearInterval(interval);
-                        workoutTimer.style.display = 'none';
-                        exerciseAfter.style.display = 'block';
-                        
-                        const energyBefore = parseInt(document.getElementById('energyBeforeSlider')?.value || '5');
-                        const energyAfter = parseInt(document.getElementById('energyAfterSlider')?.value || '7');
-                        const clarityAfter = parseInt(document.getElementById('clarityAfterSlider')?.value || '6');
-                        
-                        exerciseResult.innerHTML = `<p style="color: var(--text-teal-light);">Energy shift: ${energyBefore} → ${energyAfter}<br>Clarity shift: ${clarityAfter}/10<br>Notice how your body feels different?</p>`;
-                    }
-                }
-            }, 1000);
-        });
-    }
-
-    // Breathing Practice
-    const startBreathingBtn = document.getElementById('startBreathingBtn');
-    const breathingPractice = document.getElementById('breathingPractice');
-    
-    if (startBreathingBtn) {
-        startBreathingBtn.addEventListener('click', function() {
-            breathingPractice.style.display = 'block';
-            startBreathingBtn.style.display = 'none';
-        });
-    }
-
-    const beginBreathCycle = document.getElementById('beginBreathCycle');
-    const stopBreathCycle = document.getElementById('stopBreathCycle');
-    const breathCircle = document.getElementById('breathCircle');
-    const breathInstruction = document.getElementById('breathInstruction');
-    const breathingAfter = document.getElementById('breathingAfter');
-    const breathingResult = document.getElementById('breathingResult');
-    
-    let breathInterval;
-    
-    if (beginBreathCycle) {
-        beginBreathCycle.addEventListener('click', function() {
-            beginBreathCycle.style.display = 'none';
-            stopBreathCycle.style.display = 'inline-block';
-            
-            let breathPhase = 'inhale';
-            let cycles = 0;
-            
-            breathInterval = setInterval(function() {
-                if (breathPhase === 'inhale') {
-                    breathPhase = 'hold';
-                    breathCircle.style.transform = 'scale(1.3)';
-                    breathCircle.style.background = 'rgba(14,116,144,0.2)';
-                    breathInstruction.textContent = 'HOLD';
-                    breathInstruction.style.color = 'var(--text-amber)';
-                } else if (breathPhase === 'hold') {
-                    breathPhase = 'exhale';
-                    breathCircle.style.transform = 'scale(0.8)';
-                    breathCircle.style.background = 'rgba(14,116,144,0.3)';
-                    breathInstruction.textContent = 'EXHALE';
-                    breathInstruction.style.color = 'var(--text-teal)';
-                } else {
-                    breathPhase = 'inhale';
-                    breathCircle.style.transform = 'scale(1)';
-                    breathCircle.style.background = 'rgba(14,116,144,0.15)';
-                    breathInstruction.textContent = 'INHALE';
-                    breathInstruction.style.color = 'var(--text-teal-light)';
-                    cycles++;
-                    
-                    if (cycles >= 10) {
-                        clearInterval(breathInterval);
-                        breathCircle.style.transform = 'scale(1)';
-                        breathInstruction.textContent = 'Complete';
-                        stopBreathCycle.style.display = 'none';
-                        breathingAfter.style.display = 'block';
-                        
-                        const before = parseInt(document.getElementById('tensionBeforeSlider')?.value || '5');
-                        const after = parseInt(document.getElementById('tensionAfterSlider')?.value || '3');
-                        breathingResult.innerHTML = `<p style="color: var(--text-teal-light);">Tension: ${before} → ${after}<br>You just activated your parasympathetic nervous system.</p>`;
-                    }
-                }
-            }, 4000);
-        });
-    }
-    
-    if (stopBreathCycle) {
-        stopBreathCycle.addEventListener('click', function() {
-            clearInterval(breathInterval);
-            beginBreathCycle.style.display = 'inline-block';
-            stopBreathCycle.style.display = 'none';
-            breathCircle.style.transform = 'scale(1)';
-            breathInstruction.textContent = 'Ready';
-        });
-    }
-
-    // PMR Practice
-    const startPMRBtn = document.getElementById('startPMRBtn');
-    const pmrPractice = document.getElementById('pmrPractice');
-    const pmrInstruction = document.getElementById('pmrInstruction');
-    const pmrTimer = document.getElementById('pmrTimer');
-    const pmrNextBtn = document.getElementById('pmrNextBtn');
-    const pmrAfter = document.getElementById('pmrAfter');
-    const pmrResult = document.getElementById('pmrResult');
-    
-    let pmrStep = 0;
-    const pmrSteps = [
-        { instruction: 'Hands: Make tight fists… tighter… hold…', timer: 5 },
-        { instruction: '…and RELEASE. Feel the difference.', timer: 10 },
-        { instruction: 'Arms: Bend elbows and tense biceps… tight…', timer: 5 },
-        { instruction: '…and RELEASE. Notice the warmth.', timer: 10 },
-        { instruction: 'Shoulders: Pull shoulders up to ears… squeeze…', timer: 5 },
-        { instruction: '…and DROP them. Let them be heavy.', timer: 10 },
-        { instruction: 'Face: Scrunch everything - eyes, nose, mouth… tight…', timer: 5 },
-        { instruction: '…and SOFTEN. Let your jaw hang loose.', timer: 10 },
-        { instruction: 'Legs: Point toes, tense thighs and calves…', timer: 5 },
-        { instruction: '…and RELEASE. Let legs be heavy.', timer: 10 },
-        { instruction: 'Take 3 normal breaths. Notice your body now.', timer: 15 }
-    ];
-    
-    if (startPMRBtn) {
-        startPMRBtn.addEventListener('click', function() {
-            pmrPractice.style.display = 'block';
-            startPMRBtn.style.display = 'none';
-            pmrStep = 0;
-            updatePMRStep();
-        });
-    }
-    
-    function updatePMRStep() {
-        if (pmrStep < pmrSteps.length) {
-            pmrInstruction.textContent = pmrSteps[pmrStep].instruction;
-            pmrTimer.textContent = pmrSteps[pmrStep].timer;
-            
-            let timeLeft = pmrSteps[pmrStep].timer;
-            const timerInterval = setInterval(function() {
-                timeLeft--;
-                pmrTimer.textContent = timeLeft;
-                
-                if (timeLeft <= 0) {
-                    clearInterval(timerInterval);
-                }
-            }, 1000);
-        } else {
-            document.getElementById('pmrGuided').style.display = 'none';
-            pmrAfter.style.display = 'block';
-            
-            const before = parseInt(document.getElementById('pmrBeforeSlider')?.value || '5');
-            const after = parseInt(document.getElementById('pmrAfterSlider')?.value || '3');
-            pmrResult.innerHTML = `<p style="color: var(--text-teal-light);">Tension: ${before} → ${after}<br>Take 3 normal breaths. Notice your body now.</p>`;
-        }
-    }
-    
-    if (pmrNextBtn) {
-        pmrNextBtn.addEventListener('click', function() {
-            pmrStep++;
-            updatePMRStep();
-        });
-    }
-
-    // Checkbox visual state
-    const checkboxes = document.querySelectorAll('.reflection-checkbox input[type="checkbox"]');
-    checkboxes.forEach(cb => {
-        cb.addEventListener('change', function() {
-            const label = this.closest('.reflection-checkbox');
-            if (this.checked) {
-                label.classList.add('checked');
-            } else {
-                label.classList.remove('checked');
-            }
-        });
-    });
-
-    // Save buttons with animation
-    function setupSaveButton(btnId, feedbackId, toolkitItem) {
-        const btn = document.getElementById(btnId);
-        const feedback = document.getElementById(feedbackId);
+    // Main render
+    function render() {
+        const content = document.getElementById('content');
         
-        if (btn) {
-            btn.addEventListener('click', function() {
-                saveToToolkit(toolkitItem);
+        let html = '';
+        switch(currentStep) {
+            case 1: html = renderStep1(); break;
+            case 2: html = renderStep2(); break;
+            case 3: html = renderStep3(); break;
+            case 4: html = renderStep4(); break;
+            case 5: html = renderStep5(); break;
+            case 6: html = renderStep6(); break;
+            case 7: html = renderStep7(); break;
+            case 8: html = renderStep8(); break;
+            case 9: html = renderStep9(); break;
+            default: html = renderStep1();
+        }
+        
+        content.innerHTML = html;
+    }
+    
+    // Interactive functionality
+    function initColdWaterSave() {
+        const saveBtn = document.getElementById('saveColdWaterBtn');
+        const feedback = document.getElementById('coldWaterSaveFeedback');
+        
+        if (saveBtn) {
+            saveBtn.addEventListener('click', function() {
+                saveToToolkit({
+                    id: 'cold-water',
+                    category: 'Module 2: Physical Reset',
+                    name: 'Cold Water — Dive Reflex',
+                    description: '30-60 seconds • Panic, rage, need instant calm • Dunk face in ice water or apply ice pack for 15-30 seconds'
+                });
                 
-                btn.classList.add('saved');
-                btn.innerHTML = '<span>✓</span><span>Saved!</span>';
+                saveBtn.classList.add('saved');
+                saveBtn.innerHTML = '<span>✓</span><span>Saved!</span>';
                 feedback.textContent = '✓ Saved to your toolkit.';
                 feedback.classList.add('show');
                 
                 setTimeout(() => {
-                    btn.classList.remove('saved');
-                    btn.innerHTML = toolkitItem.btnHtml;
+                    saveBtn.classList.remove('saved');
+                    saveBtn.innerHTML = '<span>🧊</span> Save Cold Water to Toolkit';
                     feedback.classList.remove('show');
                 }, 3000);
             });
         }
     }
-
-    setupSaveButton('saveColdWaterBtn', 'coldWaterSaveFeedback', {
-        id: 'cold-water',
-        category: 'Module 2: Physical Reset',
-        name: 'Cold Water — Dive Reflex',
-        description: '30-60 seconds • Panic, rage, need instant calm • Dunk face in ice water or apply ice pack for 15-30 seconds',
-        btnHtml: '<span>🧊</span> Save Cold Water to Toolkit'
-    });
-
-    setupSaveButton('saveExerciseBtn', 'exerciseSaveFeedback', {
-        id: 'intense-exercise',
-        category: 'Module 2: Physical Reset',
-        name: 'Intense Exercise',
-        description: '3-5 minutes • Restless panic, rage, "crawling out of skin" • Sprint, jumping jacks, stairs — must be intense enough to breathe hard',
-        btnHtml: '<span>💪</span> Save Intense Exercise to Toolkit'
-    });
-
-    setupSaveButton('saveBreathingBtn', 'breathingSaveFeedback', {
-        id: 'paced-breathing',
-        category: 'Module 2: Physical Reset',
-        name: 'Paced Breathing',
-        description: '2-3 minutes • Moderate anxiety, racing thoughts • 4-6-8 pattern: IN 4, HOLD 6, OUT 8 • Exhale longer than inhale',
-        btnHtml: '<span>🌬️</span> Save Paced Breathing to Toolkit'
-    });
-
-    setupSaveButton('savePMRBtn', 'pmrSaveFeedback', {
-        id: 'pmr',
-        category: 'Module 2: Physical Reset',
-        name: 'Progressive Muscle Relaxation',
-        description: '5-10 minutes • Physical tension, mild anxiety • Tense each muscle group 5 sec, release 10 sec • Hands, arms, shoulders, face, legs',
-        btnHtml: '<span>💆</span> Save PMR to Toolkit'
-    });
-
-    setupSaveButton('saveTempBtn', 'tempSaveFeedback', {
-        id: 'temperature',
-        category: 'Module 2: Physical Reset',
-        name: 'Temperature Shock',
-        description: '1-2 minutes • Numbness, dissociation, need to feel present • Cold: ice cubes, cold shower • Heat: hot shower, heating pad • Sensation, not harm',
-        btnHtml: '<span>🌡️</span> Save Temperature Techniques to Toolkit'
-    });
-
-    // Save reflection
-    const saveReflectionBtn = document.getElementById('saveReflectionBtn');
-    const reflectionFeedback = document.getElementById('reflectionSaveFeedback');
     
-    if (saveReflectionBtn) {
-        saveReflectionBtn.addEventListener('click', function() {
-            const checkedBoxes = document.querySelectorAll('#techniqueCheckboxes input[type="checkbox"]:checked');
-            const techniques = Array.from(checkedBoxes).map(cb => cb.value);
-            
-            if (techniques.length === 0) {
-                alert('Please select at least one technique.');
-                return;
-            }
-            
-            saveToToolkit({
-                id: 'my-top-techniques',
-                category: 'My Crisis Profile',
-                name: 'My Top Physical Reset Techniques',
-                description: techniques.join(', ')
+    function initColdWaterPractice() {
+        const guideBtn = document.getElementById('coldWaterGuideBtn');
+        const skipBtn = document.getElementById('coldWaterSkipBtn');
+        const guided = document.getElementById('coldWaterGuided');
+        const readyBtn = document.getElementById('coldWaterReadyBtn');
+        const timerDiv = document.getElementById('coldWaterTimer');
+        const startTimerBtn = document.getElementById('coldWaterStartTimer');
+        const timerDisplay = document.getElementById('coldWaterTimerDisplay');
+        const afterDiv = document.getElementById('coldWaterAfter');
+        const resultDiv = document.getElementById('coldWaterResult');
+        
+        // Sliders
+        const beforeSlider = document.getElementById('coldWaterBeforeSlider');
+        const beforeValue = document.getElementById('coldWaterBeforeValue');
+        const afterSlider = document.getElementById('coldWaterAfterSlider');
+        const afterValue = document.getElementById('coldWaterAfterValue');
+        
+        if (beforeSlider && beforeValue) {
+            beforeSlider.addEventListener('input', function() {
+                beforeValue.textContent = this.value;
             });
-            
-            saveToCrisisPlan('physicalTechniques', techniques);
-            
-            saveReflectionBtn.classList.add('saved');
-            saveReflectionBtn.innerHTML = '<span>✓</span><span>Saved!</span>';
-            reflectionFeedback.textContent = '✓ Your top techniques have been saved to your crisis plan.';
-            reflectionFeedback.classList.add('show');
-            
-            setTimeout(() => {
-                saveReflectionBtn.classList.remove('saved');
-                saveReflectionBtn.innerHTML = '<span>📋</span> Save My Top Techniques to Toolkit';
-                reflectionFeedback.classList.remove('show');
-            }, 3000);
-        });
-    }
-
-    // Commitment buttons
-    const commitYesBtn = document.getElementById('commitYesBtn');
-    const commitLaterBtn = document.getElementById('commitLaterBtn');
-    
-    if (commitYesBtn) {
-        commitYesBtn.addEventListener('click', function() {
-            this.textContent = '✓ Committed!';
-            this.style.background = 'var(--success-bg)';
-            this.style.color = 'var(--success-emerald)';
-            
-            saveToCrisisPlan('practiceCommitment', {
-                committed: true,
-                date: new Date().toISOString(),
-                module: 2
-            });
-        });
-    }
-    
-    if (commitLaterBtn) {
-        commitLaterBtn.addEventListener('click', function() {
-            this.textContent = 'Maybe Later';
-            this.disabled = true;
-        });
-    }
-
-    // Mark as practiced
-    const markBtn = document.getElementById('markPracticedBtn');
-    
-    if (markBtn) {
-        let progress = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
-        if (progress.practicedModules && progress.practicedModules.includes('module2')) {
-            markBtn.classList.add('marked');
-            markBtn.innerHTML = '<span>✓</span><span>Module 2 Practiced</span>';
         }
         
-        markBtn.addEventListener('click', function() {
-            if (!progress.practicedModules) {
-                progress.practicedModules = [];
-            }
-            
-            if (!progress.practicedModules.includes('module2')) {
-                progress.practicedModules.push('module2');
-                progress.lastPracticed = new Date().toISOString();
-                progress.currentModule = 2;
-                localStorage.setItem('crisis_course_progress', JSON.stringify(progress));
+        if (afterSlider && afterValue) {
+            afterSlider.addEventListener('input', function() {
+                afterValue.textContent = this.value;
+            });
+        }
+        
+        if (guideBtn) {
+            guideBtn.addEventListener('click', function() {
+                guided.style.display = 'block';
+                guideBtn.style.display = 'none';
+                skipBtn.style.display = 'none';
+            });
+        }
+        
+        if (skipBtn) {
+            skipBtn.addEventListener('click', function() {
+                this.textContent = 'Skipped';
+                this.disabled = true;
+            });
+        }
+        
+        if (readyBtn) {
+            readyBtn.addEventListener('click', function() {
+                timerDiv.style.display = 'block';
+                readyBtn.style.display = 'none';
+            });
+        }
+        
+        if (startTimerBtn) {
+            startTimerBtn.addEventListener('click', function() {
+                let timeLeft = 15;
+                timerDisplay.textContent = timeLeft;
+                startTimerBtn.textContent = 'Timer Running...';
+                startTimerBtn.disabled = true;
+                startTimerBtn.style.opacity = '0.6';
                 
-                markBtn.classList.add('marked');
-                markBtn.innerHTML = '<span>✓</span><span>Module 2 Practiced</span>';
-            }
+                const interval = setInterval(function() {
+                    timeLeft--;
+                    timerDisplay.textContent = timeLeft;
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(interval);
+                        timerDisplay.textContent = 'Done! ✓';
+                        timerDisplay.style.color = 'var(--success-emerald)';
+                        
+                        setTimeout(() => {
+                            startTimerBtn.style.display = 'none';
+                            afterDiv.style.display = 'block';
+                            
+                            const before = parseInt(beforeSlider?.value || '5');
+                            const after = parseInt(afterSlider?.value || '3');
+                            resultDiv.innerHTML = `<p style="color: var(--text-teal-light);">You went from ${before} to ${after}. Your heart rate likely slowed — that's the dive reflex working.</p>`;
+                        }, 1000);
+                    }
+                }, 1000);
+            });
+        }
+        
+        // Checkbox visual state
+        const checkboxes = document.querySelectorAll('.reflection-checkbox input[type="checkbox"]');
+        checkboxes.forEach(cb => {
+            cb.addEventListener('change', function() {
+                const label = this.closest('.reflection-checkbox');
+                if (this.checked) {
+                    label.classList.add('checked');
+                } else {
+                    label.classList.remove('checked');
+                }
+            });
         });
     }
-
-    // Load saved techniques
-    function loadSavedTechniques() {
+    
+    function initExercise() {
+        const saveBtn = document.getElementById('saveExerciseBtn');
+        const feedback = document.getElementById('exerciseSaveFeedback');
+        
+        if (saveBtn) {
+            saveBtn.addEventListener('click', function() {
+                saveToToolkit({
+                    id: 'intense-exercise',
+                    category: 'Module 2: Physical Reset',
+                    name: 'Intense Exercise',
+                    description: '3-5 minutes • Restless panic, rage, "crawling out of skin" • Sprint, jumping jacks, stairs — must be intense enough to breathe hard'
+                });
+                
+                saveBtn.classList.add('saved');
+                saveBtn.innerHTML = '<span>✓</span><span>Saved!</span>';
+                feedback.textContent = '✓ Saved to your toolkit.';
+                feedback.classList.add('show');
+                
+                setTimeout(() => {
+                    saveBtn.classList.remove('saved');
+                    saveBtn.innerHTML = '<span>💪</span> Save Intense Exercise to Toolkit';
+                    feedback.classList.remove('show');
+                }, 3000);
+            });
+        }
+    }
+    
+    function initBreathing() {
+        const saveBtn = document.getElementById('saveBreathingBtn');
+        const feedback = document.getElementById('breathingSaveFeedback');
+        
+        if (saveBtn) {
+            saveBtn.addEventListener('click', function() {
+                saveToToolkit({
+                    id: 'paced-breathing',
+                    category: 'Module 2: Physical Reset',
+                    name: 'Paced Breathing',
+                    description: '2-3 minutes • Moderate anxiety, racing thoughts • 4-6-8 pattern: IN 4, HOLD 6, OUT 8 • Exhale longer than inhale'
+                });
+                
+                saveBtn.classList.add('saved');
+                saveBtn.innerHTML = '<span>✓</span><span>Saved!</span>';
+                feedback.textContent = '✓ Saved to your toolkit.';
+                feedback.classList.add('show');
+                
+                setTimeout(() => {
+                    saveBtn.classList.remove('saved');
+                    saveBtn.innerHTML = '<span>🌬️</span> Save Paced Breathing to Toolkit';
+                    feedback.classList.remove('show');
+                }, 3000);
+            });
+        }
+    }
+    
+    function initPMR() {
+        const saveBtn = document.getElementById('savePMRBtn');
+        const feedback = document.getElementById('pmrSaveFeedback');
+        
+        if (saveBtn) {
+            saveBtn.addEventListener('click', function() {
+                saveToToolkit({
+                    id: 'pmr',
+                    category: 'Module 2: Physical Reset',
+                    name: 'Progressive Muscle Relaxation',
+                    description: '5-10 minutes • Physical tension, mild anxiety • Tense each muscle group 5 sec, release 10 sec • Hands, arms, shoulders, face, legs'
+                });
+                
+                saveBtn.classList.add('saved');
+                saveBtn.innerHTML = '<span>✓</span><span>Saved!</span>';
+                feedback.textContent = '✓ Saved to your toolkit.';
+                feedback.classList.add('show');
+                
+                setTimeout(() => {
+                    saveBtn.classList.remove('saved');
+                    saveBtn.innerHTML = '<span>💆</span> Save PMR to Toolkit';
+                    feedback.classList.remove('show');
+                }, 3000);
+            });
+        }
+    }
+    
+    function initTemperature() {
+        const saveBtn = document.getElementById('saveTempBtn');
+        const feedback = document.getElementById('tempSaveFeedback');
+        
+        if (saveBtn) {
+            saveBtn.addEventListener('click', function() {
+                saveToToolkit({
+                    id: 'temperature',
+                    category: 'Module 2: Physical Reset',
+                    name: 'Temperature Shock',
+                    description: '1-2 minutes • Numbness, dissociation, need to feel present • Cold: ice cubes, cold shower • Heat: hot shower, heating pad • Sensation, not harm'
+                });
+                
+                saveBtn.classList.add('saved');
+                saveBtn.innerHTML = '<span>✓</span><span>Saved!</span>';
+                feedback.textContent = '✓ Saved to your toolkit.';
+                feedback.classList.add('show');
+                
+                setTimeout(() => {
+                    saveBtn.classList.remove('saved');
+                    saveBtn.innerHTML = '<span>🌡️</span> Save Temperature Techniques to Toolkit';
+                    feedback.classList.remove('show');
+                }, 3000);
+            });
+        }
+    }
+    
+    function initReflection() {
+        const checkboxes = document.querySelectorAll('.reflection-checkbox input[type="checkbox"]');
+        checkboxes.forEach(cb => {
+            cb.addEventListener('change', function() {
+                const label = this.closest('.reflection-checkbox');
+                if (this.checked) {
+                    label.classList.add('checked');
+                } else {
+                    label.classList.remove('checked');
+                }
+            });
+        });
+        
+        // Load saved techniques
         const crisisPlan = JSON.parse(localStorage.getItem('crisis_plan') || '{}');
         const savedTechniques = crisisPlan.physicalTechniques || [];
         
         if (savedTechniques.length > 0) {
-            const checkboxes = document.querySelectorAll('#techniqueCheckboxes .reflection-checkbox');
-            checkboxes.forEach(label => {
-                const cb = label.querySelector('input[type="checkbox"]');
-                if (cb && savedTechniques.includes(cb.value)) {
+            checkboxes.forEach(cb => {
+                if (savedTechniques.includes(cb.value)) {
                     cb.checked = true;
+                    const label = cb.closest('.reflection-checkbox');
                     label.classList.add('checked');
+                }
+            });
+        }
+        
+        // Commit buttons
+        const commitYesBtn = document.getElementById('commitYesBtn');
+        const commitLaterBtn = document.getElementById('commitLaterBtn');
+        
+        if (commitYesBtn) {
+            commitYesBtn.addEventListener('click', function() {
+                this.textContent = '✓ Committed!';
+                this.style.background = 'var(--success-bg)';
+                this.style.color = 'var(--success-emerald)';
+                
+                saveToCrisisPlan('practiceCommitment', {
+                    committed: true,
+                    date: new Date().toISOString(),
+                    module: 2
+                });
+            });
+        }
+        
+        if (commitLaterBtn) {
+            commitLaterBtn.addEventListener('click', function() {
+                this.textContent = 'Maybe Later';
+                this.disabled = true;
+            });
+        }
+        
+        // Save reflection
+        const saveBtn = document.getElementById('saveReflectionBtn');
+        const feedback = document.getElementById('reflectionSaveFeedback');
+        
+        if (saveBtn) {
+            saveBtn.addEventListener('click', function() {
+                const checkedBoxes = document.querySelectorAll('#techniqueCheckboxes input[type="checkbox"]:checked');
+                const techniques = Array.from(checkedBoxes).map(cb => cb.value);
+                
+                if (techniques.length === 0) {
+                    alert('Please select at least one technique.');
+                    return;
+                }
+                
+                saveToToolkit({
+                    id: 'my-top-techniques',
+                    category: 'My Crisis Profile',
+                    name: 'My Top Physical Reset Techniques',
+                    description: techniques.join(', ')
+                });
+                
+                saveToCrisisPlan('physicalTechniques', techniques);
+                
+                saveBtn.classList.add('saved');
+                saveBtn.innerHTML = '<span>✓</span><span>Saved!</span>';
+                feedback.textContent = '✓ Your top techniques have been saved to your crisis plan.';
+                feedback.classList.add('show');
+                
+                setTimeout(() => {
+                    saveBtn.classList.remove('saved');
+                    saveBtn.innerHTML = '<span>📋</span> Save My Top Techniques to Toolkit';
+                    feedback.classList.remove('show');
+                }, 3000);
+            });
+        }
+    }
+    
+    function initComplete() {
+        const practiceBtn = document.getElementById('practiceBtn');
+        
+        let progress = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
+        if (progress.practicedModules && progress.practicedModules.includes('module2')) {
+            practiceBtn.classList.add('marked');
+            practiceBtn.innerHTML = '<span>✓</span><span>Module 2 Practiced</span>';
+        }
+        
+        if (practiceBtn) {
+            practiceBtn.addEventListener('click', function() {
+                if (!progress.practicedModules) {
+                    progress.practicedModules = [];
+                }
+                
+                if (!progress.practicedModules.includes('module2')) {
+                    progress.practicedModules.push('module2');
+                    progress.lastPracticed = new Date().toISOString();
+                    progress.currentModule = 2;
+                    localStorage.setItem('crisis_course_progress', JSON.stringify(progress));
+                    
+                    practiceBtn.classList.add('marked');
+                    practiceBtn.innerHTML = '<span>✓</span><span>Module 2 Practiced</span>';
                 }
             });
         }
     }
     
-    loadSavedTechniques();
+    // Expose functions globally
+    window.nextStep = nextStep;
+    window.previousStep = previousStep;
+    window.goToStep = goToStep;
+    
+    // Initialize
+    loadProgress();
+    render();
 })();
 </script>
 </body>
