@@ -35,203 +35,260 @@
     --crisis-bg: rgba(220, 38, 38, 0.08);
 }
 
-* { 
-    margin: 0; 
-    padding: 0; 
-    box-sizing: border-box; 
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
-    -webkit-tap-highlight-color: transparent; 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-font-smoothing: antialiased;
 }
 
-html, body { 
-    width: 100%; 
-    height: 100%; 
-    overflow: hidden; 
-    background: var(--bg-dark); 
-    color: var(--text-primary); 
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: var(--bg-dark);
+    color: var(--text-primary);
 }
 
-.container { 
-    width: 100%; 
-    height: 100vh; 
-    display: flex; 
-    flex-direction: column; 
-}
-
-.app-wrapper { 
-    width: 100%; 
-    max-width: 28rem; 
-    height: 100%; 
-    margin: 0 auto; 
-    background: var(--bg-card); 
-    display: flex; 
-    flex-direction: column; 
-    position: relative; 
-    overflow: hidden; 
-}
-
-.bg-blur-1, .bg-blur-2 { 
-    position: absolute; 
-    border-radius: 50%; 
-    pointer-events: none; 
-    z-index: 0; 
-    opacity: 0.3; 
-}
-
-.bg-blur-1 { 
-    top: -5%; 
-    left: 50%; 
-    transform: translateX(-50%); 
-    width: 22rem; 
-    height: 22rem; 
-    background: rgba(14, 116, 144, 0.15); 
-}
-
-.bg-blur-2 { 
-    bottom: -5%; 
-    right: -5%; 
-    width: 18rem; 
-    height: 18rem; 
-    background: rgba(217, 119, 6, 0.15); 
-}
-
-.main-content { 
-    flex: 1; 
-    overflow-y: auto; 
-    -webkit-overflow-scrolling: touch; 
-    scrollbar-width: none; 
-    position: relative; 
-    z-index: 1; 
-}
-
-.main-content::-webkit-scrollbar { 
-    display: none; 
-}
-
-.content-wrapper { 
-    padding: 1rem 1.25rem 2rem; 
-    padding-bottom: calc(2rem + env(safe-area-inset-bottom)); 
-}
-
-.crisis-banner {
-    background: var(--crisis-bg);
-    border: 1px solid var(--crisis-red);
-    border-radius: 0.75rem;
-    padding: 0.75rem 1rem;
-    margin-bottom: 1rem;
+.container {
+    width: 100%;
+    height: 100vh;
+    height: -webkit-fill-available;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    flex-direction: column;
 }
 
-.crisis-banner span {
-    color: #fca5a5;
-    font-size: 0.8125rem;
-    font-weight: 600;
-}
-
-.crisis-banner a {
-    color: #fca5a5;
-    font-weight: 700;
-    text-decoration: none;
-    background: rgba(220,38,38,0.2);
-    padding: 0.375rem 0.75rem;
-    border-radius: 2rem;
-    font-size: 0.75rem;
-}
-
-.nav-header {
+.app-wrapper {
+    width: 100%;
+    max-width: 28rem;
+    height: 100%;
+    margin: 0 auto;
+    background: var(--bg-card);
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 1rem;
-}
-
-.back-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--text-muted);
-    text-decoration: none;
-    font-size: 0.875rem;
-    font-weight: 500;
-}
-
-.module-badge {
-    background: var(--gradient-subtle);
-    color: var(--text-teal-light);
-    padding: 0.375rem 0.875rem;
-    border-radius: 2rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    border: 1px solid rgba(14,116,144,0.25);
-}
-
-.module-title {
-    font-size: 1.75rem;
-    font-weight: 800;
-    margin-bottom: 0.25rem;
-    background: var(--gradient-main);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.module-subtitle {
-    color: var(--text-secondary);
-    font-size: 0.9375rem;
-    margin-bottom: 1.5rem;
-}
-
-.progress-container {
-    margin: 1rem 0 2rem;
-}
-
-.progress-label {
-    display: flex;
-    justify-content: space-between;
-    color: var(--text-muted);
-    font-size: 0.75rem;
-    margin-bottom: 0.375rem;
-}
-
-.progress-bar {
-    background: rgba(30,41,59,0.8);
-    height: 0.5rem;
-    border-radius: 1rem;
+    flex-direction: column;
+    position: relative;
     overflow: hidden;
 }
 
-.progress-fill {
-    width: 80%;
-    height: 100%;
-    background: var(--gradient-main);
-    border-radius: 1rem;
+.bg-blur-1, .bg-blur-2 {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.3;
 }
 
+.bg-blur-1 {
+    top: -5%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 22rem;
+    height: 22rem;
+    background: rgba(14, 116, 144, 0.15);
+}
+
+.bg-blur-2 {
+    bottom: -5%;
+    right: -5%;
+    width: 18rem;
+    height: 18rem;
+    background: rgba(217, 119, 6, 0.15);
+}
+
+.main-content {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    position: relative;
+    z-index: 1;
+}
+
+.main-content::-webkit-scrollbar {
+    display: none;
+}
+
+.content-wrapper {
+    padding: 1.25rem;
+    padding-bottom: calc(2rem + env(safe-area-inset-bottom));
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Crisis Banner */
+.crisis-banner {
+    background: var(--crisis-bg);
+    border: 1px solid var(--crisis-red);
+    border-radius: 0.875rem;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.crisis-banner__text {
+    color: #fca5a5;
+    font-size: 0.875rem;
+    font-weight: 600;
+    flex: 1;
+    min-width: 180px;
+}
+
+.crisis-banner__actions {
+    display: flex;
+    gap: 0.625rem;
+}
+
+.crisis-banner__link {
+    color: white;
+    background: var(--crisis-red);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    transition: all 0.2s;
+}
+
+.crisis-banner__link:active {
+    background: #b91c1c;
+    transform: scale(0.97);
+}
+
+/* Header */
+.header {
+    background: linear-gradient(135deg, var(--bg-card-light), var(--bg-card-dark));
+    border: 1px solid var(--border-softer);
+    border-radius: 1rem;
+    padding: 1.25rem;
+    margin-bottom: 1.25rem;
+}
+
+.header__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.back-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.25rem;
+    line-height: 1;
+    transition: all 0.2s;
+}
+
+.back-btn:active {
+    transform: scale(0.9);
+}
+
+.step-indicator {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.progress-dots {
+    display: flex;
+    gap: 0.375rem;
+    margin-bottom: 1rem;
+}
+
+.progress-dot {
+    flex: 1;
+    height: 0.5rem;
+    background: rgba(148, 163, 184, 0.2);
+    border-radius: 1rem;
+    transition: all 0.3s;
+}
+
+.progress-dot.active {
+    background: var(--gradient-main);
+}
+
+.step-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    background: var(--gradient-main);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+}
+
+.step-subtitle {
+    color: var(--text-secondary);
+    font-size: 0.9375rem;
+}
+
+/* Card */
 .card {
     background: linear-gradient(135deg, var(--bg-card-light), var(--bg-card-dark));
     border: 1px solid var(--border-softer);
     border-radius: 1.25rem;
-    padding: 1.5rem;
+    padding: 1.75rem 1.5rem;
     margin-bottom: 1.25rem;
 }
 
-.card-title {
-    font-size: 1.25rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--text-primary);
+.card--highlight {
+    background: var(--gradient-subtle);
+    border: 1px solid rgba(14, 116, 144, 0.3);
 }
 
+.card__icon {
+    font-size: 3rem;
+    text-align: center;
+    margin-bottom: 1rem;
+    line-height: 1;
+}
+
+.card__title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 1.25rem;
+    line-height: 1.3;
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+}
+
+.card__content {
+    color: var(--text-secondary);
+    line-height: 1.7;
+    font-size: 1rem;
+}
+
+.card__content p {
+    margin-bottom: 1.25rem;
+}
+
+.card__content p:last-child {
+    margin-bottom: 0;
+}
+
+.card__content strong {
+    color: var(--text-teal);
+    font-weight: 600;
+}
+
+/* Section Header */
 .section-header {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1.25rem;
     padding-bottom: 0.75rem;
     border-bottom: 1px solid var(--border-softer);
 }
@@ -246,22 +303,11 @@ html, body {
     color: var(--text-teal-light);
 }
 
-.effectiveness-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
-    background: rgba(14,116,144,0.15);
-    padding: 0.25rem 0.75rem;
-    border-radius: 2rem;
-    font-size: 0.75rem;
-    color: var(--text-teal);
-    margin-left: 0.5rem;
-}
-
+/* Stats */
 .technique-stats {
     display: flex;
     gap: 1rem;
-    margin: 1rem 0;
+    margin: 1.25rem 0;
     padding: 1rem;
     background: rgba(15,23,42,0.6);
     border-radius: 0.75rem;
@@ -286,20 +332,65 @@ html, body {
     margin-top: 0.25rem;
 }
 
+/* Instruction Box */
 .instruction-box {
     background: rgba(15,23,42,0.6);
     border-left: 4px solid var(--primary-teal);
     border-radius: 0.75rem;
-    padding: 1.25rem;
+    padding: 1.5rem;
     margin: 1.25rem 0;
 }
 
+.instruction-list {
+    list-style: none;
+    counter-reset: step-counter;
+}
+
+.instruction-list li {
+    counter-increment: step-counter;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    line-height: 1.6;
+}
+
+.instruction-list li:before {
+    content: counter(step-counter);
+    background: var(--gradient-subtle);
+    color: var(--text-teal-light);
+    font-weight: 700;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    flex-shrink: 0;
+}
+
+/* Quote Box */
+.quote-box {
+    background: rgba(217,119,6,0.1);
+    border-left: 4px solid var(--accent-amber);
+    padding: 1.25rem;
+    border-radius: 0.75rem;
+    margin: 1.25rem 0;
+    font-style: italic;
+    color: var(--text-amber);
+    line-height: 1.6;
+}
+
+/* Practice Card */
 .practice-card {
     background: var(--gradient-subtle);
     border: 2px solid rgba(14,116,144,0.3);
     border-radius: 1rem;
-    padding: 1.5rem;
-    margin: 1.25rem 0;
+    padding: 1.75rem;
+    margin: 1.5rem 0;
 }
 
 .practice-title {
@@ -308,23 +399,39 @@ html, body {
     gap: 0.5rem;
     color: var(--text-teal-light);
     font-weight: 700;
-    font-size: 1rem;
-    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    margin-bottom: 1.25rem;
+}
+
+/* Buttons */
+.practice-buttons {
+    display: flex;
+    gap: 0.75rem;
+    margin: 1.25rem 0;
 }
 
 .btn-practice {
     flex: 1;
-    padding: 0.875rem;
+    padding: 0.875rem 1rem;
     border-radius: 0.75rem;
     font-weight: 600;
     font-size: 0.875rem;
     cursor: pointer;
     border: none;
+    transition: all 0.2s;
+}
+
+.btn-practice:active {
+    transform: scale(0.97);
 }
 
 .btn-practice-primary {
     background: var(--gradient-main);
     color: white;
+}
+
+.btn-practice-primary:active {
+    opacity: 0.9;
 }
 
 .btn-practice-secondary {
@@ -333,30 +440,66 @@ html, body {
     border: 1px solid var(--border-softer);
 }
 
+.btn-practice-secondary:active {
+    background: rgba(30,41,59,0.8);
+}
+
+.reflection-btn {
+    flex: 1;
+    padding: 0.75rem;
+    border-radius: 0.75rem;
+    background: var(--bg-card-dark);
+    border: 1px solid var(--border-softer);
+    color: var(--text-secondary);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.reflection-btn.selected {
+    background: rgba(14,116,144,0.2);
+    border-color: var(--primary-teal);
+    color: var(--text-teal);
+}
+
+.reflection-btn:active {
+    transform: scale(0.97);
+}
+
+/* Input Fields */
 .input-field {
     width: 100%;
-    padding: 0.875rem;
+    padding: 0.875rem 1rem;
     background: rgba(15,23,42,0.6);
     border: 1px solid var(--border-softer);
     border-radius: 0.75rem;
     color: var(--text-primary);
     font-size: 0.875rem;
     margin-bottom: 0.75rem;
+    transition: all 0.2s;
 }
 
 .input-field:focus {
     outline: none;
     border-color: var(--primary-teal);
+    background: rgba(15,23,42,0.8);
 }
 
+.input-field::placeholder {
+    color: var(--text-muted);
+    opacity: 0.6;
+}
+
+/* Save Button */
 .btn-save {
     background: var(--gradient-subtle);
     color: var(--text-teal-light);
     border: 1px solid rgba(14,116,144,0.35);
-    padding: 0.875rem 1.5rem;
+    padding: 1rem 1.5rem;
     border-radius: 2rem;
     font-weight: 600;
-    font-size: 0.875rem;
+    font-size: 0.9375rem;
     cursor: pointer;
     transition: all 0.2s;
     display: inline-flex;
@@ -367,9 +510,9 @@ html, body {
     margin-top: 1rem;
 }
 
-.btn-save:hover {
+.btn-save:active {
     background: rgba(14,116,144,0.25);
-    border-color: rgba(14,116,144,0.5);
+    transform: scale(0.98);
 }
 
 .btn-save.saved {
@@ -378,60 +521,58 @@ html, body {
     border-color: rgba(74,222,128,0.35);
 }
 
-.reflection-buttons {
+/* Checkboxes */
+.reflection-checkbox {
     display: flex;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-    margin: 1rem 0;
-}
-
-.reflection-btn {
-    flex: 1;
-    min-width: 120px;
-    padding: 0.75rem;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem;
     background: rgba(15,23,42,0.6);
     border: 1px solid var(--border-softer);
     border-radius: 0.75rem;
-    color: var(--text-secondary);
-    font-size: 0.8125rem;
     cursor: pointer;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
     transition: all 0.2s;
 }
 
-.reflection-btn:hover {
+.reflection-checkbox:active {
+    background: rgba(30,41,59,0.8);
+}
+
+.reflection-checkbox.checked {
     border-color: var(--primary-teal);
-    background: rgba(14,116,144,0.1);
+    background: rgba(14,116,144,0.15);
+    color: var(--text-primary);
 }
 
-.reflection-btn.selected {
-    background: rgba(14,116,144,0.2);
-    border-color: var(--primary-teal);
-    color: var(--text-teal-light);
+.reflection-checkbox input[type="checkbox"] {
+    width: 1.125rem;
+    height: 1.125rem;
+    accent-color: var(--primary-teal);
 }
 
-.quote-box {
-    background: rgba(217,119,6,0.1);
-    border-left: 4px solid var(--accent-amber);
-    padding: 1.25rem;
-    border-radius: 0.75rem;
-    margin: 1.25rem 0;
-    font-style: italic;
-    color: var(--text-amber-light);
+.reflection-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin: 1.5rem 0;
 }
 
+/* Reference Card */
 .reference-card {
     background: var(--gradient-subtle);
     border: 1px solid rgba(14,116,144,0.3);
-    border-radius: 1rem;
-    padding: 1.5rem;
+    border-radius: 1.25rem;
+    padding: 1.75rem;
     margin: 1.5rem 0;
 }
 
 .reference-title {
-    font-size: 1.125rem;
+    font-size: 1.25rem;
     font-weight: 700;
     color: var(--text-teal-light);
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -439,20 +580,20 @@ html, body {
 
 .reference-grid {
     display: grid;
-    gap: 0.75rem;
+    gap: 1rem;
 }
 
 .reference-item {
     display: flex;
     align-items: flex-start;
-    gap: 0.75rem;
-    padding: 0.75rem;
+    gap: 1rem;
+    padding: 1rem;
     background: rgba(15,23,42,0.6);
     border-radius: 0.75rem;
 }
 
 .reference-icon {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
 }
 
 .reference-content {
@@ -462,969 +603,1540 @@ html, body {
 .reference-name {
     font-weight: 600;
     color: var(--text-primary);
-    font-size: 0.875rem;
-    margin-bottom: 0.125rem;
+    font-size: 0.9375rem;
+    margin-bottom: 0.25rem;
 }
 
 .reference-use {
     color: var(--text-muted);
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
+    line-height: 1.5;
 }
 
-.btn-group {
-    display: flex;
-    gap: 1rem;
-    margin: 2rem 0 1rem;
-}
-
+/* Buttons */
 .btn {
-    flex: 1;
-    padding: 1rem;
-    border-radius: 0.75rem;
+    width: 100%;
+    padding: 1.125rem 1.5rem;
+    border-radius: 1rem;
+    font-size: 1rem;
     font-weight: 600;
-    font-size: 0.9375rem;
     cursor: pointer;
     border: none;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.625rem;
     text-decoration: none;
-    text-align: center;
 }
 
-.btn-primary {
+.btn--primary {
     background: var(--gradient-main);
     color: white;
 }
 
-.btn-secondary {
-    background: var(--bg-card-dark);
+.btn--primary:active {
+    transform: scale(0.98);
+    opacity: 0.9;
+}
+
+.btn--secondary {
+    background: rgba(30, 41, 59, 0.6);
     color: var(--text-secondary);
     border: 1px solid var(--border-softer);
 }
 
-.footer {
-    text-align: center;
-    color: var(--text-dim);
-    font-size: 0.6875rem;
-    margin-top: 2rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--border-subtle);
+.btn--secondary:active {
+    background: rgba(30, 41, 59, 0.8);
+    transform: scale(0.98);
 }
 
+.btn-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.save-feedback {
+    color: var(--success-emerald);
+    font-size: 0.875rem;
+    text-align: center;
+    margin-top: 0.875rem;
+    display: none;
+}
+
+.save-feedback.show {
+    display: block;
+    animation: slideDown 0.3s ease-out;
+}
+
+/* Practice Button */
+.practice-section {
+    text-align: center;
+    margin: 1.25rem 0;
+}
+
+.practice-btn {
+    background: var(--success-bg);
+    color: var(--success-emerald);
+    border: 1px solid rgba(74, 222, 128, 0.3);
+    padding: 0.875rem 2rem;
+    border-radius: 2rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+}
+
+.practice-btn:active {
+    background: rgba(34, 197, 94, 0.2);
+    transform: scale(0.97);
+}
+
+.practice-btn.marked {
+    background: rgba(34, 197, 94, 0.25);
+}
+
+/* Footer */
+.footer {
+    margin-top: auto;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-subtle);
+    text-align: center;
+}
+
+.footer__warning {
+    color: #fca5a5;
+    font-weight: 600;
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+}
+
+.footer__resources {
+    color: var(--text-muted);
+    font-size: 0.8125rem;
+    line-height: 1.8;
+}
+
+.footer__resources p {
+    margin-bottom: 0.5rem;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.step-content {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Mobile Adjustments */
 @media (max-width: 640px) {
-    .btn-group { flex-direction: column; }
-    .reflection-buttons { flex-direction: column; }
+    .reflection-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .btn-group {
+        grid-template-columns: 1fr;
+    }
+    
+    .practice-buttons {
+        flex-direction: column;
+    }
+}
+
+/* iOS Safe Area */
+@supports (-webkit-touch-callout: none) {
+    .container {
+        height: -webkit-fill-available;
+    }
 }
 </style>
 </head>
 <body>
 <div class="container">
-  <div class="app-wrapper">
-    <div class="bg-blur-1"></div>
-    <div class="bg-blur-2"></div>
-    <div class="main-content">
-      <div class="content-wrapper">
-
-        <!-- CRISIS BANNER -->
-        <div class="crisis-banner">
-          <span>🚨 In crisis? Help is available 24/7</span>
-          <span style="display: flex; gap: 0.5rem;">
-            <a href="tel:988">Call 988</a>
-            <a href="sms:988">Text 988</a>
-          </span>
+    <div class="app-wrapper">
+        <div class="bg-blur-1"></div>
+        <div class="bg-blur-2"></div>
+        <div class="main-content" id="mainContent">
+            <div class="content-wrapper" id="content">
+                <!-- Content will be rendered here by JavaScript -->
+            </div>
         </div>
-
-        <!-- HEADER -->
-        <div class="nav-header">
-          <a href="crisis-intro.html" class="back-link">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M19 12H5M12 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            Course Home
-          </a>
-          <span class="module-badge">Module 4 of 5</span>
-        </div>
-
-        <h1 class="module-title">Making Peace with Reality</h1>
-        <p class="module-subtitle">12 minutes • Acceptance, self-compassion, defusion</p>
-
-        <!-- PROGRESS -->
-        <div class="progress-container">
-          <div class="progress-label">
-            <span>Course progress</span>
-            <span>80%</span>
-          </div>
-          <div class="progress-bar">
-            <div class="progress-fill" style="width: 80%;"></div>
-          </div>
-        </div>
-
-        <!-- INTRODUCTION - YOUR EXACT WORDS -->
-        <div class="card">
-          <div class="section-header">
-            <span class="section-icon">🕊️</span>
-            <span class="section-title-text">Introduction</span>
-          </div>
-          <div style="color: var(--text-secondary); line-height: 1.6;">
-            <p style="margin-bottom: 1rem; font-size: 1.05rem; color: var(--text-teal-light); font-style: italic;">
-              "This is the hardest module. It's about acceptance — not approval, not liking it, not giving up. Acceptance means stopping the internal war with reality. Fighting reality is like refusing to believe it's raining while you're getting soaked. The rain doesn't care. You can accept it's raining AND grab an umbrella."
-            </p>
-          </div>
-        </div>
-
-        <!-- ===== SECTION 4.1: RADICAL ACCEPTANCE (DBT) ===== -->
-        <!-- SAVE POINT #1: ACCEPTANCE TOOLS -->
-        <div class="card">
-          <div class="section-header">
-            <span class="section-icon">✋</span>
-            <span class="section-title-text">Radical Acceptance</span>
-          </div>
-          
-          <!-- The Core Concept -->
-          <div style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 1rem;">
-            <p style="margin-bottom: 1rem; font-weight: 600; color: var(--text-primary);">Radical Acceptance doesn't mean:</p>
-            <ul style="list-style: none; margin-bottom: 1.5rem;">
-              <li style="margin-bottom: 0.5rem; display: flex; gap: 0.5rem;"><span style="color: var(--crisis-red);">❌</span> Liking what happened</li>
-              <li style="margin-bottom: 0.5rem; display: flex; gap: 0.5rem;"><span style="color: var(--crisis-red);">❌</span> Approving of it</li>
-              <li style="margin-bottom: 0.5rem; display: flex; gap: 0.5rem;"><span style="color: var(--crisis-red);">❌</span> Giving up on change</li>
-              <li style="margin-bottom: 0.5rem; display: flex; gap: 0.5rem;"><span style="color: var(--crisis-red);">❌</span> Becoming passive</li>
-            </ul>
-            
-            <p style="margin-bottom: 1rem; font-weight: 600; color: var(--text-primary);">It DOES mean:</p>
-            <ul style="list-style: none; margin-bottom: 1.5rem;">
-              <li style="margin-bottom: 0.5rem; display: flex; gap: 0.5rem;"><span style="color: var(--success-emerald);">✅</span> Acknowledging reality as it is</li>
-              <li style="margin-bottom: 0.5rem; display: flex; gap: 0.5rem;"><span style="color: var(--success-emerald);">✅</span> Stopping the war with what you can't change</li>
-              <li style="margin-bottom: 0.5rem; display: flex; gap: 0.5rem;"><span style="color: var(--success-emerald);">✅</span> Reducing the suffering that comes from fighting reality</li>
-              <li style="margin-bottom: 0.5rem; display: flex; gap: 0.5rem;"><span style="color: var(--success-emerald);">✅</span> Freeing up energy to respond effectively</li>
-            </ul>
-          </div>
-          
-          <!-- The Math of Suffering -->
-          <div class="instruction-box">
-            <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 0.75rem; font-size: 1rem;">The Math of Suffering:</p>
-            <p style="color: var(--text-teal-light); font-size: 1.25rem; font-weight: 700; text-align: center; margin-bottom: 0.5rem;">Pain × Rejection = Suffering</p>
-            <p style="color: var(--text-secondary); font-size: 0.875rem; margin-top: 0.5rem;">
-              <strong>Pain</strong> = the actual difficult situation<br>
-              <strong>Rejection</strong> = fighting that it's happening<br>
-              <strong>Suffering</strong> = pain multiplied by resistance
-            </p>
-            <p style="color: var(--text-teal); font-size: 0.875rem; margin-top: 1rem; font-style: italic;">
-              You can't always control pain. You CAN control rejection.
-            </p>
-          </div>
-          
-          <!-- The Science -->
-          <div style="background: rgba(14,116,144,0.1); padding: 1rem; border-radius: 0.75rem; margin: 1rem 0;">
-            <p style="color: var(--text-secondary); font-size: 0.875rem;">
-              <strong style="color: var(--text-teal);">The Science:</strong> Brain imaging studies show that acceptance-based responses (vs. suppression or rumination) lead to decreased amygdala activation. Fighting your emotions actually intensifies them.
-            </p>
-          </div>
-          
-          <!-- Effectiveness Stats -->
-          <div class="technique-stats">
-            <div class="stat">
-              <div class="stat-label">Speed</div>
-              <div class="stat-value">⏱️ Moments to hours</div>
-            </div>
-            <div class="stat">
-              <div class="stat-label">Best for</div>
-              <div class="stat-value">🎯 Unchangeable situations</div>
-            </div>
-            <div class="stat">
-              <div class="stat-label">Intensity</div>
-              <div class="stat-value">💪 Emotionally difficult</div>
-            </div>
-          </div>
-          
-          <!-- EXPERIENTIAL PRACTICE - ACCEPTANCE -->
-          <div class="practice-card">
-            <div class="practice-title">
-              <span>💭</span>
-              ACCEPTANCE PRACTICE
-            </div>
-            
-            <p style="color: var(--text-teal-light); font-weight: 600; margin-bottom: 1rem;">Think of something difficult in your life right now.</p>
-            
-            <button id="acceptanceStartBtn" class="btn-practice btn-practice-primary" style="margin-bottom: 1rem;">Continue →</button>
-            
-            <div id="acceptancePractice" style="display: none;">
-              <p style="color: var(--text-secondary); margin-bottom: 0.5rem;"><strong>Step 1:</strong> What's something you've been fighting or resisting?</p>
-              <p style="color: var(--text-muted); font-size: 0.8125rem; margin-bottom: 0.5rem;">Example: "I can't believe they left me", "This isn't fair", "This shouldn't have happened"</p>
-              <input type="text" id="resistanceInput" class="input-field" placeholder="Write it here...">
-              
-              <p style="color: var(--text-secondary); margin-top: 1.5rem; margin-bottom: 0.5rem;"><strong>Step 2:</strong> Notice the language of rejection:</p>
-              <div style="display: flex; gap: 0.75rem; margin-bottom: 1rem;">
-                <button id="rejectionYesBtn" class="reflection-btn">Yes</button>
-                <button id="rejectionNoBtn" class="reflection-btn">No</button>
-              </div>
-              
-              <p style="color: var(--text-secondary); margin-top: 1.5rem; margin-bottom: 0.5rem;"><strong>Step 3:</strong> Try shifting to acceptance language:</p>
-              <p style="color: var(--text-teal); font-size: 0.875rem; margin-bottom: 0.5rem;">Instead of: "This shouldn't have happened"</p>
-              <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.75rem;">Try: "This DID happen. I don't like it, but it's real."</p>
-              
-              <p style="color: var(--text-teal); font-size: 0.875rem; margin-bottom: 0.5rem;">Instead of: "I can't accept this"</p>
-              <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.75rem;">Try: "This is the reality right now. I can accept it's real AND work to change what I can."</p>
-              
-              <p style="color: var(--text-teal); font-size: 0.875rem; margin-bottom: 0.5rem;">Instead of: "Why me?"</p>
-              <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 1rem;">Try: "This happened to me. It's painful. And it's my reality now."</p>
-              
-              <p style="color: var(--text-secondary); margin-bottom: 0.5rem;"><strong>Your turn:</strong> Rewrite your situation in acceptance language:</p>
-              <input type="text" id="acceptanceInput" class="input-field" placeholder="___________">
-              
-              <p style="color: var(--text-secondary); margin-top: 1.5rem; margin-bottom: 0.5rem;"><strong>Step 4:</strong> Does this reduce the intensity even slightly?</p>
-              <div style="display: flex; gap: 0.75rem; margin-bottom: 1rem;">
-                <button id="intensityYesBtn" class="reflection-btn">Yes - a little</button>
-                <button id="intensityNoBtn" class="reflection-btn">No</button>
-                <button id="intensityUnsureBtn" class="reflection-btn">Not sure</button>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Acceptance Phrases -->
-          <div class="quote-box">
-            <p style="font-weight: 700; margin-bottom: 0.75rem;">The Acceptance Phrases:</p>
-            <p style="margin-bottom: 0.5rem;">• "It is what it is."</p>
-            <p style="margin-bottom: 0.5rem;">• "This is my reality right now."</p>
-            <p style="margin-bottom: 0.5rem;">• "I don't have to like it to accept it's real."</p>
-            <p style="margin-bottom: 0.5rem;">• "Fighting reality doesn't change reality."</p>
-            <p style="margin-bottom: 0.5rem;">• "What happened, happened. What happens next is up to me."</p>
-            <p style="margin-bottom: 0.5rem;">• "I can be willing to feel this."</p>
-            <p style="margin-bottom: 0.5rem;">• "This is hard AND I can handle it."</p>
-          </div>
-          
-          <!-- BODY-BASED ACCEPTANCE -->
-          <div style="margin-top: 1.5rem;">
-            <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 0.75rem;">Body-Based Acceptance (Willing Hands & Half-Smile):</p>
-            
-            <div style="background: rgba(14,116,144,0.1); padding: 1rem; border-radius: 0.75rem; margin-bottom: 1rem;">
-              <p style="color: var(--text-teal-light); font-weight: 600; margin-bottom: 0.5rem;">Willing Hands:</p>
-              <p style="color: var(--text-secondary); font-size: 0.875rem;">Sit or stand with palms facing up and open (not clenched). Shoulders relaxed and down. This is the physical posture of acceptance vs. resistance.</p>
-            </div>
-            
-            <div style="background: rgba(14,116,144,0.1); padding: 1rem; border-radius: 0.75rem;">
-              <p style="color: var(--text-teal-light); font-weight: 600; margin-bottom: 0.5rem;">Half-Smile:</p>
-              <p style="color: var(--text-secondary); font-size: 0.875rem;">Slightly raise corners of your mouth (not a fake grin). Relax your jaw. Research shows this subtle shift can reduce emotional intensity.</p>
-            </div>
-          </div>
-          
-          <!-- EXPERIENTIAL PRACTICE - WILLING HANDS -->
-          <div class="practice-card" style="margin-top: 1.5rem;">
-            <div class="practice-title">
-              <span>🙏</span>
-              TRY WILLING HANDS NOW
-            </div>
-            
-            <button id="willingHandsBtn" class="btn-practice btn-practice-primary" style="margin-bottom: 1rem;">Show Me How →</button>
-            
-            <div id="willingHandsPractice" style="display: none;">
-              <p style="color: var(--text-teal-light); font-weight: 600; margin-bottom: 1rem;">Let's practice together.</p>
-              
-              <p style="color: var(--text-secondary); margin-bottom: 0.5rem;"><strong>Step 1:</strong> Clench your fists tight. Notice the tension. This is resistance.</p>
-              <p style="color: var(--text-secondary); margin-bottom: 0.5rem;"><strong>Step 2:</strong> Now open your hands, palms up. Let shoulders drop. This is willingness.</p>
-              <p style="color: var(--text-secondary); margin-bottom: 0.5rem;"><strong>Step 3:</strong> Think of something mildly frustrating while holding willing hands.</p>
-              <p style="color: var(--text-secondary); margin-bottom: 1rem;"><strong>Step 4:</strong> Notice: Does the physical posture of openness change your internal experience even slightly?</p>
-              
-              <div style="display: flex; gap: 0.75rem; margin-bottom: 1rem;">
-                <button id="willingYesBtn" class="reflection-btn">Yes</button>
-                <button id="willingNoBtn" class="reflection-btn">No</button>
-              </div>
-              
-              <p style="color: var(--text-teal-light); font-weight: 600; margin: 1.5rem 0 0.5rem;">For Half-Smile:</p>
-              <p style="color: var(--text-secondary); margin-bottom: 0.5rem;">Slightly raise the corners of your mouth. Not a big smile - just a subtle lift. Relax your jaw. Hold for 30 seconds.</p>
-              
-              <div style="display: flex; gap: 0.75rem; margin-top: 1rem;">
-                <button id="halfSmileSoftBtn" class="reflection-btn">Feels softer</button>
-                <button id="halfSmileNoChangeBtn" class="reflection-btn">No change</button>
-                <button id="halfSmileFakeBtn" class="reflection-btn">Feels fake</button>
-              </div>
-            </div>
-          </div>
-          
-          <!-- SAVE POINT #1: ACCEPTANCE TOOLS -->
-          <button id="saveAcceptanceBtn" class="btn-save">
-            <span>✋</span> Save Acceptance Tools to Toolkit
-          </button>
-          <p id="acceptanceSaveFeedback" style="color: var(--success-emerald); font-size: 0.75rem; margin-top: 0.5rem; text-align: center; display: none;"></p>
-        </div>
-
-        <!-- ===== SECTION 4.2: SELF-COMPASSION (CFT) ===== -->
-        <!-- SAVE POINT #2: SELF-COMPASSION -->
-        <div class="card">
-          <div class="section-header">
-            <span class="section-icon">💝</span>
-            <span class="section-title-text">Self-Compassion</span>
-          </div>
-          
-          <!-- The Core Concept -->
-          <div style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 1rem;">
-            <p style="margin-bottom: 1rem;">
-              "Self-compassion means treating yourself the way you'd treat a good friend who's struggling. Most people are far harsher with themselves than they'd ever be with someone they care about."
-            </p>
-          </div>
-          
-          <!-- The Three Components -->
-          <div style="background: rgba(14,116,144,0.1); padding: 1rem; border-radius: 0.75rem; margin-bottom: 1rem;">
-            <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 0.75rem;">The Three Components (Kristin Neff):</p>
-            
-            <p style="color: var(--text-teal-light); font-weight: 600; margin-bottom: 0.25rem;">1. Self-Kindness (vs. self-judgment)</p>
-            <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.75rem;">"This is really hard" instead of "I'm pathetic"</p>
-            
-            <p style="color: var(--text-teal-light); font-weight: 600; margin-bottom: 0.25rem;">2. Common Humanity (vs. isolation)</p>
-            <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.75rem;">"Everyone struggles" instead of "I'm the only one"</p>
-            
-            <p style="color: var(--text-teal-light); font-weight: 600; margin-bottom: 0.25rem;">3. Mindfulness (vs. over-identification)</p>
-            <p style="color: var(--text-secondary); font-size: 0.875rem;">"I'm having a hard time" instead of "I AM a failure"</p>
-          </div>
-          
-          <!-- The Science -->
-          <div style="background: rgba(14,116,144,0.1); padding: 1rem; border-radius: 0.75rem; margin: 1rem 0;">
-            <p style="color: var(--text-secondary); font-size: 0.875rem;">
-              <strong style="color: var(--text-teal);">The Science:</strong> Self-compassion activates the caregiving system in your brain (associated with oxytocin release), while self-criticism activates the threat system. Self-compassion is not self-indulgence — it's a more effective form of self-regulation.
-            </p>
-          </div>
-          
-          <!-- Effectiveness Stats -->
-          <div class="technique-stats">
-            <div class="stat">
-              <div class="stat-label">Speed</div>
-              <div class="stat-value">⚡ Immediate softening</div>
-            </div>
-            <div class="stat">
-              <div class="stat-label">Best for</div>
-              <div class="stat-value">🎯 Shame, self-criticism</div>
-            </div>
-            <div class="stat">
-              <div class="stat-label">Intensity</div>
-              <div class="stat-value">💪 Gentle</div>
-            </div>
-          </div>
-          
-          <!-- EXPERIENTIAL PRACTICE - Self-Compassion Break -->
-          <div class="practice-card">
-            <div class="practice-title">
-              <span>💝</span>
-              TRY A SELF-COMPASSION BREAK
-            </div>
-            
-            <button id="compassionStartBtn" class="btn-practice btn-practice-primary" style="margin-bottom: 1rem;">Guide Me →</button>
-            
-            <div id="compassionPractice" style="display: none;">
-              <p style="color: var(--text-teal-light); font-weight: 600; margin-bottom: 1rem;">Think of a situation where you're being hard on yourself.</p>
-              
-              <p style="color: var(--text-secondary); margin-bottom: 0.5rem;">Now, say these three things (out loud or silently):</p>
-              
-              <div style="background: rgba(14,116,144,0.15); padding: 1rem; border-radius: 0.75rem; margin: 1rem 0;">
-                <p style="color: var(--text-teal-light); font-weight: 700; margin-bottom: 0.5rem;">1. MINDFULNESS:</p>
-                <p style="color: var(--text-secondary); margin-bottom: 0.25rem;">"This is a moment of suffering."</p>
-                <p style="color: var(--text-secondary);">or "This is really hard right now."</p>
-              </div>
-              
-              <div style="background: rgba(14,116,144,0.15); padding: 1rem; border-radius: 0.75rem; margin: 1rem 0;">
-                <p style="color: var(--text-teal-light); font-weight: 700; margin-bottom: 0.5rem;">2. COMMON HUMANITY:</p>
-                <p style="color: var(--text-secondary); margin-bottom: 0.25rem;">"Suffering is part of being human."</p>
-                <p style="color: var(--text-secondary); margin-bottom: 0.25rem;">or "Everyone struggles sometimes."</p>
-                <p style="color: var(--text-secondary);">or "I'm not alone in this."</p>
-              </div>
-              
-              <div style="background: rgba(14,116,144,0.15); padding: 1rem; border-radius: 0.75rem; margin: 1rem 0;">
-                <p style="color: var(--text-teal-light); font-weight: 700; margin-bottom: 0.5rem;">3. SELF-KINDNESS:</p>
-                <p style="color: var(--text-secondary); margin-bottom: 0.25rem;">"May I be kind to myself."</p>
-                <p style="color: var(--text-secondary); margin-bottom: 0.25rem;">or "May I give myself the compassion I need."</p>
-                <p style="color: var(--text-secondary);">or "May I accept myself as I am."</p>
-              </div>
-              
-              <p style="color: var(--text-teal-light); margin: 1rem 0;">Now place your hand on your heart or give yourself a gentle hug.</p>
-              
-              <p style="color: var(--text-secondary); margin-top: 1.5rem; margin-bottom: 0.5rem;">How does this feel?</p>
-              <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
-                <button id="compassionComfortingBtn" class="reflection-btn">Comforting</button>
-                <button id="compassionAwkwardBtn" class="reflection-btn">Awkward but helpful</button>
-                <button id="compassionNotWorkBtn" class="reflection-btn">Doesn't work for me</button>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Self-Compassion Phrases -->
-          <div class="quote-box" style="margin-top: 1.5rem;">
-            <p style="font-weight: 700; margin-bottom: 0.75rem;">Self-Compassion Phrases for Crisis:</p>
-            <p style="margin-bottom: 0.5rem;">• "Of course this is hard. Anyone would struggle with this."</p>
-            <p style="margin-bottom: 0.5rem;">• "I'm doing the best I can with what I have right now."</p>
-            <p style="margin-bottom: 0.5rem;">• "I deserve kindness, especially when I'm suffering."</p>
-            <p style="margin-bottom: 0.5rem;">• "What would I say to a friend in this situation?"</p>
-            <p style="margin-bottom: 0.5rem;">• "I'm human. Humans struggle. That's okay."</p>
-          </div>
-          
-          <!-- The Critical Friend vs The Kind Coach -->
-          <div style="margin-top: 1.5rem;">
-            <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 0.75rem;">The Critical Friend vs. The Kind Coach:</p>
-            
-            <div style="background: rgba(220,38,38,0.1); padding: 1rem; border-radius: 0.75rem; margin-bottom: 0.75rem;">
-              <p style="color: #fca5a5; font-weight: 600; margin-bottom: 0.25rem;">Critical Friend:</p>
-              <p style="color: var(--text-secondary); font-size: 0.875rem;">"You're such a mess. Why can't you handle this? Everyone else can. You're weak."</p>
-            </div>
-            
-            <div style="background: rgba(14,116,144,0.1); padding: 1rem; border-radius: 0.75rem;">
-              <p style="color: var(--text-teal-light); font-weight: 600; margin-bottom: 0.25rem;">Kind Coach:</p>
-              <p style="color: var(--text-secondary); font-size: 0.875rem;">"This is genuinely difficult. You're struggling because this IS hard, not because you're broken. What do you need right now?"</p>
-            </div>
-          </div>
-          
-          <!-- SAVE POINT #2: SELF-COMPASSION -->
-          <button id="saveCompassionBtn" class="btn-save">
-            <span>💝</span> Save Self-Compassion to Toolkit
-          </button>
-          <p id="compassionSaveFeedback" style="color: var(--success-emerald); font-size: 0.75rem; margin-top: 0.5rem; text-align: center; display: none;"></p>
-        </div>
-
-        <!-- ===== SECTION 4.3: DEFUSION (ACT) ===== -->
-        <!-- SAVE POINT #3: DEFUSION TECHNIQUES -->
-        <div class="card">
-          <div class="section-header">
-            <span class="section-icon">🎭</span>
-            <span class="section-title-text">Defusion — Thoughts Aren't Facts</span>
-          </div>
-          
-          <!-- The Core Concept -->
-          <div style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 1rem;">
-            <p style="margin-bottom: 1rem;">
-              <strong style="color: var(--text-teal);">Cognitive Fusion</strong> = believing your thoughts are literal truths<br>
-              <strong style="color: var(--text-teal);">Cognitive Defusion</strong> = seeing thoughts as mental events, not facts
-            </p>
-            
-            <p style="background: rgba(14,116,144,0.1); padding: 0.75rem; border-radius: 0.5rem;">
-              <span style="color: var(--text-teal-light);">Example:</span><br>
-              • Fusion: "I'm worthless" (this feels like absolute truth)<br>
-              • Defusion: "I'm having the thought that I'm worthless" (this is a thought my brain produced)
-            </p>
-          </div>
-          
-          <!-- The Science -->
-          <div style="background: rgba(14,116,144,0.1); padding: 1rem; border-radius: 0.75rem; margin: 1rem 0;">
-            <p style="color: var(--text-secondary); font-size: 0.875rem;">
-              <strong style="color: var(--text-teal);">The Science:</strong> Defusion doesn't change thought content — it changes your relationship to thoughts. This reduces the thought's emotional impact and behavioral control.
-            </p>
-          </div>
-          
-          <!-- Effectiveness Stats -->
-          <div class="technique-stats">
-            <div class="stat">
-              <div class="stat-label">Speed</div>
-              <div class="stat-value">⚡ Immediate</div>
-            </div>
-            <div class="stat">
-              <div class="stat-label">Best for</div>
-              <div class="stat-value">🎯 Intrusive thoughts</div>
-            </div>
-            <div class="stat">
-              <div class="stat-label">Intensity</div>
-              <div class="stat-value">💪 Low</div>
-            </div>
-          </div>
-          
-          <!-- Defusion Techniques -->
-          <div class="instruction-box">
-            <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 0.75rem;">Defusion Techniques:</p>
-            
-            <p style="color: var(--text-teal-light); font-weight: 600; margin: 0.75rem 0 0.25rem;">1. "I'm having the thought that…"</p>
-            <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.5rem;">Change "I'm a failure" to "I'm having the thought that I'm a failure" — creates distance</p>
-            
-            <p style="color: var(--text-teal-light); font-weight: 600; margin: 0.75rem 0 0.25rem;">2. "Thanks, brain!"</p>
-            <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.5rem;">When a negative thought appears: "Thanks for that input, brain!" — acknowledge without buying in</p>
-            
-            <p style="color: var(--text-teal-light); font-weight: 600; margin: 0.75rem 0 0.25rem;">3. Silly voices</p>
-            <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.5rem;">Say the thought in a cartoon voice or sing it to "Happy Birthday" — reduces thought power</p>
-            
-            <p style="color: var(--text-teal-light); font-weight: 600; margin: 0.75rem 0 0.25rem;">4. Leaves on a stream</p>
-            <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.5rem;">Visualize each thought as a leaf floating by on a stream — watch them pass without grabbing them</p>
-            
-            <p style="color: var(--text-teal-light); font-weight: 600; margin: 0.75rem 0 0.25rem;">5. Name the story</p>
-            <p style="color: var(--text-secondary); font-size: 0.875rem;">"Ah, there's my 'I'm not good enough' story again." — recognize thought patterns</p>
-          </div>
-          
-          <!-- EXPERIENTIAL PRACTICE - DEFUSION -->
-          <div class="practice-card">
-            <div class="practice-title">
-              <span>🎭</span>
-              PRACTICE DEFUSION
-            </div>
-            
-            <button id="defusionStartBtn" class="btn-practice btn-practice-primary" style="margin-bottom: 1rem;">Try It Now →</button>
-            
-            <div id="defusionPractice" style="display: none;">
-              <p style="color: var(--text-teal-light); font-weight: 600; margin-bottom: 1rem;">Let's try it together.</p>
-              
-              <p style="color: var(--text-secondary); margin-bottom: 0.5rem;"><strong>Step 1:</strong> Think of a negative thought you have often.</p>
-              <p style="color: var(--text-muted); font-size: 0.8125rem; margin-bottom: 0.5rem;">Example: "I'm not good enough", "I always fail", "No one likes me"</p>
-              <input type="text" id="negativeThoughtInput" class="input-field" placeholder="Write it here...">
-              
-              <p style="color: var(--text-secondary); margin-top: 1rem; margin-bottom: 0.5rem;"><strong>Step 2:</strong> Feel the weight of that thought. Rate how much you believe it (0-10)</p>
-              <input type="range" id="believeBeforeSlider" min="0" max="10" value="7" step="1" style="width: 100%; margin-bottom: 0.5rem;">
-              <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem;">
-                <span style="color: var(--text-muted); font-size: 0.75rem;">0 - Don't believe</span>
-                <span style="color: var(--text-teal); font-weight: 700;" id="believeBeforeValue">7</span>
-                <span style="color: var(--text-muted); font-size: 0.75rem;">10 - Completely believe</span>
-              </div>
-              
-              <p style="color: var(--text-secondary); margin-bottom: 0.5rem;"><strong>Step 3:</strong> Now say it with "I'm having the thought that…"</p>
-              <input type="text" id="defusionThoughtInput" class="input-field" placeholder="I'm having the thought that ___________">
-              
-              <p style="color: var(--text-secondary); margin: 1rem 0 0.5rem;"><strong>Notice:</strong> Does it feel different?</p>
-              <div style="display: flex; gap: 0.75rem; margin-bottom: 1.5rem;">
-                <button id="defusionLessBtn" class="reflection-btn">Yes - less heavy</button>
-                <button id="defusionNoChangeBtn" class="reflection-btn">No change</button>
-                <button id="defusionWorseBtn" class="reflection-btn">Worse</button>
-              </div>
-              
-              <p style="color: var(--text-secondary); margin-bottom: 0.5rem;"><strong>Step 4:</strong> Try saying it in a silly voice (like Elmo or a pirate).</p>
-              <button id="defusionSillyBtn" class="btn-practice btn-practice-primary" style="margin-bottom: 1rem;">Done it</button>
-              
-              <p style="color: var(--text-secondary); margin-bottom: 0.5rem;"><strong>Step 5:</strong> Now rate how much you believe it (0-10)</p>
-              <input type="range" id="believeAfterSlider" min="0" max="10" value="4" step="1" style="width: 100%; margin-bottom: 0.5rem;">
-              <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
-                <span style="color: var(--text-muted); font-size: 0.75rem;">0 - Don't believe</span>
-                <span style="color: var(--text-teal); font-weight: 700;" id="believeAfterValue">4</span>
-                <span style="color: var(--text-muted); font-size: 0.75rem;">10 - Completely believe</span>
-              </div>
-              
-              <div id="defusionResult" style="background: rgba(14,116,144,0.15); padding: 1rem; border-radius: 0.75rem; margin-top: 1rem;">
-                <p style="color: var(--text-teal-light);">Your result will appear here.</p>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Key Insight -->
-          <div class="quote-box" style="margin-top: 1.5rem;">
-            <p style="font-weight: 700; margin-bottom: 0.75rem;">Key Insight:</p>
-            <p style="font-style: italic;">
-              "You don't have to believe your thoughts just because your brain produces them. Your brain generates thousands of thoughts daily — many are random, unhelpful, or false. Defusion helps you choose which thoughts to act on."
-            </p>
-          </div>
-          
-          <!-- SAVE POINT #3: DEFUSION TECHNIQUES -->
-          <button id="saveDefusionBtn" class="btn-save">
-            <span>🎭</span> Save Defusion Techniques to Toolkit
-          </button>
-          <p id="defusionSaveFeedback" style="color: var(--success-emerald); font-size: 0.75rem; margin-top: 0.5rem; text-align: center; display: none;"></p>
-        </div>
-
-        <!-- ===== MODULE 4 SUMMARY ===== -->
-        <div class="reference-card">
-          <div class="reference-title">
-            <span>🕊️</span>
-            ACCEPTANCE TOOLS — Quick Reference
-          </div>
-          
-          <div class="reference-grid">
-            <div class="reference-item">
-              <span class="reference-icon">✋</span>
-              <div class="reference-content">
-                <div class="reference-name">Radical Acceptance</div>
-                <div class="reference-use">"It is what it is" — Willing hands, half-smile</div>
-              </div>
-            </div>
-            <div class="reference-item">
-              <span class="reference-icon">💝</span>
-              <div class="reference-content">
-                <div class="reference-name">Self-Compassion</div>
-                <div class="reference-use">Treat yourself like a friend — "Of course this is hard"</div>
-              </div>
-            </div>
-            <div class="reference-item">
-              <span class="reference-icon">🎭</span>
-              <div class="reference-content">
-                <div class="reference-name">Defusion</div>
-                <div class="reference-use">"I'm having the thought that…" — Thoughts aren't facts</div>
-              </div>
-            </div>
-          </div>
-          
-          <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-softer);">
-            <p style="color: var(--text-amber-light); font-style: italic; text-align: center;">
-              "Acceptance doesn't make pain disappear. It makes suffering decrease. Pain + Fighting = Suffering. Pain + Acceptance = Just pain. And just pain is more bearable than pain + the war with yourself."
-            </p>
-          </div>
-        </div>
-
-        <!-- ===== NAVIGATION ===== -->
-        <div class="btn-group">
-          <a href="crisis-module-3.html" class="btn btn-secondary">← Module 3</a>
-          <a href="crisis-module-5.html" class="btn btn-primary">Continue to Module 5 →</a>
-        </div>
-
-        <!-- ===== MARK AS PRACTICED ===== -->
-        <div style="display: flex; justify-content: center; margin: 0.5rem 0 1.5rem;">
-          <button id="markPracticedBtn" style="background: var(--success-bg); color: var(--success-emerald); border: 1px solid rgba(74,222,128,0.3); padding: 0.75rem 2rem; border-radius: 2rem; font-size: 0.8125rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem;">
-            ✓ I've practiced this module
-          </button>
-        </div>
-
-        <!-- ===== FOOTER ===== -->
-        <div class="footer">
-          <p style="color: #fca5a5; font-weight: 600; margin-bottom: 0.5rem;">⚠️ EDUCATIONAL ONLY — NOT THERAPY</p>
-          <p>988 Suicide & Crisis Lifeline: Call or text 988</p>
-          <p style="margin-top: 0.5rem;">Crisis Text Line: Text HOME to 741741</p>
-        </div>
-
-      </div>
     </div>
-  </div>
 </div>
 
 <script>
 (function() {
-  // ===== CHECK DISCLAIMER ACKNOWLEDGMENT =====
-  const acknowledged = localStorage.getItem('crisis_disclaimer_acknowledged');
-  if (!acknowledged) {
-    window.location.href = 'crisis-intro.html';
-    return;
-  }
+    'use strict';
+    
+    // Check disclaimer acknowledgment
+    const acknowledged = localStorage.getItem('crisis_disclaimer_acknowledged');
+    if (!acknowledged) {
+        window.location.href = 'crisis-intro.html';
+        return;
+    }
 
-  // ===== UPDATE PROGRESS =====
-  let progress = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
-  progress.currentModule = 4;
-  progress.lastAccessed = new Date().toISOString();
-  localStorage.setItem('crisis_course_progress', JSON.stringify(progress));
-
-  // ===== ACCEPTANCE PRACTICE =====
-  const acceptanceStartBtn = document.getElementById('acceptanceStartBtn');
-  const acceptancePractice = document.getElementById('acceptancePractice');
-  
-  if (acceptanceStartBtn) {
-    acceptanceStartBtn.addEventListener('click', function() {
-      acceptancePractice.style.display = 'block';
-      acceptanceStartBtn.style.display = 'none';
-    });
-  }
-  
-  // Rejection buttons
-  const rejectionYesBtn = document.getElementById('rejectionYesBtn');
-  const rejectionNoBtn = document.getElementById('rejectionNoBtn');
-  
-  if (rejectionYesBtn) {
-    rejectionYesBtn.addEventListener('click', function() {
-      this.classList.add('selected');
-      if (rejectionNoBtn) rejectionNoBtn.classList.remove('selected');
-    });
-  }
-  
-  if (rejectionNoBtn) {
-    rejectionNoBtn.addEventListener('click', function() {
-      this.classList.add('selected');
-      if (rejectionYesBtn) rejectionYesBtn.classList.remove('selected');
-    });
-  }
-  
-  // Intensity buttons
-  const intensityYesBtn = document.getElementById('intensityYesBtn');
-  const intensityNoBtn = document.getElementById('intensityNoBtn');
-  const intensityUnsureBtn = document.getElementById('intensityUnsureBtn');
-  
-  if (intensityYesBtn) {
-    intensityYesBtn.addEventListener('click', function() {
-      this.classList.add('selected');
-      if (intensityNoBtn) intensityNoBtn.classList.remove('selected');
-      if (intensityUnsureBtn) intensityUnsureBtn.classList.remove('selected');
-    });
-  }
-  
-  if (intensityNoBtn) {
-    intensityNoBtn.addEventListener('click', function() {
-      this.classList.add('selected');
-      if (intensityYesBtn) intensityYesBtn.classList.remove('selected');
-      if (intensityUnsureBtn) intensityUnsureBtn.classList.remove('selected');
-    });
-  }
-  
-  if (intensityUnsureBtn) {
-    intensityUnsureBtn.addEventListener('click', function() {
-      this.classList.add('selected');
-      if (intensityYesBtn) intensityYesBtn.classList.remove('selected');
-      if (intensityNoBtn) intensityNoBtn.classList.remove('selected');
-    });
-  }
-
-  // ===== WILLING HANDS PRACTICE =====
-  const willingHandsBtn = document.getElementById('willingHandsBtn');
-  const willingHandsPractice = document.getElementById('willingHandsPractice');
-  
-  if (willingHandsBtn) {
-    willingHandsBtn.addEventListener('click', function() {
-      willingHandsPractice.style.display = 'block';
-      willingHandsBtn.style.display = 'none';
-    });
-  }
-  
-  const willingYesBtn = document.getElementById('willingYesBtn');
-  const willingNoBtn = document.getElementById('willingNoBtn');
-  
-  if (willingYesBtn) {
-    willingYesBtn.addEventListener('click', function() {
-      this.classList.add('selected');
-      if (willingNoBtn) willingNoBtn.classList.remove('selected');
-    });
-  }
-  
-  if (willingNoBtn) {
-    willingNoBtn.addEventListener('click', function() {
-      this.classList.add('selected');
-      if (willingYesBtn) willingYesBtn.classList.remove('selected');
-    });
-  }
-  
-  const halfSmileSoftBtn = document.getElementById('halfSmileSoftBtn');
-  const halfSmileNoChangeBtn = document.getElementById('halfSmileNoChangeBtn');
-  const halfSmileFakeBtn = document.getElementById('halfSmileFakeBtn');
-  
-  if (halfSmileSoftBtn) {
-    halfSmileSoftBtn.addEventListener('click', function() {
-      this.classList.add('selected');
-      if (halfSmileNoChangeBtn) halfSmileNoChangeBtn.classList.remove('selected');
-      if (halfSmileFakeBtn) halfSmileFakeBtn.classList.remove('selected');
-    });
-  }
-  
-  if (halfSmileNoChangeBtn) {
-    halfSmileNoChangeBtn.addEventListener('click', function() {
-      this.classList.add('selected');
-      if (halfSmileSoftBtn) halfSmileSoftBtn.classList.remove('selected');
-      if (halfSmileFakeBtn) halfSmileFakeBtn.classList.remove('selected');
-    });
-  }
-  
-  if (halfSmileFakeBtn) {
-    halfSmileFakeBtn.addEventListener('click', function() {
-      this.classList.add('selected');
-      if (halfSmileSoftBtn) halfSmileSoftBtn.classList.remove('selected');
-      if (halfSmileNoChangeBtn) halfSmileNoChangeBtn.classList.remove('selected');
-    });
-  }
-
-  // ===== SELF-COMPASSION PRACTICE =====
-  const compassionStartBtn = document.getElementById('compassionStartBtn');
-  const compassionPractice = document.getElementById('compassionPractice');
-  
-  if (compassionStartBtn) {
-    compassionStartBtn.addEventListener('click', function() {
-      compassionPractice.style.display = 'block';
-      compassionStartBtn.style.display = 'none';
-    });
-  }
-  
-  const compassionComfortingBtn = document.getElementById('compassionComfortingBtn');
-  const compassionAwkwardBtn = document.getElementById('compassionAwkwardBtn');
-  const compassionNotWorkBtn = document.getElementById('compassionNotWorkBtn');
-  
-  if (compassionComfortingBtn) {
-    compassionComfortingBtn.addEventListener('click', function() {
-      this.classList.add('selected');
-      if (compassionAwkwardBtn) compassionAwkwardBtn.classList.remove('selected');
-      if (compassionNotWorkBtn) compassionNotWorkBtn.classList.remove('selected');
-    });
-  }
-  
-  if (compassionAwkwardBtn) {
-    compassionAwkwardBtn.addEventListener('click', function() {
-      this.classList.add('selected');
-      if (compassionComfortingBtn) compassionComfortingBtn.classList.remove('selected');
-      if (compassionNotWorkBtn) compassionNotWorkBtn.classList.remove('selected');
-    });
-  }
-  
-  if (compassionNotWorkBtn) {
-    compassionNotWorkBtn.addEventListener('click', function() {
-      this.classList.add('selected');
-      if (compassionComfortingBtn) compassionComfortingBtn.classList.remove('selected');
-      if (compassionAwkwardBtn) compassionAwkwardBtn.classList.remove('selected');
-    });
-  }
-
-  // ===== DEFUSION PRACTICE =====
-  const believeBeforeSlider = document.getElementById('believeBeforeSlider');
-  const believeBeforeValue = document.getElementById('believeBeforeValue');
-  const believeAfterSlider = document.getElementById('believeAfterSlider');
-  const believeAfterValue = document.getElementById('believeAfterValue');
-  const defusionResult = document.getElementById('defusionResult');
-  
-  if (believeBeforeSlider && believeBeforeValue) {
-    believeBeforeSlider.addEventListener('input', function() {
-      believeBeforeValue.textContent = this.value;
-    });
-  }
-  
-  if (believeAfterSlider && believeAfterValue) {
-    believeAfterSlider.addEventListener('input', function() {
-      believeAfterValue.textContent = this.value;
-    });
-  }
-  
-  const defusionStartBtn = document.getElementById('defusionStartBtn');
-  const defusionPractice = document.getElementById('defusionPractice');
-  
-  if (defusionStartBtn) {
-    defusionStartBtn.addEventListener('click', function() {
-      defusionPractice.style.display = 'block';
-      defusionStartBtn.style.display = 'none';
-    });
-  }
-  
-  const defusionSillyBtn = document.getElementById('defusionSillyBtn');
-  
-  if (defusionSillyBtn) {
-    defusionSillyBtn.addEventListener('click', function() {
-      const before = parseInt(believeBeforeSlider?.value || '7');
-      const after = parseInt(believeAfterSlider?.value || '4');
-      defusionResult.innerHTML = `<p style="color: var(--text-teal-light);">Belief went from ${before} to ${after}. The thought didn't change — your relationship to it did.</p>`;
-    });
-  }
-  
-  const defusionLessBtn = document.getElementById('defusionLessBtn');
-  const defusionNoChangeBtn = document.getElementById('defusionNoChangeBtn');
-  const defusionWorseBtn = document.getElementById('defusionWorseBtn');
-  
-  if (defusionLessBtn) {
-    defusionLessBtn.addEventListener('click', function() {
-      this.classList.add('selected');
-      if (defusionNoChangeBtn) defusionNoChangeBtn.classList.remove('selected');
-      if (defusionWorseBtn) defusionWorseBtn.classList.remove('selected');
-    });
-  }
-  
-  if (defusionNoChangeBtn) {
-    defusionNoChangeBtn.addEventListener('click', function() {
-      this.classList.add('selected');
-      if (defusionLessBtn) defusionLessBtn.classList.remove('selected');
-      if (defusionWorseBtn) defusionWorseBtn.classList.remove('selected');
-    });
-  }
-  
-  if (defusionWorseBtn) {
-    defusionWorseBtn.addEventListener('click', function() {
-      this.classList.add('selected');
-      if (defusionLessBtn) defusionLessBtn.classList.remove('selected');
-      if (defusionNoChangeBtn) defusionNoChangeBtn.classList.remove('selected');
-    });
-  }
-
-  // ===== SAVE POINT #1: ACCEPTANCE TOOLS =====
-  const saveAcceptanceBtn = document.getElementById('saveAcceptanceBtn');
-  const acceptanceFeedback = document.getElementById('acceptanceSaveFeedback');
-  
-  if (saveAcceptanceBtn) {
-    saveAcceptanceBtn.addEventListener('click', function() {
-      let toolkit = JSON.parse(localStorage.getItem('crisis_toolkit') || '[]');
-      toolkit = toolkit.filter(item => item.id !== 'acceptance-tools');
-      
-      toolkit.push({
-        id: 'acceptance-tools',
-        category: 'Module 4: Making Peace',
-        name: 'Radical Acceptance',
-        description: 'Pain × Rejection = Suffering • "It is what it is" • Willing hands, half-smile • Fighting reality doesn\'t change reality',
-        date: new Date().toISOString()
-      });
-      
-      localStorage.setItem('crisis_toolkit', JSON.stringify(toolkit));
-      
-      saveAcceptanceBtn.classList.add('saved');
-      saveAcceptanceBtn.innerHTML = '<span>✓</span> Saved to Toolkit';
-      acceptanceFeedback.style.display = 'block';
-      acceptanceFeedback.textContent = '✓ Acceptance Tools saved to your toolkit.';
-      
-      setTimeout(() => {
-        saveAcceptanceBtn.classList.remove('saved');
-        saveAcceptanceBtn.innerHTML = '<span>✋</span> Save Acceptance Tools to Toolkit';
-        acceptanceFeedback.style.display = 'none';
-      }, 3000);
-    });
-  }
-
-  // ===== SAVE POINT #2: SELF-COMPASSION =====
-  const saveCompassionBtn = document.getElementById('saveCompassionBtn');
-  const compassionFeedback = document.getElementById('compassionSaveFeedback');
-  
-  if (saveCompassionBtn) {
-    saveCompassionBtn.addEventListener('click', function() {
-      let toolkit = JSON.parse(localStorage.getItem('crisis_toolkit') || '[]');
-      toolkit = toolkit.filter(item => item.id !== 'self-compassion');
-      
-      toolkit.push({
-        id: 'self-compassion',
-        category: 'Module 4: Making Peace',
-        name: 'Self-Compassion',
-        description: 'Treat yourself like a friend • Self-kindness, common humanity, mindfulness • "Of course this is hard" • Hand on heart',
-        date: new Date().toISOString()
-      });
-      
-      localStorage.setItem('crisis_toolkit', JSON.stringify(toolkit));
-      
-      saveCompassionBtn.classList.add('saved');
-      saveCompassionBtn.innerHTML = '<span>✓</span> Saved to Toolkit';
-      compassionFeedback.style.display = 'block';
-      compassionFeedback.textContent = '✓ Self-Compassion saved to your toolkit.';
-      
-      setTimeout(() => {
-        saveCompassionBtn.classList.remove('saved');
-        saveCompassionBtn.innerHTML = '<span>💝</span> Save Self-Compassion to Toolkit';
-        compassionFeedback.style.display = 'none';
-      }, 3000);
-    });
-  }
-
-  // ===== SAVE POINT #3: DEFUSION TECHNIQUES =====
-  const saveDefusionBtn = document.getElementById('saveDefusionBtn');
-  const defusionFeedback = document.getElementById('defusionSaveFeedback');
-  
-  if (saveDefusionBtn) {
-    saveDefusionBtn.addEventListener('click', function() {
-      let toolkit = JSON.parse(localStorage.getItem('crisis_toolkit') || '[]');
-      toolkit = toolkit.filter(item => item.id !== 'defusion');
-      
-      toolkit.push({
-        id: 'defusion',
-        category: 'Module 4: Making Peace',
-        name: 'Defusion Techniques',
-        description: 'Thoughts aren\'t facts • "I\'m having the thought that…" • "Thanks, brain!" • Silly voices • Leaves on a stream',
-        date: new Date().toISOString()
-      });
-      
-      localStorage.setItem('crisis_toolkit', JSON.stringify(toolkit));
-      
-      saveDefusionBtn.classList.add('saved');
-      saveDefusionBtn.innerHTML = '<span>✓</span> Saved to Toolkit';
-      defusionFeedback.style.display = 'block';
-      defusionFeedback.textContent = '✓ Defusion Techniques saved to your toolkit.';
-      
-      setTimeout(() => {
-        saveDefusionBtn.classList.remove('saved');
-        saveDefusionBtn.innerHTML = '<span>🎭</span> Save Defusion Techniques to Toolkit';
-        defusionFeedback.style.display = 'none';
-      }, 3000);
-    });
-  }
-
-  // ===== MARK AS PRACTICED =====
-  const markBtn = document.getElementById('markPracticedBtn');
-  
-  if (markBtn) {
-    markBtn.addEventListener('click', function() {
-      let progress = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
-      if (!progress.practicedModules) progress.practicedModules = [];
-      
-      if (!progress.practicedModules.includes('module4')) {
-        progress.practicedModules.push('module4');
-      }
-      
-      progress.lastPracticed = new Date().toISOString();
-      progress.currentModule = 4;
-      
-      localStorage.setItem('crisis_course_progress', JSON.stringify(progress));
-      
-      markBtn.innerHTML = '✓ Module 4 marked as practiced';
-      markBtn.style.background = 'rgba(74,222,128,0.25)';
-      
-      setTimeout(() => {
-        markBtn.innerHTML = '✓ I\'ve practiced this module';
-        markBtn.style.background = 'rgba(34,197,94,0.12)';
-      }, 2000);
-    });
-  }
+    // State
+    let currentStep = 1;
+    const totalSteps = 8;
+    let userData = {
+        resistanceInput: '',
+        acceptanceInput: '',
+        negativeThoughtInput: '',
+        defusionThoughtInput: '',
+        believeBefore: 7,
+        believeAfter: 4,
+        selectedTechniques: []
+    };
+    
+    // Step titles
+    const stepTitles = {
+        1: 'Introduction',
+        2: 'Radical Acceptance',
+        3: 'Willing Hands',
+        4: 'Half-Smile',
+        5: 'Self-Compassion',
+        6: 'Self-Compassion Break',
+        7: 'Defusion',
+        8: 'Module Complete!'
+    };
+    
+    // Storage helpers
+    function saveProgress() {
+        try {
+            const data = {
+                step: currentStep,
+                userData: userData,
+                timestamp: Date.now()
+            };
+            localStorage.setItem('crisis_module4_progress', JSON.stringify(data));
+            return true;
+        } catch (e) {
+            console.error('Save failed:', e);
+            return false;
+        }
+    }
+    
+    function loadProgress() {
+        try {
+            const saved = localStorage.getItem('crisis_module4_progress');
+            if (saved) {
+                const data = JSON.parse(saved);
+                if (Date.now() - data.timestamp < 24 * 60 * 60 * 1000) {
+                    currentStep = data.step;
+                    userData = data.userData;
+                    return true;
+                }
+            }
+        } catch (e) {
+            console.error('Load failed:', e);
+            return false;
+        }
+        return false;
+    }
+    
+    function saveToToolkit(item) {
+        try {
+            let toolkit = JSON.parse(localStorage.getItem('crisis_toolkit') || '[]');
+            toolkit = toolkit.filter(t => t.id !== item.id);
+            toolkit.push({
+                ...item,
+                date: new Date().toISOString()
+            });
+            localStorage.setItem('crisis_toolkit', JSON.stringify(toolkit));
+            return true;
+        } catch (e) {
+            console.error('Save to toolkit failed:', e);
+            return false;
+        }
+    }
+    
+    // Update progress
+    let progress = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
+    progress.currentModule = 4;
+    progress.lastAccessed = new Date().toISOString();
+    localStorage.setItem('crisis_course_progress', JSON.stringify(progress));
+    
+    // Navigation with scroll to top
+    function scrollToTop() {
+        const mainContent = document.getElementById('mainContent');
+        if (mainContent) {
+            mainContent.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+    }
+    
+    function goToStep(step) {
+        if (step < 1 || step > totalSteps) return;
+        currentStep = step;
+        saveProgress();
+        render();
+        scrollToTop(); // Scroll to top when changing steps
+    }
+    
+    function nextStep() {
+        if (currentStep < totalSteps) {
+            goToStep(currentStep + 1);
+        }
+    }
+    
+    function previousStep() {
+        if (currentStep > 1) {
+            goToStep(currentStep - 1);
+        } else {
+            window.location.href = 'crisis-module-3.html';
+        }
+    }
+    
+    // Render functions
+    function renderHeader(showCrisis = false) {
+        return `
+            ${showCrisis ? `
+            <div class="crisis-banner">
+                <span class="crisis-banner__text">🚨 In crisis? Help is available 24/7</span>
+                <div class="crisis-banner__actions">
+                    <a href="tel:988" class="crisis-banner__link">Call 988</a>
+                    <a href="sms:988" class="crisis-banner__link">Text 988</a>
+                </div>
+            </div>
+            ` : ''}
+            
+            <div class="header">
+                <div class="header__top">
+                    <button class="back-btn" onclick="previousStep()">←</button>
+                    <span class="step-indicator">${currentStep} / ${totalSteps}</span>
+                </div>
+                <div class="progress-dots">
+                    ${Array(totalSteps).fill(0).map((_, i) => 
+                        `<div class="progress-dot ${i < currentStep ? 'active' : ''}"></div>`
+                    ).join('')}
+                </div>
+                <h1 class="step-title">${stepTitles[currentStep]}</h1>
+                <p class="step-subtitle">Module 4: Making Peace with Reality</p>
+            </div>
+        `;
+    }
+    
+    function renderFooter() {
+        return `
+            <div class="footer">
+                <p class="footer__warning">⚠️ EDUCATIONAL ONLY — NOT THERAPY</p>
+                <div class="footer__resources">
+                    <p>988 Suicide & Crisis Lifeline: Call or text 988</p>
+                    <p>Crisis Text Line: Text HOME to 741741</p>
+                </div>
+            </div>
+        `;
+    }
+    
+    function renderStep1() {
+        return `
+            <div class="step-content">
+                ${renderHeader(true)}
+                
+                <div class="card">
+                    <div class="card__icon">🕊️</div>
+                    <div class="card__content">
+                        <p style="font-size: 1.05rem; color: var(--text-teal-light); font-style: italic; margin-bottom: 1.5rem;">
+                            "This is the hardest module. It's about acceptance — not approval, not liking it, not giving up. Acceptance means stopping the internal war with reality."
+                        </p>
+                        
+                        <p style="margin-bottom: 1rem;">Fighting reality is like refusing to believe it's raining while you're getting soaked. The rain doesn't care. You can accept it's raining AND grab an umbrella.</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card__title">
+                        <span>🧮</span>
+                        <span>The Math of Suffering</span>
+                    </div>
+                    <div class="card__content">
+                        <div class="instruction-box" style="text-align: center;">
+                            <p style="color: var(--text-teal); font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem;">Pain × Rejection = Suffering</p>
+                            <p style="color: var(--text-secondary); font-size: 0.9375rem;">
+                                <strong>Pain</strong> = the actual difficult situation<br>
+                                <strong>Rejection</strong> = fighting that it's happening<br>
+                                <strong>Suffering</strong> = pain multiplied by resistance
+                            </p>
+                            <p style="color: var(--text-teal); margin-top: 1rem; font-style: italic;">
+                                You can't always control pain. You CAN control rejection.
+                            </p>
+                        </div>
+                        
+                        <p style="margin-top: 1.5rem;">
+                            <strong>The Science:</strong> Brain imaging studies show that acceptance-based responses lead to decreased amygdala activation. Fighting your emotions actually intensifies them.
+                        </p>
+                    </div>
+                </div>
+                
+                <button class="btn btn--primary" onclick="nextStep()">
+                    <span>Continue</span>
+                    <span>→</span>
+                </button>
+                
+                ${renderFooter()}
+            </div>
+        `;
+    }
+    
+    function renderStep2() {
+        setTimeout(() => {
+            initAcceptance();
+        }, 100);
+        
+        return `
+            <div class="step-content">
+                ${renderHeader()}
+                
+                <div class="card">
+                    <div class="section-header">
+                        <span class="section-icon">✋</span>
+                        <span class="section-title-text">Radical Acceptance</span>
+                    </div>
+                    
+                    <div class="card__content">
+                        <p style="margin-bottom: 1.5rem; font-weight: 600; color: var(--text-primary);">Radical Acceptance doesn't mean:</p>
+                        <ul style="list-style: none; margin-bottom: 1.5rem;">
+                            <li style="margin-bottom: 0.75rem; display: flex; gap: 0.75rem;"><span style="color: var(--crisis-red);">❌</span> Liking what happened</li>
+                            <li style="margin-bottom: 0.75rem; display: flex; gap: 0.75rem;"><span style="color: var(--crisis-red);">❌</span> Approving of it</li>
+                            <li style="margin-bottom: 0.75rem; display: flex; gap: 0.75rem;"><span style="color: var(--crisis-red);">❌</span> Giving up on change</li>
+                        </ul>
+                        
+                        <p style="margin-bottom: 1.5rem; font-weight: 600; color: var(--text-primary);">It DOES mean:</p>
+                        <ul style="list-style: none; margin-bottom: 1.5rem;">
+                            <li style="margin-bottom: 0.75rem; display: flex; gap: 0.75rem;"><span style="color: var(--success-emerald);">✅</span> Acknowledging reality as it is</li>
+                            <li style="margin-bottom: 0.75rem; display: flex; gap: 0.75rem;"><span style="color: var(--success-emerald);">✅</span> Stopping the war with what you can't change</li>
+                            <li style="margin-bottom: 0.75rem; display: flex; gap: 0.75rem;"><span style="color: var(--success-emerald);">✅</span> Freeing up energy to respond effectively</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Acceptance Phrases (from original) -->
+                    <div class="quote-box">
+                        <p style="font-weight: 700; margin-bottom: 1rem;">The Acceptance Phrases:</p>
+                        <p style="margin-bottom: 0.75rem;">• "It is what it is."</p>
+                        <p style="margin-bottom: 0.75rem;">• "This is my reality right now."</p>
+                        <p style="margin-bottom: 0.75rem;">• "I don't have to like it to accept it's real."</p>
+                        <p style="margin-bottom: 0.75rem;">• "Fighting reality doesn't change reality."</p>
+                        <p style="margin-bottom: 0.75rem;">• "What happened, happened. What happens next is up to me."</p>
+                    </div>
+                    
+                    <!-- EXPERIENTIAL PRACTICE (from original) -->
+                    <div class="practice-card">
+                        <div class="practice-title">
+                            <span>💭</span>
+                            ACCEPTANCE PRACTICE
+                        </div>
+                        
+                        <p style="color: var(--text-teal-light); font-weight: 600; margin-bottom: 1rem;">Think of something difficult in your life right now.</p>
+                        
+                        <button id="acceptanceStartBtn" class="btn-practice btn-practice-primary" style="margin-bottom: 1rem;">Continue →</button>
+                        
+                        <div id="acceptancePractice" style="display: none;">
+                            <p style="color: var(--text-secondary); margin-bottom: 0.5rem;"><strong>Step 1:</strong> What's something you've been fighting or resisting?</p>
+                            <p style="color: var(--text-muted); font-size: 0.8125rem; margin-bottom: 0.5rem;">Example: "I can't believe they left me", "This isn't fair"</p>
+                            <input type="text" id="resistanceInput" class="input-field" placeholder="Write it here..." value="${userData.resistanceInput || ''}">
+                            
+                            <p style="color: var(--text-secondary); margin-top: 1.5rem; margin-bottom: 0.5rem;"><strong>Step 2:</strong> Notice the language of rejection:</p>
+                            <div style="display: flex; gap: 0.75rem; margin-bottom: 1rem;">
+                                <button id="rejectionYesBtn" class="reflection-btn">Yes</button>
+                                <button id="rejectionNoBtn" class="reflection-btn">No</button>
+                            </div>
+                            
+                            <p style="color: var(--text-secondary); margin-top: 1.5rem; margin-bottom: 0.5rem;"><strong>Step 3:</strong> Try shifting to acceptance language:</p>
+                            
+                            <p style="color: var(--text-teal); font-size: 0.875rem; margin-bottom: 0.5rem;">Instead of: "This shouldn't have happened"</p>
+                            <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.75rem;">Try: "This DID happen. I don't like it, but it's real."</p>
+                            
+                            <p style="color: var(--text-teal); font-size: 0.875rem; margin-bottom: 0.5rem;">Your turn: Rewrite your situation in acceptance language:</p>
+                            <input type="text" id="acceptanceInput" class="input-field" placeholder="___________" value="${userData.acceptanceInput || ''}">
+                            
+                            <p style="color: var(--text-secondary); margin-top: 1.5rem; margin-bottom: 0.5rem;"><strong>Step 4:</strong> Does this reduce the intensity even slightly?</p>
+                            <div style="display: flex; gap: 0.75rem; margin-bottom: 1rem;">
+                                <button id="intensityYesBtn" class="reflection-btn">Yes - a little</button>
+                                <button id="intensityNoBtn" class="reflection-btn">No</button>
+                                <button id="intensityUnsureBtn" class="reflection-btn">Not sure</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button id="saveAcceptanceBtn" class="btn--save">
+                    <span>✋</span> Save Acceptance Tools to Toolkit
+                </button>
+                <div id="acceptanceSaveFeedback" class="save-feedback"></div>
+                
+                <div class="btn-group">
+                    <button class="btn btn--secondary" onclick="previousStep()">
+                        <span>←</span>
+                        <span>Back</span>
+                    </button>
+                    <button class="btn btn--primary" onclick="nextStep()">
+                        <span>Continue</span>
+                        <span>→</span>
+                    </button>
+                </div>
+                
+                ${renderFooter()}
+            </div>
+        `;
+    }
+    
+    function renderStep3() {
+        setTimeout(() => {
+            initWillingHands();
+        }, 100);
+        
+        return `
+            <div class="step-content">
+                ${renderHeader()}
+                
+                <div class="card">
+                    <div class="section-header">
+                        <span class="section-icon">🙏</span>
+                        <span class="section-title-text">Willing Hands</span>
+                    </div>
+                    
+                    <div class="card__content">
+                        <p>
+                            "The physical posture of acceptance vs. resistance. Your body influences your mind — when you open your hands, it's harder to stay clenched emotionally."
+                        </p>
+                    </div>
+                    
+                    <div class="technique-stats">
+                        <div class="stat">
+                            <div class="stat-label">Speed</div>
+                            <div class="stat-value">⚡ Immediate</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">Best for</div>
+                            <div class="stat-value">🎯 Physical resistance</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">Intensity</div>
+                            <div class="stat-value">💪 Gentle</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Willing Hands Practice (from original) -->
+                    <div class="practice-card">
+                        <div class="practice-title">
+                            <span>🙏</span>
+                            TRY WILLING HANDS NOW
+                        </div>
+                        
+                        <button id="willingHandsBtn" class="btn-practice btn-practice-primary" style="margin-bottom: 1rem;">Show Me How →</button>
+                        
+                        <div id="willingHandsPractice" style="display: none;">
+                            <p style="color: var(--text-teal-light); font-weight: 600; margin-bottom: 1rem;">Let's practice together.</p>
+                            
+                            <p style="color: var(--text-secondary); margin-bottom: 1rem;"><strong>Step 1:</strong> Clench your fists tight. Notice the tension. This is resistance.</p>
+                            <p style="color: var(--text-secondary); margin-bottom: 1rem;"><strong>Step 2:</strong> Now open your hands, palms up. Let shoulders drop. This is willingness.</p>
+                            <p style="color: var(--text-secondary); margin-bottom: 1rem;"><strong>Step 3:</strong> Think of something mildly frustrating while holding willing hands.</p>
+                            <p style="color: var(--text-secondary); margin-bottom: 1.5rem;"><strong>Notice:</strong> Does the physical posture of openness change your internal experience?</p>
+                            
+                            <div style="display: flex; gap: 0.75rem; margin-bottom: 1rem;">
+                                <button id="willingYesBtn" class="reflection-btn">Yes</button>
+                                <button id="willingNoBtn" class="reflection-btn">No</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="background: rgba(14,116,144,0.1); padding: 1rem; border-radius: 0.75rem;">
+                        <p style="color: var(--text-secondary); font-size: 0.875rem;">
+                            <strong style="color: var(--text-teal);">Try this in crisis:</strong> When you notice your body tensing up, physically open your hands and turn palms up. Say to yourself "I'm willing to feel this."
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn btn--secondary" onclick="previousStep()">
+                        <span>←</span>
+                        <span>Back</span>
+                    </button>
+                    <button class="btn btn--primary" onclick="nextStep()">
+                        <span>Continue</span>
+                        <span>→</span>
+                    </button>
+                </div>
+                
+                ${renderFooter()}
+            </div>
+        `;
+    }
+    
+    function renderStep4() {
+        setTimeout(() => {
+            initHalfSmile();
+        }, 100);
+        
+        return `
+            <div class="step-content">
+                ${renderHeader()}
+                
+                <div class="card">
+                    <div class="section-header">
+                        <span class="section-icon">😌</span>
+                        <span class="section-title-text">Half-Smile</span>
+                    </div>
+                    
+                    <div class="card__content">
+                        <p>
+                            "Research shows that the facial feedback loop works both ways — not only do emotions create facial expressions, but facial expressions can influence emotions."
+                        </p>
+                    </div>
+                    
+                    <div class="technique-stats">
+                        <div class="stat">
+                            <div class="stat-label">Speed</div>
+                            <div class="stat-value">⚡ 30 seconds</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">Best for</div>
+                            <div class="stat-value">🎯 Emotional intensity</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">Intensity</div>
+                            <div class="stat-value">💪 Very gentle</div>
+                        </div>
+                    </div>
+                    
+                    <div class="instruction-box">
+                        <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 0.75rem;">How to do it:</p>
+                        <p style="color: var(--text-secondary); margin-bottom: 0.5rem;">1. Slightly raise the corners of your mouth — not a big smile, just a subtle lift</p>
+                        <p style="color: var(--text-secondary); margin-bottom: 0.5rem;">2. Relax your jaw — let it be soft</p>
+                        <p style="color: var(--text-secondary); margin-bottom: 0.5rem;">3. Soften your eyes — imagine seeing the world through kind eyes</p>
+                        <p style="color: var(--text-secondary);">4. Hold for 30 seconds while breathing normally</p>
+                    </div>
+                    
+                    <!-- Half-Smile Practice (from original) -->
+                    <div class="practice-card">
+                        <div class="practice-title">
+                            <span>😌</span>
+                            TRY HALF-SMILE NOW
+                        </div>
+                        
+                        <p style="color: var(--text-teal-light); font-weight: 600; margin-bottom: 1rem;">Let's try it together.</p>
+                        
+                        <p style="color: var(--text-secondary); margin-bottom: 1rem;">Gently lift the corners of your mouth... relax your jaw... soften your eyes...</p>
+                        
+                        <div style="text-align: center; margin: 1.5rem 0;">
+                            <div style="font-size: 3rem; margin-bottom: 0.5rem;">😌</div>
+                            <p style="color: var(--text-muted); font-size: 0.875rem;">Hold for 30 seconds</p>
+                        </div>
+                        
+                        <p style="color: var(--text-secondary); margin-bottom: 1rem;">How does it feel?</p>
+                        <div style="display: flex; gap: 0.75rem;">
+                            <button id="halfSmileSoftBtn" class="reflection-btn">Feels softer</button>
+                            <button id="halfSmileNoChangeBtn" class="reflection-btn">No change</button>
+                            <button id="halfSmileFakeBtn" class="reflection-btn">Feels fake</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn btn--secondary" onclick="previousStep()">
+                        <span>←</span>
+                        <span>Back</span>
+                    </button>
+                    <button class="btn btn--primary" onclick="nextStep()">
+                        <span>Continue</span>
+                        <span>→</span>
+                    </button>
+                </div>
+                
+                ${renderFooter()}
+            </div>
+        `;
+    }
+    
+    function renderStep5() {
+        setTimeout(() => {
+            initCompassion();
+        }, 100);
+        
+        return `
+            <div class="step-content">
+                ${renderHeader()}
+                
+                <div class="card">
+                    <div class="section-header">
+                        <span class="section-icon">💝</span>
+                        <span class="section-title-text">Self-Compassion</span>
+                    </div>
+                    
+                    <div class="card__content">
+                        <p>
+                            "Self-compassion means treating yourself the way you'd treat a good friend who's struggling. Most people are far harsher with themselves than they'd ever be with someone they care about."
+                        </p>
+                    </div>
+                    
+                    <div class="technique-stats">
+                        <div class="stat">
+                            <div class="stat-label">Speed</div>
+                            <div class="stat-value">⚡ Immediate</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">Best for</div>
+                            <div class="stat-value">🎯 Shame, self-criticism</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">Intensity</div>
+                            <div class="stat-value">💪 Gentle</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Three Components (from original) -->
+                    <div style="background: rgba(14,116,144,0.1); padding: 1.5rem; border-radius: 0.75rem; margin: 1.25rem 0;">
+                        <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 1rem;">The Three Components (Kristin Neff):</p>
+                        
+                        <p style="color: var(--text-teal-light); font-weight: 600; margin-bottom: 0.5rem;">1. Self-Kindness</p>
+                        <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 1rem;">"This is really hard" instead of "I'm pathetic"</p>
+                        
+                        <p style="color: var(--text-teal-light); font-weight: 600; margin-bottom: 0.5rem;">2. Common Humanity</p>
+                        <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 1rem;">"Everyone struggles" instead of "I'm the only one"</p>
+                        
+                        <p style="color: var(--text-teal-light); font-weight: 600; margin-bottom: 0.5rem;">3. Mindfulness</p>
+                        <p style="color: var(--text-secondary); font-size: 0.875rem;">"I'm having a hard time" instead of "I AM a failure"</p>
+                    </div>
+                    
+                    <!-- The Science (from original) -->
+                    <div style="background: rgba(14,116,144,0.1); padding: 1rem; border-radius: 0.75rem; margin: 1rem 0;">
+                        <p style="color: var(--text-secondary); font-size: 0.875rem;">
+                            <strong style="color: var(--text-teal);">The Science:</strong> Self-compassion activates the caregiving system in your brain (oxytocin release), while self-criticism activates the threat system. Self-compassion is not self-indulgence — it's a more effective form of self-regulation.
+                        </p>
+                    </div>
+                    
+                    <!-- Critical Friend vs Kind Coach (from original) -->
+                    <div style="margin-top: 1.5rem;">
+                        <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 1rem;">The Critical Friend vs. The Kind Coach:</p>
+                        
+                        <div style="background: rgba(220,38,38,0.1); padding: 1rem; border-radius: 0.75rem; margin-bottom: 0.75rem;">
+                            <p style="color: #fca5a5; font-weight: 600; margin-bottom: 0.25rem;">Critical Friend:</p>
+                            <p style="color: var(--text-secondary); font-size: 0.875rem;">"You're such a mess. Why can't you handle this? Everyone else can."</p>
+                        </div>
+                        
+                        <div style="background: rgba(14,116,144,0.1); padding: 1rem; border-radius: 0.75rem;">
+                            <p style="color: var(--text-teal-light); font-weight: 600; margin-bottom: 0.25rem;">Kind Coach:</p>
+                            <p style="color: var(--text-secondary); font-size: 0.875rem;">"This is genuinely difficult. You're struggling because this IS hard, not because you're broken."</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <button id="saveCompassionBtn" class="btn--save">
+                    <span>💝</span> Save Self-Compassion to Toolkit
+                </button>
+                <div id="compassionSaveFeedback" class="save-feedback"></div>
+                
+                <div class="btn-group">
+                    <button class="btn btn--secondary" onclick="previousStep()">
+                        <span>←</span>
+                        <span>Back</span>
+                    </button>
+                    <button class="btn btn--primary" onclick="nextStep()">
+                        <span>Continue</span>
+                        <span>→</span>
+                    </button>
+                </div>
+                
+                ${renderFooter()}
+            </div>
+        `;
+    }
+    
+    function renderStep6() {
+        setTimeout(() => {
+            initCompassionBreak();
+        }, 100);
+        
+        return `
+            <div class="step-content">
+                ${renderHeader()}
+                
+                <div class="card">
+                    <div class="section-header">
+                        <span class="section-icon">💝</span>
+                        <span class="section-title-text">Self-Compassion Break</span>
+                    </div>
+                    
+                    <!-- Self-Compassion Phrases (from original) -->
+                    <div class="quote-box" style="margin-top: 0;">
+                        <p style="font-weight: 700; margin-bottom: 0.75rem;">Self-Compassion Phrases:</p>
+                        <p style="margin-bottom: 0.5rem;">• "Of course this is hard. Anyone would struggle with this."</p>
+                        <p style="margin-bottom: 0.5rem;">• "I'm doing the best I can with what I have right now."</p>
+                        <p style="margin-bottom: 0.5rem;">• "I deserve kindness, especially when I'm suffering."</p>
+                        <p style="margin-bottom: 0.5rem;">• "What would I say to a friend in this situation?"</p>
+                    </div>
+                    
+                    <!-- Guided Self-Compassion Break (from original) -->
+                    <div class="practice-card">
+                        <div class="practice-title">
+                            <span>💝</span>
+                            GUIDED SELF-COMPASSION BREAK
+                        </div>
+                        
+                        <button id="compassionStartBtn" class="btn-practice btn-practice-primary" style="margin-bottom: 1rem;">Start Guided Practice →</button>
+                        
+                        <div id="compassionPractice" style="display: none;">
+                            <p style="color: var(--text-teal-light); font-weight: 600; margin-bottom: 1rem;">Think of a situation where you're being hard on yourself.</p>
+                            
+                            <p style="color: var(--text-secondary); margin-bottom: 1rem;">Now, say these three things (out loud or silently):</p>
+                            
+                            <div style="background: rgba(14,116,144,0.15); padding: 1.25rem; border-radius: 0.75rem; margin: 1rem 0;">
+                                <p style="color: var(--text-teal-light); font-weight: 700; margin-bottom: 0.75rem;">1. MINDFULNESS:</p>
+                                <p style="color: var(--text-secondary);">"This is a moment of suffering."</p>
+                                <p style="color: var(--text-secondary); margin-top: 0.5rem;">or "This is really hard right now."</p>
+                            </div>
+                            
+                            <div style="background: rgba(14,116,144,0.15); padding: 1.25rem; border-radius: 0.75rem; margin: 1rem 0;">
+                                <p style="color: var(--text-teal-light); font-weight: 700; margin-bottom: 0.75rem;">2. COMMON HUMANITY:</p>
+                                <p style="color: var(--text-secondary);">"Suffering is part of being human."</p>
+                                <p style="color: var(--text-secondary); margin-top: 0.5rem;">or "Everyone struggles sometimes."</p>
+                            </div>
+                            
+                            <div style="background: rgba(14,116,144,0.15); padding: 1.25rem; border-radius: 0.75rem; margin: 1rem 0;">
+                                <p style="color: var(--text-teal-light); font-weight: 700; margin-bottom: 0.75rem;">3. SELF-KINDNESS:</p>
+                                <p style="color: var(--text-secondary);">"May I be kind to myself."</p>
+                                <p style="color: var(--text-secondary); margin-top: 0.5rem;">or "May I give myself the compassion I need."</p>
+                            </div>
+                            
+                            <p style="color: var(--text-teal-light); margin: 1.5rem 0; text-align: center;">Now place your hand on your heart or give yourself a gentle hug.</p>
+                            
+                            <p style="color: var(--text-secondary); margin-bottom: 1rem;">How does this feel?</p>
+                            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                                <button id="compassionComfortingBtn" class="reflection-btn">Comforting</button>
+                                <button id="compassionAwkwardBtn" class="reflection-btn">Awkward but helpful</button>
+                                <button id="compassionNotWorkBtn" class="reflection-btn">Doesn't work for me</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn btn--secondary" onclick="previousStep()">
+                        <span>←</span>
+                        <span>Back</span>
+                    </button>
+                    <button class="btn btn--primary" onclick="nextStep()">
+                        <span>Continue</span>
+                        <span>→</span>
+                    </button>
+                </div>
+                
+                ${renderFooter()}
+            </div>
+        `;
+    }
+    
+    function renderStep7() {
+        setTimeout(() => {
+            initDefusion();
+        }, 100);
+        
+        return `
+            <div class="step-content">
+                ${renderHeader()}
+                
+                <div class="card">
+                    <div class="section-header">
+                        <span class="section-icon">🎭</span>
+                        <span class="section-title-text">Defusion — Thoughts Aren't Facts</span>
+                    </div>
+                    
+                    <div class="card__content">
+                        <p style="margin-bottom: 1rem;">
+                            <strong style="color: var(--text-teal);">Cognitive Fusion</strong> = believing your thoughts are literal truths<br>
+                            <strong style="color: var(--text-teal);">Cognitive Defusion</strong> = seeing thoughts as mental events, not facts
+                        </p>
+                        
+                        <div style="background: rgba(14,116,144,0.1); padding: 1rem; border-radius: 0.75rem; margin: 1rem 0;">
+                            <p><span style="color: var(--text-teal-light);">Example:</span><br>
+                            • Fusion: "I'm worthless" (this feels like absolute truth)<br>
+                            • Defusion: "I'm having the thought that I'm worthless" (this is a thought my brain produced)</p>
+                        </div>
+                    </div>
+                    
+                    <div class="technique-stats">
+                        <div class="stat">
+                            <div class="stat-label">Speed</div>
+                            <div class="stat-value">⚡ Immediate</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">Best for</div>
+                            <div class="stat-value">🎯 Intrusive thoughts</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">Intensity</div>
+                            <div class="stat-value">💪 Low</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Defusion Techniques (from original) -->
+                    <div class="instruction-box">
+                        <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 1rem;">5 Defusion Techniques:</p>
+                        
+                        <p style="color: var(--text-teal-light); font-weight: 600; margin: 1rem 0 0.25rem;">1. "I'm having the thought that…"</p>
+                        <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.75rem;">Add this prefix to any negative thought — creates distance</p>
+                        
+                        <p style="color: var(--text-teal-light); font-weight: 600; margin: 1rem 0 0.25rem;">2. "Thanks, brain!"</p>
+                        <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.75rem;">"Thanks for that input, brain!" — acknowledge without buying in</p>
+                        
+                        <p style="color: var(--text-teal-light); font-weight: 600; margin: 1rem 0 0.25rem;">3. Silly voices</p>
+                        <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.75rem;">Say the thought in a cartoon voice — reduces thought power</p>
+                        
+                        <p style="color: var(--text-teal-light); font-weight: 600; margin: 1rem 0 0.25rem;">4. Leaves on a stream</p>
+                        <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.75rem;">Visualize thoughts as leaves floating by — watch them pass</p>
+                        
+                        <p style="color: var(--text-teal-light); font-weight: 600; margin: 1rem 0 0.25rem;">5. Name the story</p>
+                        <p style="color: var(--text-secondary); font-size: 0.875rem;">"Ah, there's my 'I'm not good enough' story again."</p>
+                    </div>
+                    
+                    <!-- Experiential Practice (from original) -->
+                    <div class="practice-card">
+                        <div class="practice-title">
+                            <span>🎭</span>
+                            PRACTICE DEFUSION
+                        </div>
+                        
+                        <button id="defusionStartBtn" class="btn-practice btn-practice-primary" style="margin-bottom: 1rem;">Try It Now →</button>
+                        
+                        <div id="defusionPractice" style="display: none;">
+                            <p style="color: var(--text-teal-light); font-weight: 600; margin-bottom: 1rem;">Let's try it together.</p>
+                            
+                            <p style="color: var(--text-secondary); margin-bottom: 0.5rem;"><strong>Step 1:</strong> Think of a negative thought you have often.</p>
+                            <p style="color: var(--text-muted); font-size: 0.8125rem; margin-bottom: 0.5rem;">Example: "I'm not good enough", "I always fail"</p>
+                            <input type="text" id="negativeThoughtInput" class="input-field" placeholder="Write it here..." value="${userData.negativeThoughtInput || ''}">
+                            
+                            <p style="color: var(--text-secondary); margin-top: 1rem; margin-bottom: 0.5rem;"><strong>Step 2:</strong> Feel the weight of that thought. Rate how much you believe it (0-10)</p>
+                            <input type="range" id="believeBeforeSlider" min="0" max="10" value="${userData.believeBefore || 7}" step="1" style="width: 100%; margin-bottom: 0.5rem;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem;">
+                                <span style="color: var(--text-muted); font-size: 0.75rem;">0 - Don't believe</span>
+                                <span style="color: var(--text-teal); font-weight: 700;" id="believeBeforeValue">${userData.believeBefore || 7}</span>
+                                <span style="color: var(--text-muted); font-size: 0.75rem;">10 - Completely believe</span>
+                            </div>
+                            
+                            <p style="color: var(--text-secondary); margin-bottom: 0.5rem;"><strong>Step 3:</strong> Now say it with "I'm having the thought that…"</p>
+                            <input type="text" id="defusionThoughtInput" class="input-field" placeholder="I'm having the thought that ___________" value="${userData.defusionThoughtInput || ''}">
+                            
+                            <p style="color: var(--text-secondary); margin: 1rem 0 0.5rem;"><strong>Notice:</strong> Does it feel different?</p>
+                            <div style="display: flex; gap: 0.75rem; margin-bottom: 1.5rem;">
+                                <button id="defusionLessBtn" class="reflection-btn">Yes - less heavy</button>
+                                <button id="defusionNoChangeBtn" class="reflection-btn">No change</button>
+                            </div>
+                            
+                            <p style="color: var(--text-secondary); margin-bottom: 0.5rem;"><strong>Step 4:</strong> Try saying it in a silly voice.</p>
+                            <button id="defusionSillyBtn" class="btn-practice btn-practice-primary" style="margin-bottom: 1rem;">Done it</button>
+                            
+                            <p style="color: var(--text-secondary); margin-bottom: 0.5rem;"><strong>Step 5:</strong> Now rate how much you believe it (0-10)</p>
+                            <input type="range" id="believeAfterSlider" min="0" max="10" value="${userData.believeAfter || 4}" step="1" style="width: 100%; margin-bottom: 0.5rem;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                                <span style="color: var(--text-muted); font-size: 0.75rem;">0 - Don't believe</span>
+                                <span style="color: var(--text-teal); font-weight: 700;" id="believeAfterValue">${userData.believeAfter || 4}</span>
+                                <span style="color: var(--text-muted); font-size: 0.75rem;">10 - Completely believe</span>
+                            </div>
+                            
+                            <div id="defusionResult" style="background: rgba(14,116,144,0.15); padding: 1rem; border-radius: 0.75rem; margin-top: 1rem; display: none;">
+                                <p style="color: var(--text-teal-light);">Your result will appear here.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Key Insight (from original) -->
+                    <div class="quote-box" style="margin-top: 1.5rem;">
+                        <p style="font-weight: 700; margin-bottom: 0.75rem;">Key Insight:</p>
+                        <p>
+                            "You don't have to believe your thoughts just because your brain produces them. Your brain generates thousands of thoughts daily — many are random, unhelpful, or false."
+                        </p>
+                    </div>
+                </div>
+                
+                <button id="saveDefusionBtn" class="btn--save">
+                    <span>🎭</span> Save Defusion Techniques to Toolkit
+                </button>
+                <div id="defusionSaveFeedback" class="save-feedback"></div>
+                
+                <div class="btn-group">
+                    <button class="btn btn--secondary" onclick="previousStep()">
+                        <span>←</span>
+                        <span>Back</span>
+                    </button>
+                    <button class="btn btn--primary" onclick="nextStep()">
+                        <span>Continue</span>
+                        <span>→</span>
+                    </button>
+                </div>
+                
+                ${renderFooter()}
+            </div>
+        `;
+    }
+    
+    function renderStep8() {
+        setTimeout(() => {
+            initComplete();
+        }, 100);
+        
+        return `
+            <div class="step-content">
+                ${renderHeader()}
+                
+                <div class="reference-card">
+                    <div class="reference-title">
+                        <span>🕊️</span>
+                        ACCEPTANCE TOOLS — Quick Reference
+                    </div>
+                    
+                    <div class="reference-grid">
+                        <div class="reference-item">
+                            <span class="reference-icon">✋</span>
+                            <div class="reference-content">
+                                <div class="reference-name">Radical Acceptance</div>
+                                <div class="reference-use">"It is what it is" — Stop fighting reality</div>
+                            </div>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-icon">🙏</span>
+                            <div class="reference-content">
+                                <div class="reference-name">Willing Hands</div>
+                                <div class="reference-use">Open palms, relaxed shoulders — physical acceptance</div>
+                            </div>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-icon">😌</span>
+                            <div class="reference-content">
+                                <div class="reference-name">Half-Smile</div>
+                                <div class="reference-use">Subtle lift of mouth corners, soften jaw</div>
+                            </div>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-icon">💝</span>
+                            <div class="reference-content">
+                                <div class="reference-name">Self-Compassion</div>
+                                <div class="reference-use">Treat yourself like a friend — "Of course this is hard"</div>
+                            </div>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-icon">🎭</span>
+                            <div class="reference-content">
+                                <div class="reference-name">Defusion</div>
+                                <div class="reference-use">"I'm having the thought that…" — Thoughts aren't facts</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 1.5rem; padding: 1.5rem; background: rgba(14,116,144,0.15); border-radius: 0.75rem;">
+                        <p style="color: var(--text-amber); font-style: italic; text-align: center; font-size: 0.9375rem;">
+                            "Acceptance doesn't make pain disappear. It makes suffering decrease. Pain + Fighting = Suffering. Pain + Acceptance = Just pain. And just pain is more bearable."
+                        </p>
+                    </div>
+                    
+                    <div style="margin-top: 1.5rem;">
+                        <p style="color: var(--text-primary); font-weight: 700; margin-bottom: 1rem;">
+                            "Which techniques felt most helpful?"
+                        </p>
+                        
+                        <div class="reflection-grid">
+                            <label class="reflection-checkbox">
+                                <input type="checkbox" value="Radical Acceptance"> Radical Acceptance
+                            </label>
+                            <label class="reflection-checkbox">
+                                <input type="checkbox" value="Willing Hands"> Willing Hands
+                            </label>
+                            <label class="reflection-checkbox">
+                                <input type="checkbox" value="Half-Smile"> Half-Smile
+                            </label>
+                            <label class="reflection-checkbox">
+                                <input type="checkbox" value="Self-Compassion"> Self-Compassion
+                            </label>
+                            <label class="reflection-checkbox">
+                                <input type="checkbox" value="Defusion"> Defusion
+                            </label>
+                        </div>
+                        
+                        <button id="saveReflectionBtn" class="btn--save">
+                            <span>📋</span> Save My Top Tools
+                        </button>
+                        <div id="reflectionSaveFeedback" class="save-feedback"></div>
+                    </div>
+                </div>
+                
+                <div class="practice-section">
+                    <button id="practiceBtn" class="practice-btn">
+                        <span>✓</span>
+                        <span>Mark Module as Practiced</span>
+                    </button>
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn btn--secondary" onclick="previousStep()">
+                        <span>←</span>
+                        <span>Back</span>
+                    </button>
+                    <a href="crisis-module-5.html" class="btn btn--primary">
+                        <span>Module 5</span>
+                        <span>→</span>
+                    </a>
+                </div>
+                
+                ${renderFooter()}
+            </div>
+        `;
+    }
+    
+    // Interactive Functions
+    function initAcceptance() {
+        const startBtn = document.getElementById('acceptanceStartBtn');
+        const practice = document.getElementById('acceptancePractice');
+        const resistanceInput = document.getElementById('resistanceInput');
+        const acceptanceInput = document.getElementById('acceptanceInput');
+        
+        if (startBtn) {
+            startBtn.addEventListener('click', function() {
+                practice.style.display = 'block';
+                startBtn.style.display = 'none';
+            });
+        }
+        
+        if (resistanceInput) {
+            resistanceInput.addEventListener('input', function() {
+                userData.resistanceInput = this.value;
+            });
+        }
+        
+        if (acceptanceInput) {
+            acceptanceInput.addEventListener('input', function() {
+                userData.acceptanceInput = this.value;
+            });
+        }
+        
+        // Rejection buttons
+        const rejectionYesBtn = document.getElementById('rejectionYesBtn');
+        const rejectionNoBtn = document.getElementById('rejectionNoBtn');
+        
+        if (rejectionYesBtn) {
+            rejectionYesBtn.addEventListener('click', function() {
+                this.classList.add('selected');
+                if (rejectionNoBtn) rejectionNoBtn.classList.remove('selected');
+            });
+        }
+        
+        if (rejectionNoBtn) {
+            rejectionNoBtn.addEventListener('click', function() {
+                this.classList.add('selected');
+                if (rejectionYesBtn) rejectionYesBtn.classList.remove('selected');
+            });
+        }
+        
+        // Intensity buttons
+        const intensityYesBtn = document.getElementById('intensityYesBtn');
+        const intensityNoBtn = document.getElementById('intensityNoBtn');
+        const intensityUnsureBtn = document.getElementById('intensityUnsureBtn');
+        
+        if (intensityYesBtn) {
+            intensityYesBtn.addEventListener('click', function() {
+                this.classList.add('selected');
+                if (intensityNoBtn) intensityNoBtn.classList.remove('selected');
+                if (intensityUnsureBtn) intensityUnsureBtn.classList.remove('selected');
+            });
+        }
+        
+        if (intensityNoBtn) {
+            intensityNoBtn.addEventListener('click', function() {
+                this.classList.add('selected');
+                if (intensityYesBtn) intensityYesBtn.classList.remove('selected');
+                if (intensityUnsureBtn) intensityUnsureBtn.classList.remove('selected');
+            });
+        }
+        
+        if (intensityUnsureBtn) {
+            intensityUnsureBtn.addEventListener('click', function() {
+                this.classList.add('selected');
+                if (intensityYesBtn) intensityYesBtn.classList.remove('selected');
+                if (intensityNoBtn) intensityNoBtn.classList.remove('selected');
+            });
+        }
+        
+        // Save button
+        const saveBtn = document.getElementById('saveAcceptanceBtn');
+        const feedback = document.getElementById('acceptanceSaveFeedback');
+        
+        if (saveBtn) {
+            saveBtn.addEventListener('click', function() {
+                saveToToolkit({
+                    id: 'acceptance-tools',
+                    category: 'Module 4: Making Peace',
+                    name: 'Radical Acceptance',
+                    description: 'Pain × Rejection = Suffering • "It is what it is" • Stop fighting reality'
+                });
+                
+                saveBtn.classList.add('saved');
+                saveBtn.innerHTML = '<span>✓</span> Saved to Toolkit';
+                feedback.textContent = '✓ Acceptance Tools saved to your toolkit.';
+                feedback.classList.add('show');
+                
+                setTimeout(() => {
+                    saveBtn.classList.remove('saved');
+                    saveBtn.innerHTML = '<span>✋</span> Save Acceptance Tools to Toolkit';
+                    feedback.classList.remove('show');
+                }, 3000);
+            });
+        }
+    }
+    
+    function initWillingHands() {
+        const willingHandsBtn = document.getElementById('willingHandsBtn');
+        const willingHandsPractice = document.getElementById('willingHandsPractice');
+        
+        if (willingHandsBtn) {
+            willingHandsBtn.addEventListener('click', function() {
+                willingHandsPractice.style.display = 'block';
+                willingHandsBtn.style.display = 'none';
+            });
+        }
+        
+        const willingYesBtn = document.getElementById('willingYesBtn');
+        const willingNoBtn = document.getElementById('willingNoBtn');
+        
+        if (willingYesBtn) {
+            willingYesBtn.addEventListener('click', function() {
+                this.classList.add('selected');
+                if (willingNoBtn) willingNoBtn.classList.remove('selected');
+            });
+        }
+        
+        if (willingNoBtn) {
+            willingNoBtn.addEventListener('click', function() {
+                this.classList.add('selected');
+                if (willingYesBtn) willingYesBtn.classList.remove('selected');
+            });
+        }
+    }
+    
+    function initHalfSmile() {
+        const halfSmileSoftBtn = document.getElementById('halfSmileSoftBtn');
+        const halfSmileNoChangeBtn = document.getElementById('halfSmileNoChangeBtn');
+        const halfSmileFakeBtn = document.getElementById('halfSmileFakeBtn');
+        
+        if (halfSmileSoftBtn) {
+            halfSmileSoftBtn.addEventListener('click', function() {
+                this.classList.add('selected');
+                if (halfSmileNoChangeBtn) halfSmileNoChangeBtn.classList.remove('selected');
+                if (halfSmileFakeBtn) halfSmileFakeBtn.classList.remove('selected');
+            });
+        }
+        
+        if (halfSmileNoChangeBtn) {
+            halfSmileNoChangeBtn.addEventListener('click', function() {
+                this.classList.add('selected');
+                if (halfSmileSoftBtn) halfSmileSoftBtn.classList.remove('selected');
+                if (halfSmileFakeBtn) halfSmileFakeBtn.classList.remove('selected');
+            });
+        }
+        
+        if (halfSmileFakeBtn) {
+            halfSmileFakeBtn.addEventListener('click', function() {
+                this.classList.add('selected');
+                if (halfSmileSoftBtn) halfSmileSoftBtn.classList.remove('selected');
+                if (halfSmileNoChangeBtn) halfSmileNoChangeBtn.classList.remove('selected');
+            });
+        }
+    }
+    
+    function initCompassion() {
+        const saveBtn = document.getElementById('saveCompassionBtn');
+        const feedback = document.getElementById('compassionSaveFeedback');
+        
+        if (saveBtn) {
+            saveBtn.addEventListener('click', function() {
+                saveToToolkit({
+                    id: 'self-compassion',
+                    category: 'Module 4: Making Peace',
+                    name: 'Self-Compassion',
+                    description: 'Treat yourself like a friend • Self-kindness, common humanity, mindfulness • "Of course this is hard"'
+                });
+                
+                saveBtn.classList.add('saved');
+                saveBtn.innerHTML = '<span>✓</span> Saved to Toolkit';
+                feedback.textContent = '✓ Self-Compassion saved to your toolkit.';
+                feedback.classList.add('show');
+                
+                setTimeout(() => {
+                    saveBtn.classList.remove('saved');
+                    saveBtn.innerHTML = '<span>💝</span> Save Self-Compassion to Toolkit';
+                    feedback.classList.remove('show');
+                }, 3000);
+            });
+        }
+    }
+    
+    function initCompassionBreak() {
+        const compassionStartBtn = document.getElementById('compassionStartBtn');
+        const compassionPractice = document.getElementById('compassionPractice');
+        
+        if (compassionStartBtn) {
+            compassionStartBtn.addEventListener('click', function() {
+                compassionPractice.style.display = 'block';
+                compassionStartBtn.style.display = 'none';
+            });
+        }
+        
+        const compassionComfortingBtn = document.getElementById('compassionComfortingBtn');
+        const compassionAwkwardBtn = document.getElementById('compassionAwkwardBtn');
+        const compassionNotWorkBtn = document.getElementById('compassionNotWorkBtn');
+        
+        if (compassionComfortingBtn) {
+            compassionComfortingBtn.addEventListener('click', function() {
+                this.classList.add('selected');
+                if (compassionAwkwardBtn) compassionAwkwardBtn.classList.remove('selected');
+                if (compassionNotWorkBtn) compassionNotWorkBtn.classList.remove('selected');
+            });
+        }
+        
+        if (compassionAwkwardBtn) {
+            compassionAwkwardBtn.addEventListener('click', function() {
+                this.classList.add('selected');
+                if (compassionComfortingBtn) compassionComfortingBtn.classList.remove('selected');
+                if (compassionNotWorkBtn) compassionNotWorkBtn.classList.remove('selected');
+            });
+        }
+        
+        if (compassionNotWorkBtn) {
+            compassionNotWorkBtn.addEventListener('click', function() {
+                this.classList.add('selected');
+                if (compassionComfortingBtn) compassionComfortingBtn.classList.remove('selected');
+                if (compassionAwkwardBtn) compassionAwkwardBtn.classList.remove('selected');
+            });
+        }
+    }
+    
+    function initDefusion() {
+        const startBtn = document.getElementById('defusionStartBtn');
+        const practice = document.getElementById('defusionPractice');
+        const negativeThoughtInput = document.getElementById('negativeThoughtInput');
+        const defusionThoughtInput = document.getElementById('defusionThoughtInput');
+        const beforeSlider = document.getElementById('believeBeforeSlider');
+        const beforeValue = document.getElementById('believeBeforeValue');
+        const afterSlider = document.getElementById('believeAfterSlider');
+        const afterValue = document.getElementById('believeAfterValue');
+        const sillyBtn = document.getElementById('defusionSillyBtn');
+        const resultDiv = document.getElementById('defusionResult');
+        
+        if (startBtn) {
+            startBtn.addEventListener('click', function() {
+                practice.style.display = 'block';
+                startBtn.style.display = 'none';
+            });
+        }
+        
+        if (negativeThoughtInput) {
+            negativeThoughtInput.addEventListener('input', function() {
+                userData.negativeThoughtInput = this.value;
+            });
+        }
+        
+        if (defusionThoughtInput) {
+            defusionThoughtInput.addEventListener('input', function() {
+                userData.defusionThoughtInput = this.value;
+            });
+        }
+        
+        if (beforeSlider && beforeValue) {
+            beforeSlider.addEventListener('input', function() {
+                beforeValue.textContent = this.value;
+                userData.believeBefore = parseInt(this.value);
+            });
+        }
+        
+        if (afterSlider && afterValue) {
+            afterSlider.addEventListener('input', function() {
+                afterValue.textContent = this.value;
+                userData.believeAfter = parseInt(this.value);
+            });
+        }
+        
+        if (sillyBtn) {
+            sillyBtn.addEventListener('click', function() {
+                const before = parseInt(beforeSlider?.value || '7');
+                const after = parseInt(afterSlider?.value || '4');
+                resultDiv.style.display = 'block';
+                resultDiv.innerHTML = `<p style="color: var(--text-teal-light);">Belief went from ${before} to ${after}. The thought didn't change — your relationship to it did.</p>`;
+            });
+        }
+        
+        const defusionLessBtn = document.getElementById('defusionLessBtn');
+        const defusionNoChangeBtn = document.getElementById('defusionNoChangeBtn');
+        
+        if (defusionLessBtn) {
+            defusionLessBtn.addEventListener('click', function() {
+                this.classList.add('selected');
+                if (defusionNoChangeBtn) defusionNoChangeBtn.classList.remove('selected');
+            });
+        }
+        
+        if (defusionNoChangeBtn) {
+            defusionNoChangeBtn.addEventListener('click', function() {
+                this.classList.add('selected');
+                if (defusionLessBtn) defusionLessBtn.classList.remove('selected');
+            });
+        }
+        
+        // Save button
+        const saveBtn = document.getElementById('saveDefusionBtn');
+        const feedback = document.getElementById('defusionSaveFeedback');
+        
+        if (saveBtn) {
+            saveBtn.addEventListener('click', function() {
+                saveToToolkit({
+                    id: 'defusion',
+                    category: 'Module 4: Making Peace',
+                    name: 'Defusion Techniques',
+                    description: 'Thoughts aren\'t facts • "I\'m having the thought that…" • "Thanks, brain!" • Silly voices'
+                });
+                
+                saveBtn.classList.add('saved');
+                saveBtn.innerHTML = '<span>✓</span> Saved to Toolkit';
+                feedback.textContent = '✓ Defusion Techniques saved to your toolkit.';
+                feedback.classList.add('show');
+                
+                setTimeout(() => {
+                    saveBtn.classList.remove('saved');
+                    saveBtn.innerHTML = '<span>🎭</span> Save Defusion Techniques to Toolkit';
+                    feedback.classList.remove('show');
+                }, 3000);
+            });
+        }
+    }
+    
+    function initComplete() {
+        // Checkboxes
+        const checkboxes = document.querySelectorAll('.reflection-checkbox input[type="checkbox"]');
+        
+        checkboxes.forEach(cb => {
+            cb.addEventListener('change', function() {
+                const label = this.closest('.reflection-checkbox');
+                if (this.checked) {
+                    label.classList.add('checked');
+                } else {
+                    label.classList.remove('checked');
+                }
+            });
+        });
+        
+        // Save reflection
+        const saveBtn = document.getElementById('saveReflectionBtn');
+        const feedback = document.getElementById('reflectionSaveFeedback');
+        
+        if (saveBtn) {
+            saveBtn.addEventListener('click', function() {
+                const selected = Array.from(checkboxes)
+                    .filter(cb => cb.checked)
+                    .map(cb => cb.value);
+                
+                if (selected.length === 0) {
+                    alert('Please select at least one technique.');
+                    return;
+                }
+                
+                saveToToolkit({
+                    id: 'my-acceptance-tools',
+                    category: 'My Crisis Profile',
+                    name: 'My Top Acceptance Tools',
+                    description: selected.join(', ')
+                });
+                
+                saveBtn.classList.add('saved');
+                saveBtn.innerHTML = '<span>✓</span> Saved to Toolkit';
+                feedback.textContent = '✓ Saved to your toolkit.';
+                feedback.classList.add('show');
+                
+                setTimeout(() => {
+                    saveBtn.classList.remove('saved');
+                    saveBtn.innerHTML = '<span>📋</span> Save My Top Tools';
+                    feedback.classList.remove('show');
+                }, 3000);
+            });
+        }
+        
+        // Practice button
+        const practiceBtn = document.getElementById('practiceBtn');
+        
+        let progress = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
+        if (progress.practicedModules && progress.practicedModules.includes('module4')) {
+            practiceBtn.classList.add('marked');
+            practiceBtn.innerHTML = '<span>✓</span><span>Module 4 Practiced</span>';
+        }
+        
+        if (practiceBtn) {
+            practiceBtn.addEventListener('click', function() {
+                if (!progress.practicedModules) {
+                    progress.practicedModules = [];
+                }
+                
+                if (!progress.practicedModules.includes('module4')) {
+                    progress.practicedModules.push('module4');
+                    progress.lastPracticed = new Date().toISOString();
+                    localStorage.setItem('crisis_course_progress', JSON.stringify(progress));
+                    
+                    practiceBtn.classList.add('marked');
+                    practiceBtn.innerHTML = '<span>✓</span><span>Module 4 Practiced</span>';
+                }
+            });
+        }
+    }
+    
+    // Main render
+    function render() {
+        const content = document.getElementById('content');
+        
+        let html = '';
+        switch(currentStep) {
+            case 1: html = renderStep1(); break;
+            case 2: html = renderStep2(); break;
+            case 3: html = renderStep3(); break;
+            case 4: html = renderStep4(); break;
+            case 5: html = renderStep5(); break;
+            case 6: html = renderStep6(); break;
+            case 7: html = renderStep7(); break;
+            case 8: html = renderStep8(); break;
+            default: html = renderStep1();
+        }
+        
+        content.innerHTML = html;
+    }
+    
+    // Expose functions globally
+    window.nextStep = nextStep;
+    window.previousStep = previousStep;
+    window.goToStep = goToStep;
+    
+    // Initialize
+    loadProgress();
+    render();
 })();
 </script>
 </body>
