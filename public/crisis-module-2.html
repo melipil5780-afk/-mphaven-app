@@ -1130,7 +1130,7 @@ html, body {
                         
                         <div id="coldWaterAfter" style="display: none; margin-top: 1.5rem;">
                             <p style="color: var(--text-secondary); margin-bottom: 1rem;">
-                                <strong>Step 4:</strong> Rate your intensity now (0-10)
+                                <strong>Step 4:</strong> How do you feel NOW? Rate your intensity (0-10)
                             </p>
                             <input type="range" id="coldWaterAfterSlider" min="0" max="10" value="5" step="1" style="width: 100%; margin-bottom: 1rem;">
                             <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem;">
@@ -1139,8 +1139,8 @@ html, body {
                                 <span style="color: var(--text-muted); font-size: 0.75rem;">10 - Overwhelming</span>
                             </div>
                             
-                            <div id="coldWaterResult" style="background: rgba(14,116,144,0.15); padding: 1rem; border-radius: 0.75rem; margin-bottom: 1rem;">
-                                <p style="color: var(--text-teal-light);">Your result will appear here.</p>
+                            <div id="coldWaterResult" style="background: rgba(14,116,144,0.15); padding: 1rem; border-radius: 0.75rem; margin-bottom: 1rem; min-height: 80px; display: flex; align-items: center; justify-content: center;">
+                                <p style="color: var(--text-muted); font-style: italic;">Adjust the slider above to see your result</p>
                             </div>
                         </div>
                     </div>
@@ -2073,19 +2073,41 @@ html, body {
                     
                     if (timeLeft <= 0) {
                         clearInterval(interval);
-                        timerDisplay.textContent = 'Done! ✓';
+                        timerDisplay.textContent = 'Done!';
                         timerDisplay.style.color = 'var(--success-emerald)';
                         
+                        // Add a completion message
+                        const completionMsg = document.createElement('p');
+                        completionMsg.style.cssText = 'color: var(--text-teal-light); margin-top: 1rem; text-align: center; font-weight: 600;';
+                        completionMsg.textContent = '✓ Great! Now take a moment and notice how you feel.';
+                        timerDiv.querySelector('.timer-container').appendChild(completionMsg);
+                        
                         setTimeout(() => {
-                            startTimerBtn.style.display = 'none';
+                            timerDiv.style.display = 'none';
                             afterDiv.style.display = 'block';
-                            
-                            const before = parseInt(beforeSlider?.value || '5');
-                            const after = parseInt(afterSlider?.value || '3');
-                            resultDiv.innerHTML = `<p style="color: var(--text-teal-light);">You went from ${before} to ${after}. Your heart rate likely slowed — that's the dive reflex working.</p>`;
-                        }, 1000);
+                        }, 2000);
                     }
                 }, 1000);
+            });
+        }
+        
+        // Handle the after rating and show results
+        if (afterSlider) {
+            afterSlider.addEventListener('change', function() {
+                const before = parseInt(beforeSlider?.value || '5');
+                const after = parseInt(this.value);
+                const change = before - after;
+                
+                let message = '';
+                if (change > 0) {
+                    message = `<p style="color: var(--text-teal-light);"><strong>✓ Your intensity dropped from ${before} to ${after}!</strong><br><br>That's the dive reflex working — your heart rate slowed automatically. This is a hardwired biological response you can use anytime.</p>`;
+                } else if (change < 0) {
+                    message = `<p style="color: var(--text-secondary);">Your intensity went from ${before} to ${after}. Cold water doesn't work for everyone, or you might need a longer/colder application. That's okay — you have 4 other techniques to try.</p>`;
+                } else {
+                    message = `<p style="color: var(--text-secondary);">You stayed at ${before}. Some people need more intense cold or longer duration. That's fine — other techniques may work better for you.</p>`;
+                }
+                
+                resultDiv.innerHTML = message;
             });
         }
         
