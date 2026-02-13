@@ -9,6 +9,32 @@
 <title>Module 2: Physical Reset — Body to Brain</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
+:root {
+    --bg-dark: #0f172a;
+    --bg-card: rgba(15, 23, 42, 0.98);
+    --bg-card-light: rgba(30, 41, 59, 0.65);
+    --bg-card-dark: rgba(15, 23, 42, 0.45);
+    --border-subtle: rgba(30, 41, 59, 0.5);
+    --border-softer: rgba(51, 65, 85, 0.4);
+    --primary-teal: #0e7490;
+    --primary-teal-dark: #0c627a;
+    --accent-amber: #d97706;
+    --accent-amber-dark: #b45309;
+    --text-primary: rgb(241, 245, 249);
+    --text-secondary: rgb(203, 213, 225);
+    --text-muted: rgb(148, 163, 184);
+    --text-teal-light: rgb(165, 243, 252);
+    --text-teal: rgb(94, 234, 212);
+    --text-amber: rgb(251, 191, 36);
+    --success-emerald: rgb(74, 222, 128);
+    --success-bg: rgba(34, 197, 94, 0.12);
+    --gradient-main: linear-gradient(135deg, #0e7490, #d97706);
+    --gradient-subtle: linear-gradient(135deg, rgba(14,116,144,0.15), rgba(217,119,6,0.10));
+    --crisis-red: #dc2626;
+    --crisis-red-dark: #b91c1c;
+    --crisis-bg: rgba(220, 38, 38, 0.08);
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -21,8 +47,8 @@ html, body {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    background: #0f172a;
-    color: rgb(241, 245, 249);
+    background: var(--bg-dark);
+    color: var(--text-primary);
 }
 
 .container {
@@ -37,11 +63,36 @@ html, body {
     max-width: 28rem;
     height: 100%;
     margin: 0 auto;
-    background: rgba(15, 23, 42, 0.98);
+    background: var(--bg-card);
     display: flex;
     flex-direction: column;
     position: relative;
     overflow: hidden;
+}
+
+.bg-blur-1, .bg-blur-2 {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.3;
+}
+
+.bg-blur-1 {
+    top: -5%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 22rem;
+    height: 22rem;
+    background: rgba(14, 116, 144, 0.15);
+}
+
+.bg-blur-2 {
+    bottom: -5%;
+    right: -5%;
+    width: 18rem;
+    height: 18rem;
+    background: rgba(217, 119, 6, 0.15);
 }
 
 .main-content {
@@ -61,8 +112,8 @@ html, body {
 
 /* Crisis Banner */
 .crisis-banner {
-    background: rgba(220, 38, 38, 0.08);
-    border: 1px solid #dc2626;
+    background: var(--crisis-bg);
+    border: 1px solid var(--crisis-red);
     border-radius: 0.875rem;
     padding: 1rem 1.25rem;
     margin-bottom: 1.25rem;
@@ -86,7 +137,7 @@ html, body {
 
 .crisis-link {
     color: white;
-    background: #dc2626;
+    background: var(--crisis-red);
     text-decoration: none;
     padding: 0.5rem 1rem;
     border-radius: 2rem;
@@ -96,8 +147,8 @@ html, body {
 
 /* Header */
 .header {
-    background: linear-gradient(135deg, rgba(30,41,59,0.65), rgba(15,23,42,0.45));
-    border: 1px solid rgba(51,65,85,0.4);
+    background: linear-gradient(135deg, var(--bg-card-light), var(--bg-card-dark));
+    border: 1px solid var(--border-softer);
     border-radius: 1rem;
     padding: 1.25rem;
     margin-bottom: 1.25rem;
@@ -113,14 +164,14 @@ html, body {
 .back-btn {
     background: none;
     border: none;
-    color: rgb(148,163,184);
+    color: var(--text-muted);
     font-size: 1.5rem;
     cursor: pointer;
     padding: 0.25rem;
 }
 
 .step-indicator {
-    color: rgb(148,163,184);
+    color: var(--text-muted);
     font-size: 0.875rem;
     font-weight: 600;
 }
@@ -140,35 +191,38 @@ html, body {
 }
 
 .progress-dot.active {
-    background: linear-gradient(135deg, #0e7490, #d97706);
+    background: var(--gradient-main);
 }
 
 .step-title {
     font-size: 1.5rem;
     font-weight: 700;
-    background: linear-gradient(135deg, #0e7490, #d97706);
+    background: var(--gradient-main);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     margin-bottom: 0.5rem;
 }
 
 .step-subtitle {
-    color: rgb(203,213,225);
+    color: var(--text-secondary);
     font-size: 0.9375rem;
 }
 
 /* Cards */
 .card {
-    background: linear-gradient(135deg, rgba(30,41,59,0.65), rgba(15,23,42,0.45));
-    border: 1px solid rgba(51,65,85,0.4);
+    background: linear-gradient(135deg, var(--bg-card-light), var(--bg-card-dark));
+    border: 1px solid var(--border-softer);
     border-radius: 1.25rem;
     padding: 1.5rem;
     margin-bottom: 1.25rem;
 }
 
 .card-highlight {
-    background: linear-gradient(135deg, rgba(14,116,144,0.15), rgba(217,119,6,0.1));
+    background: var(--gradient-subtle);
     border: 1px solid rgba(14,116,144,0.3);
+    border-radius: 1.25rem;
+    padding: 1.5rem;
+    margin-bottom: 1.25rem;
 }
 
 .section-header {
@@ -177,7 +231,7 @@ html, body {
     gap: 0.75rem;
     margin-bottom: 1rem;
     padding-bottom: 0.75rem;
-    border-bottom: 1px solid rgba(51,65,85,0.4);
+    border-bottom: 1px solid var(--border-softer);
 }
 
 .section-icon {
@@ -187,7 +241,7 @@ html, body {
 .section-title {
     font-size: 1.25rem;
     font-weight: 700;
-    color: rgb(165,243,252);
+    color: var(--text-teal-light);
 }
 
 /* Stats */
@@ -206,13 +260,13 @@ html, body {
 }
 
 .stat-label {
-    color: rgb(148,163,184);
+    color: var(--text-muted);
     font-size: 0.6875rem;
     text-transform: uppercase;
 }
 
 .stat-value {
-    color: rgb(94,234,212);
+    color: var(--text-teal);
     font-weight: 700;
     font-size: 1rem;
     margin-top: 0.25rem;
@@ -221,7 +275,7 @@ html, body {
 /* Instruction Box */
 .instruction-box {
     background: rgba(15,23,42,0.6);
-    border-left: 4px solid #0e7490;
+    border-left: 4px solid var(--primary-teal);
     border-radius: 0.75rem;
     padding: 1.25rem;
     margin: 1.25rem 0;
@@ -238,14 +292,14 @@ html, body {
     align-items: flex-start;
     gap: 0.75rem;
     margin-bottom: 0.75rem;
-    color: rgb(203,213,225);
+    color: var(--text-secondary);
     font-size: 0.875rem;
 }
 
 .instruction-list li:before {
     content: counter(step);
-    background: linear-gradient(135deg, rgba(14,116,144,0.15), rgba(217,119,6,0.1));
-    color: rgb(165,243,252);
+    background: var(--gradient-subtle);
+    color: var(--text-teal-light);
     font-weight: 700;
     width: 1.5rem;
     height: 1.5rem;
@@ -260,7 +314,7 @@ html, body {
 /* Safety Note */
 .safety-note {
     background: rgba(220,38,38,0.1);
-    border-left: 4px solid #dc2626;
+    border-left: 4px solid var(--crisis-red);
     padding: 1rem;
     border-radius: 0.75rem;
     margin: 1rem 0;
@@ -270,7 +324,7 @@ html, body {
 
 /* Practice Card */
 .practice-card {
-    background: linear-gradient(135deg, rgba(14,116,144,0.15), rgba(217,119,6,0.1));
+    background: var(--gradient-subtle);
     border: 2px solid rgba(14,116,144,0.3);
     border-radius: 1rem;
     padding: 1.5rem;
@@ -281,7 +335,7 @@ html, body {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    color: rgb(165,243,252);
+    color: var(--text-teal-light);
     font-weight: 700;
     font-size: 1rem;
     margin-bottom: 1rem;
@@ -305,14 +359,14 @@ html, body {
 }
 
 .btn-practice-primary {
-    background: linear-gradient(135deg, #0e7490, #d97706);
+    background: var(--gradient-main);
     color: white;
 }
 
 .btn-practice-secondary {
-    background: rgba(15,23,42,0.45);
-    color: rgb(203,213,225);
-    border: 1px solid rgba(51,65,85,0.4);
+    background: var(--bg-card-dark);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-softer);
 }
 
 /* Timer */
@@ -327,19 +381,19 @@ html, body {
 .timer-display {
     font-size: 3rem;
     font-weight: 800;
-    color: rgb(94,234,212);
+    color: var(--text-teal);
     font-variant-numeric: tabular-nums;
     margin-bottom: 1rem;
 }
 
 .timer-phase {
     font-size: 1.25rem;
-    color: rgb(165,243,252);
+    color: var(--text-teal-light);
     margin-bottom: 0.5rem;
 }
 
 .timer-round {
-    color: rgb(148,163,184);
+    color: var(--text-muted);
     font-size: 0.875rem;
 }
 
@@ -351,7 +405,7 @@ html, body {
 .slider-label {
     display: flex;
     justify-content: space-between;
-    color: rgb(203,213,225);
+    color: var(--text-secondary);
     margin-bottom: 0.5rem;
 }
 
@@ -368,13 +422,13 @@ html, body {
     -webkit-appearance: none;
     width: 1.25rem;
     height: 1.25rem;
-    background: linear-gradient(135deg, #0e7490, #d97706);
+    background: var(--gradient-main);
     border-radius: 50%;
     cursor: pointer;
 }
 
 .slider-value {
-    color: rgb(94,234,212);
+    color: var(--text-teal);
     font-weight: 700;
     font-size: 1rem;
 }
@@ -382,9 +436,43 @@ html, body {
 .slider-labels {
     display: flex;
     justify-content: space-between;
-    color: rgb(148,163,184);
+    color: var(--text-muted);
     font-size: 0.75rem;
     margin-top: 0.25rem;
+}
+
+/* Breath Circle */
+.breath-circle {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: var(--gradient-subtle);
+    margin: 1rem auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 4s ease-in-out;
+}
+
+.breath-circle.inhale {
+    transform: scale(1.3);
+    background: rgba(14,116,144,0.2);
+}
+
+.breath-circle.hold {
+    transform: scale(1.3);
+    background: rgba(217,119,6,0.2);
+}
+
+.breath-circle.exhale {
+    transform: scale(0.8);
+    background: rgba(14,116,144,0.3);
+}
+
+.breath-text {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-teal-light);
 }
 
 /* Checkboxes */
@@ -401,24 +489,24 @@ html, body {
     gap: 0.5rem;
     padding: 0.875rem;
     background: rgba(15,23,42,0.6);
-    border: 1px solid rgba(51,65,85,0.4);
+    border: 1px solid var(--border-softer);
     border-radius: 0.75rem;
     cursor: pointer;
-    color: rgb(203,213,225);
+    color: var(--text-secondary);
     font-size: 0.875rem;
     transition: all 0.2s;
 }
 
 .reflection-checkbox.checked {
-    border-color: #0e7490;
+    border-color: var(--primary-teal);
     background: rgba(14,116,144,0.15);
-    color: white;
+    color: var(--text-primary);
 }
 
 .reflection-checkbox input {
     width: 1.125rem;
     height: 1.125rem;
-    accent-color: #0e7490;
+    accent-color: var(--primary-teal);
 }
 
 /* Buttons */
@@ -437,14 +525,14 @@ html, body {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #0e7490, #d97706);
+    background: var(--gradient-main);
     color: white;
 }
 
 .btn-secondary {
-    background: rgba(15,23,42,0.45);
-    color: rgb(203,213,225);
-    border: 1px solid rgba(51,65,85,0.4);
+    background: var(--bg-card-dark);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-softer);
 }
 
 .btn-group {
@@ -454,8 +542,8 @@ html, body {
 }
 
 .btn-save {
-    background: linear-gradient(135deg, rgba(14,116,144,0.15), rgba(217,119,6,0.1));
-    color: rgb(165,243,252);
+    background: var(--gradient-subtle);
+    color: var(--text-teal-light);
     border: 1px solid rgba(14,116,144,0.3);
     padding: 0.875rem 1.5rem;
     border-radius: 2rem;
@@ -468,13 +556,13 @@ html, body {
 }
 
 .btn-save.saved {
-    background: rgba(34,197,94,0.12);
-    color: rgb(74,222,128);
+    background: var(--success-bg);
+    color: var(--success-emerald);
     border-color: rgba(74,222,128,0.3);
 }
 
 .save-feedback {
-    color: rgb(74,222,128);
+    color: var(--success-emerald);
     font-size: 0.875rem;
     text-align: center;
     margin-top: 0.5rem;
@@ -496,14 +584,68 @@ html, body {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: rgb(165,243,252);
+    color: var(--text-teal-light);
+    text-align: center;
+}
+
+/* Reference Card */
+.reference-card {
+    background: var(--gradient-subtle);
+    border: 1px solid rgba(14,116,144,0.3);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.reference-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--text-teal-light);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.reference-grid {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.reference-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: rgba(15,23,42,0.6);
+    border-radius: 0.75rem;
+}
+
+.reference-icon {
+    font-size: 1.25rem;
+}
+
+.reference-content {
+    flex: 1;
+}
+
+.reference-name {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.875rem;
+    margin-bottom: 0.125rem;
+}
+
+.reference-use {
+    color: var(--text-muted);
+    font-size: 0.75rem;
 }
 
 /* Footer */
 .footer {
     margin-top: 2rem;
     padding-top: 1.5rem;
-    border-top: 1px solid rgba(30,41,59,0.5);
+    border-top: 1px solid var(--border-subtle);
     text-align: center;
 }
 
@@ -515,7 +657,7 @@ html, body {
 }
 
 .footer-resources {
-    color: rgb(148,163,184);
+    color: var(--text-muted);
     font-size: 0.8125rem;
     line-height: 1.6;
 }
@@ -546,6 +688,8 @@ html, body {
 <body>
 <div class="container">
     <div class="app-wrapper">
+        <div class="bg-blur-1"></div>
+        <div class="bg-blur-2"></div>
         <div class="main-content" id="mainContent">
             <div class="content-wrapper" id="content">
                 <!-- Content rendered by JavaScript -->
@@ -566,7 +710,6 @@ html, body {
     let currentStep = 1;
     const totalSteps = 9;
     
-    // User data
     let userData = {
         coldBefore: 5,
         coldAfter: 5,
@@ -575,12 +718,9 @@ html, body {
         clarityAfter: 5,
         tensionBefore: 5,
         tensionAfter: 5,
-        pmrBefore: 5,
-        pmrAfter: 5,
         selectedTechniques: []
     };
 
-    // Step titles
     const stepTitles = {
         1: 'Introduction',
         2: 'Cold Water — The Dive Reflex',
@@ -607,7 +747,7 @@ html, body {
         if (saved) {
             try {
                 const data = JSON.parse(saved);
-                if (Date.now() - data.timestamp < 86400000) { // 24 hours
+                if (Date.now() - data.timestamp < 86400000) {
                     currentStep = data.step || 1;
                     userData = data.userData || userData;
                 }
@@ -663,7 +803,6 @@ html, body {
         }
     }
 
-    // Make functions global
     window.nextStep = nextStep;
     window.previousStep = previousStep;
     window.goToStep = goToStep;
@@ -712,12 +851,10 @@ html, body {
         return `
             ${renderHeader()}
             
-            <div class="card">
-                <div class="card-highlight" style="padding: 1.5rem; border-radius: 1.25rem;">
-                    <p style="font-size: 1.05rem; color: rgb(165,243,252); font-style: italic; margin: 0;">
-                        "Your body has hardwired responses that can override your emotional state. These aren't distractions — they're biological circuit breakers. When your alarm system is screaming, you need to speak its language: physical sensation."
-                    </p>
-                </div>
+            <div class="card-highlight">
+                <p style="font-size: 1.05rem; color: var(--text-teal-light); font-style: italic; margin: 0;">
+                    "Your body has hardwired responses that can override your emotional state. These aren't distractions — they're biological circuit breakers. When your alarm system is screaming, you need to speak its language: physical sensation."
+                </p>
             </div>
             
             <div class="card">
@@ -725,18 +862,18 @@ html, body {
                     <span class="section-icon">💡</span>
                     <span class="section-title">Why Physical Reset Works</span>
                 </div>
-                <div style="color: rgb(203,213,225); line-height: 1.7;">
-                    <p style="margin-bottom: 1rem;">Remember from Module 1: when you're in crisis, your <strong style="color: rgb(94,234,212);">thinking brain is offline</strong>.</p>
+                <div style="color: var(--text-secondary); line-height: 1.7;">
+                    <p style="margin-bottom: 1rem;">Remember from Module 1: when you're in crisis, your <strong style="color: var(--text-teal);">thinking brain is offline</strong>.</p>
                     
                     <p style="margin-bottom: 1rem;">These techniques work because they:</p>
                     
-                    <p style="margin-bottom: 1rem;"><strong style="color: rgb(94,234,212);">1. Bypass your thinking brain entirely</strong><br>
+                    <p style="margin-bottom: 1rem;"><strong style="color: var(--text-teal);">1. Bypass your thinking brain entirely</strong><br>
                     They trigger automatic nervous system responses</p>
                     
-                    <p style="margin-bottom: 1rem;"><strong style="color: rgb(94,234,212);">2. Metabolize stress chemicals</strong><br>
+                    <p style="margin-bottom: 1rem;"><strong style="color: var(--text-teal);">2. Metabolize stress chemicals</strong><br>
                     Burn through the adrenaline and cortisol flooding your system</p>
                     
-                    <p><strong style="color: rgb(94,234,212);">3. Give you something to DO</strong><br>
+                    <p><strong style="color: var(--text-teal);">3. Give you something to DO</strong><br>
                     Action urges need an outlet — these provide safe ones</p>
                 </div>
             </div>
@@ -760,9 +897,9 @@ html, body {
                     <span class="section-title">Cold Water — The Dive Reflex</span>
                 </div>
                 
-                <div style="color: rgb(203,213,225); line-height: 1.7;">
+                <div style="color: var(--text-secondary); line-height: 1.7;">
                     <p style="margin-bottom: 1rem;">
-                        "When cold water hits your face, especially around your eyes and nose, it triggers the <strong style="color: rgb(94,234,212);">mammalian dive reflex</strong> — the same response that lets seals dive deep. Your heart rate automatically slows. This isn't willpower; it's a hardwired reflex."
+                        "When cold water hits your face, especially around your eyes and nose, it triggers the <strong style="color: var(--text-teal);">mammalian dive reflex</strong> — the same response that lets seals dive deep. Your heart rate automatically slows. This isn't willpower; it's a hardwired reflex."
                     </p>
                 </div>
                 
@@ -782,9 +919,9 @@ html, body {
                 </div>
                 
                 <div class="instruction-box">
-                    <p style="color: rgb(94,234,212); font-weight: 700; margin-bottom: 0.75rem;">How To Do It:</p>
+                    <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 0.75rem;">How To Do It:</p>
                     
-                    <p style="color: rgb(165,243,252); font-weight: 600; margin: 1rem 0 0.5rem;">Method 1: Ice Water Face Dunk</p>
+                    <p style="color: var(--text-teal-light); font-weight: 600; margin: 1rem 0 0.5rem;">Method 1: Ice Water Face Dunk</p>
                     <ul class="instruction-list">
                         <li>Fill bowl with ice water</li>
                         <li>Hold breath</li>
@@ -793,12 +930,19 @@ html, body {
                         <li>Repeat 2-3 times if needed</li>
                     </ul>
                     
-                    <p style="color: rgb(165,243,252); font-weight: 600; margin: 1rem 0 0.5rem;">Method 2: Ice Pack on Face</p>
+                    <p style="color: var(--text-teal-light); font-weight: 600; margin: 1rem 0 0.5rem;">Method 2: Ice Pack on Face</p>
                     <ul class="instruction-list">
                         <li>Wrap ice pack in thin towel</li>
                         <li>Hold on eyes and cheeks for 30 seconds</li>
                         <li>Breathe slowly</li>
                         <li>Repeat as needed</li>
+                    </ul>
+                    
+                    <p style="color: var(--text-teal-light); font-weight: 600; margin: 1rem 0 0.5rem;">Method 3: Cold Shower</p>
+                    <ul class="instruction-list">
+                        <li>Turn water to cold</li>
+                        <li>Let it hit face and chest</li>
+                        <li>Stay for 1-2 minutes</li>
                     </ul>
                 </div>
                 
@@ -826,10 +970,10 @@ html, body {
         return `
             ${renderHeader()}
             
-            <div class="card-highlight" style="padding: 1.5rem; border-radius: 1.25rem; margin-bottom: 1.25rem;">
-                <div style="text-align: center; font-size: 3rem; margin-bottom: 1rem;">🧊</div>
-                <p style="color: rgb(165,243,252); text-align: center; font-weight: 600;">Let's try cold water together</p>
-                <p style="color: rgb(203,213,225); text-align: center; font-size: 0.9375rem;">This is optional — skip if you're not ready</p>
+            <div class="card-highlight" style="text-align: center;">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">🧊</div>
+                <p style="color: var(--text-teal-light); font-weight: 600;">Let's try cold water together</p>
+                <p style="color: var(--text-secondary); font-size: 0.9375rem;">This is optional — skip if you're not ready</p>
             </div>
             
             <div class="practice-card" id="coldWaterPractice">
@@ -839,7 +983,7 @@ html, body {
                 </div>
                 
                 <div style="margin-bottom: 1.5rem;">
-                    <p style="color: rgb(203,213,225); margin-bottom: 1rem;">Do you have access to:</p>
+                    <p style="color: var(--text-secondary); margin-bottom: 1rem;">Do you have access to:</p>
                     <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
                         <label class="reflection-checkbox" style="flex:1;">
                             <input type="checkbox" id="iceBowl"> Ice and bowl
@@ -871,7 +1015,7 @@ html, body {
                         </div>
                     </div>
                     
-                    <p style="color: rgb(203,213,225); margin: 1rem 0; text-align: center;">
+                    <p style="color: var(--text-secondary); margin: 1rem 0; text-align: center;">
                         <strong>Get your cold water ready.</strong>
                     </p>
                     
@@ -901,6 +1045,12 @@ html, body {
                         <div id="coldResult" class="result-box">
                             Adjust the slider to see your result
                         </div>
+                        
+                        <div style="display: flex; gap: 0.5rem; justify-content: center; margin-top: 1rem;">
+                            <button class="reflection-btn btn-practice btn-practice-secondary" data-feeling="effective">Helped a lot</button>
+                            <button class="reflection-btn btn-practice btn-practice-secondary" data-feeling="little">Helped a little</button>
+                            <button class="reflection-btn btn-practice btn-practice-secondary" data-feeling="no">No difference</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -925,9 +1075,9 @@ html, body {
                     <span class="section-title">Intense Exercise</span>
                 </div>
                 
-                <div style="color: rgb(203,213,225); line-height: 1.7;">
+                <div style="color: var(--text-secondary); line-height: 1.7;">
                     <p style="margin-bottom: 1rem;">
-                        "When you're flooded with stress hormones (adrenaline, cortisol), your body is primed for physical action. Intense exercise <strong style="color: rgb(94,234,212);">metabolizes these chemicals</strong> — you burn through the fuel of panic."
+                        "When you're flooded with stress hormones (adrenaline, cortisol), your body is primed for physical action. Intense exercise <strong style="color: var(--text-teal);">metabolizes these chemicals</strong> — you burn through the fuel of panic."
                     </p>
                 </div>
                 
@@ -947,19 +1097,22 @@ html, body {
                 </div>
                 
                 <div class="instruction-box">
-                    <p style="color: rgb(94,234,212); font-weight: 700; margin-bottom: 0.75rem;">Options:</p>
+                    <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 0.75rem;">Options:</p>
                     
-                    <p style="color: rgb(165,243,252); font-weight: 600; margin: 0.75rem 0 0.25rem;">🏃 Sprint/Run</p>
-                    <p style="color: rgb(203,213,225); font-size: 0.875rem; margin-bottom: 0.75rem;">Run fast 1-2 min, walk 1 min, repeat 3-5x</p>
+                    <p style="color: var(--text-teal-light); font-weight: 600; margin: 0.75rem 0 0.25rem;">🏃 Sprint/Run</p>
+                    <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.75rem;">Run fast 1-2 min, walk 1 min, repeat 3-5x</p>
                     
-                    <p style="color: rgb(165,243,252); font-weight: 600; margin: 0.75rem 0 0.25rem;">🤸 Jumping Jacks</p>
-                    <p style="color: rgb(203,213,225); font-size: 0.875rem; margin-bottom: 0.75rem;">50-100 fast, rest 30 sec, repeat 3x</p>
+                    <p style="color: var(--text-teal-light); font-weight: 600; margin: 0.75rem 0 0.25rem;">🤸 Jumping Jacks</p>
+                    <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.75rem;">50-100 fast, rest 30 sec, repeat 3x</p>
                     
-                    <p style="color: rgb(165,243,252); font-weight: 600; margin: 0.75rem 0 0.25rem;">🪜 Stair Sprints</p>
-                    <p style="color: rgb(203,213,225); font-size: 0.875rem; margin-bottom: 0.75rem;">Run up stairs, walk down, repeat 5-10x</p>
+                    <p style="color: var(--text-teal-light); font-weight: 600; margin: 0.75rem 0 0.25rem;">🪜 Stair Sprints</p>
+                    <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.75rem;">Run up stairs, walk down, repeat 5-10x</p>
+                    
+                    <p style="color: var(--text-teal-light); font-weight: 600; margin: 0.75rem 0 0.25rem;">🧱 Wall Sits / Planks</p>
+                    <p style="color: var(--text-secondary); font-size: 0.875rem;">Hold 60 sec, rest 30 sec, repeat 3x</p>
                 </div>
                 
-                <p style="color: rgb(94,234,212); font-size: 0.875rem; font-weight: 600;">
+                <p style="color: var(--text-teal); font-size: 0.875rem; font-weight: 600;">
                     Key: Intense enough you can't think. You should be breathing hard.
                 </p>
             </div>
@@ -990,7 +1143,7 @@ html, body {
                 </div>
                 
                 <div style="margin-bottom: 1rem;">
-                    <p style="color: rgb(203,213,225); margin-bottom: 1rem;">Can you do 2 minutes of movement?</p>
+                    <p style="color: var(--text-secondary); margin-bottom: 1rem;">Can you do 2 minutes of movement?</p>
                     <div class="practice-buttons">
                         <button id="exerciseYesBtn" class="btn-practice btn-practice-primary">Yes - Let's Do It</button>
                         <button id="exerciseNoBtn" class="btn-practice btn-practice-secondary">Not Right Now</button>
@@ -1010,11 +1163,12 @@ html, body {
                         </div>
                     </div>
                     
-                    <p style="color: rgb(203,213,225); margin: 1rem 0;">Choose your exercise:</p>
+                    <p style="color: var(--text-secondary); margin: 1rem 0;">Choose your exercise:</p>
                     <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
-                        <button class="reflection-btn btn-practice btn-practice-secondary" id="exerciseJumpingJacks">Jumping Jacks</button>
-                        <button class="reflection-btn btn-practice btn-practice-secondary" id="exerciseRun">Run in Place</button>
-                        <button class="reflection-btn btn-practice btn-practice-secondary" id="exerciseStairs">Stairs</button>
+                        <button class="btn-practice btn-practice-secondary" id="exerciseJumpingJacks">Jumping Jacks</button>
+                        <button class="btn-practice btn-practice-secondary" id="exerciseRun">Run in Place</button>
+                        <button class="btn-practice btn-practice-secondary" id="exerciseStairs">Stairs</button>
+                        <button class="btn-practice btn-practice-secondary" id="exerciseOther">Other</button>
                     </div>
                     
                     <button id="startWorkoutBtn" class="btn-practice btn-practice-primary">Start Workout →</button>
@@ -1064,7 +1218,7 @@ html, body {
         `;
     }
 
-    // STEP 6: Paced Breathing Info
+    // STEP 6: Paced Breathing Info + Practice
     function renderStep6() {
         return `
             ${renderHeader()}
@@ -1075,9 +1229,9 @@ html, body {
                     <span class="section-title">Paced Breathing</span>
                 </div>
                 
-                <div style="color: rgb(203,213,225); line-height: 1.7;">
+                <div style="color: var(--text-secondary); line-height: 1.7;">
                     <p style="margin-bottom: 1rem;">
-                        "When you breathe in, your heart speeds up slightly. When you breathe out, it slows down. By making your <strong style="color: rgb(94,234,212);">exhales longer than inhales</strong>, you activate your body's natural calming system."
+                        "Your heart rate and breathing are connected. When you breathe in, your heart speeds up slightly. When you breathe out, it slows down. By making your <strong style="color: var(--text-teal);">exhales longer than inhales</strong>, you activate your body's natural calming system."
                     </p>
                 </div>
                 
@@ -1097,21 +1251,69 @@ html, body {
                 </div>
                 
                 <div class="instruction-box">
-                    <p style="color: rgb(94,234,212); font-weight: 700; margin-bottom: 0.75rem;">Patterns:</p>
+                    <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 0.75rem;">Patterns:</p>
                     
-                    <p style="color: rgb(165,243,252); font-weight: 600; margin: 0.75rem 0 0.25rem;">4-6-8 (recommended)</p>
-                    <p style="color: rgb(203,213,225); font-size: 0.875rem;">IN 4 sec → HOLD 6 sec → OUT 8 sec</p>
+                    <p style="color: var(--text-teal-light); font-weight: 600; margin: 0.75rem 0 0.25rem;">4-6-8 (recommended)</p>
+                    <p style="color: var(--text-secondary); font-size: 0.875rem;">IN 4 sec → HOLD 6 sec → OUT 8 sec</p>
                     
-                    <p style="color: rgb(165,243,252); font-weight: 600; margin: 1rem 0 0.25rem;">Box Breathing</p>
-                    <p style="color: rgb(203,213,225); font-size: 0.875rem;">IN 4 → HOLD 4 → OUT 4 → HOLD 4</p>
+                    <p style="color: var(--text-teal-light); font-weight: 600; margin: 1rem 0 0.25rem;">Box Breathing</p>
+                    <p style="color: var(--text-secondary); font-size: 0.875rem;">IN 4 → HOLD 4 → OUT 4 → HOLD 4</p>
+                    
+                    <p style="color: var(--text-teal-light); font-weight: 600; margin: 1rem 0 0.25rem;">4-7-8 (sleep)</p>
+                    <p style="color: var(--text-secondary); font-size: 0.875rem;">IN 4 → HOLD 7 → OUT 8</p>
                 </div>
                 
-                <p style="color: rgb(94,234,212); font-size: 0.875rem; font-weight: 600;">
+                <p style="color: var(--text-teal); font-size: 0.875rem; font-weight: 600;">
                     Key: Exhale longer than inhale.
                 </p>
                 
                 <div class="safety-note">
                     <strong>⚠️ Note:</strong> If focusing on breath makes you MORE anxious, skip this.
+                </div>
+            </div>
+            
+            <!-- Guided Breathing Practice -->
+            <div class="practice-card">
+                <div class="practice-title">
+                    <span>🌬️</span>
+                    GUIDED BREATHING
+                </div>
+                
+                <div class="slider-container">
+                    <div class="slider-label">
+                        <span>Current tension (0-10)</span>
+                        <span class="slider-value" id="tensionBeforeValue">5</span>
+                    </div>
+                    <input type="range" id="tensionBeforeSlider" class="slider" min="0" max="10" value="5" step="1">
+                    <div class="slider-labels">
+                        <span>0 - Calm</span>
+                        <span>10 - Tense</span>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin: 1.5rem 0;">
+                    <div class="breath-circle" id="breathCircle">
+                        <span class="breath-text" id="breathInstruction">Ready</span>
+                    </div>
+                    
+                    <div style="display: flex; gap: 0.5rem; justify-content: center; margin-top: 1rem;">
+                        <button id="startBreathingBtn" class="btn-practice btn-practice-primary">Start 4-6-8</button>
+                        <button id="stopBreathingBtn" class="btn-practice btn-practice-secondary" style="display: none;">Stop</button>
+                    </div>
+                </div>
+                
+                <div id="breathingAfter" style="display: none;">
+                    <div class="slider-container">
+                        <div class="slider-label">
+                            <span>Tension NOW (0-10)</span>
+                            <span class="slider-value" id="tensionAfterValue">5</span>
+                        </div>
+                        <input type="range" id="tensionAfterSlider" class="slider" min="0" max="10" value="5" step="1">
+                    </div>
+                    
+                    <div id="breathingResult" class="result-box">
+                        Complete the practice to see results
+                    </div>
                 </div>
             </div>
             
@@ -1122,14 +1324,14 @@ html, body {
             
             <div class="btn-group">
                 <button class="btn btn-secondary" onclick="previousStep()">← Back</button>
-                <button class="btn btn-primary" onclick="nextStep()">Practice →</button>
+                <button class="btn btn-primary" onclick="nextStep()">Continue →</button>
             </div>
             
             ${renderFooter()}
         `;
     }
 
-    // STEP 7: PMR Practice
+    // STEP 7: PMR - Visual Only (Simple)
     function renderStep7() {
         return `
             ${renderHeader()}
@@ -1140,8 +1342,8 @@ html, body {
                     <span class="section-title">Progressive Muscle Relaxation</span>
                 </div>
                 
-                <div style="color: rgb(203,213,225); line-height: 1.7;">
-                    <p>
+                <div style="color: var(--text-secondary); line-height: 1.7;">
+                    <p style="margin-bottom: 1rem;">
                         "You can't be physically tense and mentally relaxed at the same time. PMR works by deliberately tensing then releasing muscle groups."
                     </p>
                 </div>
@@ -1149,7 +1351,7 @@ html, body {
                 <div class="technique-stats">
                     <div class="stat">
                         <div class="stat-label">Speed</div>
-                        <div class="stat-value">⚡ 5-10 min</div>
+                        <div class="stat-value">⚡ 2-3 min</div>
                     </div>
                     <div class="stat">
                         <div class="stat-label">Best for</div>
@@ -1162,47 +1364,88 @@ html, body {
                 </div>
             </div>
             
-            <div class="practice-card" id="pmrPractice">
-                <div class="practice-title">
+            <!-- SIMPLE VISUAL PMR - NO TIMERS, NO CLICKS -->
+            <div class="practice-card">
+                <div class="practice-title" style="justify-content: center; font-size: 1.25rem;">
                     <span>💆</span>
-                    GUIDED PMR (2 MIN)
+                    SIMPLE PMR
                 </div>
                 
-                <button id="startPMRBtn" class="btn-practice btn-practice-primary" style="margin-bottom: 1rem;">Start Guided Practice</button>
+                <p style="color: var(--text-secondary); text-align: center; margin-bottom: 1.5rem;">
+                    Follow along at your own pace. Hold each tension for 5 seconds, then release.
+                </p>
                 
-                <div id="pmrGuided" style="display: none;">
-                    <div class="slider-container">
-                        <div class="slider-label">
-                            <span>Current tension (0-10)</span>
-                            <span class="slider-value" id="pmrBeforeValue">5</span>
+                <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+                    <!-- Hands -->
+                    <div style="background: rgba(15,23,42,0.6); border-radius: 1rem; padding: 1.25rem;">
+                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.75rem;">
+                            <span style="font-size: 2rem;">✊</span>
+                            <span style="color: var(--text-teal-light); font-weight: 700; font-size: 1.125rem;">Hands</span>
                         </div>
-                        <input type="range" id="pmrBeforeSlider" class="slider" min="0" max="10" value="5" step="1">
-                        <div class="slider-labels">
-                            <span>0 - Relaxed</span>
-                            <span>10 - Tense</span>
-                        </div>
+                        <p style="color: var(--text-secondary); margin-left: 3rem;">
+                            <strong style="color: var(--text-teal);">Tense:</strong> Make tight fists<br>
+                            <strong style="color: var(--text-teal);">Release:</strong> Let fingers go soft
+                        </p>
                     </div>
                     
-                    <div style="background: rgba(15,23,42,0.6); padding: 1.5rem; border-radius: 0.75rem; margin: 1rem 0;">
-                        <p style="color: rgb(165,243,252); font-weight: 600; margin-bottom: 1rem; text-align: center;" id="pmrInstruction">Hands: Make tight fists</p>
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <span style="color: rgb(94,234,212); font-size: 2rem; font-weight: 700;" id="pmrTimer">5</span>
-                            <button id="pmrNextBtn" class="btn-practice btn-practice-primary">Next →</button>
+                    <!-- Arms -->
+                    <div style="background: rgba(15,23,42,0.6); border-radius: 1rem; padding: 1.25rem;">
+                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.75rem;">
+                            <span style="font-size: 2rem;">💪</span>
+                            <span style="color: var(--text-teal-light); font-weight: 700; font-size: 1.125rem;">Arms</span>
                         </div>
+                        <p style="color: var(--text-secondary); margin-left: 3rem;">
+                            <strong style="color: var(--text-teal);">Tense:</strong> Bend elbows, flex biceps<br>
+                            <strong style="color: var(--text-teal);">Release:</strong> Let arms drop heavy
+                        </p>
                     </div>
                     
-                    <div id="pmrAfter" style="display: none; margin-top: 1.5rem;">
-                        <div class="slider-container">
-                            <div class="slider-label">
-                                <span>Tension NOW (0-10)</span>
-                                <span class="slider-value" id="pmrAfterValue">5</span>
-                            </div>
-                            <input type="range" id="pmrAfterSlider" class="slider" min="0" max="10" value="5" step="1">
+                    <!-- Shoulders -->
+                    <div style="background: rgba(15,23,42,0.6); border-radius: 1rem; padding: 1.25rem;">
+                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.75rem;">
+                            <span style="font-size: 2rem;">⬆️</span>
+                            <span style="color: var(--text-teal-light); font-weight: 700; font-size: 1.125rem;">Shoulders</span>
                         </div>
-                        
-                        <div id="pmrResult" class="result-box">
-                            Complete the practice to see results
+                        <p style="color: var(--text-secondary); margin-left: 3rem;">
+                            <strong style="color: var(--text-teal);">Tense:</strong> Pull shoulders up to ears<br>
+                            <strong style="color: var(--text-teal);">Release:</strong> Let them drop down
+                        </p>
+                    </div>
+                    
+                    <!-- Face -->
+                    <div style="background: rgba(15,23,42,0.6); border-radius: 1rem; padding: 1.25rem;">
+                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.75rem;">
+                            <span style="font-size: 2rem;">😬</span>
+                            <span style="color: var(--text-teal-light); font-weight: 700; font-size: 1.125rem;">Face</span>
                         </div>
+                        <p style="color: var(--text-secondary); margin-left: 3rem;">
+                            <strong style="color: var(--text-teal);">Tense:</strong> Scrunch everything - eyes, nose, mouth<br>
+                            <strong style="color: var(--text-teal);">Release:</strong> Soften, let jaw hang loose
+                        </p>
+                    </div>
+                    
+                    <!-- Legs -->
+                    <div style="background: rgba(15,23,42,0.6); border-radius: 1rem; padding: 1.25rem;">
+                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.75rem;">
+                            <span style="font-size: 2rem;">🦵</span>
+                            <span style="color: var(--text-teal-light); font-weight: 700; font-size: 1.125rem;">Legs</span>
+                        </div>
+                        <p style="color: var(--text-secondary); margin-left: 3rem;">
+                            <strong style="color: var(--text-teal);">Tense:</strong> Point toes, tense thighs<br>
+                            <strong style="color: var(--text-teal);">Release:</strong> Let legs be heavy
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Simple reflection -->
+                <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-softer);">
+                    <p style="color: var(--text-secondary); text-align: center; margin-bottom: 1rem;">
+                        How do you feel now?
+                    </p>
+                    <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;">
+                        <button class="btn-practice btn-practice-secondary" id="pmrRelaxed">More relaxed</button>
+                        <button class="btn-practice btn-practice-secondary" id="pmrSame">Same</button>
+                        <button class="btn-practice btn-practice-secondary" id="pmrUnsure">Not sure</button>
                     </div>
                 </div>
             </div>
@@ -1232,7 +1475,7 @@ html, body {
                     <span class="section-title">Temperature Shock</span>
                 </div>
                 
-                <div style="color: rgb(203,213,225); line-height: 1.7;">
+                <div style="color: var(--text-secondary); line-height: 1.7;">
                     <p>
                         "Extreme temperature changes create immediate physical sensations that interrupt emotional overwhelm. Your brain has limited processing capacity — intense sensation takes up 'bandwidth'."
                     </p>
@@ -1240,16 +1483,16 @@ html, body {
                 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0;">
                     <div style="background: rgba(14,116,144,0.1); padding: 1rem; border-radius: 0.75rem;">
-                        <p style="color: rgb(94,234,212); font-weight: 700; margin-bottom: 0.5rem;">❄️ Cold</p>
-                        <ul style="color: rgb(203,213,225); font-size: 0.8125rem; list-style-position: inside;">
+                        <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 0.5rem;">❄️ Cold</p>
+                        <ul style="color: var(--text-secondary); font-size: 0.8125rem; list-style-position: inside;">
                             <li>Ice cubes in hands</li>
                             <li>Cold shower</li>
                             <li>Walk outside in cold</li>
                         </ul>
                     </div>
                     <div style="background: rgba(217,119,6,0.1); padding: 1rem; border-radius: 0.75rem;">
-                        <p style="color: rgb(251,191,36); font-weight: 700; margin-bottom: 0.5rem;">🔥 Heat</p>
-                        <ul style="color: rgb(203,213,225); font-size: 0.8125rem; list-style-position: inside;">
+                        <p style="color: var(--text-amber); font-weight: 700; margin-bottom: 0.5rem;">🔥 Heat</p>
+                        <ul style="color: var(--text-secondary); font-size: 0.8125rem; list-style-position: inside;">
                             <li>Hot (not burning) shower</li>
                             <li>Heating pad on chest</li>
                             <li>Hands under hot water</li>
@@ -1258,9 +1501,10 @@ html, body {
                 </div>
                 
                 <div style="background: rgba(14,116,144,0.1); padding: 1rem; border-radius: 0.75rem; margin-bottom: 1rem;">
-                    <p style="color: rgb(94,234,212); font-weight: 700; margin-bottom: 0.25rem;">When to Use:</p>
-                    <p style="color: rgb(203,213,225); font-size: 0.875rem;">• When numb/dissociated</p>
-                    <p style="color: rgb(203,213,225); font-size: 0.875rem;">• When emotionally overwhelmed</p>
+                    <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 0.25rem;">When to Use:</p>
+                    <p style="color: var(--text-secondary); font-size: 0.875rem;">• When numb/dissociated</p>
+                    <p style="color: var(--text-secondary); font-size: 0.875rem;">• When emotionally overwhelmed</p>
+                    <p style="color: var(--text-secondary); font-size: 0.875rem;">• When physical pain urges arise</p>
                 </div>
                 
                 <div class="safety-note">
@@ -1273,8 +1517,8 @@ html, body {
             </button>
             <div id="tempSaveFeedback" class="save-feedback"></div>
             
-            <div class="reference-card" style="background: linear-gradient(135deg, rgba(14,116,144,0.15), rgba(217,119,6,0.1)); border: 1px solid rgba(14,116,144,0.3); border-radius: 1rem; padding: 1.5rem; margin: 1.5rem 0;">
-                <div class="reference-title" style="display: flex; align-items: center; gap: 0.5rem; color: rgb(165,243,252); font-size: 1.125rem; font-weight: 700; margin-bottom: 1rem;">
+            <div class="reference-card">
+                <div class="reference-title">
                     <span>📋</span> Your Top Techniques
                 </div>
                 
@@ -1291,7 +1535,7 @@ html, body {
                 </div>
                 
                 <div style="background: rgba(217,119,6,0.1); padding: 1.25rem; border-radius: 0.75rem; margin-top: 1.5rem;">
-                    <p style="color: rgb(251,191,36); font-weight: 600; margin-bottom: 1rem; text-align: center;">
+                    <p style="color: var(--text-amber); font-weight: 600; margin-bottom: 1rem; text-align: center;">
                         "Crisis skills only work if you practice when calm. Will you commit to practicing your top 2 techniques this week?"
                     </p>
                     <div style="display: flex; gap: 0.75rem;">
@@ -1320,19 +1564,19 @@ html, body {
         return `
             ${renderHeader()}
             
-            <div class="card-highlight" style="padding: 2rem; border-radius: 1.25rem; text-align: center;">
+            <div class="card-highlight" style="text-align: center;">
                 <div style="font-size: 4rem; margin-bottom: 1rem;">✅</div>
-                <h2 style="color: rgb(165,243,252); font-size: 1.5rem; margin-bottom: 1rem;">Module 2 Complete!</h2>
-                <p style="color: rgb(203,213,225); margin-bottom: 1.5rem;">
+                <h2 style="color: var(--text-teal-light); font-size: 1.5rem; margin-bottom: 1rem;">Module 2 Complete!</h2>
+                <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
                     You now have physical tools to reset your nervous system when your thinking brain is offline.
                 </p>
-                <p style="color: rgb(94,234,212); font-weight: 600;">
+                <p style="color: var(--text-teal); font-weight: 600;">
                     Next: Module 3 - Grounding & Distraction
                 </p>
             </div>
             
             <div style="text-align: center; margin: 2rem 0;">
-                <button id="practiceBtn" style="background: rgba(34,197,94,0.12); color: rgb(74,222,128); border: 1px solid rgba(74,222,128,0.3); padding: 0.875rem 2rem; border-radius: 2rem; font-size: 0.9375rem; font-weight: 600; cursor: pointer;">
+                <button id="practiceBtn" style="background: var(--success-bg); color: var(--success-emerald); border: 1px solid rgba(74,222,128,0.3); padding: 0.875rem 2rem; border-radius: 2rem; font-size: 0.9375rem; font-weight: 600; cursor: pointer;">
                     ✓ Mark Module as Practiced
                 </button>
             </div>
@@ -1356,8 +1600,8 @@ html, body {
             case 3: content.innerHTML = renderStep3(); initColdWaterPractice(); break;
             case 4: content.innerHTML = renderStep4(); initExerciseSave(); break;
             case 5: content.innerHTML = renderStep5(); initExercisePractice(); break;
-            case 6: content.innerHTML = renderStep6(); initBreathingSave(); break;
-            case 7: content.innerHTML = renderStep7(); initPMR(); break;
+            case 6: content.innerHTML = renderStep6(); initBreathing(); initBreathingSave(); break;
+            case 7: content.innerHTML = renderStep7(); initPMRSave(); initPMRSimple(); break;
             case 8: content.innerHTML = renderStep8(); initTemperature(); initReflection(); break;
             case 9: content.innerHTML = renderStep9(); initComplete(); break;
             default: content.innerHTML = renderStep1();
@@ -1420,9 +1664,9 @@ html, body {
                 const after = parseInt(afterSlider.value);
                 
                 if (after < before) {
-                    resultDiv.innerHTML = `<p style="color: rgb(165,243,252);"><strong>✓ Dropped from ${before} to ${after}!</strong><br>That's the dive reflex working.</p>`;
+                    resultDiv.innerHTML = `<p style="color: var(--text-teal-light);"><strong>✓ Dropped from ${before} to ${after}!</strong><br>That's the dive reflex working.</p>`;
                 } else {
-                    resultDiv.innerHTML = `<p style="color: rgb(203,213,225);">Stayed at ${after}. Other techniques may work better for you.</p>`;
+                    resultDiv.innerHTML = `<p style="color: var(--text-secondary);">Stayed at ${after}. Other techniques may work better.</p>`;
                 }
             });
         }
@@ -1471,6 +1715,13 @@ html, body {
                 }, 1000);
             });
         }
+        
+        // Reflection buttons
+        document.querySelectorAll('[data-feeling]').forEach(btn => {
+            btn.addEventListener('click', function() {
+                this.style.background = 'rgba(14,116,144,0.3)';
+            });
+        });
         
         // Checkboxes
         document.querySelectorAll('.reflection-checkbox input').forEach(cb => {
@@ -1573,13 +1824,11 @@ html, body {
                             isWorkout = false;
                             timeLeft = 30;
                             workoutPhase.textContent = 'REST';
-                            workoutPhase.style.color = 'rgb(251,191,36)';
                         } else {
                             isWorkout = true;
                             timeLeft = 30;
                             round++;
                             workoutPhase.textContent = 'GO!';
-                            workoutPhase.style.color = 'rgb(94,234,212)';
                             workoutRound.textContent = `Round ${round} of 4`;
                         }
                         
@@ -1592,7 +1841,7 @@ html, body {
                             const after = parseInt(energyAfter?.value || '7');
                             const clarity = parseInt(clarityAfter?.value || '6');
                             
-                            resultDiv.innerHTML = `<p style="color: rgb(165,243,252);">Energy: ${before} → ${after}<br>Clarity: ${clarity}/10</p>`;
+                            resultDiv.innerHTML = `<p style="color: var(--text-teal-light);">Energy: ${before} → ${after}<br>Clarity: ${clarity}/10</p>`;
                         }
                     }
                 }, 1000);
@@ -1600,17 +1849,95 @@ html, body {
         }
         
         // Exercise type buttons
-        ['exerciseJumpingJacks', 'exerciseRun', 'exerciseStairs'].forEach(id => {
+        ['exerciseJumpingJacks', 'exerciseRun', 'exerciseStairs', 'exerciseOther'].forEach(id => {
             const btn = document.getElementById(id);
             if (btn) {
                 btn.addEventListener('click', function() {
-                    document.querySelectorAll('#exerciseGuided .reflection-btn').forEach(b => {
-                        b.style.background = 'rgba(15,23,42,0.45)';
+                    document.querySelectorAll('#exerciseGuided .btn-practice-secondary').forEach(b => {
+                        b.style.background = 'var(--bg-card-dark)';
                     });
                     this.style.background = 'rgba(14,116,144,0.3)';
                 });
             }
         });
+    }
+
+    function initBreathing() {
+        const startBtn = document.getElementById('startBreathingBtn');
+        const stopBtn = document.getElementById('stopBreathingBtn');
+        const circle = document.getElementById('breathCircle');
+        const instruction = document.getElementById('breathInstruction');
+        const afterDiv = document.getElementById('breathingAfter');
+        const resultDiv = document.getElementById('breathingResult');
+        
+        const tensionBefore = document.getElementById('tensionBeforeSlider');
+        const tensionBeforeVal = document.getElementById('tensionBeforeValue');
+        const tensionAfter = document.getElementById('tensionAfterSlider');
+        const tensionAfterVal = document.getElementById('tensionAfterValue');
+        
+        if (tensionBefore && tensionBeforeVal) {
+            tensionBefore.addEventListener('input', () => tensionBeforeVal.textContent = tensionBefore.value);
+        }
+        
+        if (tensionAfter && tensionAfterVal) {
+            tensionAfter.addEventListener('input', () => {
+                tensionAfterVal.textContent = tensionAfter.value;
+                const before = parseInt(tensionBefore?.value || '5');
+                const after = parseInt(tensionAfter.value);
+                
+                if (after < before) {
+                    resultDiv.innerHTML = `<p style="color: var(--text-teal-light);"><strong>✓ Tension dropped from ${before} to ${after}!</strong><br>Longer exhales activated your calming system.</p>`;
+                } else {
+                    resultDiv.innerHTML = `<p style="color: var(--text-secondary);">Tension stayed at ${after}. That's okay - breathing isn't for everyone.</p>`;
+                }
+            });
+        }
+        
+        if (startBtn) {
+            let interval;
+            let phase = 'inhale';
+            let cycles = 0;
+            
+            startBtn.addEventListener('click', function() {
+                startBtn.style.display = 'none';
+                stopBtn.style.display = 'inline-block';
+                
+                interval = setInterval(() => {
+                    if (phase === 'inhale') {
+                        phase = 'hold';
+                        circle.className = 'breath-circle hold';
+                        instruction.textContent = 'HOLD';
+                    } else if (phase === 'hold') {
+                        phase = 'exhale';
+                        circle.className = 'breath-circle exhale';
+                        instruction.textContent = 'EXHALE';
+                    } else {
+                        phase = 'inhale';
+                        circle.className = 'breath-circle inhale';
+                        instruction.textContent = 'INHALE';
+                        cycles++;
+                        
+                        if (cycles >= 6) { // 6 cycles = about 2 minutes
+                            clearInterval(interval);
+                            circle.className = 'breath-circle';
+                            instruction.textContent = 'Done';
+                            stopBtn.style.display = 'none';
+                            afterDiv.style.display = 'block';
+                        }
+                    }
+                }, 4000); // 4 seconds per phase
+            });
+        }
+        
+        if (stopBtn) {
+            stopBtn.addEventListener('click', function() {
+                clearInterval(interval);
+                startBtn.style.display = 'inline-block';
+                stopBtn.style.display = 'none';
+                circle.className = 'breath-circle';
+                instruction.textContent = 'Ready';
+            });
+        }
     }
 
     function initBreathingSave() {
@@ -1639,110 +1966,58 @@ html, body {
         });
     }
 
-    function initPMR() {
-        const startBtn = document.getElementById('startPMRBtn');
-        const guided = document.getElementById('pmrGuided');
-        const pmrInstruction = document.getElementById('pmrInstruction');
-        const pmrTimer = document.getElementById('pmrTimer');
-        const pmrNext = document.getElementById('pmrNextBtn');
-        const pmrAfter = document.getElementById('pmrAfter');
-        const pmrResult = document.getElementById('pmrResult');
-        
-        const beforeSlider = document.getElementById('pmrBeforeSlider');
-        const beforeValue = document.getElementById('pmrBeforeValue');
-        const afterSlider = document.getElementById('pmrAfterSlider');
-        const afterValue = document.getElementById('pmrAfterValue');
-        
-        if (beforeSlider && beforeValue) {
-            beforeSlider.addEventListener('input', () => beforeValue.textContent = beforeSlider.value);
-        }
-        
-        if (afterSlider && afterValue) {
-            afterSlider.addEventListener('input', () => afterValue.textContent = afterSlider.value);
-        }
-        
-        const steps = [
-            { text: 'Hands: Make tight fists... tighter... hold...', time: 5 },
-            { text: '...and RELEASE. Feel the difference.', time: 10 },
-            { text: 'Arms: Tense biceps... squeeze...', time: 5 },
-            { text: '...and RELEASE. Notice the warmth.', time: 10 },
-            { text: 'Shoulders: Pull up to ears... squeeze...', time: 5 },
-            { text: '...and DROP. Let them be heavy.', time: 10 },
-            { text: 'Face: Scrunch everything tight...', time: 5 },
-            { text: '...and SOFTEN. Jaw loose.', time: 10 },
-            { text: 'Legs: Point toes, tense thighs...', time: 5 },
-            { text: '...and RELEASE. Heavy legs.', time: 10 }
-        ];
-        
-        let stepIndex = 0;
-        let timerInterval;
-        
-        if (startBtn) {
-            startBtn.addEventListener('click', () => {
-                guided.style.display = 'block';
-                startBtn.style.display = 'none';
-                stepIndex = 0;
-                runStep();
-            });
-        }
-        
-        function runStep() {
-            if (stepIndex >= steps.length) {
-                if (timerInterval) clearInterval(timerInterval);
-                guided.style.display = 'none';
-                pmrAfter.style.display = 'block';
-                
-                const before = parseInt(beforeSlider?.value || '5');
-                const after = parseInt(afterSlider?.value || '3');
-                pmrResult.innerHTML = `<p style="color: rgb(165,243,252);">Tension: ${before} → ${after}</p>`;
-                return;
-            }
-            
-            const step = steps[stepIndex];
-            pmrInstruction.textContent = step.text;
-            let timeLeft = step.time;
-            pmrTimer.textContent = timeLeft;
-            
-            if (timerInterval) clearInterval(timerInterval);
-            timerInterval = setInterval(() => {
-                timeLeft--;
-                pmrTimer.textContent = timeLeft;
-                
-                if (timeLeft <= 0) {
-                    clearInterval(timerInterval);
-                }
-            }, 1000);
-        }
-        
-        if (pmrNext) {
-            pmrNext.addEventListener('click', () => {
-                stepIndex++;
-                runStep();
-            });
-        }
-        
-        const saveBtn = document.getElementById('savePMRBtn');
+    function initPMRSave() {
+        const btn = document.getElementById('savePMRBtn');
         const feedback = document.getElementById('pmrSaveFeedback');
+        if (!btn) return;
         
-        if (saveBtn) {
-            saveBtn.addEventListener('click', function() {
-                saveToToolkit({
-                    id: 'pmr',
-                    category: 'Module 2',
-                    name: 'Progressive Muscle Relaxation',
-                    description: '5-10 minutes • Physical tension • Tense each muscle group 5 sec, release 10 sec'
-                });
-                
-                saveBtn.classList.add('saved');
-                saveBtn.innerHTML = '<span>✓</span> Saved!';
-                feedback.textContent = '✓ Saved to toolkit';
-                feedback.classList.add('show');
-                
-                setTimeout(() => {
-                    saveBtn.classList.remove('saved');
-                    saveBtn.innerHTML = '<span>💆</span> Save PMR to Toolkit';
-                    feedback.classList.remove('show');
-                }, 2000);
+        btn.addEventListener('click', function() {
+            saveToToolkit({
+                id: 'pmr',
+                category: 'Module 2',
+                name: 'Progressive Muscle Relaxation',
+                description: '2-3 minutes • Physical tension • Tense and release: hands, arms, shoulders, face, legs'
+            });
+            
+            btn.classList.add('saved');
+            btn.innerHTML = '<span>✓</span> Saved!';
+            feedback.textContent = '✓ Saved to toolkit';
+            feedback.classList.add('show');
+            
+            setTimeout(() => {
+                btn.classList.remove('saved');
+                btn.innerHTML = '<span>💆</span> Save PMR to Toolkit';
+                feedback.classList.remove('show');
+            }, 2000);
+        });
+    }
+
+    function initPMRSimple() {
+        const relaxedBtn = document.getElementById('pmrRelaxed');
+        const sameBtn = document.getElementById('pmrSame');
+        const unsureBtn = document.getElementById('pmrUnsure');
+        
+        if (relaxedBtn) {
+            relaxedBtn.addEventListener('click', () => {
+                relaxedBtn.style.background = 'rgba(14,116,144,0.3)';
+                sameBtn.style.background = 'var(--bg-card-dark)';
+                unsureBtn.style.background = 'var(--bg-card-dark)';
+            });
+        }
+        
+        if (sameBtn) {
+            sameBtn.addEventListener('click', () => {
+                sameBtn.style.background = 'rgba(14,116,144,0.3)';
+                relaxedBtn.style.background = 'var(--bg-card-dark)';
+                unsureBtn.style.background = 'var(--bg-card-dark)';
+            });
+        }
+        
+        if (unsureBtn) {
+            unsureBtn.addEventListener('click', () => {
+                unsureBtn.style.background = 'rgba(14,116,144,0.3)';
+                relaxedBtn.style.background = 'var(--bg-card-dark)';
+                sameBtn.style.background = 'var(--bg-card-dark)';
             });
         }
     }
@@ -1802,8 +2077,8 @@ html, body {
         if (yesBtn) {
             yesBtn.addEventListener('click', function() {
                 this.textContent = '✓ Committed!';
-                this.style.background = 'rgba(34,197,94,0.12)';
-                this.style.color = 'rgb(74,222,128)';
+                this.style.background = 'var(--success-bg)';
+                this.style.color = 'var(--success-emerald)';
                 
                 saveToCrisisPlan('practiceCommitment', {
                     committed: true,
