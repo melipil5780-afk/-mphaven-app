@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0f172a">
+<title>Module 5: Your Crisis Action Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg-dark: #0f172a;
+    --bg-card: rgba(15, 23, 42, 0.98);
+    --bg-card-light: rgba(30, 41, 59, 0.65);
+    --bg-card-dark: rgba(15, 23, 42, 0.45);
+    --border-subtle: rgba(30, 41, 59, 0.5);
+    --border-softer: rgba(51, 65, 85, 0.4);
+    --primary-teal: #0e7490;
+    --primary-teal-dark: #0c627a;
+    --accent-amber: #d97706;
+    --accent-amber-dark: #b45309;
+    --text-primary: rgb(241, 245, 249);
+    --text-secondary: rgb(203, 213, 225);
+    --text-muted: rgb(148, 163, 184);
+    --text-teal-light: rgb(165, 243, 252);
+    --text-teal: rgb(94, 234, 212);
+    --text-amber: rgb(251, 191, 36);
+    --success-emerald: rgb(74, 222, 128);
+    --success-bg: rgba(34, 197, 94, 0.12);
+    --gradient-main: linear-gradient(135deg, #0e7490, #d97706);
+    --gradient-subtle: linear-gradient(135deg, rgba(14,116,144,0.15), rgba(217,119,6,0.10));
+    --crisis-red: #dc2626;
+    --crisis-red-dark: #b91c1c;
+    --crisis-bg: rgba(220, 38, 38, 0.08);
+}
+
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
+    -webkit-tap-highlight-color: transparent; 
+}
+
+html, body { 
+    width: 100%; 
+    height: 100%; 
+    overflow: hidden; 
+    background: var(--bg-dark); 
+    color: var(--text-primary); 
+}
+
+.container { 
+    width: 100%; 
+    height: 100vh; 
+    display: flex; 
+    flex-direction: column; 
+}
+
+.app-wrapper { 
+    width: 100%; 
+    max-width: 28rem; 
+    height: 100%; 
+    margin: 0 auto; 
+    background: var(--bg-card); 
+    display: flex; 
+    flex-direction: column; 
+    position: relative; 
+    overflow: hidden; 
+}
+
+.bg-blur-1, .bg-blur-2 { 
+    position: absolute; 
+    border-radius: 50%; 
+    pointer-events: none; 
+    z-index: 0; 
+    opacity: 0.3; 
+}
+
+.bg-blur-1 { 
+    top: -5%; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    width: 22rem; 
+    height: 22rem; 
+    background: rgba(14, 116, 144, 0.15); 
+}
+
+.bg-blur-2 { 
+    bottom: -5%; 
+    right: -5%; 
+    width: 18rem; 
+    height: 18rem; 
+    background: rgba(217, 119, 6, 0.15); 
+}
+
+.main-content { 
+    flex: 1; 
+    overflow-y: auto; 
+    -webkit-overflow-scrolling: touch; 
+    scrollbar-width: none; 
+    position: relative; 
+    z-index: 1; 
+}
+
+.main-content::-webkit-scrollbar { 
+    display: none; 
+}
+
+.content-wrapper { 
+    padding: 1rem 1.25rem 2rem; 
+    padding-bottom: calc(2rem + env(safe-area-inset-bottom)); 
+}
+
+.crisis-banner {
+    background: var(--crisis-bg);
+    border: 1px solid var(--crisis-red);
+    border-radius: 0.75rem;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.crisis-banner span {
+    color: #fca5a5;
+    font-size: 0.8125rem;
+    font-weight: 600;
+}
+
+.crisis-banner a {
+    color: #fca5a5;
+    font-weight: 700;
+    text-decoration: none;
+    background: rgba(220,38,38,0.2);
+    padding: 0.375rem 0.75rem;
+    border-radius: 2rem;
+    font-size: 0.75rem;
+}
+
+.nav-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.module-badge {
+    background: var(--gradient-subtle);
+    color: var(--text-teal-light);
+    padding: 0.375rem 0.875rem;
+    border-radius: 2rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border: 1px solid rgba(14,116,144,0.25);
+}
+
+.module-title {
+    font-size: 1.75rem;
+    font-weight: 800;
+    margin-bottom: 0.25rem;
+    background: var(--gradient-main);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.module-subtitle {
+    color: var(--text-secondary);
+    font-size: 0.9375rem;
+    margin-bottom: 1.5rem;
+}
+
+.progress-container {
+    margin: 1rem 0 2rem;
+}
+
+.progress-label {
+    display: flex;
+    justify-content: space-between;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    margin-bottom: 0.375rem;
+}
+
+.progress-bar {
+    background: rgba(30,41,59,0.8);
+    height: 0.5rem;
+    border-radius: 1rem;
+    overflow: hidden;
+}
+
+.progress-fill {
+    width: 100%;
+    height: 100%;
+    background: var(--gradient-main);
+    border-radius: 1rem;
+}
+
+.card {
+    background: linear-gradient(135deg, var(--bg-card-light), var(--bg-card-dark));
+    border: 1px solid var(--border-softer);
+    border-radius: 1.25rem;
+    padding: 1.5rem;
+    margin-bottom: 1.25rem;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-primary);
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-softer);
+}
+
+.section-icon {
+    font-size: 1.75rem;
+}
+
+.section-title-text {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-teal-light);
+}
+
+.instruction-box {
+    background: rgba(15,23,42,0.6);
+    border-left: 4px solid var(--primary-teal);
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+    margin: 1.25rem 0;
+}
+
+.plan-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+}
+
+.plan-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-softer);
+}
+
+.plan-intensity {
+    font-weight: 700;
+    min-width: 80px;
+    color: var(--text-teal);
+}
+
+.plan-desc {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+.plan-input {
+    margin-left: auto;
+    width: 120px;
+}
+
+.input-field {
+    width: 100%;
+    padding: 0.875rem;
+    background: rgba(15,23,42,0.6);
+    border: 1px solid var(--border-softer);
+    border-radius: 0.75rem;
+    color: var(--text-primary);
+    font-size: 0.875rem;
+    margin-bottom: 0.75rem;
+}
+
+.input-field:focus {
+    outline: none;
+    border-color: var(--primary-teal);
+}
+
+.pros-cons-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1.25rem 0;
+}
+
+.pros-cons-box {
+    background: rgba(15,23,42,0.6);
+    border-radius: 0.75rem;
+    padding: 1rem;
+}
+
+.pros-cons-title {
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    color: var(--text-teal-light);
+}
+
+.values-compass {
+    background: rgba(14,116,144,0.15);
+    border: 2px solid var(--primary-teal);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin: 1.25rem 0;
+    text-align: center;
+}
+
+.compass-question {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--text-teal-light);
+    margin-bottom: 1rem;
+}
+
+.crisis-card-preview {
+    background: linear-gradient(135deg, rgba(14,116,144,0.2), rgba(217,119,6,0.1));
+    border: 2px solid var(--accent-amber);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.crisis-card-preview:before {
+    content: "🆘";
+    position: absolute;
+    top: 0.5rem;
+    right: 1rem;
+    font-size: 2rem;
+    opacity: 0.1;
+}
+
+.crisis-card-title {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--text-amber);
+    margin-bottom: 1rem;
+}
+
+.crisis-card-item {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+.crisis-card-number {
+    color: var(--text-amber);
+    font-weight: 700;
+    min-width: 1.5rem;
+}
+
+.btn-save {
+    background: var(--gradient-subtle);
+    color: var(--text-teal-light);
+    border: 1px solid rgba(14,116,144,0.35);
+    padding: 0.875rem 1.5rem;
+    border-radius: 2rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.btn-save:hover {
+    background: rgba(14,116,144,0.25);
+    border-color: rgba(14,116,144,0.5);
+}
+
+.btn-save.saved {
+    background: var(--success-bg);
+    color: var(--success-emerald);
+    border-color: rgba(74,222,128,0.35);
+}
+
+.btn-group {
+    display: flex;
+    gap: 1rem;
+    margin: 2rem 0 1rem;
+}
+
+.btn {
+    flex: 1;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+    text-align: center;
+}
+
+.btn-primary {
+    background: var(--gradient-main);
+    color: white;
+}
+
+.btn-secondary {
+    background: var(--bg-card-dark);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-softer);
+}
+
+.footer {
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 0.6875rem;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-subtle);
+}
+
+.completion-box {
+    background: var(--gradient-subtle);
+    border: 2px solid var(--primary-teal);
+    border-radius: 1.5rem;
+    padding: 2rem 1.5rem;
+    margin: 2rem 0;
+    text-align: center;
+}
+
+.completion-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.completion-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text-teal-light);
+    margin-bottom: 0.5rem;
+}
+
+.completion-text {
+    color: var(--text-secondary);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+@media (max-width: 640px) {
+    .pros-cons-grid { grid-template-columns: 1fr; }
+    .btn-group { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="app-wrapper">
+    <div class="bg-blur-1"></div>
+    <div class="bg-blur-2"></div>
+    <div class="main-content">
+      <div class="content-wrapper">
+
+        <!-- CRISIS BANNER -->
+        <div class="crisis-banner">
+          <span>🚨 In crisis? Help is available 24/7</span>
+          <span style="display: flex; gap: 0.5rem;">
+            <a href="tel:988">Call 988</a>
+            <a href="sms:988">Text 988</a>
+          </span>
+        </div>
+
+        <!-- HEADER -->
+        <div class="nav-header">
+          <a href="crisis-intro.html" class="back-link">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M19 12H5M12 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Course Home
+          </a>
+          <span class="module-badge">Module 5 of 5</span>
+        </div>
+
+        <h1 class="module-title">Your Crisis Action Plan</h1>
+        <p class="module-subtitle">10 minutes • Build your personalized toolkit</p>
+
+        <!-- PROGRESS -->
+        <div class="progress-container">
+          <div class="progress-label">
+            <span>Course progress</span>
+            <span>100%</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 100%;"></div>
+          </div>
+        </div>
+
+        <!-- INTRODUCTION - YOUR EXACT WORDS -->
+        <div class="card">
+          <div class="section-header">
+            <span class="section-icon">🆘</span>
+            <span class="section-title-text">Introduction</span>
+          </div>
+          <div style="color: var(--text-secondary); line-height: 1.6;">
+            <p style="margin-bottom: 1rem; font-size: 1.05rem; color: var(--text-teal-light); font-style: italic;">
+              "You've learned the skills. Now we build YOUR personalized plan. In crisis, your thinking brain is impaired — that's why you need a plan made NOW, when you can think clearly."
+            </p>
+          </div>
+        </div>
+
+        <!-- ===== SECTION 5.1: INTENSITY-BASED PLAN ===== -->
+        <div class="card">
+          <div class="section-header">
+            <span class="section-icon">📊</span>
+            <span class="section-title-text">Your Crisis Response Plan</span>
+          </div>
+          
+          <div style="background: rgba(14,116,144,0.1); border-radius: 1rem; padding: 1.25rem; margin-bottom: 1.5rem;">
+            <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 1rem; text-align: center;">📊 YOUR CRISIS RESPONSE PLAN</p>
+            
+            <!-- Intensity 1-3 -->
+            <div style="margin-bottom: 1.25rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border-softer);">
+              <div style="display: flex; align-items: baseline; gap: 0.75rem; margin-bottom: 0.75rem;">
+                <span style="background: var(--gradient-subtle); color: var(--text-teal-light); padding: 0.25rem 0.75rem; border-radius: 2rem; font-size: 0.75rem; font-weight: 700;">INTENSITY 1-3</span>
+                <span style="color: var(--text-muted); font-size: 0.8125rem;">Mild Discomfort</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+                <span style="color: var(--text-secondary); font-size: 0.875rem;">Use:</span>
+                <input type="text" id="planMild" class="input-field" placeholder="e.g., Notice it, practice breathing" style="width: auto; flex: 1; margin-bottom: 0;">
+              </div>
+            </div>
+            
+            <!-- Intensity 4-6 -->
+            <div style="margin-bottom: 1.25rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border-softer);">
+              <div style="display: flex; align-items: baseline; gap: 0.75rem; margin-bottom: 0.75rem;">
+                <span style="background: var(--gradient-subtle); color: var(--text-teal-light); padding: 0.25rem 0.75rem; border-radius: 2rem; font-size: 0.75rem; font-weight: 700;">INTENSITY 4-6</span>
+                <span style="color: var(--text-muted); font-size: 0.8125rem;">Moderate Distress</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 0.5rem;">
+                <span style="color: var(--text-secondary); font-size: 0.875rem;">Use 2-3 skills:</span>
+                <input type="text" id="planModerate1" class="input-field" placeholder="1." style="width: auto; flex: 1; margin-bottom: 0;">
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 0.5rem;">
+                <input type="text" id="planModerate2" class="input-field" placeholder="2." style="width: auto; flex: 1; margin-bottom: 0;">
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+                <input type="text" id="planModerate3" class="input-field" placeholder="3." style="width: auto; flex: 1; margin-bottom: 0;">
+              </div>
+            </div>
+            
+            <!-- Intensity 7-8 -->
+            <div style="margin-bottom: 1.25rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border-softer);">
+              <div style="display: flex; align-items: baseline; gap: 0.75rem; margin-bottom: 0.75rem;">
+                <span style="background: var(--gradient-subtle); color: var(--text-teal-light); padding: 0.25rem 0.75rem; border-radius: 2rem; font-size: 0.75rem; font-weight: 700;">INTENSITY 7-8</span>
+                <span style="color: var(--text-muted); font-size: 0.8125rem;">High Crisis</span>
+              </div>
+              <p style="color: var(--text-teal); font-size: 0.8125rem; margin-bottom: 0.5rem;">Physical techniques FIRST:</p>
+              <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 0.5rem;">
+                <input type="text" id="planPhysical1" class="input-field" placeholder="1." style="width: auto; flex: 1; margin-bottom: 0;">
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 0.75rem;">
+                <input type="text" id="planPhysical2" class="input-field" placeholder="2." style="width: auto; flex: 1; margin-bottom: 0;">
+              </div>
+              <p style="color: var(--text-teal); font-size: 0.8125rem; margin-bottom: 0.5rem;">Then mental technique:</p>
+              <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+                <input type="text" id="planMental" class="input-field" placeholder="e.g., Grounding, cognitive load" style="width: auto; flex: 1; margin-bottom: 0;">
+              </div>
+            </div>
+            
+            <!-- Intensity 9-10 -->
+            <div style="margin-bottom: 0.5rem;">
+              <div style="display: flex; align-items: baseline; gap: 0.75rem; margin-bottom: 0.75rem;">
+                <span style="background: var(--crisis-bg); color: #fca5a5; border: 1px solid var(--crisis-red); padding: 0.25rem 0.75rem; border-radius: 2rem; font-size: 0.75rem; font-weight: 700;">INTENSITY 9-10</span>
+                <span style="color: var(--text-muted); font-size: 0.8125rem;">Extreme Emergency</span>
+              </div>
+              <div style="background: var(--crisis-bg); padding: 1rem; border-radius: 0.75rem; margin-bottom: 0.75rem;">
+                <p style="color: #fca5a5; font-weight: 700; margin-bottom: 0.5rem;">🚨 Emergency Contacts:</p>
+                <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.25rem;">• <strong style="color: #fca5a5;">988 Suicide & Crisis Lifeline</strong> — Call or text 988</p>
+                <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.25rem;">• <strong style="color: #fca5a5;">Crisis Text Line</strong> — Text HOME to 741741</p>
+                <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.5rem;">• <strong style="color: #fca5a5;">Emergency Services</strong> — Call 911</p>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 0.5rem;">
+                <span style="color: var(--text-secondary); font-size: 0.875rem;">Trusted person:</span>
+                <input type="text" id="planTrusted" class="input-field" placeholder="Name / phone" style="width: auto; flex: 1; margin-bottom: 0;">
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 0.5rem;">
+                <span style="color: var(--text-secondary); font-size: 0.875rem;">Therapist:</span>
+                <input type="text" id="planTherapist" class="input-field" placeholder="Name / phone" style="width: auto; flex: 1; margin-bottom: 0;">
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+                <span style="color: var(--text-secondary); font-size: 0.875rem;">Emergency room:</span>
+                <input type="text" id="planER" class="input-field" placeholder="Hospital / location" style="width: auto; flex: 1; margin-bottom: 0;">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== SECTION 5.2: PROS & CONS FOR IMPULSIVE URGES ===== -->
+        <div class="card">
+          <div class="section-header">
+            <span class="section-icon">⚖️</span>
+            <span class="section-title-text">Pros & Cons Worksheet</span>
+          </div>
+          
+          <div style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 1rem;">
+            <p style="margin-bottom: 1rem;">
+              "When you have a strong urge to do something destructive, your brain is focused on SHORT-TERM relief. This tool forces you to consider LONG-TERM consequences."
+            </p>
+          </div>
+          
+          <div style="background: rgba(15,23,42,0.6); border-radius: 1rem; padding: 1.25rem;">
+            <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 1rem;">⚖️ PROS & CONS WORKSHEET</p>
+            
+            <p style="color: var(--text-secondary); margin-bottom: 0.5rem;">URGE:</p>
+            <input type="text" id="urgeInput" class="input-field" placeholder="e.g., Send angry text, self-harm, drink...">
+            
+            <div class="pros-cons-grid">
+              <div class="pros-cons-box">
+                <div class="pros-cons-title" style="color: #fca5a5;">PROS of acting on it</div>
+                <p style="color: var(--text-muted); font-size: 0.75rem; margin-bottom: 0.5rem;">(short-term)</p>
+                <input type="text" id="prosAct1" class="input-field" placeholder="•" style="margin-bottom: 0.5rem;">
+                <input type="text" id="prosAct2" class="input-field" placeholder="•">
+              </div>
+              
+              <div class="pros-cons-box">
+                <div class="pros-cons-title" style="color: #fca5a5;">CONS of acting on it</div>
+                <p style="color: var(--text-muted); font-size: 0.75rem; margin-bottom: 0.5rem;">(long-term)</p>
+                <input type="text" id="consAct1" class="input-field" placeholder="•" style="margin-bottom: 0.5rem;">
+                <input type="text" id="consAct2" class="input-field" placeholder="•" style="margin-bottom: 0.5rem;">
+                <input type="text" id="consAct3" class="input-field" placeholder="•">
+              </div>
+              
+              <div class="pros-cons-box">
+                <div class="pros-cons-title" style="color: var(--success-emerald);">PROS of resisting</div>
+                <p style="color: var(--text-muted); font-size: 0.75rem; margin-bottom: 0.5rem;">(long-term)</p>
+                <input type="text" id="prosResist1" class="input-field" placeholder="•" style="margin-bottom: 0.5rem;">
+                <input type="text" id="prosResist2" class="input-field" placeholder="•">
+              </div>
+              
+              <div class="pros-cons-box">
+                <div class="pros-cons-title" style="color: var(--success-emerald);">CONS of resisting</div>
+                <p style="color: var(--text-muted); font-size: 0.75rem; margin-bottom: 0.5rem;">(short-term)</p>
+                <input type="text" id="consResist1" class="input-field" placeholder="•">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== SECTION 5.3: VALUES-BASED ACTION ===== -->
+        <!-- SAVE POINT #1: VALUES COMPASS -->
+        <div class="card">
+          <div class="section-header">
+            <span class="section-icon">🧭</span>
+            <span class="section-title-text">Values-Based Action</span>
+          </div>
+          
+          <div class="values-compass">
+            <div class="compass-question">🧭 YOUR VALUES COMPASS</div>
+            <p style="color: var(--text-teal-light); margin-bottom: 1.5rem; font-style: italic;">
+              "In this moment of crisis, what action would be consistent with the person I want to be?"
+            </p>
+            
+            <p style="color: var(--text-secondary); margin-bottom: 0.5rem; text-align: left;">The kind of person I want to be is someone who:</p>
+            <input type="text" id="values1" class="input-field" placeholder="1. ___________">
+            <input type="text" id="values2" class="input-field" placeholder="2. ___________">
+            <input type="text" id="values3" class="input-field" placeholder="3. ___________">
+            
+            <p style="color: var(--text-secondary); margin-top: 1rem; margin-bottom: 0.5rem; text-align: left;">In relationships, I value:</p>
+            <input type="text" id="valuesRelationships" class="input-field" placeholder="___________">
+            
+            <p style="color: var(--text-secondary); margin-top: 1rem; margin-bottom: 0.5rem; text-align: left;">When I'm at my best, I:</p>
+            <input type="text" id="valuesBest" class="input-field" placeholder="___________">
+            
+            <div style="background: rgba(14,116,144,0.2); border-radius: 0.75rem; padding: 1rem; margin-top: 1.5rem;">
+              <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 0.5rem;">Ask yourself in crisis:</p>
+              <p style="color: var(--text-teal-light); font-size: 1rem; font-weight: 600; font-style: italic;">
+                "Will this bring me closer to or further from who I want to be?"
+              </p>
+            </div>
+          </div>
+          
+          <!-- SAVE POINT #1: VALUES COMPASS -->
+          <button id="saveValuesBtn" class="btn-save">
+            <span>🧭</span> Save Values Compass to Toolkit
+          </button>
+          <p id="valuesSaveFeedback" style="color: var(--success-emerald); font-size: 0.75rem; margin-top: 0.5rem; text-align: center; display: none;"></p>
+        </div>
+
+        <!-- ===== SECTION 5.4: YOUR PHYSICAL CRISIS KIT ===== -->
+        <div class="card">
+          <div class="section-header">
+            <span class="section-icon">🧰</span>
+            <span class="section-title-text">Your Physical Crisis Kit</span>
+          </div>
+          
+          <div style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 1rem;">
+            <p style="margin-bottom: 1rem;">
+              "Create an actual physical kit you can grab in crisis."
+            </p>
+          </div>
+          
+          <div style="background: rgba(14,116,144,0.1); padding: 1.25rem; border-radius: 0.75rem; margin-bottom: 1rem;">
+            <p style="color: var(--text-teal-light); font-weight: 700; margin-bottom: 0.75rem;">Suggested Items:</p>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="color: var(--text-teal);">•</span>
+                <span style="color: var(--text-secondary); font-size: 0.8125rem;">Ice packs</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="color: var(--text-teal);">•</span>
+                <span style="color: var(--text-secondary); font-size: 0.8125rem;">Sour candy/lemon</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="color: var(--text-teal);">•</span>
+                <span style="color: var(--text-secondary); font-size: 0.8125rem;">Stress ball</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="color: var(--text-teal);">•</span>
+                <span style="color: var(--text-secondary); font-size: 0.8125rem;">Rubber band</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="color: var(--text-teal);">•</span>
+                <span style="color: var(--text-secondary); font-size: 0.8125rem;">Photos of loved ones</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="color: var(--text-teal);">•</span>
+                <span style="color: var(--text-secondary); font-size: 0.8125rem;">Skills card (print this!)</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="color: var(--text-teal);">•</span>
+                <span style="color: var(--text-secondary); font-size: 0.8125rem;">Essential oil</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="color: var(--text-teal);">•</span>
+                <span style="color: var(--text-secondary); font-size: 0.8125rem;">Comfort item</span>
+              </div>
+            </div>
+          </div>
+          
+          <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 0.75rem;">Your Kit Contents:</p>
+          
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem;">
+            <label class="reflection-checkbox" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; background: rgba(15,23,42,0.6); border-radius: 0.75rem;">
+              <input type="checkbox" id="kitIcePacks"> Ice packs
+            </label>
+            <label class="reflection-checkbox" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; background: rgba(15,23,42,0.6); border-radius: 0.75rem;">
+              <input type="checkbox" id="kitSourCandy"> Sour candy
+            </label>
+            <label class="reflection-checkbox" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; background: rgba(15,23,42,0.6); border-radius: 0.75rem;">
+              <input type="checkbox" id="kitStressBall"> Stress ball
+            </label>
+            <label class="reflection-checkbox" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; background: rgba(15,23,42,0.6); border-radius: 0.75rem;">
+              <input type="checkbox" id="kitRubberBand"> Rubber band
+            </label>
+          </div>
+          
+          <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+            <span style="color: var(--text-secondary); font-size: 0.875rem;">Other:</span>
+            <input type="text" id="kitOther1" class="input-field" placeholder="___________" style="flex: 1; margin-bottom: 0;">
+          </div>
+          
+          <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+            <input type="text" id="kitOther2" class="input-field" placeholder="___________" style="flex: 1; margin-bottom: 0;">
+          </div>
+          
+          <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+            <span style="color: var(--text-secondary); font-size: 0.875rem;">Where will you keep it?</span>
+            <input type="text" id="kitLocation" class="input-field" placeholder="e.g., freezer, nightstand, car" style="flex: 1; margin-bottom: 0;">
+          </div>
+        </div>
+
+        <!-- ===== SECTION 5.5: THE CRISIS CARD ===== -->
+        <!-- SAVE POINT #2: CRISIS CARD -->
+        <div class="card">
+          <div class="section-header">
+            <span class="section-icon">🆘</span>
+            <span class="section-title-text">Your Crisis Card</span>
+          </div>
+          
+          <div class="crisis-card-preview">
+            <div class="crisis-card-title">🆘 MY CRISIS CARD</div>
+            
+            <div class="crisis-card-item">
+              <span class="crisis-card-number">1.</span>
+              <span style="color: var(--text-primary);">PHYSICAL RESET:</span>
+            </div>
+            <input type="text" id="cardPhysical" class="input-field" placeholder="e.g., Cold water, exercise, breathing" style="margin-left: 2rem; width: calc(100% - 2rem);">
+            
+            <div class="crisis-card-item" style="margin-top: 1rem;">
+              <span class="crisis-card-number">2.</span>
+              <span style="color: var(--text-primary);">WAIT 20 MINUTES:</span>
+            </div>
+            <input type="text" id="cardWait" class="input-field" placeholder="e.g., Grounding, distraction, cognitive load" style="margin-left: 2rem; width: calc(100% - 2rem);">
+            
+            <div class="crisis-card-item" style="margin-top: 1rem;">
+              <span class="crisis-card-number">3.</span>
+              <span style="color: var(--text-primary);">ACCEPTANCE:</span>
+            </div>
+            <input type="text" id="cardAcceptance" class="input-field" placeholder='e.g., "It is what it is"' style="margin-left: 2rem; width: calc(100% - 2rem);">
+            
+            <div class="crisis-card-item" style="margin-top: 1rem;">
+              <span class="crisis-card-number">4.</span>
+              <span style="color: var(--text-primary);">VALUES CHECK:</span>
+            </div>
+            <input type="text" id="cardValues" class="input-field" placeholder="Will this align with who I want to be?" style="margin-left: 2rem; width: calc(100% - 2rem);">
+            
+            <div class="crisis-card-item" style="margin-top: 1rem;">
+              <span class="crisis-card-number">5.</span>
+              <span style="color: var(--text-primary);">IF STILL 9/10:</span>
+            </div>
+            <input type="text" id="cardEmergency" class="input-field" placeholder="Call 988 / trusted person" style="margin-left: 2rem; width: calc(100% - 2rem);">
+            
+            <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid rgba(217,119,6,0.3); text-align: center;">
+              <p style="color: var(--text-amber); font-style: italic; font-weight: 600;">REMEMBER: The wave WILL pass.</p>
+            </div>
+          </div>
+          
+          <!-- SAVE POINT #2: CRISIS CARD -->
+          <button id="saveCrisisCardBtn" class="btn-save">
+            <span>🆘</span> Save Crisis Card to Toolkit
+          </button>
+          <p id="crisisCardSaveFeedback" style="color: var(--success-emerald); font-size: 0.75rem; margin-top: 0.5rem; text-align: center; display: none;"></p>
+        </div>
+
+        <!-- ===== SECTION 5.6: PRACTICE SCHEDULE ===== -->
+        <!-- SAVE POINT #3: FULL CRISIS PLAN -->
+        <div class="card">
+          <div class="section-header">
+            <span class="section-icon">📅</span>
+            <span class="section-title-text">Your Practice Plan</span>
+          </div>
+          
+          <div style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 1rem;">
+            <p style="margin-bottom: 1rem;">
+              "These skills only work if you practice them when calm. Learning in crisis is like trying to learn to swim while drowning."
+            </p>
+          </div>
+          
+          <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 0.75rem;">Which skills will you practice this week? (Choose 3 max)</p>
+          
+          <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+            <input type="text" id="practiceSkill1" class="input-field" placeholder="1. ___________" style="flex: 1; margin-bottom: 0;">
+            <span style="color: var(--text-muted); font-size: 0.8125rem;">How often?</span>
+            <input type="text" id="practiceFreq1" class="input-field" placeholder="e.g., daily" style="width: 100px; margin-bottom: 0;">
+          </div>
+          
+          <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+            <input type="text" id="practiceSkill2" class="input-field" placeholder="2. ___________" style="flex: 1; margin-bottom: 0;">
+            <span style="color: var(--text-muted); font-size: 0.8125rem;">How often?</span>
+            <input type="text" id="practiceFreq2" class="input-field" placeholder="e.g., daily" style="width: 100px; margin-bottom: 0;">
+          </div>
+          
+          <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem;">
+            <input type="text" id="practiceSkill3" class="input-field" placeholder="3. ___________" style="flex: 1; margin-bottom: 0;">
+            <span style="color: var(--text-muted); font-size: 0.8125rem;">How often?</span>
+            <input type="text" id="practiceFreq3" class="input-field" placeholder="e.g., daily" style="width: 100px; margin-bottom: 0;">
+          </div>
+          
+          <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 0.75rem;">When will you practice?</p>
+          
+          <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1rem;">
+            <label class="reflection-checkbox" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; background: rgba(15,23,42,0.6); border-radius: 0.75rem;">
+              <input type="checkbox" id="practiceMorning"> Morning routine
+            </label>
+            <label class="reflection-checkbox" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; background: rgba(15,23,42,0.6); border-radius: 0.75rem;">
+              <input type="checkbox" id="practiceEvening"> Before bed
+            </label>
+            <label class="reflection-checkbox" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; background: rgba(15,23,42,0.6); border-radius: 0.75rem;">
+              <input type="checkbox" id="practiceLunch"> During lunch
+            </label>
+          </div>
+          
+          <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+            <span style="color: var(--text-secondary); font-size: 0.875rem;">Other:</span>
+            <input type="text" id="practiceOther" class="input-field" placeholder="___________" style="flex: 1; margin-bottom: 0;">
+          </div>
+          
+          <!-- SAVE POINT #3: FULL CRISIS PLAN -->
+          <button id="saveFullPlanBtn" class="btn-save" style="margin-top: 2rem;">
+            <span>📋</span> Save My Complete Crisis Plan to Toolkit
+          </button>
+          <p id="fullPlanSaveFeedback" style="color: var(--success-emerald); font-size: 0.75rem; margin-top: 0.5rem; text-align: center; display: none;"></p>
+        </div>
+
+        <!-- ===== COURSE COMPLETION ===== -->
+        <div class="completion-box">
+          <div class="completion-icon">🌊</div>
+          <div class="completion-title">You've completed the course</div>
+          <div class="completion-text">
+            You now have survival tools for intense emotional moments.<br>
+            <strong style="color: var(--text-teal-light);">Practice when calm. Use in crisis. Seek help when needed.</strong>
+          </div>
+          
+          <div style="display: flex; gap: 0.75rem; justify-content: center; margin-top: 0.5rem;">
+            <a href="crisis-toolkit.html" class="btn btn-primary" style="flex: 1; text-decoration: none;">View My Toolkit</a>
+            <a href="app.html" class="btn btn-secondary" style="flex: 1; text-decoration: none;">Return Home</a>
+          </div>
+        </div>
+
+        <!-- ===== NAVIGATION ===== -->
+        <div class="btn-group">
+          <a href="crisis-module-4.html" class="btn btn-secondary">← Module 4</a>
+          <a href="crisis-toolkit.html" class="btn btn-primary">View My Toolkit →</a>
+        </div>
+
+        <!-- ===== MARK AS PRACTICED ===== -->
+        <div style="display: flex; justify-content: center; margin: 0.5rem 0 1.5rem;">
+          <button id="markPracticedBtn" style="background: var(--success-bg); color: var(--success-emerald); border: 1px solid rgba(74,222,128,0.3); padding: 0.75rem 2rem; border-radius: 2rem; font-size: 0.8125rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem;">
+            ✓ I've practiced this module
+          </button>
+        </div>
+
+        <!-- ===== FOOTER ===== -->
+        <div class="footer">
+          <p style="color: #fca5a5; font-weight: 600; margin-bottom: 0.5rem;">⚠️ EDUCATIONAL ONLY — NOT THERAPY</p>
+          <p>988 Suicide & Crisis Lifeline: Call or text 988</p>
+          <p style="margin-top: 0.5rem;">Crisis Text Line: Text HOME to 741741</p>
+          <p style="margin-top: 1rem;">© MPHaven • You have the tools. Use them.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  // ===== CHECK DISCLAIMER ACKNOWLEDGMENT =====
+  const acknowledged = localStorage.getItem('crisis_disclaimer_acknowledged');
+  if (!acknowledged) {
+    window.location.href = 'crisis-intro.html';
+    return;
+  }
+
+  // ===== UPDATE PROGRESS =====
+  let progress = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
+  progress.currentModule = 5;
+  progress.lastAccessed = new Date().toISOString();
+  
+  if (!progress.practicedModules) progress.practicedModules = [];
+  if (!progress.practicedModules.includes('module5')) {
+    progress.practicedModules.push('module5');
+  }
+  
+  localStorage.setItem('crisis_course_progress', JSON.stringify(progress));
+  
+  // ===== MARK COURSE COMPLETED IN MAIN APP =====
+  try {
+    const mainState = JSON.parse(localStorage.getItem('mphaven_state') || '{}');
+    if (!mainState.courses) mainState.courses = {};
+    if (!mainState.courses['crisis-resilience']) mainState.courses['crisis-resilience'] = {};
+    mainState.courses['crisis-resilience'].practiced = true;
+    mainState.courses['crisis-resilience'].lastPracticed = new Date().toISOString();
+    mainState.courses['crisis-resilience'].progress = 100;
+    localStorage.setItem('mphaven_state', JSON.stringify(mainState));
+  } catch(e) {}
+
+  // ===== CHECKBOX VISUAL STATE =====
+  const checkboxes = document.querySelectorAll('.reflection-checkbox input[type="checkbox"]');
+  checkboxes.forEach(cb => {
+    cb.addEventListener('change', function() {
+      const label = this.closest('.reflection-checkbox');
+      if (this.checked) {
+        label.classList.add('checked');
+      } else {
+        label.classList.remove('checked');
+      }
+    });
+  });
+
+  // ===== SAVE POINT #1: VALUES COMPASS =====
+  const saveValuesBtn = document.getElementById('saveValuesBtn');
+  const valuesFeedback = document.getElementById('valuesSaveFeedback');
+  
+  if (saveValuesBtn) {
+    saveValuesBtn.addEventListener('click', function() {
+      const val1 = document.getElementById('values1')?.value || '';
+      const val2 = document.getElementById('values2')?.value || '';
+      const val3 = document.getElementById('values3')?.value || '';
+      const rel = document.getElementById('valuesRelationships')?.value || '';
+      const best = document.getElementById('valuesBest')?.value || '';
+      
+      let description = 'My values: ';
+      if (val1) description += val1 + '; ';
+      if (val2) description += val2 + '; ';
+      if (val3) description += val3 + '; ';
+      description += 'Relationships: ' + rel + '; ';
+      description += 'At my best: ' + best;
+      
+      let toolkit = JSON.parse(localStorage.getItem('crisis_toolkit') || '[]');
+      toolkit = toolkit.filter(item => item.id !== 'values-compass');
+      
+      toolkit.push({
+        id: 'values-compass',
+        category: 'Module 5: Crisis Plan',
+        name: 'My Values Compass',
+        description: description,
+        date: new Date().toISOString()
+      });
+      
+      localStorage.setItem('crisis_toolkit', JSON.stringify(toolkit));
+      
+      // Also save to crisis plan
+      let crisisPlan = JSON.parse(localStorage.getItem('crisis_plan') || '{}');
+      crisisPlan.values = { val1, val2, val3, rel, best };
+      crisisPlan.lastUpdated = new Date().toISOString();
+      localStorage.setItem('crisis_plan', JSON.stringify(crisisPlan));
+      
+      saveValuesBtn.classList.add('saved');
+      saveValuesBtn.innerHTML = '<span>✓</span> Saved to Toolkit';
+      valuesFeedback.style.display = 'block';
+      valuesFeedback.textContent = '✓ Your Values Compass has been saved.';
+      
+      setTimeout(() => {
+        saveValuesBtn.classList.remove('saved');
+        saveValuesBtn.innerHTML = '<span>🧭</span> Save Values Compass to Toolkit';
+        valuesFeedback.style.display = 'none';
+      }, 3000);
+    });
+  }
+
+  // ===== SAVE POINT #2: CRISIS CARD =====
+  const saveCrisisCardBtn = document.getElementById('saveCrisisCardBtn');
+  const crisisCardFeedback = document.getElementById('crisisCardSaveFeedback');
+  
+  if (saveCrisisCardBtn) {
+    saveCrisisCardBtn.addEventListener('click', function() {
+      const physical = document.getElementById('cardPhysical')?.value || '';
+      const wait = document.getElementById('cardWait')?.value || '';
+      const acceptance = document.getElementById('cardAcceptance')?.value || '';
+      const values = document.getElementById('cardValues')?.value || '';
+      const emergency = document.getElementById('cardEmergency')?.value || '';
+      
+      let toolkit = JSON.parse(localStorage.getItem('crisis_toolkit') || '[]');
+      toolkit = toolkit.filter(item => item.id !== 'crisis-card');
+      
+      toolkit.push({
+        id: 'crisis-card',
+        category: 'Module 5: Crisis Plan',
+        name: 'My Crisis Card',
+        description: `Physical: ${physical} | Wait: ${wait} | Acceptance: ${acceptance} | Values: ${values} | Emergency: ${emergency}`,
+        date: new Date().toISOString()
+      });
+      
+      localStorage.setItem('crisis_toolkit', JSON.stringify(toolkit));
+      
+      // Also save to crisis plan
+      let crisisPlan = JSON.parse(localStorage.getItem('crisis_plan') || '{}');
+      crisisPlan.crisisCard = { physical, wait, acceptance, values, emergency };
+      crisisPlan.lastUpdated = new Date().toISOString();
+      localStorage.setItem('crisis_plan', JSON.stringify(crisisPlan));
+      
+      saveCrisisCardBtn.classList.add('saved');
+      saveCrisisCardBtn.innerHTML = '<span>✓</span> Saved to Toolkit';
+      crisisCardFeedback.style.display = 'block';
+      crisisCardFeedback.textContent = '✓ Your Crisis Card has been saved.';
+      
+      setTimeout(() => {
+        saveCrisisCardBtn.classList.remove('saved');
+        saveCrisisCardBtn.innerHTML = '<span>🆘</span> Save Crisis Card to Toolkit';
+        crisisCardFeedback.style.display = 'none';
+      }, 3000);
+    });
+  }
+
+  // ===== SAVE POINT #3: FULL CRISIS PLAN =====
+  const saveFullPlanBtn = document.getElementById('saveFullPlanBtn');
+  const fullPlanFeedback = document.getElementById('fullPlanSaveFeedback');
+  
+  if (saveFullPlanBtn) {
+    saveFullPlanBtn.addEventListener('click', function() {
+      // Gather all plan data
+      const mild = document.getElementById('planMild')?.value || '';
+      const mod1 = document.getElementById('planModerate1')?.value || '';
+      const mod2 = document.getElementById('planModerate2')?.value || '';
+      const mod3 = document.getElementById('planModerate3')?.value || '';
+      const phys1 = document.getElementById('planPhysical1')?.value || '';
+      const phys2 = document.getElementById('planPhysical2')?.value || '';
+      const mental = document.getElementById('planMental')?.value || '';
+      const trusted = document.getElementById('planTrusted')?.value || '';
+      const therapist = document.getElementById('planTherapist')?.value || '';
+      const er = document.getElementById('planER')?.value || '';
+      
+      const urge = document.getElementById('urgeInput')?.value || '';
+      const skill1 = document.getElementById('practiceSkill1')?.value || '';
+      const freq1 = document.getElementById('practiceFreq1')?.value || '';
+      
+      // Save to crisis plan
+      let crisisPlan = {
+        intensityPlan: {
+          mild, moderate: [mod1, mod2, mod3],
+          high: { physical: [phys1, phys2], mental },
+          emergency: { trusted, therapist, er }
+        },
+        urge,
+        practicePlan: {
+          skill1, freq1,
+          skill2: document.getElementById('practiceSkill2')?.value || '',
+          freq2: document.getElementById('practiceFreq2')?.value || '',
+          skill3: document.getElementById('practiceSkill3')?.value || '',
+          freq3: document.getElementById('practiceFreq3')?.value || ''
+        },
+        lastUpdated: new Date().toISOString(),
+        completed: true
+      };
+      
+      localStorage.setItem('crisis_plan', JSON.stringify(crisisPlan));
+      
+      // Save summary to toolkit
+      let toolkit = JSON.parse(localStorage.getItem('crisis_toolkit') || '[]');
+      toolkit = toolkit.filter(item => item.id !== 'full-crisis-plan');
+      
+      toolkit.push({
+        id: 'full-crisis-plan',
+        category: 'Module 5: Crisis Plan',
+        name: 'My Complete Crisis Plan',
+        description: `Intensity plan saved • Urge: ${urge || 'not specified'} • Practice: ${skill1 || 'none'} • Crisis card created`,
+        date: new Date().toISOString()
+      });
+      
+      localStorage.setItem('crisis_toolkit', JSON.stringify(toolkit));
+      
+      saveFullPlanBtn.classList.add('saved');
+      saveFullPlanBtn.innerHTML = '<span>✓</span> Saved to Toolkit';
+      fullPlanFeedback.style.display = 'block';
+      fullPlanFeedback.textContent = '✓ Your complete crisis plan has been saved.';
+      
+      setTimeout(() => {
+        saveFullPlanBtn.classList.remove('saved');
+        saveFullPlanBtn.innerHTML = '<span>📋</span> Save My Complete Crisis Plan to Toolkit';
+        fullPlanFeedback.style.display = 'none';
+      }, 3000);
+    });
+  }
+
+  // ===== MARK AS PRACTICED =====
+  const markBtn = document.getElementById('markPracticedBtn');
+  
+  if (markBtn) {
+    markBtn.addEventListener('click', function() {
+      let progress = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
+      if (!progress.practicedModules) progress.practicedModules = [];
+      
+      if (!progress.practicedModules.includes('module5')) {
+        progress.practicedModules.push('module5');
+      }
+      
+      progress.lastPracticed = new Date().toISOString();
+      progress.currentModule = 5;
+      progress.completed = true;
+      
+      localStorage.setItem('crisis_course_progress', JSON.stringify(progress));
+      
+      markBtn.innerHTML = '✓ Module 5 marked as practiced';
+      markBtn.style.background = 'rgba(74,222,128,0.25)';
+      
+      setTimeout(() => {
+        markBtn.innerHTML = '✓ I\'ve practiced this module';
+        markBtn.style.background = 'rgba(34,197,94,0.12)';
+      }, 2000);
+    });
+  }
+
+  // ===== LOAD SAVED PLAN IF EXISTS =====
+  function loadSavedPlan() {
+    const crisisPlan = JSON.parse(localStorage.getItem('crisis_plan') || '{}');
+    
+    if (crisisPlan.intensityPlan) {
+      const p = crisisPlan.intensityPlan;
+      if (p.mild) document.getElementById('planMild').value = p.mild;
+      if (p.moderate) {
+        if (p.moderate[0]) document.getElementById('planModerate1').value = p.moderate[0];
+        if (p.moderate[1]) document.getElementById('planModerate2').value = p.moderate[1];
+        if (p.moderate[2]) document.getElementById('planModerate3').value = p.moderate[2];
+      }
+      if (p.high) {
+        if (p.high.physical) {
+          if (p.high.physical[0]) document.getElementById('planPhysical1').value = p.high.physical[0];
+          if (p.high.physical[1]) document.getElementById('planPhysical2').value = p.high.physical[1];
+        }
+        if (p.high.mental) document.getElementById('planMental').value = p.high.mental;
+      }
+      if (p.emergency) {
+        if (p.emergency.trusted) document.getElementById('planTrusted').value = p.emergency.trusted;
+        if (p.emergency.therapist) document.getElementById('planTherapist').value = p.emergency.therapist;
+        if (p.emergency.er) document.getElementById('planER').value = p.emergency.er;
+      }
+    }
+    
+    if (crisisPlan.urge) {
+      document.getElementById('urgeInput').value = crisisPlan.urge;
+    }
+    
+    if (crisisPlan.practicePlan) {
+      const pp = crisisPlan.practicePlan;
+      if (pp.skill1) document.getElementById('practiceSkill1').value = pp.skill1;
+      if (pp.freq1) document.getElementById('practiceFreq1').value = pp.freq1;
+      if (pp.skill2) document.getElementById('practiceSkill2').value = pp.skill2;
+      if (pp.freq2) document.getElementById('practiceFreq2').value = pp.freq2;
+      if (pp.skill3) document.getElementById('practiceSkill3').value = pp.skill3;
+      if (pp.freq3) document.getElementById('practiceFreq3').value = pp.freq3;
+    }
+    
+    if (crisisPlan.values) {
+      const v = crisisPlan.values;
+      if (v.val1) document.getElementById('values1').value = v.val1;
+      if (v.val2) document.getElementById('values2').value = v.val2;
+      if (v.val3) document.getElementById('values3').value = v.val3;
+      if (v.rel) document.getElementById('valuesRelationships').value = v.rel;
+      if (v.best) document.getElementById('valuesBest').value = v.best;
+    }
+    
+    if (crisisPlan.crisisCard) {
+      const cc = crisisPlan.crisisCard;
+      if (cc.physical) document.getElementById('cardPhysical').value = cc.physical;
+      if (cc.wait) document.getElementById('cardWait').value = cc.wait;
+      if (cc.acceptance) document.getElementById('cardAcceptance').value = cc.acceptance;
+      if (cc.values) document.getElementById('cardValues').value = cc.values;
+      if (cc.emergency) document.getElementById('cardEmergency').value = cc.emergency;
+    }
+  }
+  
+  loadSavedPlan();
+})();
+</script>
+</body>
+</html>
