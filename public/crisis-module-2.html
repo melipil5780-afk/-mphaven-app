@@ -117,7 +117,7 @@
   }
   .main-content::-webkit-scrollbar { display: none; }
 
-  /* Crisis banner - more compact */
+  /* Crisis banner */
   .crisis-banner {
     background: var(--crisis-bg);
     border: 1px solid var(--crisis-red);
@@ -132,7 +132,7 @@
   }
   .crisis-text {
     color: #fca5a5;
-    font-size: 0.8125rem;  /* 13px */
+    font-size: 0.8125rem;
     font-weight: 600;
   }
   .crisis-actions { display: flex; gap: 0.5rem; }
@@ -142,11 +142,11 @@
     text-decoration: none;
     padding: 0.4rem 0.875rem;
     border-radius: 2rem;
-    font-size: 0.75rem;    /* 12px */
+    font-size: 0.75rem;
     font-weight: 700;
   }
 
-  /* Header - more compact */
+  /* Header */
   .header {
     background: linear-gradient(135deg, var(--bg-card-light), var(--bg-card-dark));
     border: 1px solid var(--border-softer);
@@ -200,7 +200,7 @@
     font-size: 0.875rem;
   }
 
-  /* Cards - balanced padding */
+  /* Cards */
   .card {
     background: linear-gradient(135deg, var(--bg-card-light), var(--bg-card-dark));
     border: 1px solid var(--border-softer);
@@ -231,7 +231,7 @@
     color: var(--text-teal-light);
   }
 
-  /* Stats - more compact */
+  /* Stats */
   .technique-stats {
     display: flex;
     gap: var(--space-md);
@@ -323,13 +323,13 @@
     margin-bottom: var(--space-lg);
   }
 
-  /* BUTTONS - BALANCED SIZES */
+  /* BUTTONS */
   .btn {
     width: 100%;
-    padding: 0.875rem 1.25rem;  /* 14px padding - much better */
+    padding: 0.875rem 1.25rem;
     border-radius: 0.875rem;
     font-weight: 600;
-    font-size: 0.9375rem;       /* 15px */
+    font-size: 0.9375rem;
     cursor: pointer;
     border: none;
     text-decoration: none;
@@ -356,20 +356,18 @@
     margin: var(--space-xl) 0 var(--space-lg);
   }
 
-  /* Save buttons - smaller, subtle */
   .btn-save {
     background: var(--gradient-subtle);
     color: var(--text-teal-light);
     border: 1px solid rgba(14,116,144,0.3);
-    padding: 0.75rem 1.25rem;    /* 12px padding */
+    padding: 0.75rem 1.25rem;
     border-radius: 2rem;
     font-weight: 500;
-    font-size: 0.875rem;         /* 14px */
+    font-size: 0.875rem;
     cursor: pointer;
     width: 100%;
     margin-top: var(--space-md);
     line-height: 1.4;
-    transition: all 0.2s;
   }
   .btn-save.saved {
     background: var(--success-bg);
@@ -377,7 +375,6 @@
     border-color: rgba(74,222,128,0.3);
   }
 
-  /* Practice buttons - compact */
   .practice-buttons {
     display: flex;
     gap: var(--space-sm);
@@ -385,10 +382,10 @@
   }
   .btn-practice {
     flex: 1;
-    padding: 0.75rem 1rem;      /* 12px padding */
+    padding: 0.75rem 1rem;
     border-radius: 0.75rem;
     font-weight: 600;
-    font-size: 0.875rem;         /* 14px */
+    font-size: 0.875rem;
     cursor: pointer;
     border: none;
     transition: all 0.2s;
@@ -403,7 +400,7 @@
     border: 1px solid var(--border-softer);
   }
 
-  /* Timer - balanced */
+  /* Timer */
   .timer-container {
     text-align: center;
     padding: var(--space-lg);
@@ -412,7 +409,7 @@
     margin: var(--space-md) 0;
   }
   .timer-display {
-    font-size: 3rem;            /* 48px */
+    font-size: 3rem;
     font-weight: 700;
     color: var(--text-teal);
     font-variant-numeric: tabular-nums;
@@ -624,6 +621,8 @@
     clarityAfter: 5,
     tensionBefore: 5,
     tensionAfter: 5,
+    pmrBefore: 5,
+    pmrAfter: 5,
     selectedTechniques: []
   };
 
@@ -925,9 +924,10 @@
         </div>
         
         <div id="coldWaterGuided" style="display: none; margin-top: var(--space-lg);">
+          <!-- BEFORE SLIDER -->
           <div class="slider-container">
             <div class="slider-label">
-              <span>Current intensity</span>
+              <span>Current intensity (0-10)</span>
               <span class="slider-value" id="coldBeforeValue">5</span>
             </div>
             <input type="range" id="coldBeforeSlider" class="slider" min="0" max="10" value="5" step="1">
@@ -952,9 +952,10 @@
           </div>
           
           <div id="coldWaterAfter" style="display: none; margin-top: var(--space-lg);">
+            <!-- AFTER SLIDER -->
             <div class="slider-container">
               <div class="slider-label">
-                <span>Intensity NOW</span>
+                <span>Intensity NOW (0-10)</span>
                 <span class="slider-value" id="coldAfterValue">5</span>
               </div>
               <input type="range" id="coldAfterSlider" class="slider" min="0" max="10" value="5" step="1">
@@ -964,10 +965,12 @@
               </div>
             </div>
             
+            <!-- RESULT DISPLAY -->
             <div id="coldResult" class="result-box">
-              Adjust the slider to see your result
+              Adjust the after slider to see your result
             </div>
             
+            <!-- REFLECTION BUTTONS -->
             <div style="display: flex; gap: var(--space-sm); justify-content: center; margin-top: var(--space-md); flex-wrap: wrap;">
               <button class="btn-practice btn-practice-secondary feeling-btn" data-feeling="effective">Helped a lot</button>
               <button class="btn-practice btn-practice-secondary feeling-btn" data-feeling="little">Helped a little</button>
@@ -1005,21 +1008,24 @@
     if (beforeSlider && beforeValue) {
       beforeSlider.addEventListener('input', () => {
         beforeValue.textContent = beforeSlider.value;
+        userData.coldBefore = parseInt(beforeSlider.value);
       });
     }
     
     if (afterSlider && afterValue) {
       afterSlider.addEventListener('input', () => {
         afterValue.textContent = afterSlider.value;
+        userData.coldAfter = parseInt(afterSlider.value);
         const before = parseInt(beforeSlider?.value || '5');
         const after = parseInt(afterSlider.value);
+        const change = before - after;
         
-        if (after < before) {
-          resultDiv.innerHTML = `<p style="color: var(--text-teal-light);"><strong>✓ Dropped from ${before} to ${after}!</strong><br>That's the dive reflex working.</p>`;
-        } else if (after > before) {
-          resultDiv.innerHTML = `<p style="color: var(--text-secondary);">Increased from ${before} to ${after}. Cold water might not be your tool.</p>`;
+        if (change > 0) {
+          resultDiv.innerHTML = `<p style="color: var(--text-teal-light);"><strong>✓ Dropped from ${before} to ${after}!</strong><br>That's the dive reflex working — your heart rate slowed automatically.</p>`;
+        } else if (change < 0) {
+          resultDiv.innerHTML = `<p style="color: var(--text-secondary);">Increased from ${before} to ${after}. Cold water might not be your tool — that's okay.</p>`;
         } else {
-          resultDiv.innerHTML = `<p style="color: var(--text-secondary);">Stayed at ${after}. Try longer or colder next time.</p>`;
+          resultDiv.innerHTML = `<p style="color: var(--text-secondary);">Stayed at ${after}. Try longer or colder application next time.</p>`;
         }
       });
     }
@@ -1202,9 +1208,10 @@
         </div>
         
         <div id="exerciseGuided" style="display: none;">
+          <!-- BEFORE SLIDER -->
           <div class="slider-container">
             <div class="slider-label">
-              <span>Current energy</span>
+              <span>Current energy (0-10)</span>
               <span class="slider-value" id="energyBeforeValue">5</span>
             </div>
             <input type="range" id="energyBeforeSlider" class="slider" min="0" max="10" value="5" step="1">
@@ -1233,17 +1240,19 @@
           </div>
           
           <div id="exerciseAfter" style="display: none; margin-top: var(--space-lg);">
+            <!-- AFTER SLIDER - ENERGY -->
             <div class="slider-container">
               <div class="slider-label">
-                <span>Energy NOW</span>
+                <span>Energy NOW (0-10)</span>
                 <span class="slider-value" id="energyAfterValue">5</span>
               </div>
               <input type="range" id="energyAfterSlider" class="slider" min="0" max="10" value="5" step="1">
             </div>
             
+            <!-- AFTER SLIDER - CLARITY -->
             <div class="slider-container">
               <div class="slider-label">
-                <span>Mental clarity</span>
+                <span>Mental clarity (0-10)</span>
                 <span class="slider-value" id="clarityAfterValue">5</span>
               </div>
               <input type="range" id="clarityAfterSlider" class="slider" min="0" max="10" value="5" step="1">
@@ -1253,6 +1262,7 @@
               </div>
             </div>
             
+            <!-- RESULT DISPLAY -->
             <div id="exerciseResult" class="result-box">
               Complete the workout to see results
             </div>
@@ -1289,15 +1299,24 @@
     const clarityAfterVal = document.getElementById('clarityAfterValue');
     
     if (energyBefore && energyBeforeVal) {
-      energyBefore.addEventListener('input', () => energyBeforeVal.textContent = energyBefore.value);
+      energyBefore.addEventListener('input', () => {
+        energyBeforeVal.textContent = energyBefore.value;
+        userData.energyBefore = parseInt(energyBefore.value);
+      });
     }
     
     if (energyAfter && energyAfterVal) {
-      energyAfter.addEventListener('input', () => energyAfterVal.textContent = energyAfter.value);
+      energyAfter.addEventListener('input', () => {
+        energyAfterVal.textContent = energyAfter.value;
+        userData.energyAfter = parseInt(energyAfter.value);
+      });
     }
     
     if (clarityAfter && clarityAfterVal) {
-      clarityAfter.addEventListener('input', () => clarityAfterVal.textContent = clarityAfter.value);
+      clarityAfter.addEventListener('input', () => {
+        clarityAfterVal.textContent = clarityAfter.value;
+        userData.clarityAfter = parseInt(clarityAfter.value);
+      });
     }
     
     if (yesBtn) {
@@ -1361,8 +1380,9 @@
               const clarity = parseInt(clarityAfter?.value || '6');
               
               resultDiv.innerHTML = `
-                <p style="color: var(--text-teal-light);">Energy: ${before} → ${after}</p>
-                <p style="color: var(--text-teal-light); margin-top: var(--space-xs);">Clarity: ${clarity}/10</p>
+                <p style="color: var(--text-teal-light);"><strong>Energy:</strong> ${before} → ${after}</p>
+                <p style="color: var(--text-teal-light); margin-top: var(--space-xs);"><strong>Clarity:</strong> ${clarity}/10</p>
+                <p style="color: var(--text-secondary); margin-top: var(--space-sm);">Notice how your body feels different?</p>
               `;
             }
           }
@@ -1425,9 +1445,10 @@
           GUIDED 4-7-8
         </div>
         
+        <!-- BEFORE SLIDER -->
         <div class="slider-container">
           <div class="slider-label">
-            <span>Tension before</span>
+            <span>Tension before (0-10)</span>
             <span class="slider-value" id="tensionBeforeValue">5</span>
           </div>
           <input type="range" id="tensionBeforeSlider" class="slider" min="0" max="10" value="5" step="1">
@@ -1449,14 +1470,16 @@
         </div>
         
         <div id="breathingAfter" style="display: none;">
+          <!-- AFTER SLIDER -->
           <div class="slider-container">
             <div class="slider-label">
-              <span>Tension now</span>
+              <span>Tension now (0-10)</span>
               <span class="slider-value" id="tensionAfterValue">5</span>
             </div>
             <input type="range" id="tensionAfterSlider" class="slider" min="0" max="10" value="5" step="1">
           </div>
           
+          <!-- RESULT DISPLAY -->
           <div id="breathingResult" class="result-box">
             Complete practice to see result
           </div>
@@ -1491,19 +1514,26 @@
     const tensionAfterVal = document.getElementById('tensionAfterValue');
     
     if (tensionBefore && tensionBeforeVal) {
-      tensionBefore.addEventListener('input', () => tensionBeforeVal.textContent = tensionBefore.value);
+      tensionBefore.addEventListener('input', () => {
+        tensionBeforeVal.textContent = tensionBefore.value;
+        userData.tensionBefore = parseInt(tensionBefore.value);
+      });
     }
     
     if (tensionAfter && tensionAfterVal) {
       tensionAfter.addEventListener('input', () => {
         tensionAfterVal.textContent = tensionAfter.value;
+        userData.tensionAfter = parseInt(tensionAfter.value);
         const before = parseInt(tensionBefore?.value || '5');
         const after = parseInt(tensionAfter.value);
+        const change = before - after;
         
-        if (after < before) {
-          resultDiv.innerHTML = `<p style="color: var(--text-teal-light);"><strong>✓ Tension dropped from ${before} to ${after}!</strong>`;
+        if (change > 0) {
+          resultDiv.innerHTML = `<p style="color: var(--text-teal-light);"><strong>✓ Tension dropped from ${before} to ${after}!</strong><br>4-7-8 breathing activated your parasympathetic nervous system.</p>`;
+        } else if (change < 0) {
+          resultDiv.innerHTML = `<p style="color: var(--text-secondary);">Tension increased from ${before} to ${after}. Breathing might not be your tool.</p>`;
         } else {
-          resultDiv.innerHTML = `<p style="color: var(--text-secondary);">Tension stayed at ${after}. That's okay.</p>`;
+          resultDiv.innerHTML = `<p style="color: var(--text-secondary);">Tension stayed at ${after}. That's okay — other tools may work better.</p>`;
         }
       });
     }
@@ -1608,6 +1638,7 @@
 
   // ===== STEP 7: PROGRESSIVE MUSCLE RELAXATION =====
   function renderStep7() {
+    setTimeout(() => initPMR(), 10);
     setTimeout(() => initPMRSave(), 10);
     
     return `
@@ -1639,14 +1670,27 @@
         </div>
       </div>
       
-      <!-- SIMPLE VISUAL PMR -->
+      <!-- SIMPLE VISUAL PMR WITH BEFORE/AFTER -->
       <div class="practice-card">
         <div class="practice-title" style="justify-content: center;">
           <span>💆</span> SIMPLE PMR
         </div>
         
+        <!-- BEFORE SLIDER -->
+        <div class="slider-container">
+          <div class="slider-label">
+            <span>Tension before (0-10)</span>
+            <span class="slider-value" id="pmrBeforeValue">5</span>
+          </div>
+          <input type="range" id="pmrBeforeSlider" class="slider" min="0" max="10" value="5" step="1">
+          <div class="slider-labels">
+            <span>0 - Relaxed</span>
+            <span>10 - Tense</span>
+          </div>
+        </div>
+        
         <p style="color: var(--text-secondary); text-align: center; margin-bottom: var(--space-lg); font-size: 0.875rem;">
-          Hold each tension for 5 seconds, then release.
+          Hold each tension for 5 seconds, then release. Go at your own pace.
         </p>
         
         <div style="display: flex; flex-direction: column; gap: var(--space-md);">
@@ -1691,10 +1735,27 @@
           </div>
         </div>
         
-        <div style="margin-top: var(--space-lg); padding-top: var(--space-md); border-top: 1px solid var(--border-softer);">
+        <!-- AFTER SLIDER -->
+        <div style="margin-top: var(--space-xl);">
+          <div class="slider-container">
+            <div class="slider-label">
+              <span>Tension now (0-10)</span>
+              <span class="slider-value" id="pmrAfterValue">5</span>
+            </div>
+            <input type="range" id="pmrAfterSlider" class="slider" min="0" max="10" value="5" step="1">
+          </div>
+          
+          <!-- RESULT DISPLAY -->
+          <div id="pmrResult" class="result-box">
+            Adjust the after slider to see your result
+          </div>
+        </div>
+        
+        <!-- REFLECTION BUTTONS -->
+        <div style="margin-top: var(--space-md); padding-top: var(--space-md); border-top: 1px solid var(--border-softer);">
           <p style="color: var(--text-secondary); text-align: center; margin-bottom: var(--space-sm); font-size: 0.875rem;">How do you feel?</p>
           <div style="display: flex; gap: var(--space-sm); justify-content: center;">
-            <button class="btn-practice btn-practice-secondary pmr-reflection">Relaxed</button>
+            <button class="btn-practice btn-practice-secondary pmr-reflection">More relaxed</button>
             <button class="btn-practice btn-practice-secondary pmr-reflection">Same</button>
             <button class="btn-practice btn-practice-secondary pmr-reflection">Not sure</button>
           </div>
@@ -1713,6 +1774,39 @@
       
       ${renderFooter()}
     `;
+  }
+
+  function initPMR() {
+    const beforeSlider = document.getElementById('pmrBeforeSlider');
+    const beforeValue = document.getElementById('pmrBeforeValue');
+    const afterSlider = document.getElementById('pmrAfterSlider');
+    const afterValue = document.getElementById('pmrAfterValue');
+    const resultDiv = document.getElementById('pmrResult');
+    
+    if (beforeSlider && beforeValue) {
+      beforeSlider.addEventListener('input', () => {
+        beforeValue.textContent = beforeSlider.value;
+        userData.pmrBefore = parseInt(beforeSlider.value);
+      });
+    }
+    
+    if (afterSlider && afterValue) {
+      afterSlider.addEventListener('input', () => {
+        afterValue.textContent = afterSlider.value;
+        userData.pmrAfter = parseInt(afterSlider.value);
+        const before = parseInt(beforeSlider?.value || '5');
+        const after = parseInt(afterSlider.value);
+        const change = before - after;
+        
+        if (change > 0) {
+          resultDiv.innerHTML = `<p style="color: var(--text-teal-light);"><strong>✓ Tension dropped from ${before} to ${after}!</strong><br>You just taught your body what 'relaxed' feels like.</p>`;
+        } else if (change < 0) {
+          resultDiv.innerHTML = `<p style="color: var(--text-secondary);">Tension increased from ${before} to ${after}. That's okay — PMR takes practice.</p>`;
+        } else {
+          resultDiv.innerHTML = `<p style="color: var(--text-secondary);">Stayed at ${after}. Try holding tensions longer next time.</p>`;
+        }
+      });
+    }
   }
 
   function initPMRSave() {
