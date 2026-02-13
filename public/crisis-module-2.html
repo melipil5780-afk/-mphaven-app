@@ -35,199 +35,258 @@
     --crisis-bg: rgba(220, 38, 38, 0.08);
 }
 
-* { 
-    margin: 0; 
-    padding: 0; 
-    box-sizing: border-box; 
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
-    -webkit-tap-highlight-color: transparent; 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-font-smoothing: antialiased;
 }
 
-html, body { 
-    width: 100%; 
-    height: 100%; 
-    overflow: hidden; 
-    background: var(--bg-dark); 
-    color: var(--text-primary); 
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: var(--bg-dark);
+    color: var(--text-primary);
 }
 
-.container { 
-    width: 100%; 
-    height: 100vh; 
-    display: flex; 
-    flex-direction: column; 
-}
-
-.app-wrapper { 
-    width: 100%; 
-    max-width: 28rem; 
-    height: 100%; 
-    margin: 0 auto; 
-    background: var(--bg-card); 
-    display: flex; 
-    flex-direction: column; 
-    position: relative; 
-    overflow: hidden; 
-}
-
-.bg-blur-1, .bg-blur-2 { 
-    position: absolute; 
-    border-radius: 50%; 
-    pointer-events: none; 
-    z-index: 0; 
-    opacity: 0.3; 
-}
-
-.bg-blur-1 { 
-    top: -5%; 
-    left: 50%; 
-    transform: translateX(-50%); 
-    width: 22rem; 
-    height: 22rem; 
-    background: rgba(14, 116, 144, 0.15); 
-}
-
-.bg-blur-2 { 
-    bottom: -5%; 
-    right: -5%; 
-    width: 18rem; 
-    height: 18rem; 
-    background: rgba(217, 119, 6, 0.15); 
-}
-
-.main-content { 
-    flex: 1; 
-    overflow-y: auto; 
-    -webkit-overflow-scrolling: touch; 
-    scrollbar-width: none; 
-    position: relative; 
-    z-index: 1; 
-}
-
-.main-content::-webkit-scrollbar { 
-    display: none; 
-}
-
-.content-wrapper { 
-    padding: 1rem 1.25rem 2rem; 
-    padding-bottom: calc(2rem + env(safe-area-inset-bottom)); 
-}
-
-/* ===== CRISIS BANNER - EVERY PAGE ===== */
-.crisis-banner {
-    background: var(--crisis-bg);
-    border: 1px solid var(--crisis-red);
-    border-radius: 0.75rem;
-    padding: 0.75rem 1rem;
-    margin-bottom: 1rem;
+.container {
+    width: 100%;
+    height: 100vh;
+    height: -webkit-fill-available;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    flex-direction: column;
 }
 
-.crisis-banner span {
-    color: #fca5a5;
-    font-size: 0.8125rem;
-    font-weight: 600;
-}
-
-.crisis-banner a {
-    color: #fca5a5;
-    font-weight: 700;
-    text-decoration: none;
-    background: rgba(220,38,38,0.2);
-    padding: 0.375rem 0.75rem;
-    border-radius: 2rem;
-    font-size: 0.75rem;
-}
-
-.nav-header {
+.app-wrapper {
+    width: 100%;
+    max-width: 28rem;
+    height: 100%;
+    margin: 0 auto;
+    background: var(--bg-card);
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 1rem;
-}
-
-.back-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--text-muted);
-    text-decoration: none;
-    font-size: 0.875rem;
-    font-weight: 500;
-}
-
-.module-badge {
-    background: var(--gradient-subtle);
-    color: var(--text-teal-light);
-    padding: 0.375rem 0.875rem;
-    border-radius: 2rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    border: 1px solid rgba(14,116,144,0.25);
-}
-
-.module-title {
-    font-size: 1.75rem;
-    font-weight: 800;
-    margin-bottom: 0.25rem;
-    background: var(--gradient-main);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.module-subtitle {
-    color: var(--text-secondary);
-    font-size: 0.9375rem;
-    margin-bottom: 1.5rem;
-}
-
-.progress-container {
-    margin: 1rem 0 2rem;
-}
-
-.progress-label {
-    display: flex;
-    justify-content: space-between;
-    color: var(--text-muted);
-    font-size: 0.75rem;
-    margin-bottom: 0.375rem;
-}
-
-.progress-bar {
-    background: rgba(30,41,59,0.8);
-    height: 0.5rem;
-    border-radius: 1rem;
+    flex-direction: column;
+    position: relative;
     overflow: hidden;
 }
 
-.progress-fill {
-    width: 40%;
-    height: 100%;
-    background: var(--gradient-main);
-    border-radius: 1rem;
+.bg-blur-1, .bg-blur-2 {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.3;
 }
 
+.bg-blur-1 {
+    top: -5%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 22rem;
+    height: 22rem;
+    background: rgba(14, 116, 144, 0.15);
+}
+
+.bg-blur-2 {
+    bottom: -5%;
+    right: -5%;
+    width: 18rem;
+    height: 18rem;
+    background: rgba(217, 119, 6, 0.15);
+}
+
+.main-content {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    position: relative;
+    z-index: 1;
+}
+
+.main-content::-webkit-scrollbar {
+    display: none;
+}
+
+.content-wrapper {
+    padding: 1.25rem;
+    padding-bottom: calc(2rem + env(safe-area-inset-bottom));
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Crisis Banner */
+.crisis-banner {
+    background: var(--crisis-bg);
+    border: 1px solid var(--crisis-red);
+    border-radius: 0.875rem;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.crisis-banner__text {
+    color: #fca5a5;
+    font-size: 0.875rem;
+    font-weight: 600;
+    flex: 1;
+    min-width: 180px;
+}
+
+.crisis-banner__actions {
+    display: flex;
+    gap: 0.625rem;
+}
+
+.crisis-banner__link {
+    color: white;
+    background: var(--crisis-red);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    transition: all 0.2s;
+}
+
+.crisis-banner__link:active {
+    background: #b91c1c;
+    transform: scale(0.97);
+}
+
+/* Header */
+.header {
+    background: linear-gradient(135deg, var(--bg-card-light), var(--bg-card-dark));
+    border: 1px solid var(--border-softer);
+    border-radius: 1rem;
+    padding: 1.25rem;
+    margin-bottom: 1.25rem;
+}
+
+.header__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.back-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.25rem;
+    line-height: 1;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+}
+
+.back-btn:active {
+    transform: scale(0.9);
+}
+
+.step-indicator {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.progress-dots {
+    display: flex;
+    gap: 0.375rem;
+    margin-bottom: 1rem;
+}
+
+.progress-dot {
+    flex: 1;
+    height: 0.5rem;
+    background: rgba(148, 163, 184, 0.2);
+    border-radius: 1rem;
+    transition: all 0.3s;
+}
+
+.progress-dot.active {
+    background: var(--gradient-main);
+}
+
+.step-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    background: var(--gradient-main);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+}
+
+.step-subtitle {
+    color: var(--text-secondary);
+    font-size: 0.9375rem;
+}
+
+/* Card */
 .card {
     background: linear-gradient(135deg, var(--bg-card-light), var(--bg-card-dark));
     border: 1px solid var(--border-softer);
     border-radius: 1.25rem;
-    padding: 1.5rem;
+    padding: 1.75rem 1.5rem;
     margin-bottom: 1.25rem;
 }
 
-.card-title {
-    font-size: 1.25rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--text-primary);
+.card--highlight {
+    background: var(--gradient-subtle);
+    border: 1px solid rgba(14, 116, 144, 0.3);
 }
 
+.card__icon {
+    font-size: 3rem;
+    text-align: center;
+    margin-bottom: 1rem;
+    line-height: 1;
+}
+
+.card__title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 1.25rem;
+    line-height: 1.3;
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+}
+
+.card__content {
+    color: var(--text-secondary);
+    line-height: 1.7;
+    font-size: 1rem;
+}
+
+.card__content p {
+    margin-bottom: 1.25rem;
+}
+
+.card__content p:last-child {
+    margin-bottom: 0;
+}
+
+.card__content strong {
+    color: var(--text-teal);
+    font-weight: 600;
+}
+
+/* Section Header */
 .section-header {
     display: flex;
     align-items: center;
@@ -247,18 +306,7 @@ html, body {
     color: var(--text-teal-light);
 }
 
-.effectiveness-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
-    background: rgba(14,116,144,0.15);
-    padding: 0.25rem 0.75rem;
-    border-radius: 2rem;
-    font-size: 0.75rem;
-    color: var(--text-teal);
-    margin-left: 0.5rem;
-}
-
+/* Stats */
 .technique-stats {
     display: flex;
     gap: 1rem;
@@ -287,6 +335,7 @@ html, body {
     margin-top: 0.25rem;
 }
 
+/* Instruction Box */
 .instruction-box {
     background: rgba(15,23,42,0.6);
     border-left: 4px solid var(--primary-teal);
@@ -308,6 +357,7 @@ html, body {
     margin-bottom: 0.75rem;
     color: var(--text-secondary);
     font-size: 0.875rem;
+    line-height: 1.6;
 }
 
 .instruction-list li:before {
@@ -325,6 +375,7 @@ html, body {
     flex-shrink: 0;
 }
 
+/* Safety Note */
 .safety-note {
     background: rgba(220,38,38,0.1);
     border-left: 4px solid var(--crisis-red);
@@ -333,9 +384,10 @@ html, body {
     margin: 1rem 0;
     font-size: 0.8125rem;
     color: #fca5a5;
+    line-height: 1.6;
 }
 
-/* ===== PRACTICE CARD ===== */
+/* Practice Card */
 .practice-card {
     background: var(--gradient-subtle);
     border: 2px solid rgba(14,116,144,0.3);
@@ -354,10 +406,6 @@ html, body {
     margin-bottom: 1rem;
 }
 
-.practice-slider {
-    margin: 1rem 0;
-}
-
 .practice-buttons {
     display: flex;
     gap: 0.75rem;
@@ -372,11 +420,17 @@ html, body {
     font-size: 0.875rem;
     cursor: pointer;
     border: none;
+    transition: all 0.2s;
 }
 
 .btn-practice-primary {
     background: var(--gradient-main);
     color: white;
+}
+
+.btn-practice-primary:active {
+    transform: scale(0.98);
+    opacity: 0.9;
 }
 
 .btn-practice-secondary {
@@ -385,6 +439,12 @@ html, body {
     border: 1px solid var(--border-softer);
 }
 
+.btn-practice-secondary:active {
+    background: rgba(30, 41, 59, 0.8);
+    transform: scale(0.98);
+}
+
+/* Timer */
 .timer-container {
     text-align: center;
     padding: 1.5rem;
@@ -401,75 +461,7 @@ html, body {
     margin-bottom: 1rem;
 }
 
-.reflection-buttons {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-    margin: 1rem 0;
-}
-
-.reflection-btn {
-    flex: 1;
-    min-width: 120px;
-    padding: 0.75rem;
-    background: rgba(15,23,42,0.6);
-    border: 1px solid var(--border-softer);
-    border-radius: 0.75rem;
-    color: var(--text-secondary);
-    font-size: 0.8125rem;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.reflection-btn:hover {
-    border-color: var(--primary-teal);
-    background: rgba(14,116,144,0.1);
-}
-
-.reflection-btn.selected {
-    background: rgba(14,116,144,0.2);
-    border-color: var(--primary-teal);
-    color: var(--text-teal-light);
-}
-
-/* ===== SAVE BUTTONS - ONLY 6 IN THIS MODULE ===== */
-.btn-save {
-    background: var(--gradient-subtle);
-    color: var(--text-teal-light);
-    border: 1px solid rgba(14,116,144,0.35);
-    padding: 0.875rem 1.5rem;
-    border-radius: 2rem;
-    font-weight: 600;
-    font-size: 0.875rem;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    width: 100%;
-    margin-top: 1rem;
-}
-
-.btn-save:hover {
-    background: rgba(14,116,144,0.25);
-    border-color: rgba(14,116,144,0.5);
-}
-
-.btn-save.saved {
-    background: var(--success-bg);
-    color: var(--success-emerald);
-    border-color: rgba(74,222,128,0.35);
-}
-
-/* ===== PERSONAL REFLECTION GRID ===== */
-.reflection-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.75rem;
-    margin: 1.25rem 0;
-}
-
+/* Checkboxes */
 .reflection-checkbox {
     display: flex;
     align-items: center;
@@ -481,6 +473,7 @@ html, body {
     cursor: pointer;
     color: var(--text-secondary);
     font-size: 0.875rem;
+    transition: all 0.2s;
 }
 
 .reflection-checkbox.checked {
@@ -495,7 +488,14 @@ html, body {
     accent-color: var(--primary-teal);
 }
 
-/* ===== QUICK REFERENCE CARD ===== */
+.reflection-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    margin: 1.25rem 0;
+}
+
+/* Reference Card */
 .reference-card {
     background: var(--gradient-subtle);
     border: 1px solid rgba(14,116,144,0.3);
@@ -548,1458 +548,1386 @@ html, body {
     font-size: 0.75rem;
 }
 
-.btn-group {
-    display: flex;
-    gap: 1rem;
-    margin: 2rem 0 1rem;
-}
-
+/* Buttons */
 .btn {
-    flex: 1;
-    padding: 1rem;
-    border-radius: 0.75rem;
+    width: 100%;
+    padding: 1.125rem 1.5rem;
+    border-radius: 1rem;
+    font-size: 1rem;
     font-weight: 600;
-    font-size: 0.9375rem;
     cursor: pointer;
     border: none;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.625rem;
     text-decoration: none;
-    text-align: center;
 }
 
-.btn-primary {
+.btn--primary {
     background: var(--gradient-main);
     color: white;
 }
 
-.btn-secondary {
-    background: var(--bg-card-dark);
+.btn--primary:active {
+    transform: scale(0.98);
+    opacity: 0.9;
+}
+
+.btn--secondary {
+    background: rgba(30, 41, 59, 0.6);
     color: var(--text-secondary);
     border: 1px solid var(--border-softer);
 }
 
-.footer {
-    text-align: center;
-    color: var(--text-dim);
-    font-size: 0.6875rem;
-    margin-top: 2rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--border-subtle);
+.btn--secondary:active {
+    background: rgba(30, 41, 59, 0.8);
+    transform: scale(0.98);
 }
 
+.btn--save {
+    background: var(--gradient-subtle);
+    color: var(--text-teal-light);
+    border: 1px solid rgba(14, 116, 144, 0.3);
+    padding: 0.875rem 1.5rem;
+    border-radius: 2rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.btn--save:active {
+    background: rgba(14, 116, 144, 0.2);
+}
+
+.btn--save.saved {
+    background: var(--success-bg);
+    color: var(--success-emerald);
+    border-color: rgba(74, 222, 128, 0.3);
+}
+
+.btn-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.save-feedback {
+    color: var(--success-emerald);
+    font-size: 0.875rem;
+    text-align: center;
+    margin-top: 0.875rem;
+    display: none;
+}
+
+.save-feedback.show {
+    display: block;
+    animation: slideDown 0.3s ease-out;
+}
+
+/* Practice Button */
+.practice-section {
+    text-align: center;
+    margin: 1.25rem 0;
+}
+
+.practice-btn {
+    background: var(--success-bg);
+    color: var(--success-emerald);
+    border: 1px solid rgba(74, 222, 128, 0.3);
+    padding: 0.875rem 2rem;
+    border-radius: 2rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+}
+
+.practice-btn:active {
+    background: rgba(34, 197, 94, 0.2);
+    transform: scale(0.97);
+}
+
+.practice-btn.marked {
+    background: rgba(34, 197, 94, 0.25);
+}
+
+/* Footer */
+.footer {
+    margin-top: auto;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-subtle);
+    text-align: center;
+}
+
+.footer__warning {
+    color: #fca5a5;
+    font-weight: 600;
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+}
+
+.footer__resources {
+    color: var(--text-muted);
+    font-size: 0.8125rem;
+    line-height: 1.8;
+}
+
+.footer__resources p {
+    margin-bottom: 0.5rem;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.step-content {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Mobile Adjustments */
 @media (max-width: 640px) {
-    .reflection-grid { grid-template-columns: 1fr; }
-    .btn-group { flex-direction: column; }
-    .practice-buttons { flex-direction: column; }
+    .reflection-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .btn-group {
+        grid-template-columns: 1fr;
+    }
+    
+    .practice-buttons {
+        flex-direction: column;
+    }
+}
+
+/* iOS Safe Area */
+@supports (-webkit-touch-callout: none) {
+    .container {
+        height: -webkit-fill-available;
+    }
 }
 </style>
 </head>
 <body>
 <div class="container">
-  <div class="app-wrapper">
-    <div class="bg-blur-1"></div>
-    <div class="bg-blur-2"></div>
-    <div class="main-content">
-      <div class="content-wrapper">
+    <div class="app-wrapper">
+        <div class="bg-blur-1"></div>
+        <div class="bg-blur-2"></div>
+        <div class="main-content">
+            <div class="content-wrapper">
 
-        <!-- CRISIS BANNER - EVERY PAGE -->
-        <div class="crisis-banner">
-          <span>🚨 In crisis? Help is available 24/7</span>
-          <span style="display: flex; gap: 0.5rem;">
-            <a href="tel:988">Call 988</a>
-            <a href="sms:988">Text 988</a>
-          </span>
+                <!-- CRISIS BANNER -->
+                <div class="crisis-banner">
+                    <span class="crisis-banner__text">🚨 In crisis? Help is available 24/7</span>
+                    <div class="crisis-banner__actions">
+                        <a href="tel:988" class="crisis-banner__link">Call 988</a>
+                        <a href="sms:988" class="crisis-banner__link">Text 988</a>
+                    </div>
+                </div>
+
+                <!-- HEADER -->
+                <div class="header">
+                    <div class="header__top">
+                        <a href="crisis-intro.html" class="back-btn">←</a>
+                        <span class="step-indicator">Module 2 of 5</span>
+                    </div>
+                    <div class="progress-dots">
+                        <div class="progress-dot"></div>
+                        <div class="progress-dot active"></div>
+                        <div class="progress-dot"></div>
+                        <div class="progress-dot"></div>
+                        <div class="progress-dot"></div>
+                    </div>
+                    <h1 class="step-title">Physical Reset — Body to Brain</h1>
+                    <p class="step-subtitle">18 minutes • Emergency tools that work when your thinking brain is offline</p>
+                </div>
+
+                <!-- INTRODUCTION -->
+                <div class="card">
+                    <div class="section-header">
+                        <span class="section-icon">🔄</span>
+                        <span class="section-title-text">Introduction</span>
+                    </div>
+                    <div class="card__content">
+                        <p style="font-size: 1.05rem; color: var(--text-teal-light); font-style: italic;">
+                            "Your body has hardwired responses that can override your emotional state. These aren't distractions — they're biological circuit breakers. When your alarm system is screaming, you need to speak its language: physical sensation."
+                        </p>
+                    </div>
+                </div>
+
+                <!-- COLD WATER -->
+                <div class="card">
+                    <div class="section-header">
+                        <span class="section-icon">🧊</span>
+                        <span class="section-title-text">Cold Water — The Dive Reflex</span>
+                    </div>
+                    
+                    <div class="card__content">
+                        <p>
+                            "When cold water hits your face, especially around your eyes and nose, it triggers the <strong>mammalian dive reflex</strong> — the same response that lets seals dive deep. Your heart rate automatically slows. This isn't willpower; it's a hardwired reflex that's been around for millions of years."
+                        </p>
+                    </div>
+                    
+                    <div class="technique-stats">
+                        <div class="stat">
+                            <div class="stat-label">Speed</div>
+                            <div class="stat-value">⚡ 30-60 sec</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">Best for</div>
+                            <div class="stat-value">🎯 Hyperarousal</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">Intensity</div>
+                            <div class="stat-value">💪 High</div>
+                        </div>
+                    </div>
+                    
+                    <div class="instruction-box">
+                        <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 0.75rem;">How To Do It:</p>
+                        
+                        <p style="color: var(--text-teal-light); font-weight: 600; margin: 1rem 0 0.5rem;">Method 1: Ice Water Face Dunk</p>
+                        <ul class="instruction-list" style="margin-bottom: 1rem;">
+                            <li>Fill bowl with ice water</li>
+                            <li>Hold breath</li>
+                            <li>Dunk face for 15-30 seconds</li>
+                            <li>Come up, breathe normally</li>
+                            <li>Repeat 2-3 times if needed</li>
+                        </ul>
+                        
+                        <p style="color: var(--text-teal-light); font-weight: 600; margin: 1rem 0 0.5rem;">Method 2: Ice Pack on Face</p>
+                        <ul class="instruction-list" style="margin-bottom: 1rem;">
+                            <li>Wrap ice pack in thin towel</li>
+                            <li>Hold on eyes and cheeks for 30 seconds</li>
+                            <li>Breathe slowly</li>
+                            <li>Repeat as needed</li>
+                        </ul>
+                        
+                        <p style="color: var(--text-teal-light); font-weight: 600; margin: 1rem 0 0.5rem;">Method 3: Cold Shower</p>
+                        <ul class="instruction-list">
+                            <li>Turn water to cold</li>
+                            <li>Let it hit face and chest</li>
+                            <li>Stay for 1-2 minutes</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="safety-note">
+                        <strong>⚠️ Safety Notes:</strong> Don't do this if you have heart conditions. Don't hold breath for more than 30 seconds. If you feel dizzy, stop.
+                    </div>
+                    
+                    <div class="practice-card" id="coldWaterPractice">
+                        <div class="practice-title">
+                            <span>🧊</span>
+                            TRY IT NOW
+                        </div>
+                        
+                        <div style="margin-bottom: 1rem;">
+                            <p style="color: var(--text-secondary); margin-bottom: 1rem;">Do you have access to:</p>
+                            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1rem;">
+                                <label class="reflection-checkbox" style="flex: 1;">
+                                    <input type="checkbox" id="iceBowl"> Ice and bowl
+                                </label>
+                                <label class="reflection-checkbox" style="flex: 1;">
+                                    <input type="checkbox" id="icePack"> Ice pack
+                                </label>
+                                <label class="reflection-checkbox" style="flex: 1;">
+                                    <input type="checkbox" id="coldSink"> Cold water from sink
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="practice-buttons">
+                            <button id="coldWaterGuideBtn" class="btn-practice btn-practice-primary">Yes - Guide Me</button>
+                            <button id="coldWaterSkipBtn" class="btn-practice btn-practice-secondary">No - Skip Practice</button>
+                        </div>
+                        
+                        <div id="coldWaterGuided" style="display: none; margin-top: 1.5rem;">
+                            <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                                <strong>Step 1:</strong> Rate your current intensity (0-10)
+                            </p>
+                            <input type="range" id="coldWaterBeforeSlider" min="0" max="10" value="5" step="1" style="width: 100%; margin-bottom: 1rem;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem;">
+                                <span style="color: var(--text-muted); font-size: 0.75rem;">0 - Calm</span>
+                                <span style="color: var(--text-teal); font-weight: 700;" id="coldWaterBeforeValue">5</span>
+                                <span style="color: var(--text-muted); font-size: 0.75rem;">10 - Overwhelming</span>
+                            </div>
+                            
+                            <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                                <strong>Step 2:</strong> Get your cold water ready. We'll wait.
+                            </p>
+                            
+                            <button id="coldWaterReadyBtn" class="btn-practice btn-practice-primary" style="margin-bottom: 1rem;">Ready! →</button>
+                            
+                            <div id="coldWaterTimer" style="display: none;">
+                                <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                                    <strong>Step 3:</strong> Take a normal breath in. Hold it. Dunk your face or apply ice pack for 15 seconds.
+                                </p>
+                                <div class="timer-container">
+                                    <div class="timer-display" id="coldWaterTimerDisplay">15</div>
+                                    <button id="coldWaterStartTimer" class="btn-practice btn-practice-primary">Start Timer</button>
+                                </div>
+                            </div>
+                            
+                            <div id="coldWaterAfter" style="display: none; margin-top: 1.5rem;">
+                                <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                                    <strong>Step 4:</strong> Rate your intensity now (0-10)
+                                </p>
+                                <input type="range" id="coldWaterAfterSlider" min="0" max="10" value="5" step="1" style="width: 100%; margin-bottom: 1rem;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem;">
+                                    <span style="color: var(--text-muted); font-size: 0.75rem;">0 - Calm</span>
+                                    <span style="color: var(--text-teal); font-weight: 700;" id="coldWaterAfterValue">5</span>
+                                    <span style="color: var(--text-muted); font-size: 0.75rem;">10 - Overwhelming</span>
+                                </div>
+                                
+                                <div id="coldWaterResult" style="background: rgba(14,116,144,0.15); padding: 1rem; border-radius: 0.75rem; margin-bottom: 1rem;">
+                                    <p style="color: var(--text-teal-light);">Your result will appear here.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button id="saveColdWaterBtn" class="btn btn--save">
+                        <span>🧊</span> Save Cold Water to Toolkit
+                    </button>
+                    <div id="coldWaterSaveFeedback" class="save-feedback"></div>
+                </div>
+
+                <!-- INTENSE EXERCISE -->
+                <div class="card">
+                    <div class="section-header">
+                        <span class="section-icon">💪</span>
+                        <span class="section-title-text">Intense Exercise</span>
+                    </div>
+                    
+                    <div class="card__content">
+                        <p>
+                            "When you're flooded with stress hormones (adrenaline, cortisol), your body is literally primed for physical action. Intense exercise <strong>metabolizes these chemicals</strong> — you burn through the fuel of panic. This is why pacing, running, or intense movement can shift your state."
+                        </p>
+                    </div>
+                    
+                    <div class="technique-stats">
+                        <div class="stat">
+                            <div class="stat-label">Speed</div>
+                            <div class="stat-value">⚡ 3-5 min</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">Best for</div>
+                            <div class="stat-value">🎯 Restless panic, rage</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">Intensity</div>
+                            <div class="stat-value">💪 High</div>
+                        </div>
+                    </div>
+                    
+                    <div class="instruction-box">
+                        <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 0.75rem;">How To Do It:</p>
+                        
+                        <p style="color: var(--text-teal-light); font-weight: 600; margin: 0.75rem 0 0.25rem;">Option 1: Sprint/Run</p>
+                        <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.75rem;">Run as fast as you can for 1-2 minutes, walk 1 minute, repeat 3-5 times</p>
+                        
+                        <p style="color: var(--text-teal-light); font-weight: 600; margin: 0.75rem 0 0.25rem;">Option 2: Jumping Jacks</p>
+                        <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.75rem;">Do 50-100 jumping jacks as fast as possible, rest 30 seconds, repeat 3 times</p>
+                        
+                        <p style="color: var(--text-teal-light); font-weight: 600; margin: 0.75rem 0 0.25rem;">Option 3: Stair Sprints</p>
+                        <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.75rem;">Run up stairs, walk down, repeat 5-10 times</p>
+                        
+                        <p style="color: var(--text-teal-light); font-weight: 600; margin: 0.75rem 0 0.25rem;">Option 4: Wall Sits or Planks</p>
+                        <p style="color: var(--text-secondary); font-size: 0.875rem;">Hold wall sit for 60 seconds, rest 30 seconds, repeat 3 times</p>
+                    </div>
+                    
+                    <p style="color: var(--text-teal); font-size: 0.875rem; font-weight: 600; margin: 0.75rem 0;">
+                        The Key: It needs to be intense enough that you can't think about anything else. You should be breathing hard.
+                    </p>
+                    
+                    <div class="practice-card" id="exercisePractice">
+                        <div class="practice-title">
+                            <span>💪</span>
+                            PRACTICE NOW
+                        </div>
+                        
+                        <div style="margin-bottom: 1rem;">
+                            <p style="color: var(--text-secondary); margin-bottom: 1rem;">Can you do 2 minutes of movement?</p>
+                            <div class="practice-buttons">
+                                <button id="exerciseYesBtn" class="btn-practice btn-practice-primary">Yes - Let's Do It</button>
+                                <button id="exerciseNoBtn" class="btn-practice btn-practice-secondary">Not Right Now</button>
+                            </div>
+                        </div>
+                        
+                        <div id="exerciseGuided" style="display: none;">
+                            <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                                <strong>Step 1:</strong> Rate your current energy (0-10)
+                            </p>
+                            <input type="range" id="energyBeforeSlider" min="0" max="10" value="5" step="1" style="width: 100%; margin-bottom: 1rem;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem;">
+                                <span style="color: var(--text-muted); font-size: 0.75rem;">0 - Low</span>
+                                <span style="color: var(--text-teal); font-weight: 700;" id="energyBeforeValue">5</span>
+                                <span style="color: var(--text-muted); font-size: 0.75rem;">10 - High</span>
+                            </div>
+                            
+                            <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                                <strong>Step 2:</strong> Choose your exercise
+                            </p>
+                            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
+                                <button class="reflection-checkbox">Jumping Jacks</button>
+                                <button class="reflection-checkbox">Run in Place</button>
+                                <button class="reflection-checkbox">Stairs</button>
+                                <button class="reflection-checkbox">Other</button>
+                            </div>
+                            
+                            <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                                <strong>Step 3:</strong> Intervals — 30 seconds INTENSE movement, 30 seconds rest, repeat 4 times
+                            </p>
+                            
+                            <button id="startWorkoutBtn" class="btn-practice btn-practice-primary" style="margin-bottom: 1rem;">Start Workout →</button>
+                            
+                            <div id="workoutTimer" style="display: none;">
+                                <div class="timer-container">
+                                    <div style="font-size: 1.25rem; font-weight: 700; color: var(--text-teal); margin-bottom: 0.5rem;" id="workoutPhase">GO!</div>
+                                    <div class="timer-display" id="workoutTimerDisplay">30</div>
+                                    <div style="color: var(--text-muted); margin-bottom: 1rem;" id="workoutRound">Round 1 of 4</div>
+                                </div>
+                            </div>
+                            
+                            <div id="exerciseAfter" style="display: none; margin-top: 1.5rem;">
+                                <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                                    <strong>Step 4:</strong> Rate your energy now (0-10)
+                                </p>
+                                <input type="range" id="energyAfterSlider" min="0" max="10" value="5" step="1" style="width: 100%; margin-bottom: 1rem;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                                    <span style="color: var(--text-muted); font-size: 0.75rem;">0 - Low</span>
+                                    <span style="color: var(--text-teal); font-weight: 700;" id="energyAfterValue">5</span>
+                                    <span style="color: var(--text-muted); font-size: 0.75rem;">10 - High</span>
+                                </div>
+                                
+                                <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                                    Rate your mental clarity (0-10)
+                                </p>
+                                <input type="range" id="clarityAfterSlider" min="0" max="10" value="5" step="1" style="width: 100%; margin-bottom: 1rem;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem;">
+                                    <span style="color: var(--text-muted); font-size: 0.75rem;">0 - Foggy</span>
+                                    <span style="color: var(--text-teal); font-weight: 700;" id="clarityAfterValue">5</span>
+                                    <span style="color: var(--text-muted); font-size: 0.75rem;">10 - Clear</span>
+                                </div>
+                                
+                                <div id="exerciseResult" style="background: rgba(14,116,144,0.15); padding: 1rem; border-radius: 0.75rem;">
+                                    <p style="color: var(--text-teal-light);">Your result will appear here.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button id="saveExerciseBtn" class="btn btn--save">
+                        <span>💪</span> Save Intense Exercise to Toolkit
+                    </button>
+                    <div id="exerciseSaveFeedback" class="save-feedback"></div>
+                </div>
+
+                <!-- PACED BREATHING -->
+                <div class="card">
+                    <div class="section-header">
+                        <span class="section-icon">🌬️</span>
+                        <span class="section-title-text">Paced Breathing — The Exhale Advantage</span>
+                    </div>
+                    
+                    <div class="card__content">
+                        <p>
+                            "Your heart rate and breathing are connected through your autonomic nervous system. When you breathe in, your heart speeds up slightly. When you breathe out, it slows down. By making your <strong>exhales longer than your inhales</strong>, you activate your body's natural calming system."
+                        </p>
+                    </div>
+                    
+                    <div class="technique-stats">
+                        <div class="stat">
+                            <div class="stat-label">Speed</div>
+                            <div class="stat-value">⚡ 2-3 min</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">Best for</div>
+                            <div class="stat-value">🎯 Moderate anxiety</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">Intensity</div>
+                            <div class="stat-value">💪 Low</div>
+                        </div>
+                    </div>
+                    
+                    <div class="instruction-box">
+                        <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 0.75rem;">How To Do It:</p>
+                        
+                        <p style="color: var(--text-teal-light); font-weight: 600; margin: 0.75rem 0 0.25rem;">The 4-6-8 Pattern (recommended)</p>
+                        <p style="color: var(--text-secondary); font-size: 0.875rem;">Breathe IN for 4 seconds → HOLD for 6 seconds → Breathe OUT for 8 seconds</p>
+                        
+                        <p style="color: var(--text-teal-light); font-weight: 600; margin: 1rem 0 0.25rem;">Box Breathing</p>
+                        <p style="color: var(--text-secondary); font-size: 0.875rem;">IN for 4 → HOLD for 4 → OUT for 4 → HOLD for 4</p>
+                        
+                        <p style="color: var(--text-teal-light); font-weight: 600; margin: 1rem 0 0.25rem;">4-7-8 (sleep-focused)</p>
+                        <p style="color: var(--text-secondary); font-size: 0.875rem;">IN for 4 → HOLD for 7 → OUT for 8</p>
+                    </div>
+                    
+                    <p style="color: var(--text-teal); font-size: 0.875rem; font-weight: 600; margin: 0.75rem 0;">
+                        Key Principle: Exhale should be longer than inhale.
+                    </p>
+                    
+                    <div class="practice-card">
+                        <div class="practice-title">
+                            <span>🌬️</span>
+                            GUIDED BREATHING PRACTICE
+                        </div>
+                        
+                        <p style="color: var(--text-secondary); margin-bottom: 1rem;">Let's practice together for 3 minutes.</p>
+                        
+                        <button id="startBreathingBtn" class="btn-practice btn-practice-primary" style="margin-bottom: 1rem;">Start Breathing Practice →</button>
+                        
+                        <div id="breathingPractice" style="display: none;">
+                            <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                                <strong>Before we start:</strong> Rate your current tension (0-10)
+                            </p>
+                            <input type="range" id="tensionBeforeSlider" min="0" max="10" value="5" step="1" style="width: 100%; margin-bottom: 1rem;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem;">
+                                <span style="color: var(--text-muted); font-size: 0.75rem;">0 - Calm</span>
+                                <span style="color: var(--text-teal); font-weight: 700;" id="tensionBeforeValue">5</span>
+                                <span style="color: var(--text-muted); font-size: 0.75rem;">10 - Tense</span>
+                            </div>
+                            
+                            <div style="text-align: center; margin-bottom: 1.5rem;">
+                                <div style="width: 100px; height: 100px; border-radius: 50%; background: var(--gradient-subtle); margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; transition: all 4s;" id="breathCircle">
+                                    <span style="font-size: 1.5rem; color: var(--text-teal);" id="breathInstruction">Ready</span>
+                                </div>
+                                
+                                <div style="display: flex; gap: 0.5rem; justify-content: center;">
+                                    <button id="beginBreathCycle" class="btn-practice btn-practice-primary">Begin</button>
+                                    <button id="stopBreathCycle" class="btn-practice btn-practice-secondary" style="display: none;">Stop</button>
+                                </div>
+                            </div>
+                            
+                            <div id="breathingAfter" style="display: none; margin-top: 1.5rem;">
+                                <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                                    <strong>After practice:</strong> Rate your tension now (0-10)
+                                </p>
+                                <input type="range" id="tensionAfterSlider" min="0" max="10" value="5" step="1" style="width: 100%; margin-bottom: 1rem;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem;">
+                                    <span style="color: var(--text-muted); font-size: 0.75rem;">0 - Calm</span>
+                                    <span style="color: var(--text-teal); font-weight: 700;" id="tensionAfterValue">5</span>
+                                    <span style="color: var(--text-muted); font-size: 0.75rem;">10 - Tense</span>
+                                </div>
+                                
+                                <div id="breathingResult" style="background: rgba(14,116,144,0.15); padding: 1rem; border-radius: 0.75rem;">
+                                    <p style="color: var(--text-teal-light);">Your result will appear here.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="safety-note" style="margin-top: 1rem;">
+                        <strong>⚠️ Note:</strong> Some people feel MORE anxious focusing on breath. If that's you, skip this and use other tools.
+                    </div>
+                    
+                    <button id="saveBreathingBtn" class="btn btn--save">
+                        <span>🌬️</span> Save Paced Breathing to Toolkit
+                    </button>
+                    <div id="breathingSaveFeedback" class="save-feedback"></div>
+                </div>
+
+                <!-- PROGRESSIVE MUSCLE RELAXATION -->
+                <div class="card">
+                    <div class="section-header">
+                        <span class="section-icon">💆</span>
+                        <span class="section-title-text">Progressive Muscle Relaxation</span>
+                    </div>
+                    
+                    <div class="card__content">
+                        <p>
+                            "You can't be physically tense and mentally relaxed at the same time. PMR works by deliberately tensing then releasing muscle groups, which teaches your body what 'relaxed' actually feels like. Many people hold chronic tension without realizing it."
+                        </p>
+                    </div>
+                    
+                    <div class="technique-stats">
+                        <div class="stat">
+                            <div class="stat-label">Speed</div>
+                            <div class="stat-value">⚡ 5-10 min</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">Best for</div>
+                            <div class="stat-value">🎯 Physical tension</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">Intensity</div>
+                            <div class="stat-value">💪 Low</div>
+                        </div>
+                    </div>
+                    
+                    <div class="instruction-box">
+                        <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 0.75rem;">Quick Version (2 minutes):</p>
+                        <ul class="instruction-list">
+                            <li>Hands: Clench fists tight for 5 seconds, release</li>
+                            <li>Arms: Tense biceps, release</li>
+                            <li>Shoulders: Pull shoulders to ears, release</li>
+                            <li>Face: Scrunch face tight, release</li>
+                            <li>Legs: Point toes and tense legs, release</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="practice-card">
+                        <div class="practice-title">
+                            <span>💆</span>
+                            TRY QUICK PMR (2 min)
+                        </div>
+                        
+                        <button id="startPMRBtn" class="btn-practice btn-practice-primary" style="margin-bottom: 1rem;">Start Guided Practice</button>
+                        
+                        <div id="pmrPractice" style="display: none;">
+                            <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                                Rate your tension (0-10)
+                            </p>
+                            <input type="range" id="pmrBeforeSlider" min="0" max="10" value="5" step="1" style="width: 100%; margin-bottom: 1rem;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem;">
+                                <span style="color: var(--text-muted); font-size: 0.75rem;">0 - Relaxed</span>
+                                <span style="color: var(--text-teal); font-weight: 700;" id="pmrBeforeValue">5</span>
+                                <span style="color: var(--text-muted); font-size: 0.75rem;">10 - Tense</span>
+                            </div>
+                            
+                            <div id="pmrGuided" style="background: rgba(15,23,42,0.6); padding: 1.25rem; border-radius: 0.75rem;">
+                                <p style="color: var(--text-teal-light); margin-bottom: 0.75rem; font-weight: 600;" id="pmrInstruction">Hands: Make tight fists… tighter… hold…</p>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span style="color: var(--text-muted);" id="pmrTimer">5</span>
+                                    <button id="pmrNextBtn" class="btn-practice btn-practice-primary" style="width: auto; padding: 0.5rem 1.5rem;">Next →</button>
+                                </div>
+                            </div>
+                            
+                            <div id="pmrAfter" style="display: none; margin-top: 1.5rem;">
+                                <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                                    Rate your tension now (0-10)
+                                </p>
+                                <input type="range" id="pmrAfterSlider" min="0" max="10" value="5" step="1" style="width: 100%; margin-bottom: 1rem;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem;">
+                                    <span style="color: var(--text-muted); font-size: 0.75rem;">0 - Relaxed</span>
+                                    <span style="color: var(--text-teal); font-weight: 700;" id="pmrAfterValue">5</span>
+                                    <span style="color: var(--text-muted); font-size: 0.75rem;">10 - Tense</span>
+                                </div>
+                                
+                                <div id="pmrResult" style="background: rgba(14,116,144,0.15); padding: 1rem; border-radius: 0.75rem;">
+                                    <p style="color: var(--text-teal-light);">Your result will appear here.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button id="savePMRBtn" class="btn btn--save">
+                        <span>💆</span> Save PMR to Toolkit
+                    </button>
+                    <div id="pmrSaveFeedback" class="save-feedback"></div>
+                </div>
+
+                <!-- TEMPERATURE SHOCK -->
+                <div class="card">
+                    <div class="section-header">
+                        <span class="section-icon">🔥</span>
+                        <span class="section-title-text">Temperature Shock</span>
+                    </div>
+                    
+                    <div class="card__content">
+                        <p>
+                            "Extreme temperature changes create immediate physical sensations that can interrupt emotional overwhelm. Your brain has limited processing capacity — intense physical sensation takes up 'bandwidth' that would otherwise spiral into panic."
+                        </p>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                        <div style="background: rgba(14,116,144,0.1); padding: 1rem; border-radius: 0.75rem;">
+                            <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 0.5rem;">❄️ Cold</p>
+                            <ul style="color: var(--text-secondary); font-size: 0.8125rem; list-style-position: inside;">
+                                <li>Ice cubes in hands</li>
+                                <li>Cold shower</li>
+                                <li>Walk outside in cold</li>
+                            </ul>
+                        </div>
+                        <div style="background: rgba(217,119,6,0.1); padding: 1rem; border-radius: 0.75rem;">
+                            <p style="color: var(--text-amber); font-weight: 700; margin-bottom: 0.5rem;">🔥 Heat</p>
+                            <ul style="color: var(--text-secondary); font-size: 0.8125rem; list-style-position: inside;">
+                                <li>Very hot (not burning) shower</li>
+                                <li>Heating pad on chest</li>
+                                <li>Hands under hot water</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div style="background: rgba(14,116,144,0.1); padding: 1rem; border-radius: 0.75rem; margin-bottom: 0.5rem;">
+                        <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 0.25rem;">When to Use:</p>
+                        <p style="color: var(--text-secondary); font-size: 0.875rem;">• When numb/dissociated (temperature brings you back to body)</p>
+                        <p style="color: var(--text-secondary); font-size: 0.875rem;">• When emotionally overwhelmed</p>
+                        <p style="color: var(--text-secondary); font-size: 0.875rem;">• When physical pain urges arise (this is a safe intense sensation)</p>
+                    </div>
+                    
+                    <div class="safety-note">
+                        <strong>⚠️ Important:</strong> This is about sensation, not harm. Don't use temperatures that cause injury.
+                    </div>
+                    
+                    <button id="saveTempBtn" class="btn btn--save">
+                        <span>🌡️</span> Save Temperature Techniques to Toolkit
+                    </button>
+                    <div id="tempSaveFeedback" class="save-feedback"></div>
+                </div>
+
+                <!-- MODULE SUMMARY -->
+                <div class="reference-card">
+                    <div class="reference-title">
+                        <span>🚨</span>
+                        PHYSICAL RESET TOOLS — Quick Reference
+                    </div>
+                    
+                    <div class="reference-grid">
+                        <div class="reference-item">
+                            <span class="reference-icon">🧊</span>
+                            <div class="reference-content">
+                                <div class="reference-name">Cold Water</div>
+                                <div class="reference-use">30 sec • Panic, rage, instant calm</div>
+                            </div>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-icon">💪</span>
+                            <div class="reference-content">
+                                <div class="reference-name">Intense Exercise</div>
+                                <div class="reference-use">5 min • Restless energy, want to explode</div>
+                            </div>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-icon">🌬️</span>
+                            <div class="reference-content">
+                                <div class="reference-name">Paced Breathing</div>
+                                <div class="reference-use">3 min • Moderate anxiety, racing thoughts</div>
+                            </div>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-icon">💆</span>
+                            <div class="reference-content">
+                                <div class="reference-name">Muscle Relaxation</div>
+                                <div class="reference-use">2-10 min • Physical tension, mild anxiety</div>
+                            </div>
+                        </div>
+                        <div class="reference-item">
+                            <span class="reference-icon">🌡️</span>
+                            <div class="reference-content">
+                                <div class="reference-name">Temperature Shock</div>
+                                <div class="reference-use">1-2 min • Numbness, dissociation</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border-softer);">
+                        <p style="color: var(--text-primary); font-weight: 700; margin-bottom: 1rem;">
+                            "Which 2-3 techniques felt most accessible to you?"
+                        </p>
+                        
+                        <div class="reflection-grid" id="techniqueCheckboxes">
+                            <label class="reflection-checkbox">
+                                <input type="checkbox" value="Cold Water"> Cold water
+                            </label>
+                            <label class="reflection-checkbox">
+                                <input type="checkbox" value="Intense Exercise"> Intense exercise
+                            </label>
+                            <label class="reflection-checkbox">
+                                <input type="checkbox" value="Paced Breathing"> Paced breathing
+                            </label>
+                            <label class="reflection-checkbox">
+                                <input type="checkbox" value="Muscle Relaxation"> Muscle relaxation
+                            </label>
+                            <label class="reflection-checkbox">
+                                <input type="checkbox" value="Temperature Shock"> Temperature shock
+                            </label>
+                        </div>
+                        
+                        <div style="background: rgba(217,119,6,0.1); padding: 1.25rem; border-radius: 0.75rem; margin-top: 1.5rem;">
+                            <p style="color: var(--text-amber-light); font-weight: 600; margin-bottom: 1rem; text-align: center;">
+                                "Crisis skills only work if you practice when calm. Will you commit to practicing your top 2 techniques this week?"
+                            </p>
+                            <div style="display: flex; gap: 0.75rem;">
+                                <button id="commitYesBtn" class="btn-practice btn-practice-primary" style="flex: 1;">Yes, I Commit</button>
+                                <button id="commitLaterBtn" class="btn-practice btn-practice-secondary" style="flex: 1;">Maybe Later</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button id="saveReflectionBtn" class="btn btn--save" style="margin-top: 1.5rem;">
+                        <span>📋</span> Save My Top Techniques to Toolkit
+                    </button>
+                    <div id="reflectionSaveFeedback" class="save-feedback"></div>
+                </div>
+
+                <!-- NAVIGATION -->
+                <div class="btn-group">
+                    <a href="crisis-module-1.html" class="btn btn--secondary">
+                        <span>←</span>
+                        <span>Module 1</span>
+                    </a>
+                    <a href="crisis-module-3.html" class="btn btn--primary">
+                        <span>Module 3</span>
+                        <span>→</span>
+                    </a>
+                </div>
+
+                <!-- PRACTICE BUTTON -->
+                <div class="practice-section">
+                    <button id="markPracticedBtn" class="practice-btn">
+                        <span>✓</span>
+                        <span>I've practiced this module</span>
+                    </button>
+                </div>
+
+                <!-- FOOTER -->
+                <div class="footer">
+                    <p class="footer__warning">⚠️ EDUCATIONAL ONLY — NOT THERAPY</p>
+                    <div class="footer__resources">
+                        <p>988 Suicide & Crisis Lifeline: Call or text 988</p>
+                        <p>Crisis Text Line: Text HOME to 741741</p>
+                    </div>
+                </div>
+
+            </div>
         </div>
-
-        <!-- HEADER -->
-        <div class="nav-header">
-          <a href="crisis-intro.html" class="back-link">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M19 12H5M12 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            Course Home
-          </a>
-          <span class="module-badge">Module 2 of 5</span>
-        </div>
-
-        <h1 class="module-title">Physical Reset — Body to Brain</h1>
-        <p class="module-subtitle">18 minutes • Emergency tools that work when your thinking brain is offline</p>
-
-        <!-- PROGRESS -->
-        <div class="progress-container">
-          <div class="progress-label">
-            <span>Course progress</span>
-            <span>40%</span>
-          </div>
-          <div class="progress-bar">
-            <div class="progress-fill" style="width: 40%;"></div>
-          </div>
-        </div>
-
-        <!-- INTRODUCTION - YOUR EXACT WORDS -->
-        <div class="card">
-          <div class="section-header">
-            <span class="section-icon">🔄</span>
-            <span class="section-title-text">Introduction</span>
-          </div>
-          <div style="color: var(--text-secondary); line-height: 1.6;">
-            <p style="margin-bottom: 1rem; font-size: 1.05rem; color: var(--text-teal-light); font-style: italic;">
-              "Your body has hardwired responses that can override your emotional state. These aren't distractions — they're biological circuit breakers. When your alarm system is screaming, you need to speak its language: physical sensation."
-            </p>
-          </div>
-        </div>
-
-        <!-- ===== SECTION 2.1: COLD WATER (DIVE REFLEX) ===== -->
-        <!-- SAVE POINT #1: COLD WATER -->
-        <div class="card">
-          <div class="section-header">
-            <span class="section-icon">🧊</span>
-            <span class="section-title-text">Cold Water — The Dive Reflex</span>
-          </div>
-          
-          <!-- The Science - Your Exact Words -->
-          <div style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 1rem;">
-            <p style="margin-bottom: 1rem;">
-              "When cold water hits your face, especially around your eyes and nose, it triggers the <strong style="color: var(--text-teal);">mammalian dive reflex</strong> — the same response that lets seals dive deep. Your heart rate automatically slows. This isn't willpower; it's a hardwired reflex that's been around for millions of years."
-            </p>
-          </div>
-          
-          <!-- Effectiveness Stats -->
-          <div class="technique-stats">
-            <div class="stat">
-              <div class="stat-label">Speed</div>
-              <div class="stat-value">⚡ 30-60 sec</div>
-            </div>
-            <div class="stat">
-              <div class="stat-label">Best for</div>
-              <div class="stat-value">🎯 Hyperarousal</div>
-            </div>
-            <div class="stat">
-              <div class="stat-label">Intensity</div>
-              <div class="stat-value">💪 High</div>
-            </div>
-          </div>
-          
-          <!-- How To Do It -->
-          <div class="instruction-box">
-            <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 0.75rem;">How To Do It:</p>
-            
-            <p style="color: var(--text-teal-light); font-weight: 600; margin: 1rem 0 0.5rem;">Method 1: Ice Water Face Dunk</p>
-            <ul class="instruction-list" style="margin-bottom: 1rem;">
-              <li>Fill bowl with ice water</li>
-              <li>Hold breath</li>
-              <li>Dunk face for 15-30 seconds</li>
-              <li>Come up, breathe normally</li>
-              <li>Repeat 2-3 times if needed</li>
-            </ul>
-            
-            <p style="color: var(--text-teal-light); font-weight: 600; margin: 1rem 0 0.5rem;">Method 2: Ice Pack on Face</p>
-            <ul class="instruction-list" style="margin-bottom: 1rem;">
-              <li>Wrap ice pack in thin towel</li>
-              <li>Hold on eyes and cheeks for 30 seconds</li>
-              <li>Breathe slowly</li>
-              <li>Repeat as needed</li>
-            </ul>
-            
-            <p style="color: var(--text-teal-light); font-weight: 600; margin: 1rem 0 0.5rem;">Method 3: Cold Shower</p>
-            <ul class="instruction-list">
-              <li>Turn water to cold</li>
-              <li>Let it hit face and chest</li>
-              <li>Stay for 1-2 minutes</li>
-            </ul>
-          </div>
-          
-          <!-- Safety Notes -->
-          <div class="safety-note">
-            <strong>⚠️ Safety Notes:</strong> Don't do this if you have heart conditions. Don't hold breath for more than 30 seconds. If you feel dizzy, stop.
-          </div>
-          
-          <!-- EXPERIENTIAL PRACTICE - TRY IT NOW -->
-          <div class="practice-card" id="coldWaterPractice">
-            <div class="practice-title">
-              <span>🧊</span>
-              TRY IT NOW
-            </div>
-            
-            <div style="margin-bottom: 1rem;">
-              <p style="color: var(--text-secondary); margin-bottom: 1rem;">Do you have access to:</p>
-              <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1rem;">
-                <label class="reflection-checkbox" style="flex: 1;">
-                  <input type="checkbox" id="iceBowl"> Ice and bowl
-                </label>
-                <label class="reflection-checkbox" style="flex: 1;">
-                  <input type="checkbox" id="icePack"> Ice pack
-                </label>
-                <label class="reflection-checkbox" style="flex: 1;">
-                  <input type="checkbox" id="coldSink"> Cold water from sink
-                </label>
-              </div>
-            </div>
-            
-            <div class="practice-buttons">
-              <button id="coldWaterGuideBtn" class="btn-practice btn-practice-primary">Yes - Guide Me</button>
-              <button id="coldWaterSkipBtn" class="btn-practice btn-practice-secondary">No - Skip Practice</button>
-            </div>
-            
-            <!-- Guided Practice Container (hidden by default) -->
-            <div id="coldWaterGuided" style="display: none; margin-top: 1.5rem;">
-              <p style="color: var(--text-secondary); margin-bottom: 1rem;">
-                <strong>Step 1:</strong> Rate your current intensity (0-10)
-              </p>
-              <input type="range" id="coldWaterBeforeSlider" min="0" max="10" value="5" step="1" style="width: 100%; margin-bottom: 1rem;">
-              <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem;">
-                <span style="color: var(--text-muted); font-size: 0.75rem;">0 - Calm</span>
-                <span style="color: var(--text-teal); font-weight: 700;" id="coldWaterBeforeValue">5</span>
-                <span style="color: var(--text-muted); font-size: 0.75rem;">10 - Overwhelming</span>
-              </div>
-              
-              <p style="color: var(--text-secondary); margin-bottom: 1rem;">
-                <strong>Step 2:</strong> Get your cold water ready. We'll wait.
-              </p>
-              
-              <button id="coldWaterReadyBtn" class="btn-practice btn-practice-primary" style="margin-bottom: 1rem;">Ready! →</button>
-              
-              <div id="coldWaterTimer" style="display: none;">
-                <p style="color: var(--text-secondary); margin-bottom: 1rem;">
-                  <strong>Step 3:</strong> Take a normal breath in. Hold it. Dunk your face or apply ice pack for 15 seconds.
-                </p>
-                <div class="timer-container">
-                  <div class="timer-display" id="coldWaterTimerDisplay">15</div>
-                  <button id="coldWaterStartTimer" class="btn-practice btn-practice-primary">Start Timer</button>
-                </div>
-              </div>
-              
-              <div id="coldWaterAfter" style="display: none; margin-top: 1.5rem;">
-                <p style="color: var(--text-secondary); margin-bottom: 1rem;">
-                  <strong>Step 4:</strong> Rate your intensity now (0-10)
-                </p>
-                <input type="range" id="coldWaterAfterSlider" min="0" max="10" value="5" step="1" style="width: 100%; margin-bottom: 1rem;">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem;">
-                  <span style="color: var(--text-muted); font-size: 0.75rem;">0 - Calm</span>
-                  <span style="color: var(--text-teal); font-weight: 700;" id="coldWaterAfterValue">5</span>
-                  <span style="color: var(--text-muted); font-size: 0.75rem;">10 - Overwhelming</span>
-                </div>
-                
-                <div id="coldWaterResult" style="background: rgba(14,116,144,0.15); padding: 1rem; border-radius: 0.75rem; margin-bottom: 1rem;">
-                  <p style="color: var(--text-teal-light);">Your result will appear here.</p>
-                </div>
-              </div>
-            </div>
-            
-            <!-- Reflection -->
-            <div id="coldWaterReflection" style="display: none; margin-top: 1.5rem;">
-              <p style="color: var(--text-secondary); font-weight: 600; margin-bottom: 0.75rem;">How did that feel?</p>
-              <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                <button class="reflection-btn" data-feeling="effective">Surprisingly effective</button>
-                <button class="reflection-btn" data-feeling="little">Helped a little</button>
-                <button class="reflection-btn" data-feeling="no-difference">Didn't notice much difference</button>
-                <button class="reflection-btn" data-feeling="hated">Hated it</button>
-              </div>
-            </div>
-          </div>
-          
-          <!-- SAVE POINT #1: COLD WATER -->
-          <button id="saveColdWaterBtn" class="btn-save">
-            <span>🧊</span> Save Cold Water to Toolkit
-          </button>
-          <p id="coldWaterSaveFeedback" style="color: var(--success-emerald); font-size: 0.75rem; margin-top: 0.5rem; text-align: center; display: none;"></p>
-        </div>
-
-        <!-- ===== SECTION 2.2: INTENSE EXERCISE ===== -->
-        <!-- SAVE POINT #2: INTENSE EXERCISE -->
-        <div class="card">
-          <div class="section-header">
-            <span class="section-icon">💪</span>
-            <span class="section-title-text">Intense Exercise</span>
-          </div>
-          
-          <!-- The Science - Your Exact Words -->
-          <div style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 1rem;">
-            <p style="margin-bottom: 1rem;">
-              "When you're flooded with stress hormones (adrenaline, cortisol), your body is literally primed for physical action. Intense exercise <strong style="color: var(--text-teal);">metabolizes these chemicals</strong> — you burn through the fuel of panic. This is why pacing, running, or intense movement can shift your state."
-            </p>
-          </div>
-          
-          <!-- Effectiveness Stats -->
-          <div class="technique-stats">
-            <div class="stat">
-              <div class="stat-label">Speed</div>
-              <div class="stat-value">⚡ 3-5 min</div>
-            </div>
-            <div class="stat">
-              <div class="stat-label">Best for</div>
-              <div class="stat-value">🎯 Restless panic, rage</div>
-            </div>
-            <div class="stat">
-              <div class="stat-label">Intensity</div>
-              <div class="stat-value">💪 High</div>
-            </div>
-          </div>
-          
-          <!-- How To Do It -->
-          <div class="instruction-box">
-            <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 0.75rem;">How To Do It:</p>
-            
-            <p style="color: var(--text-teal-light); font-weight: 600; margin: 0.75rem 0 0.25rem;">Option 1: Sprint/Run</p>
-            <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.75rem;">Run as fast as you can for 1-2 minutes, walk 1 minute, repeat 3-5 times</p>
-            
-            <p style="color: var(--text-teal-light); font-weight: 600; margin: 0.75rem 0 0.25rem;">Option 2: Jumping Jacks</p>
-            <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.75rem;">Do 50-100 jumping jacks as fast as possible, rest 30 seconds, repeat 3 times</p>
-            
-            <p style="color: var(--text-teal-light); font-weight: 600; margin: 0.75rem 0 0.25rem;">Option 3: Stair Sprints</p>
-            <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.75rem;">Run up stairs, walk down, repeat 5-10 times</p>
-            
-            <p style="color: var(--text-teal-light); font-weight: 600; margin: 0.75rem 0 0.25rem;">Option 4: Wall Sits or Planks</p>
-            <p style="color: var(--text-secondary); font-size: 0.875rem;">Hold wall sit for 60 seconds, rest 30 seconds, repeat 3 times</p>
-          </div>
-          
-          <p style="color: var(--text-teal); font-size: 0.875rem; font-weight: 600; margin: 0.75rem 0;">
-            The Key: It needs to be intense enough that you can't think about anything else. You should be breathing hard.
-          </p>
-          
-          <!-- EXPERIENTIAL PRACTICE -->
-          <div class="practice-card" id="exercisePractice">
-            <div class="practice-title">
-              <span>💪</span>
-              PRACTICE NOW
-            </div>
-            
-            <div style="margin-bottom: 1rem;">
-              <p style="color: var(--text-secondary); margin-bottom: 1rem;">Can you do 2 minutes of movement?</p>
-              <div class="practice-buttons">
-                <button id="exerciseYesBtn" class="btn-practice btn-practice-primary">Yes - Let's Do It</button>
-                <button id="exerciseNoBtn" class="btn-practice btn-practice-secondary">Not Right Now</button>
-              </div>
-            </div>
-            
-            <div id="exerciseGuided" style="display: none;">
-              <p style="color: var(--text-secondary); margin-bottom: 1rem;">
-                <strong>Step 1:</strong> Rate your current energy (0-10)
-              </p>
-              <input type="range" id="energyBeforeSlider" min="0" max="10" value="5" step="1" style="width: 100%; margin-bottom: 1rem;">
-              <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem;">
-                <span style="color: var(--text-muted); font-size: 0.75rem;">0 - Low</span>
-                <span style="color: var(--text-teal); font-weight: 700;" id="energyBeforeValue">5</span>
-                <span style="color: var(--text-muted); font-size: 0.75rem;">10 - High</span>
-              </div>
-              
-              <p style="color: var(--text-secondary); margin-bottom: 1rem;">
-                <strong>Step 2:</strong> Choose your exercise
-              </p>
-              <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
-                <button class="reflection-btn" id="exerciseJumpingJacks">Jumping Jacks</button>
-                <button class="reflection-btn" id="exerciseRun">Run in Place</button>
-                <button class="reflection-btn" id="exerciseStairs">Stairs</button>
-                <button class="reflection-btn" id="exerciseOther">Other</button>
-              </div>
-              
-              <p style="color: var(--text-secondary); margin-bottom: 1rem;">
-                <strong>Step 3:</strong> Intervals — 30 seconds INTENSE movement, 30 seconds rest, repeat 4 times
-              </p>
-              
-              <button id="startWorkoutBtn" class="btn-practice btn-practice-primary" style="margin-bottom: 1rem;">Start Workout →</button>
-              
-              <div id="workoutTimer" style="display: none;">
-                <div class="timer-container">
-                  <div style="font-size: 1.25rem; font-weight: 700; color: var(--text-teal); margin-bottom: 0.5rem;" id="workoutPhase">GO!</div>
-                  <div class="timer-display" id="workoutTimerDisplay">30</div>
-                  <div style="color: var(--text-muted); margin-bottom: 1rem;" id="workoutRound">Round 1 of 4</div>
-                </div>
-              </div>
-              
-              <div id="exerciseAfter" style="display: none; margin-top: 1.5rem;">
-                <p style="color: var(--text-secondary); margin-bottom: 1rem;">
-                  <strong>Step 4:</strong> Rate your energy now (0-10)
-                </p>
-                <input type="range" id="energyAfterSlider" min="0" max="10" value="5" step="1" style="width: 100%; margin-bottom: 1rem;">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
-                  <span style="color: var(--text-muted); font-size: 0.75rem;">0 - Low</span>
-                  <span style="color: var(--text-teal); font-weight: 700;" id="energyAfterValue">5</span>
-                  <span style="color: var(--text-muted); font-size: 0.75rem;">10 - High</span>
-                </div>
-                
-                <p style="color: var(--text-secondary); margin-bottom: 1rem;">
-                  Rate your mental clarity (0-10)
-                </p>
-                <input type="range" id="clarityAfterSlider" min="0" max="10" value="5" step="1" style="width: 100%; margin-bottom: 1rem;">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem;">
-                  <span style="color: var(--text-muted); font-size: 0.75rem;">0 - Foggy</span>
-                  <span style="color: var(--text-teal); font-weight: 700;" id="clarityAfterValue">5</span>
-                  <span style="color: var(--text-muted); font-size: 0.75rem;">10 - Clear</span>
-                </div>
-                
-                <div id="exerciseResult" style="background: rgba(14,116,144,0.15); padding: 1rem; border-radius: 0.75rem;">
-                  <p style="color: var(--text-teal-light);">Your result will appear here.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <!-- SAVE POINT #2: INTENSE EXERCISE -->
-          <button id="saveExerciseBtn" class="btn-save">
-            <span>💪</span> Save Intense Exercise to Toolkit
-          </button>
-          <p id="exerciseSaveFeedback" style="color: var(--success-emerald); font-size: 0.75rem; margin-top: 0.5rem; text-align: center; display: none;"></p>
-        </div>
-
-        <!-- ===== SECTION 2.3: PACED BREATHING ===== -->
-        <!-- SAVE POINT #3: PACED BREATHING -->
-        <div class="card">
-          <div class="section-header">
-            <span class="section-icon">🌬️</span>
-            <span class="section-title-text">Paced Breathing — The Exhale Advantage</span>
-          </div>
-          
-          <!-- The Science - Your Exact Words -->
-          <div style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 1rem;">
-            <p style="margin-bottom: 1rem;">
-              "Your heart rate and breathing are connected through your autonomic nervous system. When you breathe in, your heart speeds up slightly. When you breathe out, it slows down. By making your <strong style="color: var(--text-teal);">exhales longer than your inhales</strong>, you activate your body's natural calming system."
-            </p>
-          </div>
-          
-          <!-- Effectiveness Stats -->
-          <div class="technique-stats">
-            <div class="stat">
-              <div class="stat-label">Speed</div>
-              <div class="stat-value">⚡ 2-3 min</div>
-            </div>
-            <div class="stat">
-              <div class="stat-label">Best for</div>
-              <div class="stat-value">🎯 Moderate anxiety</div>
-            </div>
-            <div class="stat">
-              <div class="stat-label">Intensity</div>
-              <div class="stat-value">💪 Low</div>
-            </div>
-          </div>
-          
-          <!-- How To Do It -->
-          <div class="instruction-box">
-            <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 0.75rem;">How To Do It:</p>
-            
-            <p style="color: var(--text-teal-light); font-weight: 600; margin: 0.75rem 0 0.25rem;">The 4-6-8 Pattern (recommended)</p>
-            <p style="color: var(--text-secondary); font-size: 0.875rem;">Breathe IN for 4 seconds → HOLD for 6 seconds → Breathe OUT for 8 seconds</p>
-            
-            <p style="color: var(--text-teal-light); font-weight: 600; margin: 1rem 0 0.25rem;">Box Breathing</p>
-            <p style="color: var(--text-secondary); font-size: 0.875rem;">IN for 4 → HOLD for 4 → OUT for 4 → HOLD for 4</p>
-            
-            <p style="color: var(--text-teal-light); font-weight: 600; margin: 1rem 0 0.25rem;">4-7-8 (sleep-focused)</p>
-            <p style="color: var(--text-secondary); font-size: 0.875rem;">IN for 4 → HOLD for 7 → OUT for 8</p>
-          </div>
-          
-          <p style="color: var(--text-teal); font-size: 0.875rem; font-weight: 600; margin: 0.75rem 0;">
-            Key Principle: Exhale should be longer than inhale.
-          </p>
-          
-          <!-- EXPERIENTIAL PRACTICE - GUIDED BREATHING -->
-          <div class="practice-card">
-            <div class="practice-title">
-              <span>🌬️</span>
-              GUIDED BREATHING PRACTICE
-            </div>
-            
-            <p style="color: var(--text-secondary); margin-bottom: 1rem;">Let's practice together for 3 minutes.</p>
-            
-            <button id="startBreathingBtn" class="btn-practice btn-practice-primary" style="margin-bottom: 1rem;">Start Breathing Practice →</button>
-            
-            <div id="breathingPractice" style="display: none;">
-              <p style="color: var(--text-secondary); margin-bottom: 1rem;">
-                <strong>Before we start:</strong> Rate your current tension (0-10)
-              </p>
-              <input type="range" id="tensionBeforeSlider" min="0" max="10" value="5" step="1" style="width: 100%; margin-bottom: 1rem;">
-              <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem;">
-                <span style="color: var(--text-muted); font-size: 0.75rem;">0 - Calm</span>
-                <span style="color: var(--text-teal); font-weight: 700;" id="tensionBeforeValue">5</span>
-                <span style="color: var(--text-muted); font-size: 0.75rem;">10 - Tense</span>
-              </div>
-              
-              <div style="text-align: center; margin-bottom: 1.5rem;">
-                <div style="width: 100px; height: 100px; border-radius: 50%; background: var(--gradient-subtle); margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; transition: all 4s;" id="breathCircle">
-                  <span style="font-size: 1.5rem; color: var(--text-teal);" id="breathInstruction">Ready</span>
-                </div>
-                
-                <div style="display: flex; gap: 0.5rem; justify-content: center;">
-                  <button id="beginBreathCycle" class="btn-practice btn-practice-primary">Begin</button>
-                  <button id="stopBreathCycle" class="btn-practice btn-practice-secondary" style="display: none;">Stop</button>
-                </div>
-              </div>
-              
-              <div id="breathingAfter" style="display: none; margin-top: 1.5rem;">
-                <p style="color: var(--text-secondary); margin-bottom: 1rem;">
-                  <strong>After practice:</strong> Rate your tension now (0-10)
-                </p>
-                <input type="range" id="tensionAfterSlider" min="0" max="10" value="5" step="1" style="width: 100%; margin-bottom: 1rem;">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem;">
-                  <span style="color: var(--text-muted); font-size: 0.75rem;">0 - Calm</span>
-                  <span style="color: var(--text-teal); font-weight: 700;" id="tensionAfterValue">5</span>
-                  <span style="color: var(--text-muted); font-size: 0.75rem;">10 - Tense</span>
-                </div>
-                
-                <div id="breathingResult" style="background: rgba(14,116,144,0.15); padding: 1rem; border-radius: 0.75rem;">
-                  <p style="color: var(--text-teal-light);">Your result will appear here.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <div class="safety-note" style="margin-top: 1rem;">
-            <strong>⚠️ Note:</strong> Some people feel MORE anxious focusing on breath. If that's you, skip this and use other tools.
-          </div>
-          
-          <!-- SAVE POINT #3: PACED BREATHING -->
-          <button id="saveBreathingBtn" class="btn-save">
-            <span>🌬️</span> Save Paced Breathing to Toolkit
-          </button>
-          <p id="breathingSaveFeedback" style="color: var(--success-emerald); font-size: 0.75rem; margin-top: 0.5rem; text-align: center; display: none;"></p>
-        </div>
-
-        <!-- ===== SECTION 2.4: PROGRESSIVE MUSCLE RELAXATION ===== -->
-        <!-- SAVE POINT #4: PMR -->
-        <div class="card">
-          <div class="section-header">
-            <span class="section-icon">💆</span>
-            <span class="section-title-text">Progressive Muscle Relaxation</span>
-          </div>
-          
-          <!-- The Science - Your Exact Words -->
-          <div style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 1rem;">
-            <p style="margin-bottom: 1rem;">
-              "You can't be physically tense and mentally relaxed at the same time. PMR works by deliberately tensing then releasing muscle groups, which teaches your body what 'relaxed' actually feels like. Many people hold chronic tension without realizing it."
-            </p>
-          </div>
-          
-          <!-- Effectiveness Stats -->
-          <div class="technique-stats">
-            <div class="stat">
-              <div class="stat-label">Speed</div>
-              <div class="stat-value">⚡ 5-10 min</div>
-            </div>
-            <div class="stat">
-              <div class="stat-label">Best for</div>
-              <div class="stat-value">🎯 Physical tension</div>
-            </div>
-            <div class="stat">
-              <div class="stat-label">Intensity</div>
-              <div class="stat-value">💪 Low</div>
-            </div>
-          </div>
-          
-          <!-- How To Do It -->
-          <div class="instruction-box">
-            <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 0.75rem;">Quick Version (2 minutes):</p>
-            <ul class="instruction-list">
-              <li>Hands: Clench fists tight for 5 seconds, release</li>
-              <li>Arms: Tense biceps, release</li>
-              <li>Shoulders: Pull shoulders to ears, release</li>
-              <li>Face: Scrunch face tight, release</li>
-              <li>Legs: Point toes and tense legs, release</li>
-            </ul>
-          </div>
-          
-          <!-- EXPERIENTIAL PRACTICE - GUIDED PMR -->
-          <div class="practice-card">
-            <div class="practice-title">
-              <span>💆</span>
-              TRY QUICK PMR (2 min)
-            </div>
-            
-            <button id="startPMRBtn" class="btn-practice btn-practice-primary" style="margin-bottom: 1rem;">Start Guided Practice</button>
-            
-            <div id="pmrPractice" style="display: none;">
-              <p style="color: var(--text-secondary); margin-bottom: 1rem;">
-                Rate your tension (0-10)
-              </p>
-              <input type="range" id="pmrBeforeSlider" min="0" max="10" value="5" step="1" style="width: 100%; margin-bottom: 1rem;">
-              <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem;">
-                <span style="color: var(--text-muted); font-size: 0.75rem;">0 - Relaxed</span>
-                <span style="color: var(--text-teal); font-weight: 700;" id="pmrBeforeValue">5</span>
-                <span style="color: var(--text-muted); font-size: 0.75rem;">10 - Tense</span>
-              </div>
-              
-              <div id="pmrGuided" style="background: rgba(15,23,42,0.6); padding: 1.25rem; border-radius: 0.75rem;">
-                <p style="color: var(--text-teal-light); margin-bottom: 0.75rem; font-weight: 600;" id="pmrInstruction">Hands: Make tight fists… tighter… hold…</p>
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                  <span style="color: var(--text-muted);" id="pmrTimer">5</span>
-                  <button id="pmrNextBtn" class="btn-practice btn-practice-primary" style="width: auto; padding: 0.5rem 1.5rem;">Next →</button>
-                </div>
-              </div>
-              
-              <div id="pmrAfter" style="display: none; margin-top: 1.5rem;">
-                <p style="color: var(--text-secondary); margin-bottom: 1rem;">
-                  Rate your tension now (0-10)
-                </p>
-                <input type="range" id="pmrAfterSlider" min="0" max="10" value="5" step="1" style="width: 100%; margin-bottom: 1rem;">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem;">
-                  <span style="color: var(--text-muted); font-size: 0.75rem;">0 - Relaxed</span>
-                  <span style="color: var(--text-teal); font-weight: 700;" id="pmrAfterValue">5</span>
-                  <span style="color: var(--text-muted); font-size: 0.75rem;">10 - Tense</span>
-                </div>
-                
-                <div id="pmrResult" style="background: rgba(14,116,144,0.15); padding: 1rem; border-radius: 0.75rem;">
-                  <p style="color: var(--text-teal-light);">Your result will appear here.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <!-- SAVE POINT #4: PMR -->
-          <button id="savePMRBtn" class="btn-save">
-            <span>💆</span> Save PMR to Toolkit
-          </button>
-          <p id="pmrSaveFeedback" style="color: var(--success-emerald); font-size: 0.75rem; margin-top: 0.5rem; text-align: center; display: none;"></p>
-        </div>
-
-        <!-- ===== SECTION 2.5: TEMPERATURE SHOCK ===== -->
-        <!-- SAVE POINT #5: TEMPERATURE TECHNIQUES -->
-        <div class="card">
-          <div class="section-header">
-            <span class="section-icon">🔥</span>
-            <span class="section-title-text">Temperature Shock</span>
-          </div>
-          
-          <!-- The Science - Your Exact Words -->
-          <div style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 1rem;">
-            <p style="margin-bottom: 1rem;">
-              "Extreme temperature changes create immediate physical sensations that can interrupt emotional overwhelm. Your brain has limited processing capacity — intense physical sensation takes up 'bandwidth' that would otherwise spiral into panic."
-            </p>
-          </div>
-          
-          <!-- Techniques -->
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
-            <div style="background: rgba(14,116,144,0.1); padding: 1rem; border-radius: 0.75rem;">
-              <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 0.5rem;">❄️ Cold</p>
-              <ul style="color: var(--text-secondary); font-size: 0.8125rem; list-style-position: inside;">
-                <li>Ice cubes in hands</li>
-                <li>Cold shower</li>
-                <li>Walk outside in cold</li>
-              </ul>
-            </div>
-            <div style="background: rgba(217,119,6,0.1); padding: 1rem; border-radius: 0.75rem;">
-              <p style="color: var(--text-amber); font-weight: 700; margin-bottom: 0.5rem;">🔥 Heat</p>
-              <ul style="color: var(--text-secondary); font-size: 0.8125rem; list-style-position: inside;">
-                <li>Very hot (not burning) shower</li>
-                <li>Heating pad on chest</li>
-                <li>Hands under hot water</li>
-              </ul>
-            </div>
-          </div>
-          
-          <div style="background: rgba(14,116,144,0.1); padding: 1rem; border-radius: 0.75rem; margin-bottom: 0.5rem;">
-            <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 0.25rem;">When to Use:</p>
-            <p style="color: var(--text-secondary); font-size: 0.875rem;">• When numb/dissociated (temperature brings you back to body)</p>
-            <p style="color: var(--text-secondary); font-size: 0.875rem;">• When emotionally overwhelmed</p>
-            <p style="color: var(--text-secondary); font-size: 0.875rem;">• When physical pain urges arise (this is a safe intense sensation)</p>
-          </div>
-          
-          <div class="safety-note">
-            <strong>⚠️ Important:</strong> This is about sensation, not harm. Don't use temperatures that cause injury.
-          </div>
-          
-          <!-- SAVE POINT #5: TEMPERATURE TECHNIQUES -->
-          <button id="saveTempBtn" class="btn-save">
-            <span>🌡️</span> Save Temperature Techniques to Toolkit
-          </button>
-          <p id="tempSaveFeedback" style="color: var(--success-emerald); font-size: 0.75rem; margin-top: 0.5rem; text-align: center; display: none;"></p>
-        </div>
-
-        <!-- ===== MODULE 2 SUMMARY + PERSONAL REFLECTION ===== -->
-        <!-- SAVE POINT #6: PERSONAL REFLECTION (which 2-3 techniques) -->
-        <div class="reference-card">
-          <div class="reference-title">
-            <span>🚨</span>
-            PHYSICAL RESET TOOLS — Quick Reference
-          </div>
-          
-          <div class="reference-grid">
-            <div class="reference-item">
-              <span class="reference-icon">🧊</span>
-              <div class="reference-content">
-                <div class="reference-name">Cold Water</div>
-                <div class="reference-use">30 sec • Panic, rage, instant calm</div>
-              </div>
-            </div>
-            <div class="reference-item">
-              <span class="reference-icon">💪</span>
-              <div class="reference-content">
-                <div class="reference-name">Intense Exercise</div>
-                <div class="reference-use">5 min • Restless energy, want to explode</div>
-              </div>
-            </div>
-            <div class="reference-item">
-              <span class="reference-icon">🌬️</span>
-              <div class="reference-content">
-                <div class="reference-name">Paced Breathing</div>
-                <div class="reference-use">3 min • Moderate anxiety, racing thoughts</div>
-              </div>
-            </div>
-            <div class="reference-item">
-              <span class="reference-icon">💆</span>
-              <div class="reference-content">
-                <div class="reference-name">Muscle Relaxation</div>
-                <div class="reference-use">2-10 min • Physical tension, mild anxiety</div>
-              </div>
-            </div>
-            <div class="reference-item">
-              <span class="reference-icon">🌡️</span>
-              <div class="reference-content">
-                <div class="reference-name">Temperature Shock</div>
-                <div class="reference-use">1-2 min • Numbness, dissociation</div>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Personal Reflection - Your Exact Words -->
-          <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border-softer);">
-            <p style="color: var(--text-primary); font-weight: 700; margin-bottom: 1rem;">
-              "Which 2-3 techniques felt most accessible to you?"
-            </p>
-            
-            <div class="reflection-grid" id="techniqueCheckboxes">
-              <label class="reflection-checkbox">
-                <input type="checkbox" value="Cold Water"> Cold water
-              </label>
-              <label class="reflection-checkbox">
-                <input type="checkbox" value="Intense Exercise"> Intense exercise
-              </label>
-              <label class="reflection-checkbox">
-                <input type="checkbox" value="Paced Breathing"> Paced breathing
-              </label>
-              <label class="reflection-checkbox">
-                <input type="checkbox" value="Muscle Relaxation"> Muscle relaxation
-              </label>
-              <label class="reflection-checkbox">
-                <input type="checkbox" value="Temperature Shock"> Temperature shock
-              </label>
-            </div>
-            
-            <!-- Commitment - Your Exact Words -->
-            <div style="background: rgba(217,119,6,0.1); padding: 1.25rem; border-radius: 0.75rem; margin-top: 1.5rem;">
-              <p style="color: var(--text-amber-light); font-weight: 600; margin-bottom: 1rem; text-align: center;">
-                "Crisis skills only work if you practice when calm. Will you commit to practicing your top 2 techniques this week?"
-              </p>
-              <div style="display: flex; gap: 0.75rem;">
-                <button id="commitYesBtn" class="btn-practice btn-practice-primary" style="flex: 1;">Yes, I Commit</button>
-                <button id="commitLaterBtn" class="btn-practice btn-practice-secondary" style="flex: 1;">Maybe Later</button>
-              </div>
-            </div>
-          </div>
-          
-          <!-- SAVE POINT #6: PERSONAL REFLECTION -->
-          <button id="saveReflectionBtn" class="btn-save" style="margin-top: 1.5rem;">
-            <span>📋</span> Save My Top Techniques to Toolkit
-          </button>
-          <p id="reflectionSaveFeedback" style="color: var(--success-emerald); font-size: 0.75rem; margin-top: 0.5rem; text-align: center; display: none;"></p>
-        </div>
-
-        <!-- ===== NAVIGATION ===== -->
-        <div class="btn-group">
-          <a href="crisis-module-1.html" class="btn btn-secondary">← Module 1</a>
-          <a href="crisis-module-3.html" class="btn btn-primary">Continue to Module 3 →</a>
-        </div>
-
-        <!-- ===== MARK AS PRACTICED ===== -->
-        <div style="display: flex; justify-content: center; margin: 0.5rem 0 1.5rem;">
-          <button id="markPracticedBtn" style="background: var(--success-bg); color: var(--success-emerald); border: 1px solid rgba(74,222,128,0.3); padding: 0.75rem 2rem; border-radius: 2rem; font-size: 0.8125rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem;">
-            ✓ I've practiced this module
-          </button>
-        </div>
-
-        <!-- ===== FOOTER ===== -->
-        <div class="footer">
-          <p style="color: #fca5a5; font-weight: 600; margin-bottom: 0.5rem;">⚠️ EDUCATIONAL ONLY — NOT THERAPY</p>
-          <p>988 Suicide & Crisis Lifeline: Call or text 988</p>
-          <p style="margin-top: 0.5rem;">Crisis Text Line: Text HOME to 741741</p>
-        </div>
-
-      </div>
     </div>
-  </div>
 </div>
 
 <script>
 (function() {
-  // ===== CHECK DISCLAIMER ACKNOWLEDGMENT =====
-  const acknowledged = localStorage.getItem('crisis_disclaimer_acknowledged');
-  if (!acknowledged) {
-    window.location.href = 'crisis-intro.html';
-    return;
-  }
-
-  // ===== UPDATE PROGRESS =====
-  let progress = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
-  progress.currentModule = 2;
-  progress.lastAccessed = new Date().toISOString();
-  localStorage.setItem('crisis_course_progress', JSON.stringify(progress));
-
-  // ===== COLD WATER PRACTICE =====
-  // Sliders
-  const coldBeforeSlider = document.getElementById('coldWaterBeforeSlider');
-  const coldBeforeValue = document.getElementById('coldWaterBeforeValue');
-  const coldAfterSlider = document.getElementById('coldWaterAfterSlider');
-  const coldAfterValue = document.getElementById('coldWaterAfterValue');
-  
-  if (coldBeforeSlider && coldBeforeValue) {
-    coldBeforeSlider.addEventListener('input', function() {
-      coldBeforeValue.textContent = this.value;
-    });
-  }
-  
-  if (coldAfterSlider && coldAfterValue) {
-    coldAfterSlider.addEventListener('input', function() {
-      coldAfterValue.textContent = this.value;
-    });
-  }
-  
-  // Practice flow
-  const guideBtn = document.getElementById('coldWaterGuideBtn');
-  const skipBtn = document.getElementById('coldWaterSkipBtn');
-  const guided = document.getElementById('coldWaterGuided');
-  const readyBtn = document.getElementById('coldWaterReadyBtn');
-  const timerDiv = document.getElementById('coldWaterTimer');
-  const startTimerBtn = document.getElementById('coldWaterStartTimer');
-  const timerDisplay = document.getElementById('coldWaterTimerDisplay');
-  const afterDiv = document.getElementById('coldWaterAfter');
-  const resultDiv = document.getElementById('coldWaterResult');
-  const reflectionDiv = document.getElementById('coldWaterReflection');
-  
-  if (guideBtn) {
-    guideBtn.addEventListener('click', function() {
-      guided.style.display = 'block';
-      guideBtn.style.display = 'none';
-      skipBtn.style.display = 'none';
-    });
-  }
-  
-  if (skipBtn) {
-    skipBtn.addEventListener('click', function() {
-      this.textContent = 'Skipped';
-      this.disabled = true;
-    });
-  }
-  
-  if (readyBtn) {
-    readyBtn.addEventListener('click', function() {
-      timerDiv.style.display = 'block';
-      readyBtn.style.display = 'none';
-    });
-  }
-  
-  if (startTimerBtn) {
-    let timerInterval;
-    startTimerBtn.addEventListener('click', function() {
-      let timeLeft = 15;
-      timerDisplay.textContent = timeLeft;
-      startTimerBtn.disabled = true;
-      
-      timerInterval = setInterval(function() {
-        timeLeft--;
-        timerDisplay.textContent = timeLeft;
-        
-        if (timeLeft <= 0) {
-          clearInterval(timerInterval);
-          timerDisplay.textContent = '0';
-          startTimerBtn.disabled = false;
-          startTimerBtn.style.display = 'none';
-          afterDiv.style.display = 'block';
-          
-          // Show result
-          const before = parseInt(coldBeforeSlider?.value || '5');
-          const after = parseInt(coldAfterSlider?.value || '3');
-          resultDiv.innerHTML = `<p style="color: var(--text-teal-light);">You went from ${before} to ${after}. Your heart rate likely slowed — that's the dive reflex working.</p>`;
-          reflectionDiv.style.display = 'block';
-        }
-      }, 1000);
-    });
-  }
-  
-  // Reflection buttons
-  const reflectionBtns = document.querySelectorAll('.reflection-btn[data-feeling]');
-  reflectionBtns.forEach(btn => {
-    btn.addEventListener('click', function() {
-      this.classList.add('selected');
-      // Remove selected from others in same group
-      const siblings = this.parentElement.querySelectorAll('.reflection-btn');
-      siblings.forEach(sib => sib.classList.remove('selected'));
-    });
-  });
-
-  // ===== INTENSE EXERCISE PRACTICE =====
-  const energyBeforeSlider = document.getElementById('energyBeforeSlider');
-  const energyBeforeValue = document.getElementById('energyBeforeValue');
-  const energyAfterSlider = document.getElementById('energyAfterSlider');
-  const energyAfterValue = document.getElementById('energyAfterValue');
-  const clarityAfterSlider = document.getElementById('clarityAfterSlider');
-  const clarityAfterValue = document.getElementById('clarityAfterValue');
-  
-  if (energyBeforeSlider && energyBeforeValue) {
-    energyBeforeSlider.addEventListener('input', function() {
-      energyBeforeValue.textContent = this.value;
-    });
-  }
-  
-  if (energyAfterSlider && energyAfterValue) {
-    energyAfterSlider.addEventListener('input', function() {
-      energyAfterValue.textContent = this.value;
-    });
-  }
-  
-  if (clarityAfterSlider && clarityAfterValue) {
-    clarityAfterSlider.addEventListener('input', function() {
-      clarityAfterValue.textContent = this.value;
-    });
-  }
-  
-  const exerciseYesBtn = document.getElementById('exerciseYesBtn');
-  const exerciseNoBtn = document.getElementById('exerciseNoBtn');
-  const exerciseGuided = document.getElementById('exerciseGuided');
-  const startWorkoutBtn = document.getElementById('startWorkoutBtn');
-  const workoutTimer = document.getElementById('workoutTimer');
-  const workoutPhase = document.getElementById('workoutPhase');
-  const workoutTimerDisplay = document.getElementById('workoutTimerDisplay');
-  const workoutRound = document.getElementById('workoutRound');
-  const exerciseAfter = document.getElementById('exerciseAfter');
-  const exerciseResult = document.getElementById('exerciseResult');
-  
-  if (exerciseYesBtn) {
-    exerciseYesBtn.addEventListener('click', function() {
-      exerciseGuided.style.display = 'block';
-      exerciseYesBtn.style.display = 'none';
-      exerciseNoBtn.style.display = 'none';
-    });
-  }
-  
-  if (exerciseNoBtn) {
-    exerciseNoBtn.addEventListener('click', function() {
-      this.textContent = 'Skipped';
-      this.disabled = true;
-    });
-  }
-  
-  if (startWorkoutBtn) {
-    let workoutInterval;
-    let round = 1;
-    let isWorkout = true;
-    let timeLeft = 30;
+    'use strict';
     
-    startWorkoutBtn.addEventListener('click', function() {
-      workoutTimer.style.display = 'block';
-      startWorkoutBtn.style.display = 'none';
-      
-      workoutInterval = setInterval(function() {
-        timeLeft--;
-        workoutTimerDisplay.textContent = timeLeft;
-        
-        if (timeLeft <= 0) {
-          if (isWorkout) {
-            // Switch to rest
-            isWorkout = false;
-            timeLeft = 30;
-            workoutPhase.textContent = 'REST';
-            workoutPhase.style.color = 'var(--text-amber)';
-          } else {
-            // Switch to workout, increment round
-            isWorkout = true;
-            timeLeft = 30;
-            round++;
-            workoutPhase.textContent = 'GO!';
-            workoutPhase.style.color = 'var(--text-teal)';
-            workoutRound.textContent = `Round ${round} of 4`;
-          }
-          
-          if (round > 4) {
-            clearInterval(workoutInterval);
-            workoutTimer.style.display = 'none';
-            exerciseAfter.style.display = 'block';
-            
-            const energyBefore = parseInt(energyBeforeSlider?.value || '5');
-            const energyAfter = parseInt(energyAfterSlider?.value || '7');
-            const clarityAfter = parseInt(clarityAfterSlider?.value || '6');
-            
-            exerciseResult.innerHTML = `<p style="color: var(--text-teal-light);">Energy shift: ${energyBefore} → ${energyAfter}<br>Clarity shift: ${clarityAfter}/10<br>Notice how your body feels different?</p>`;
-          }
-        }
-      }, 1000);
-    });
-  }
-
-  // ===== BREATHING PRACTICE =====
-  const tensionBeforeSlider = document.getElementById('tensionBeforeSlider');
-  const tensionBeforeValue = document.getElementById('tensionBeforeValue');
-  const tensionAfterSlider = document.getElementById('tensionAfterSlider');
-  const tensionAfterValue = document.getElementById('tensionAfterValue');
-  
-  if (tensionBeforeSlider && tensionBeforeValue) {
-    tensionBeforeSlider.addEventListener('input', function() {
-      tensionBeforeValue.textContent = this.value;
-    });
-  }
-  
-  if (tensionAfterSlider && tensionAfterValue) {
-    tensionAfterSlider.addEventListener('input', function() {
-      tensionAfterValue.textContent = this.value;
-    });
-  }
-  
-  const startBreathingBtn = document.getElementById('startBreathingBtn');
-  const breathingPractice = document.getElementById('breathingPractice');
-  const beginBreathCycle = document.getElementById('beginBreathCycle');
-  const stopBreathCycle = document.getElementById('stopBreathCycle');
-  const breathCircle = document.getElementById('breathCircle');
-  const breathInstruction = document.getElementById('breathInstruction');
-  const breathingAfter = document.getElementById('breathingAfter');
-  const breathingResult = document.getElementById('breathingResult');
-  
-  if (startBreathingBtn) {
-    startBreathingBtn.addEventListener('click', function() {
-      breathingPractice.style.display = 'block';
-      startBreathingBtn.style.display = 'none';
-    });
-  }
-  
-  if (beginBreathCycle) {
-    let breathInterval;
-    let breathPhase = 'inhale';
-    let cycles = 0;
-    
-    beginBreathCycle.addEventListener('click', function() {
-      beginBreathCycle.style.display = 'none';
-      stopBreathCycle.style.display = 'inline-block';
-      
-      breathInterval = setInterval(function() {
-        if (breathPhase === 'inhale') {
-          breathPhase = 'hold';
-          breathCircle.style.transform = 'scale(1.3)';
-          breathCircle.style.background = 'rgba(14,116,144,0.2)';
-          breathInstruction.textContent = 'HOLD';
-          breathInstruction.style.color = 'var(--text-amber)';
-        } else if (breathPhase === 'hold') {
-          breathPhase = 'exhale';
-          breathCircle.style.transform = 'scale(0.8)';
-          breathCircle.style.background = 'rgba(14,116,144,0.3)';
-          breathInstruction.textContent = 'EXHALE';
-          breathInstruction.style.color = 'var(--text-teal)';
-        } else if (breathPhase === 'exhale') {
-          breathPhase = 'inhale';
-          breathCircle.style.transform = 'scale(1)';
-          breathCircle.style.background = 'rgba(14,116,144,0.15)';
-          breathInstruction.textContent = 'INHALE';
-          breathInstruction.style.color = 'var(--text-teal-light)';
-          cycles++;
-          
-          if (cycles >= 10) {
-            clearInterval(breathInterval);
-            breathCircle.style.transform = 'scale(1)';
-            breathInstruction.textContent = 'Complete';
-            stopBreathCycle.style.display = 'none';
-            breathingAfter.style.display = 'block';
-            
-            const before = parseInt(tensionBeforeSlider?.value || '5');
-            const after = parseInt(tensionAfterSlider?.value || '3');
-            breathingResult.innerHTML = `<p style="color: var(--text-teal-light);">Tension: ${before} → ${after}<br>You just activated your parasympathetic nervous system.</p>`;
-          }
-        }
-      }, 4000); // 4 seconds per phase
-    });
-  }
-  
-  if (stopBreathCycle) {
-    stopBreathCycle.addEventListener('click', function() {
-      clearInterval(breathInterval);
-      beginBreathCycle.style.display = 'inline-block';
-      stopBreathCycle.style.display = 'none';
-      breathCircle.style.transform = 'scale(1)';
-      breathInstruction.textContent = 'Ready';
-    });
-  }
-
-  // ===== PMR PRACTICE =====
-  const pmrBeforeSlider = document.getElementById('pmrBeforeSlider');
-  const pmrBeforeValue = document.getElementById('pmrBeforeValue');
-  const pmrAfterSlider = document.getElementById('pmrAfterSlider');
-  const pmrAfterValue = document.getElementById('pmrAfterValue');
-  
-  if (pmrBeforeSlider && pmrBeforeValue) {
-    pmrBeforeSlider.addEventListener('input', function() {
-      pmrBeforeValue.textContent = this.value;
-    });
-  }
-  
-  if (pmrAfterSlider && pmrAfterValue) {
-    pmrAfterSlider.addEventListener('input', function() {
-      pmrAfterValue.textContent = this.value;
-    });
-  }
-  
-  const startPMRBtn = document.getElementById('startPMRBtn');
-  const pmrPractice = document.getElementById('pmrPractice');
-  const pmrGuided = document.getElementById('pmrGuided');
-  const pmrInstruction = document.getElementById('pmrInstruction');
-  const pmrTimer = document.getElementById('pmrTimer');
-  const pmrNextBtn = document.getElementById('pmrNextBtn');
-  const pmrAfter = document.getElementById('pmrAfter');
-  const pmrResult = document.getElementById('pmrResult');
-  
-  let pmrStep = 0;
-  const pmrSteps = [
-    { instruction: 'Hands: Make tight fists… tighter… hold…', timer: 5 },
-    { instruction: '…and RELEASE. Feel the difference.', timer: 10 },
-    { instruction: 'Arms: Bend elbows and tense biceps… tight…', timer: 5 },
-    { instruction: '…and RELEASE. Notice the warmth.', timer: 10 },
-    { instruction: 'Shoulders: Pull shoulders up to ears… squeeze…', timer: 5 },
-    { instruction: '…and DROP them. Let them be heavy.', timer: 10 },
-    { instruction: 'Face: Scrunch everything - eyes, nose, mouth… tight…', timer: 5 },
-    { instruction: '…and SOFTEN. Let your jaw hang loose.', timer: 10 },
-    { instruction: 'Legs: Point toes, tense thighs and calves…', timer: 5 },
-    { instruction: '…and RELEASE. Let legs be heavy.', timer: 10 },
-    { instruction: 'Take 3 normal breaths. Notice your body now.', timer: 15 }
-  ];
-  
-  if (startPMRBtn) {
-    startPMRBtn.addEventListener('click', function() {
-      pmrPractice.style.display = 'block';
-      startPMRBtn.style.display = 'none';
-      pmrStep = 0;
-      updatePMRStep();
-    });
-  }
-  
-  function updatePMRStep() {
-    if (pmrStep < pmrSteps.length) {
-      pmrInstruction.textContent = pmrSteps[pmrStep].instruction;
-      pmrTimer.textContent = pmrSteps[pmrStep].timer;
-      
-      let timeLeft = pmrSteps[pmrStep].timer;
-      const timerInterval = setInterval(function() {
-        timeLeft--;
-        pmrTimer.textContent = timeLeft;
-        
-        if (timeLeft <= 0) {
-          clearInterval(timerInterval);
-        }
-      }, 1000);
-    } else {
-      pmrGuided.style.display = 'none';
-      pmrAfter.style.display = 'block';
-      
-      const before = parseInt(pmrBeforeSlider?.value || '5');
-      const after = parseInt(pmrAfterSlider?.value || '3');
-      pmrResult.innerHTML = `<p style="color: var(--text-teal-light);">Tension: ${before} → ${after}<br>Take 3 normal breaths. Notice your body now.</p>`;
+    // Check disclaimer acknowledgment
+    const acknowledged = localStorage.getItem('crisis_disclaimer_acknowledged');
+    if (!acknowledged) {
+        window.location.href = 'crisis-intro.html';
+        return;
     }
-  }
-  
-  if (pmrNextBtn) {
-    pmrNextBtn.addEventListener('click', function() {
-      pmrStep++;
-      updatePMRStep();
-    });
-  }
 
-  // ===== CHECKBOX VISUAL STATE =====
-  const checkboxes = document.querySelectorAll('.reflection-checkbox input[type="checkbox"]');
-  checkboxes.forEach(cb => {
-    cb.addEventListener('change', function() {
-      const label = this.closest('.reflection-checkbox');
-      if (this.checked) {
-        label.classList.add('checked');
-      } else {
-        label.classList.remove('checked');
-      }
-    });
-  });
+    // Update progress
+    let progress = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
+    progress.currentModule = 2;
+    progress.lastAccessed = new Date().toISOString();
+    localStorage.setItem('crisis_course_progress', JSON.stringify(progress));
 
-  // ===== SAVE POINT #1: COLD WATER =====
-  const saveColdBtn = document.getElementById('saveColdWaterBtn');
-  const coldFeedback = document.getElementById('coldWaterSaveFeedback');
-  
-  if (saveColdBtn) {
-    saveColdBtn.addEventListener('click', function() {
-      let toolkit = JSON.parse(localStorage.getItem('crisis_toolkit') || '[]');
-      
-      toolkit = toolkit.filter(item => item.id !== 'cold-water');
-      
-      toolkit.push({
+    // Storage helpers
+    function saveToCrisisPlan(key, value) {
+        try {
+            let plan = JSON.parse(localStorage.getItem('crisis_plan') || '{}');
+            plan[key] = value;
+            plan.lastUpdated = new Date().toISOString();
+            localStorage.setItem('crisis_plan', JSON.stringify(plan));
+            return true;
+        } catch (e) {
+            console.error('Save to crisis plan failed:', e);
+            return false;
+        }
+    }
+    
+    function saveToToolkit(item) {
+        try {
+            let toolkit = JSON.parse(localStorage.getItem('crisis_toolkit') || '[]');
+            toolkit = toolkit.filter(t => t.id !== item.id);
+            toolkit.push({
+                ...item,
+                date: new Date().toISOString()
+            });
+            localStorage.setItem('crisis_toolkit', JSON.stringify(toolkit));
+            return true;
+        } catch (e) {
+            console.error('Save to toolkit failed:', e);
+            return false;
+        }
+    }
+
+    // Slider updates
+    function setupSlider(sliderId, valueId) {
+        const slider = document.getElementById(sliderId);
+        const value = document.getElementById(valueId);
+        if (slider && value) {
+            slider.addEventListener('input', function() {
+                value.textContent = this.value;
+            });
+        }
+    }
+
+    setupSlider('coldWaterBeforeSlider', 'coldWaterBeforeValue');
+    setupSlider('coldWaterAfterSlider', 'coldWaterAfterValue');
+    setupSlider('energyBeforeSlider', 'energyBeforeValue');
+    setupSlider('energyAfterSlider', 'energyAfterValue');
+    setupSlider('clarityAfterSlider', 'clarityAfterValue');
+    setupSlider('tensionBeforeSlider', 'tensionBeforeValue');
+    setupSlider('tensionAfterSlider', 'tensionAfterValue');
+    setupSlider('pmrBeforeSlider', 'pmrBeforeValue');
+    setupSlider('pmrAfterSlider', 'pmrAfterValue');
+
+    // Cold Water Practice
+    const coldGuideBtn = document.getElementById('coldWaterGuideBtn');
+    const coldSkipBtn = document.getElementById('coldWaterSkipBtn');
+    const coldGuided = document.getElementById('coldWaterGuided');
+    
+    if (coldGuideBtn) {
+        coldGuideBtn.addEventListener('click', function() {
+            coldGuided.style.display = 'block';
+            coldGuideBtn.style.display = 'none';
+            coldSkipBtn.style.display = 'none';
+        });
+    }
+    
+    if (coldSkipBtn) {
+        coldSkipBtn.addEventListener('click', function() {
+            this.textContent = 'Skipped';
+            this.disabled = true;
+        });
+    }
+
+    const coldReadyBtn = document.getElementById('coldWaterReadyBtn');
+    const coldTimer = document.getElementById('coldWaterTimer');
+    
+    if (coldReadyBtn) {
+        coldReadyBtn.addEventListener('click', function() {
+            coldTimer.style.display = 'block';
+            coldReadyBtn.style.display = 'none';
+        });
+    }
+
+    const coldStartTimer = document.getElementById('coldWaterStartTimer');
+    const coldTimerDisplay = document.getElementById('coldWaterTimerDisplay');
+    const coldAfter = document.getElementById('coldWaterAfter');
+    const coldResult = document.getElementById('coldWaterResult');
+    
+    if (coldStartTimer) {
+        coldStartTimer.addEventListener('click', function() {
+            let timeLeft = 15;
+            coldTimerDisplay.textContent = timeLeft;
+            coldStartTimer.disabled = true;
+            
+            const interval = setInterval(function() {
+                timeLeft--;
+                coldTimerDisplay.textContent = timeLeft;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(interval);
+                    coldStartTimer.style.display = 'none';
+                    coldAfter.style.display = 'block';
+                    
+                    const before = parseInt(document.getElementById('coldWaterBeforeSlider')?.value || '5');
+                    const after = parseInt(document.getElementById('coldWaterAfterSlider')?.value || '3');
+                    coldResult.innerHTML = `<p style="color: var(--text-teal-light);">You went from ${before} to ${after}. Your heart rate likely slowed — that's the dive reflex working.</p>`;
+                }
+            }, 1000);
+        });
+    }
+
+    // Exercise Practice
+    const exerciseYesBtn = document.getElementById('exerciseYesBtn');
+    const exerciseNoBtn = document.getElementById('exerciseNoBtn');
+    const exerciseGuided = document.getElementById('exerciseGuided');
+    
+    if (exerciseYesBtn) {
+        exerciseYesBtn.addEventListener('click', function() {
+            exerciseGuided.style.display = 'block';
+            exerciseYesBtn.style.display = 'none';
+            exerciseNoBtn.style.display = 'none';
+        });
+    }
+    
+    if (exerciseNoBtn) {
+        exerciseNoBtn.addEventListener('click', function() {
+            this.textContent = 'Skipped';
+            this.disabled = true;
+        });
+    }
+
+    const startWorkoutBtn = document.getElementById('startWorkoutBtn');
+    const workoutTimer = document.getElementById('workoutTimer');
+    const workoutPhase = document.getElementById('workoutPhase');
+    const workoutTimerDisplay = document.getElementById('workoutTimerDisplay');
+    const workoutRound = document.getElementById('workoutRound');
+    const exerciseAfter = document.getElementById('exerciseAfter');
+    const exerciseResult = document.getElementById('exerciseResult');
+    
+    if (startWorkoutBtn) {
+        startWorkoutBtn.addEventListener('click', function() {
+            workoutTimer.style.display = 'block';
+            startWorkoutBtn.style.display = 'none';
+            
+            let round = 1;
+            let isWorkout = true;
+            let timeLeft = 30;
+            
+            const interval = setInterval(function() {
+                timeLeft--;
+                workoutTimerDisplay.textContent = timeLeft;
+                
+                if (timeLeft <= 0) {
+                    if (isWorkout) {
+                        isWorkout = false;
+                        timeLeft = 30;
+                        workoutPhase.textContent = 'REST';
+                        workoutPhase.style.color = 'var(--text-amber)';
+                    } else {
+                        isWorkout = true;
+                        timeLeft = 30;
+                        round++;
+                        workoutPhase.textContent = 'GO!';
+                        workoutPhase.style.color = 'var(--text-teal)';
+                        workoutRound.textContent = `Round ${round} of 4`;
+                    }
+                    
+                    if (round > 4) {
+                        clearInterval(interval);
+                        workoutTimer.style.display = 'none';
+                        exerciseAfter.style.display = 'block';
+                        
+                        const energyBefore = parseInt(document.getElementById('energyBeforeSlider')?.value || '5');
+                        const energyAfter = parseInt(document.getElementById('energyAfterSlider')?.value || '7');
+                        const clarityAfter = parseInt(document.getElementById('clarityAfterSlider')?.value || '6');
+                        
+                        exerciseResult.innerHTML = `<p style="color: var(--text-teal-light);">Energy shift: ${energyBefore} → ${energyAfter}<br>Clarity shift: ${clarityAfter}/10<br>Notice how your body feels different?</p>`;
+                    }
+                }
+            }, 1000);
+        });
+    }
+
+    // Breathing Practice
+    const startBreathingBtn = document.getElementById('startBreathingBtn');
+    const breathingPractice = document.getElementById('breathingPractice');
+    
+    if (startBreathingBtn) {
+        startBreathingBtn.addEventListener('click', function() {
+            breathingPractice.style.display = 'block';
+            startBreathingBtn.style.display = 'none';
+        });
+    }
+
+    const beginBreathCycle = document.getElementById('beginBreathCycle');
+    const stopBreathCycle = document.getElementById('stopBreathCycle');
+    const breathCircle = document.getElementById('breathCircle');
+    const breathInstruction = document.getElementById('breathInstruction');
+    const breathingAfter = document.getElementById('breathingAfter');
+    const breathingResult = document.getElementById('breathingResult');
+    
+    let breathInterval;
+    
+    if (beginBreathCycle) {
+        beginBreathCycle.addEventListener('click', function() {
+            beginBreathCycle.style.display = 'none';
+            stopBreathCycle.style.display = 'inline-block';
+            
+            let breathPhase = 'inhale';
+            let cycles = 0;
+            
+            breathInterval = setInterval(function() {
+                if (breathPhase === 'inhale') {
+                    breathPhase = 'hold';
+                    breathCircle.style.transform = 'scale(1.3)';
+                    breathCircle.style.background = 'rgba(14,116,144,0.2)';
+                    breathInstruction.textContent = 'HOLD';
+                    breathInstruction.style.color = 'var(--text-amber)';
+                } else if (breathPhase === 'hold') {
+                    breathPhase = 'exhale';
+                    breathCircle.style.transform = 'scale(0.8)';
+                    breathCircle.style.background = 'rgba(14,116,144,0.3)';
+                    breathInstruction.textContent = 'EXHALE';
+                    breathInstruction.style.color = 'var(--text-teal)';
+                } else {
+                    breathPhase = 'inhale';
+                    breathCircle.style.transform = 'scale(1)';
+                    breathCircle.style.background = 'rgba(14,116,144,0.15)';
+                    breathInstruction.textContent = 'INHALE';
+                    breathInstruction.style.color = 'var(--text-teal-light)';
+                    cycles++;
+                    
+                    if (cycles >= 10) {
+                        clearInterval(breathInterval);
+                        breathCircle.style.transform = 'scale(1)';
+                        breathInstruction.textContent = 'Complete';
+                        stopBreathCycle.style.display = 'none';
+                        breathingAfter.style.display = 'block';
+                        
+                        const before = parseInt(document.getElementById('tensionBeforeSlider')?.value || '5');
+                        const after = parseInt(document.getElementById('tensionAfterSlider')?.value || '3');
+                        breathingResult.innerHTML = `<p style="color: var(--text-teal-light);">Tension: ${before} → ${after}<br>You just activated your parasympathetic nervous system.</p>`;
+                    }
+                }
+            }, 4000);
+        });
+    }
+    
+    if (stopBreathCycle) {
+        stopBreathCycle.addEventListener('click', function() {
+            clearInterval(breathInterval);
+            beginBreathCycle.style.display = 'inline-block';
+            stopBreathCycle.style.display = 'none';
+            breathCircle.style.transform = 'scale(1)';
+            breathInstruction.textContent = 'Ready';
+        });
+    }
+
+    // PMR Practice
+    const startPMRBtn = document.getElementById('startPMRBtn');
+    const pmrPractice = document.getElementById('pmrPractice');
+    const pmrInstruction = document.getElementById('pmrInstruction');
+    const pmrTimer = document.getElementById('pmrTimer');
+    const pmrNextBtn = document.getElementById('pmrNextBtn');
+    const pmrAfter = document.getElementById('pmrAfter');
+    const pmrResult = document.getElementById('pmrResult');
+    
+    let pmrStep = 0;
+    const pmrSteps = [
+        { instruction: 'Hands: Make tight fists… tighter… hold…', timer: 5 },
+        { instruction: '…and RELEASE. Feel the difference.', timer: 10 },
+        { instruction: 'Arms: Bend elbows and tense biceps… tight…', timer: 5 },
+        { instruction: '…and RELEASE. Notice the warmth.', timer: 10 },
+        { instruction: 'Shoulders: Pull shoulders up to ears… squeeze…', timer: 5 },
+        { instruction: '…and DROP them. Let them be heavy.', timer: 10 },
+        { instruction: 'Face: Scrunch everything - eyes, nose, mouth… tight…', timer: 5 },
+        { instruction: '…and SOFTEN. Let your jaw hang loose.', timer: 10 },
+        { instruction: 'Legs: Point toes, tense thighs and calves…', timer: 5 },
+        { instruction: '…and RELEASE. Let legs be heavy.', timer: 10 },
+        { instruction: 'Take 3 normal breaths. Notice your body now.', timer: 15 }
+    ];
+    
+    if (startPMRBtn) {
+        startPMRBtn.addEventListener('click', function() {
+            pmrPractice.style.display = 'block';
+            startPMRBtn.style.display = 'none';
+            pmrStep = 0;
+            updatePMRStep();
+        });
+    }
+    
+    function updatePMRStep() {
+        if (pmrStep < pmrSteps.length) {
+            pmrInstruction.textContent = pmrSteps[pmrStep].instruction;
+            pmrTimer.textContent = pmrSteps[pmrStep].timer;
+            
+            let timeLeft = pmrSteps[pmrStep].timer;
+            const timerInterval = setInterval(function() {
+                timeLeft--;
+                pmrTimer.textContent = timeLeft;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                }
+            }, 1000);
+        } else {
+            document.getElementById('pmrGuided').style.display = 'none';
+            pmrAfter.style.display = 'block';
+            
+            const before = parseInt(document.getElementById('pmrBeforeSlider')?.value || '5');
+            const after = parseInt(document.getElementById('pmrAfterSlider')?.value || '3');
+            pmrResult.innerHTML = `<p style="color: var(--text-teal-light);">Tension: ${before} → ${after}<br>Take 3 normal breaths. Notice your body now.</p>`;
+        }
+    }
+    
+    if (pmrNextBtn) {
+        pmrNextBtn.addEventListener('click', function() {
+            pmrStep++;
+            updatePMRStep();
+        });
+    }
+
+    // Checkbox visual state
+    const checkboxes = document.querySelectorAll('.reflection-checkbox input[type="checkbox"]');
+    checkboxes.forEach(cb => {
+        cb.addEventListener('change', function() {
+            const label = this.closest('.reflection-checkbox');
+            if (this.checked) {
+                label.classList.add('checked');
+            } else {
+                label.classList.remove('checked');
+            }
+        });
+    });
+
+    // Save buttons with animation
+    function setupSaveButton(btnId, feedbackId, toolkitItem) {
+        const btn = document.getElementById(btnId);
+        const feedback = document.getElementById(feedbackId);
+        
+        if (btn) {
+            btn.addEventListener('click', function() {
+                saveToToolkit(toolkitItem);
+                
+                btn.classList.add('saved');
+                btn.innerHTML = '<span>✓</span><span>Saved!</span>';
+                feedback.textContent = '✓ Saved to your toolkit.';
+                feedback.classList.add('show');
+                
+                setTimeout(() => {
+                    btn.classList.remove('saved');
+                    btn.innerHTML = toolkitItem.btnHtml;
+                    feedback.classList.remove('show');
+                }, 3000);
+            });
+        }
+    }
+
+    setupSaveButton('saveColdWaterBtn', 'coldWaterSaveFeedback', {
         id: 'cold-water',
         category: 'Module 2: Physical Reset',
         name: 'Cold Water — Dive Reflex',
         description: '30-60 seconds • Panic, rage, need instant calm • Dunk face in ice water or apply ice pack for 15-30 seconds',
-        date: new Date().toISOString()
-      });
-      
-      localStorage.setItem('crisis_toolkit', JSON.stringify(toolkit));
-      
-      saveColdBtn.classList.add('saved');
-      saveColdBtn.innerHTML = '<span>✓</span> Saved to Toolkit';
-      coldFeedback.style.display = 'block';
-      coldFeedback.textContent = '✓ Cold Water technique saved to your toolkit.';
-      
-      setTimeout(() => {
-        saveColdBtn.classList.remove('saved');
-        saveColdBtn.innerHTML = '<span>🧊</span> Save Cold Water to Toolkit';
-        coldFeedback.style.display = 'none';
-      }, 3000);
+        btnHtml: '<span>🧊</span> Save Cold Water to Toolkit'
     });
-  }
 
-  // ===== SAVE POINT #2: INTENSE EXERCISE =====
-  const saveExerciseBtn = document.getElementById('saveExerciseBtn');
-  const exerciseFeedback = document.getElementById('exerciseSaveFeedback');
-  
-  if (saveExerciseBtn) {
-    saveExerciseBtn.addEventListener('click', function() {
-      let toolkit = JSON.parse(localStorage.getItem('crisis_toolkit') || '[]');
-      
-      toolkit = toolkit.filter(item => item.id !== 'intense-exercise');
-      
-      toolkit.push({
+    setupSaveButton('saveExerciseBtn', 'exerciseSaveFeedback', {
         id: 'intense-exercise',
         category: 'Module 2: Physical Reset',
         name: 'Intense Exercise',
         description: '3-5 minutes • Restless panic, rage, "crawling out of skin" • Sprint, jumping jacks, stairs — must be intense enough to breathe hard',
-        date: new Date().toISOString()
-      });
-      
-      localStorage.setItem('crisis_toolkit', JSON.stringify(toolkit));
-      
-      saveExerciseBtn.classList.add('saved');
-      saveExerciseBtn.innerHTML = '<span>✓</span> Saved to Toolkit';
-      exerciseFeedback.style.display = 'block';
-      exerciseFeedback.textContent = '✓ Intense Exercise saved to your toolkit.';
-      
-      setTimeout(() => {
-        saveExerciseBtn.classList.remove('saved');
-        saveExerciseBtn.innerHTML = '<span>💪</span> Save Intense Exercise to Toolkit';
-        exerciseFeedback.style.display = 'none';
-      }, 3000);
+        btnHtml: '<span>💪</span> Save Intense Exercise to Toolkit'
     });
-  }
 
-  // ===== SAVE POINT #3: PACED BREATHING =====
-  const saveBreathingBtn = document.getElementById('saveBreathingBtn');
-  const breathingFeedback = document.getElementById('breathingSaveFeedback');
-  
-  if (saveBreathingBtn) {
-    saveBreathingBtn.addEventListener('click', function() {
-      let toolkit = JSON.parse(localStorage.getItem('crisis_toolkit') || '[]');
-      
-      toolkit = toolkit.filter(item => item.id !== 'paced-breathing');
-      
-      toolkit.push({
+    setupSaveButton('saveBreathingBtn', 'breathingSaveFeedback', {
         id: 'paced-breathing',
         category: 'Module 2: Physical Reset',
         name: 'Paced Breathing',
         description: '2-3 minutes • Moderate anxiety, racing thoughts • 4-6-8 pattern: IN 4, HOLD 6, OUT 8 • Exhale longer than inhale',
-        date: new Date().toISOString()
-      });
-      
-      localStorage.setItem('crisis_toolkit', JSON.stringify(toolkit));
-      
-      saveBreathingBtn.classList.add('saved');
-      saveBreathingBtn.innerHTML = '<span>✓</span> Saved to Toolkit';
-      breathingFeedback.style.display = 'block';
-      breathingFeedback.textContent = '✓ Paced Breathing saved to your toolkit.';
-      
-      setTimeout(() => {
-        saveBreathingBtn.classList.remove('saved');
-        saveBreathingBtn.innerHTML = '<span>🌬️</span> Save Paced Breathing to Toolkit';
-        breathingFeedback.style.display = 'none';
-      }, 3000);
+        btnHtml: '<span>🌬️</span> Save Paced Breathing to Toolkit'
     });
-  }
 
-  // ===== SAVE POINT #4: PMR =====
-  const savePMRBtn = document.getElementById('savePMRBtn');
-  const pmrFeedback = document.getElementById('pmrSaveFeedback');
-  
-  if (savePMRBtn) {
-    savePMRBtn.addEventListener('click', function() {
-      let toolkit = JSON.parse(localStorage.getItem('crisis_toolkit') || '[]');
-      
-      toolkit = toolkit.filter(item => item.id !== 'pmr');
-      
-      toolkit.push({
+    setupSaveButton('savePMRBtn', 'pmrSaveFeedback', {
         id: 'pmr',
         category: 'Module 2: Physical Reset',
         name: 'Progressive Muscle Relaxation',
         description: '5-10 minutes • Physical tension, mild anxiety • Tense each muscle group 5 sec, release 10 sec • Hands, arms, shoulders, face, legs',
-        date: new Date().toISOString()
-      });
-      
-      localStorage.setItem('crisis_toolkit', JSON.stringify(toolkit));
-      
-      savePMRBtn.classList.add('saved');
-      savePMRBtn.innerHTML = '<span>✓</span> Saved to Toolkit';
-      pmrFeedback.style.display = 'block';
-      pmrFeedback.textContent = '✓ PMR saved to your toolkit.';
-      
-      setTimeout(() => {
-        savePMRBtn.classList.remove('saved');
-        savePMRBtn.innerHTML = '<span>💆</span> Save PMR to Toolkit';
-        pmrFeedback.style.display = 'none';
-      }, 3000);
+        btnHtml: '<span>💆</span> Save PMR to Toolkit'
     });
-  }
 
-  // ===== SAVE POINT #5: TEMPERATURE TECHNIQUES =====
-  const saveTempBtn = document.getElementById('saveTempBtn');
-  const tempFeedback = document.getElementById('tempSaveFeedback');
-  
-  if (saveTempBtn) {
-    saveTempBtn.addEventListener('click', function() {
-      let toolkit = JSON.parse(localStorage.getItem('crisis_toolkit') || '[]');
-      
-      toolkit = toolkit.filter(item => item.id !== 'temperature');
-      
-      toolkit.push({
+    setupSaveButton('saveTempBtn', 'tempSaveFeedback', {
         id: 'temperature',
         category: 'Module 2: Physical Reset',
         name: 'Temperature Shock',
         description: '1-2 minutes • Numbness, dissociation, need to feel present • Cold: ice cubes, cold shower • Heat: hot shower, heating pad • Sensation, not harm',
-        date: new Date().toISOString()
-      });
-      
-      localStorage.setItem('crisis_toolkit', JSON.stringify(toolkit));
-      
-      saveTempBtn.classList.add('saved');
-      saveTempBtn.innerHTML = '<span>✓</span> Saved to Toolkit';
-      tempFeedback.style.display = 'block';
-      tempFeedback.textContent = '✓ Temperature Techniques saved to your toolkit.';
-      
-      setTimeout(() => {
-        saveTempBtn.classList.remove('saved');
-        saveTempBtn.innerHTML = '<span>🌡️</span> Save Temperature Techniques to Toolkit';
-        tempFeedback.style.display = 'none';
-      }, 3000);
+        btnHtml: '<span>🌡️</span> Save Temperature Techniques to Toolkit'
     });
-  }
 
-  // ===== SAVE POINT #6: PERSONAL REFLECTION (TOP TECHNIQUES) =====
-  const saveReflectionBtn = document.getElementById('saveReflectionBtn');
-  const reflectionFeedback = document.getElementById('reflectionSaveFeedback');
-  
-  if (saveReflectionBtn) {
-    saveReflectionBtn.addEventListener('click', function() {
-      const checkedBoxes = document.querySelectorAll('#techniqueCheckboxes input[type="checkbox"]:checked');
-      const techniques = Array.from(checkedBoxes).map(cb => {
-        const label = cb.closest('.reflection-checkbox');
-        return label ? label.querySelector('span').textContent.trim() : cb.value;
-      });
-      
-      if (techniques.length === 0) {
-        alert('Please select at least one technique.');
-        return;
-      }
-      
-      let toolkit = JSON.parse(localStorage.getItem('crisis_toolkit') || '[]');
-      
-      toolkit = toolkit.filter(item => item.id !== 'my-top-techniques');
-      
-      toolkit.push({
-        id: 'my-top-techniques',
-        category: 'My Crisis Profile',
-        name: 'My Top Physical Reset Techniques',
-        description: techniques.join(', '),
-        date: new Date().toISOString()
-      });
-      
-      localStorage.setItem('crisis_toolkit', JSON.stringify(toolkit));
-      
-      // Also save to crisis plan
-      let crisisPlan = JSON.parse(localStorage.getItem('crisis_plan') || '{}');
-      crisisPlan.physicalTechniques = techniques;
-      crisisPlan.lastUpdated = new Date().toISOString();
-      localStorage.setItem('crisis_plan', JSON.stringify(crisisPlan));
-      
-      saveReflectionBtn.classList.add('saved');
-      saveReflectionBtn.innerHTML = '<span>✓</span> Saved to Toolkit';
-      reflectionFeedback.style.display = 'block';
-      reflectionFeedback.textContent = '✓ Your top techniques have been saved to your crisis plan.';
-      
-      setTimeout(() => {
-        saveReflectionBtn.classList.remove('saved');
-        saveReflectionBtn.innerHTML = '<span>📋</span> Save My Top Techniques to Toolkit';
-        reflectionFeedback.style.display = 'none';
-      }, 3000);
-    });
-  }
-
-  // ===== COMMITMENT BUTTONS =====
-  const commitYesBtn = document.getElementById('commitYesBtn');
-  const commitLaterBtn = document.getElementById('commitLaterBtn');
-  
-  if (commitYesBtn) {
-    commitYesBtn.addEventListener('click', function() {
-      this.textContent = '✓ Committed!';
-      this.style.background = 'var(--success-bg)';
-      this.style.color = 'var(--success-emerald)';
-      
-      // Save commitment
-      let crisisPlan = JSON.parse(localStorage.getItem('crisis_plan') || '{}');
-      crisisPlan.practiceCommitment = {
-        committed: true,
-        date: new Date().toISOString(),
-        module: 2
-      };
-      localStorage.setItem('crisis_plan', JSON.stringify(crisisPlan));
-    });
-  }
-  
-  if (commitLaterBtn) {
-    commitLaterBtn.addEventListener('click', function() {
-      this.textContent = 'Maybe Later';
-      this.disabled = true;
-    });
-  }
-
-  // ===== MARK AS PRACTICED =====
-  const markBtn = document.getElementById('markPracticedBtn');
-  
-  if (markBtn) {
-    markBtn.addEventListener('click', function() {
-      let progress = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
-      if (!progress.practicedModules) progress.practicedModules = [];
-      
-      if (!progress.practicedModules.includes('module2')) {
-        progress.practicedModules.push('module2');
-      }
-      
-      progress.lastPracticed = new Date().toISOString();
-      progress.currentModule = 2;
-      
-      localStorage.setItem('crisis_course_progress', JSON.stringify(progress));
-      
-      markBtn.innerHTML = '✓ Module 2 marked as practiced';
-      markBtn.style.background = 'rgba(74,222,128,0.25)';
-      
-      setTimeout(() => {
-        markBtn.innerHTML = '✓ I\'ve practiced this module';
-        markBtn.style.background = 'rgba(34,197,94,0.12)';
-      }, 2000);
-    });
-  }
-
-  // ===== LOAD SAVED TECHNIQUES =====
-  function loadSavedTechniques() {
-    const crisisPlan = JSON.parse(localStorage.getItem('crisis_plan') || '{}');
-    const savedTechniques = crisisPlan.physicalTechniques || [];
+    // Save reflection
+    const saveReflectionBtn = document.getElementById('saveReflectionBtn');
+    const reflectionFeedback = document.getElementById('reflectionSaveFeedback');
     
-    if (savedTechniques.length > 0) {
-      const checkboxes = document.querySelectorAll('#techniqueCheckboxes .reflection-checkbox');
-      checkboxes.forEach(label => {
-        const span = label.querySelector('span');
-        if (!span) return;
-        
-        const text = span.textContent.trim();
-        if (savedTechniques.includes(text)) {
-          const cb = label.querySelector('input[type="checkbox"]');
-          if (cb) {
-            cb.checked = true;
-            label.classList.add('checked');
-          }
-        }
-      });
+    if (saveReflectionBtn) {
+        saveReflectionBtn.addEventListener('click', function() {
+            const checkedBoxes = document.querySelectorAll('#techniqueCheckboxes input[type="checkbox"]:checked');
+            const techniques = Array.from(checkedBoxes).map(cb => cb.value);
+            
+            if (techniques.length === 0) {
+                alert('Please select at least one technique.');
+                return;
+            }
+            
+            saveToToolkit({
+                id: 'my-top-techniques',
+                category: 'My Crisis Profile',
+                name: 'My Top Physical Reset Techniques',
+                description: techniques.join(', ')
+            });
+            
+            saveToCrisisPlan('physicalTechniques', techniques);
+            
+            saveReflectionBtn.classList.add('saved');
+            saveReflectionBtn.innerHTML = '<span>✓</span><span>Saved!</span>';
+            reflectionFeedback.textContent = '✓ Your top techniques have been saved to your crisis plan.';
+            reflectionFeedback.classList.add('show');
+            
+            setTimeout(() => {
+                saveReflectionBtn.classList.remove('saved');
+                saveReflectionBtn.innerHTML = '<span>📋</span> Save My Top Techniques to Toolkit';
+                reflectionFeedback.classList.remove('show');
+            }, 3000);
+        });
     }
-  }
-  
-  loadSavedTechniques();
+
+    // Commitment buttons
+    const commitYesBtn = document.getElementById('commitYesBtn');
+    const commitLaterBtn = document.getElementById('commitLaterBtn');
+    
+    if (commitYesBtn) {
+        commitYesBtn.addEventListener('click', function() {
+            this.textContent = '✓ Committed!';
+            this.style.background = 'var(--success-bg)';
+            this.style.color = 'var(--success-emerald)';
+            
+            saveToCrisisPlan('practiceCommitment', {
+                committed: true,
+                date: new Date().toISOString(),
+                module: 2
+            });
+        });
+    }
+    
+    if (commitLaterBtn) {
+        commitLaterBtn.addEventListener('click', function() {
+            this.textContent = 'Maybe Later';
+            this.disabled = true;
+        });
+    }
+
+    // Mark as practiced
+    const markBtn = document.getElementById('markPracticedBtn');
+    
+    if (markBtn) {
+        let progress = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
+        if (progress.practicedModules && progress.practicedModules.includes('module2')) {
+            markBtn.classList.add('marked');
+            markBtn.innerHTML = '<span>✓</span><span>Module 2 Practiced</span>';
+        }
+        
+        markBtn.addEventListener('click', function() {
+            if (!progress.practicedModules) {
+                progress.practicedModules = [];
+            }
+            
+            if (!progress.practicedModules.includes('module2')) {
+                progress.practicedModules.push('module2');
+                progress.lastPracticed = new Date().toISOString();
+                progress.currentModule = 2;
+                localStorage.setItem('crisis_course_progress', JSON.stringify(progress));
+                
+                markBtn.classList.add('marked');
+                markBtn.innerHTML = '<span>✓</span><span>Module 2 Practiced</span>';
+            }
+        });
+    }
+
+    // Load saved techniques
+    function loadSavedTechniques() {
+        const crisisPlan = JSON.parse(localStorage.getItem('crisis_plan') || '{}');
+        const savedTechniques = crisisPlan.physicalTechniques || [];
+        
+        if (savedTechniques.length > 0) {
+            const checkboxes = document.querySelectorAll('#techniqueCheckboxes .reflection-checkbox');
+            checkboxes.forEach(label => {
+                const cb = label.querySelector('input[type="checkbox"]');
+                if (cb && savedTechniques.includes(cb.value)) {
+                    cb.checked = true;
+                    label.classList.add('checked');
+                }
+            });
+        }
+    }
+    
+    loadSavedTechniques();
 })();
 </script>
 </body>
