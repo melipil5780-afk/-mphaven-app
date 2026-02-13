@@ -1,0 +1,1593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0f172a">
+<title>Module 3: Riding the Wave — Mental Techniques</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg-dark: #0f172a;
+    --bg-card: rgba(15, 23, 42, 0.98);
+    --bg-card-light: rgba(30, 41, 59, 0.65);
+    --bg-card-dark: rgba(15, 23, 42, 0.45);
+    --border-subtle: rgba(30, 41, 59, 0.5);
+    --border-softer: rgba(51, 65, 85, 0.4);
+    --primary-teal: #0e7490;
+    --primary-teal-dark: #0c627a;
+    --accent-amber: #d97706;
+    --accent-amber-dark: #b45309;
+    --text-primary: rgb(241, 245, 249);
+    --text-secondary: rgb(203, 213, 225);
+    --text-muted: rgb(148, 163, 184);
+    --text-teal-light: rgb(165, 243, 252);
+    --text-teal: rgb(94, 234, 212);
+    --text-amber: rgb(251, 191, 36);
+    --success-emerald: rgb(74, 222, 128);
+    --success-bg: rgba(34, 197, 94, 0.12);
+    --gradient-main: linear-gradient(135deg, #0e7490, #d97706);
+    --gradient-subtle: linear-gradient(135deg, rgba(14,116,144,0.15), rgba(217,119,6,0.10));
+    --crisis-red: #dc2626;
+    --crisis-red-dark: #b91c1c;
+    --crisis-bg: rgba(220, 38, 38, 0.08);
+}
+
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
+    -webkit-tap-highlight-color: transparent; 
+}
+
+html, body { 
+    width: 100%; 
+    height: 100%; 
+    overflow: hidden; 
+    background: var(--bg-dark); 
+    color: var(--text-primary); 
+}
+
+.container { 
+    width: 100%; 
+    height: 100vh; 
+    display: flex; 
+    flex-direction: column; 
+}
+
+.app-wrapper { 
+    width: 100%; 
+    max-width: 28rem; 
+    height: 100%; 
+    margin: 0 auto; 
+    background: var(--bg-card); 
+    display: flex; 
+    flex-direction: column; 
+    position: relative; 
+    overflow: hidden; 
+}
+
+.bg-blur-1, .bg-blur-2 { 
+    position: absolute; 
+    border-radius: 50%; 
+    pointer-events: none; 
+    z-index: 0; 
+    opacity: 0.3; 
+}
+
+.bg-blur-1 { 
+    top: -5%; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    width: 22rem; 
+    height: 22rem; 
+    background: rgba(14, 116, 144, 0.15); 
+}
+
+.bg-blur-2 { 
+    bottom: -5%; 
+    right: -5%; 
+    width: 18rem; 
+    height: 18rem; 
+    background: rgba(217, 119, 6, 0.15); 
+}
+
+.main-content { 
+    flex: 1; 
+    overflow-y: auto; 
+    -webkit-overflow-scrolling: touch; 
+    scrollbar-width: none; 
+    position: relative; 
+    z-index: 1; 
+}
+
+.main-content::-webkit-scrollbar { 
+    display: none; 
+}
+
+.content-wrapper { 
+    padding: 1rem 1.25rem 2rem; 
+    padding-bottom: calc(2rem + env(safe-area-inset-bottom)); 
+}
+
+.crisis-banner {
+    background: var(--crisis-bg);
+    border: 1px solid var(--crisis-red);
+    border-radius: 0.75rem;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.crisis-banner span {
+    color: #fca5a5;
+    font-size: 0.8125rem;
+    font-weight: 600;
+}
+
+.crisis-banner a {
+    color: #fca5a5;
+    font-weight: 700;
+    text-decoration: none;
+    background: rgba(220,38,38,0.2);
+    padding: 0.375rem 0.75rem;
+    border-radius: 2rem;
+    font-size: 0.75rem;
+}
+
+.nav-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.module-badge {
+    background: var(--gradient-subtle);
+    color: var(--text-teal-light);
+    padding: 0.375rem 0.875rem;
+    border-radius: 2rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border: 1px solid rgba(14,116,144,0.25);
+}
+
+.module-title {
+    font-size: 1.75rem;
+    font-weight: 800;
+    margin-bottom: 0.25rem;
+    background: var(--gradient-main);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.module-subtitle {
+    color: var(--text-secondary);
+    font-size: 0.9375rem;
+    margin-bottom: 1.5rem;
+}
+
+.progress-container {
+    margin: 1rem 0 2rem;
+}
+
+.progress-label {
+    display: flex;
+    justify-content: space-between;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    margin-bottom: 0.375rem;
+}
+
+.progress-bar {
+    background: rgba(30,41,59,0.8);
+    height: 0.5rem;
+    border-radius: 1rem;
+    overflow: hidden;
+}
+
+.progress-fill {
+    width: 60%;
+    height: 100%;
+    background: var(--gradient-main);
+    border-radius: 1rem;
+}
+
+.card {
+    background: linear-gradient(135deg, var(--bg-card-light), var(--bg-card-dark));
+    border: 1px solid var(--border-softer);
+    border-radius: 1.25rem;
+    padding: 1.5rem;
+    margin-bottom: 1.25rem;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-primary);
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-softer);
+}
+
+.section-icon {
+    font-size: 1.75rem;
+}
+
+.section-title-text {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-teal-light);
+}
+
+.effectiveness-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    background: rgba(14,116,144,0.15);
+    padding: 0.25rem 0.75rem;
+    border-radius: 2rem;
+    font-size: 0.75rem;
+    color: var(--text-teal);
+    margin-left: 0.5rem;
+}
+
+.technique-stats {
+    display: flex;
+    gap: 1rem;
+    margin: 1rem 0;
+    padding: 1rem;
+    background: rgba(15,23,42,0.6);
+    border-radius: 0.75rem;
+}
+
+.stat {
+    flex: 1;
+    text-align: center;
+}
+
+.stat-label {
+    color: var(--text-muted);
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+.stat-value {
+    color: var(--text-teal);
+    font-weight: 700;
+    font-size: 1rem;
+    margin-top: 0.25rem;
+}
+
+.instruction-box {
+    background: rgba(15,23,42,0.6);
+    border-left: 4px solid var(--primary-teal);
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+    margin: 1.25rem 0;
+}
+
+.instruction-list {
+    list-style: none;
+    counter-reset: step-counter;
+}
+
+.instruction-list li {
+    counter-increment: step-counter;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+.instruction-list li:before {
+    content: counter(step-counter);
+    background: var(--gradient-subtle);
+    color: var(--text-teal-light);
+    font-weight: 700;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    flex-shrink: 0;
+}
+
+.safety-note {
+    background: rgba(220,38,38,0.1);
+    border-left: 4px solid var(--crisis-red);
+    padding: 1rem;
+    border-radius: 0.75rem;
+    margin: 1rem 0;
+    font-size: 0.8125rem;
+    color: #fca5a5;
+}
+
+.practice-card {
+    background: var(--gradient-subtle);
+    border: 2px solid rgba(14,116,144,0.3);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin: 1.25rem 0;
+}
+
+.practice-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-teal-light);
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+
+.practice-buttons {
+    display: flex;
+    gap: 0.75rem;
+    margin: 1.25rem 0;
+}
+
+.btn-practice {
+    flex: 1;
+    padding: 0.875rem;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-practice-primary {
+    background: var(--gradient-main);
+    color: white;
+}
+
+.btn-practice-secondary {
+    background: var(--bg-card-dark);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-softer);
+}
+
+.input-field {
+    width: 100%;
+    padding: 0.875rem;
+    background: rgba(15,23,42,0.6);
+    border: 1px solid var(--border-softer);
+    border-radius: 0.75rem;
+    color: var(--text-primary);
+    font-size: 0.875rem;
+    margin-bottom: 0.75rem;
+}
+
+.input-field:focus {
+    outline: none;
+    border-color: var(--primary-teal);
+}
+
+.btn-save {
+    background: var(--gradient-subtle);
+    color: var(--text-teal-light);
+    border: 1px solid rgba(14,116,144,0.35);
+    padding: 0.875rem 1.5rem;
+    border-radius: 2rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.btn-save:hover {
+    background: rgba(14,116,144,0.25);
+    border-color: rgba(14,116,144,0.5);
+}
+
+.btn-save.saved {
+    background: var(--success-bg);
+    color: var(--success-emerald);
+    border-color: rgba(74,222,128,0.35);
+}
+
+.reflection-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    margin: 1.25rem 0;
+}
+
+.reflection-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.875rem;
+    background: rgba(15,23,42,0.6);
+    border: 1px solid var(--border-softer);
+    border-radius: 0.75rem;
+    cursor: pointer;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+.reflection-checkbox.checked {
+    border-color: var(--primary-teal);
+    background: rgba(14,116,144,0.15);
+    color: var(--text-primary);
+}
+
+.reflection-checkbox input[type="checkbox"] {
+    width: 1.125rem;
+    height: 1.125rem;
+    accent-color: var(--primary-teal);
+}
+
+.reference-card {
+    background: var(--gradient-subtle);
+    border: 1px solid rgba(14,116,144,0.3);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.reference-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--text-teal-light);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.reference-grid {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.reference-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: rgba(15,23,42,0.6);
+    border-radius: 0.75rem;
+}
+
+.reference-icon {
+    font-size: 1.25rem;
+}
+
+.reference-content {
+    flex: 1;
+}
+
+.reference-name {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.875rem;
+    margin-bottom: 0.125rem;
+}
+
+.reference-use {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+}
+
+.btn-group {
+    display: flex;
+    gap: 1rem;
+    margin: 2rem 0 1rem;
+}
+
+.btn {
+    flex: 1;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+    text-align: center;
+}
+
+.btn-primary {
+    background: var(--gradient-main);
+    color: white;
+}
+
+.btn-secondary {
+    background: var(--bg-card-dark);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-softer);
+}
+
+.footer {
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 0.6875rem;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-subtle);
+}
+
+@media (max-width: 640px) {
+    .reflection-grid { grid-template-columns: 1fr; }
+    .btn-group { flex-direction: column; }
+    .practice-buttons { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="app-wrapper">
+    <div class="bg-blur-1"></div>
+    <div class="bg-blur-2"></div>
+    <div class="main-content">
+      <div class="content-wrapper">
+
+        <!-- CRISIS BANNER -->
+        <div class="crisis-banner">
+          <span>🚨 In crisis? Help is available 24/7</span>
+          <span style="display: flex; gap: 0.5rem;">
+            <a href="tel:988">Call 988</a>
+            <a href="sms:988">Text 988</a>
+          </span>
+        </div>
+
+        <!-- HEADER -->
+        <div class="nav-header">
+          <a href="crisis-intro.html" class="back-link">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M19 12H5M12 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Course Home
+          </a>
+          <span class="module-badge">Module 3 of 5</span>
+        </div>
+
+        <h1 class="module-title">Riding the Wave — Mental Techniques</h1>
+        <p class="module-subtitle">15 minutes • Tools to wait without acting on urges</p>
+
+        <!-- PROGRESS -->
+        <div class="progress-container">
+          <div class="progress-label">
+            <span>Course progress</span>
+            <span>60%</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 60%;"></div>
+          </div>
+        </div>
+
+        <!-- INTRODUCTION - YOUR EXACT WORDS -->
+        <div class="card">
+          <div class="section-header">
+            <span class="section-icon">🌊</span>
+            <span class="section-title-text">Introduction</span>
+          </div>
+          <div style="color: var(--text-secondary); line-height: 1.6;">
+            <p style="margin-bottom: 1rem; font-size: 1.05rem; color: var(--text-teal-light); font-style: italic;">
+              "Physical techniques bring down the intensity. Mental techniques help you WAIT without acting on urges. Remember: the goal isn't to stop feeling — it's to get through the peak without making things worse."
+            </p>
+          </div>
+        </div>
+
+        <!-- ===== SECTION 3.1: GROUNDING (5-4-3-2-1) ===== -->
+        <!-- SAVE POINT #1: GROUNDING -->
+        <div class="card">
+          <div class="section-header">
+            <span class="section-icon">👁️</span>
+            <span class="section-title-text">Grounding — 5-4-3-2-1</span>
+          </div>
+          
+          <!-- The Science -->
+          <div style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 1rem;">
+            <p style="margin-bottom: 1rem;">
+              "Your brain has limited attention capacity (working memory). By directing attention to concrete sensory details, you occupy the neural circuits that would otherwise spiral into catastrophic thinking or intense emotion. This isn't 'just distraction' — it's strategic attention management."
+            </p>
+          </div>
+          
+          <!-- Effectiveness Stats -->
+          <div class="technique-stats">
+            <div class="stat">
+              <div class="stat-label">Speed</div>
+              <div class="stat-value">⚡ 2-5 min</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Best for</div>
+              <div class="stat-value">🎯 Panic, dissociation</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Intensity</div>
+              <div class="stat-value">💪 Low</div>
+            </div>
+          </div>
+          
+          <!-- The Technique -->
+          <div class="instruction-box">
+            <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 0.75rem;">The 5-4-3-2-1 Technique:</p>
+            <p style="color: var(--text-secondary); font-size: 0.9375rem; margin-bottom: 1rem;">
+              "Out loud or in your mind, name:
+            </p>
+            <ul style="color: var(--text-secondary); font-size: 0.9375rem; list-style: none; padding-left: 0.5rem;">
+              <li style="margin-bottom: 0.5rem;">• <strong>5 things you can SEE</strong></li>
+              <li style="margin-bottom: 0.5rem;">• <strong>4 things you can TOUCH</strong> (and touch them)</li>
+              <li style="margin-bottom: 0.5rem;">• <strong>3 things you can HEAR</strong></li>
+              <li style="margin-bottom: 0.5rem;">• <strong>2 things you can SMELL</strong></li>
+              <li style="margin-bottom: 0.5rem;">• <strong>1 thing you can TASTE</strong></li>
+            </ul>
+          </div>
+          
+          <!-- EXPERIENTIAL PRACTICE -->
+          <div class="practice-card">
+            <div class="practice-title">
+              <span>👁️</span>
+              PRACTICE GROUNDING NOW
+            </div>
+            
+            <button id="groundingStartBtn" class="btn-practice btn-practice-primary" style="margin-bottom: 1rem;">Do It With Me →</button>
+            
+            <div id="groundingPractice" style="display: none;">
+              <p style="color: var(--text-teal-light); font-weight: 600; margin-bottom: 1rem;">Let's do this together RIGHT NOW.</p>
+              
+              <div style="margin-bottom: 1.5rem;">
+                <p style="color: var(--text-secondary); margin-bottom: 0.5rem;"><strong>5 THINGS YOU CAN SEE:</strong></p>
+                <input type="text" id="see1" class="input-field" placeholder="1. ___________">
+                <input type="text" id="see2" class="input-field" placeholder="2. ___________">
+                <input type="text" id="see3" class="input-field" placeholder="3. ___________">
+                <input type="text" id="see4" class="input-field" placeholder="4. ___________">
+                <input type="text" id="see5" class="input-field" placeholder="5. ___________">
+              </div>
+              
+              <div style="margin-bottom: 1.5rem;">
+                <p style="color: var(--text-secondary); margin-bottom: 0.5rem;"><strong>4 THINGS YOU CAN TOUCH:</strong> Actually touch them.</p>
+                <input type="text" id="touch1" class="input-field" placeholder="1. ___________ (texture?)">
+                <input type="text" id="touch2" class="input-field" placeholder="2. ___________">
+                <input type="text" id="touch3" class="input-field" placeholder="3. ___________">
+                <input type="text" id="touch4" class="input-field" placeholder="4. ___________">
+              </div>
+              
+              <div style="margin-bottom: 1.5rem;">
+                <p style="color: var(--text-secondary); margin-bottom: 0.5rem;"><strong>3 THINGS YOU CAN HEAR:</strong></p>
+                <input type="text" id="hear1" class="input-field" placeholder="1. ___________">
+                <input type="text" id="hear2" class="input-field" placeholder="2. ___________">
+                <input type="text" id="hear3" class="input-field" placeholder="3. ___________">
+              </div>
+              
+              <div style="margin-bottom: 1.5rem;">
+                <p style="color: var(--text-secondary); margin-bottom: 0.5rem;"><strong>2 THINGS YOU CAN SMELL:</strong></p>
+                <input type="text" id="smell1" class="input-field" placeholder="1. ___________">
+                <input type="text" id="smell2" class="input-field" placeholder="2. ___________">
+              </div>
+              
+              <div style="margin-bottom: 1.5rem;">
+                <p style="color: var(--text-secondary); margin-bottom: 0.5rem;"><strong>1 THING YOU CAN TASTE:</strong></p>
+                <input type="text" id="taste1" class="input-field" placeholder="1. ___________">
+              </div>
+              
+              <div style="display: flex; gap: 0.75rem; margin-bottom: 1rem;">
+                <button id="groundingCalmerBtn" class="reflection-btn">Calmer</button>
+                <button id="groundingSameBtn" class="reflection-btn">Same</button>
+                <button id="groundingAnxiousBtn" class="reflection-btn">More anxious</button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- SAVE POINT #1: GROUNDING -->
+          <button id="saveGroundingBtn" class="btn-save">
+            <span>👁️</span> Save Grounding to Toolkit
+          </button>
+          <p id="groundingSaveFeedback" style="color: var(--success-emerald); font-size: 0.75rem; margin-top: 0.5rem; text-align: center; display: none;"></p>
+        </div>
+
+        <!-- ===== SECTION 3.2: COGNITIVE LOAD ===== -->
+        <!-- SAVE POINT #2: COGNITIVE LOAD -->
+        <div class="card">
+          <div class="section-header">
+            <span class="section-icon">🧩</span>
+            <span class="section-title-text">Cognitive Load — Occupy Your Brain</span>
+          </div>
+          
+          <!-- The Science -->
+          <div style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 1rem;">
+            <p style="margin-bottom: 1rem;">
+              "Your working memory can only hold about 4-7 pieces of information at once. When you fill it with a demanding mental task, there's literally less 'space' for rumination, catastrophic thinking, or emotional spiraling."
+            </p>
+          </div>
+          
+          <!-- Effectiveness Stats -->
+          <div class="technique-stats">
+            <div class="stat">
+              <div class="stat-label">Speed</div>
+              <div class="stat-value">⚡ Immediate</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Best for</div>
+              <div class="stat-value">🎯 Racing thoughts</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Intensity</div>
+              <div class="stat-value">💪 Medium</div>
+            </div>
+          </div>
+          
+          <!-- High-Load Tasks -->
+          <div class="instruction-box">
+            <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 0.75rem;">High-Load Mental Tasks:</p>
+            
+            <p style="color: var(--text-teal-light); font-weight: 600; margin: 0.75rem 0 0.25rem;">🧮 Math Challenges</p>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.5rem;">• Count backwards from 100 by 7s (100, 93, 86, 79…)</p>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.75rem;">• Multiply double-digit numbers in your head (23 x 14 = ?)</p>
+            
+            <p style="color: var(--text-teal-light); font-weight: 600; margin: 0.75rem 0 0.25rem;">🔤 Word Games</p>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.5rem;">• Name animals alphabetically (Alligator, Bear, Cat…)</p>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.75rem;">• Think of words with 3 consecutive vowels</p>
+            
+            <p style="color: var(--text-teal-light); font-weight: 600; margin: 0.75rem 0 0.25rem;">🧠 Memory Games</p>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.5rem;">• Recite song lyrics backwards</p>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.75rem;">• Describe your morning routine in extreme detail</p>
+          </div>
+          
+          <!-- EXPERIENTIAL PRACTICE -->
+          <div class="practice-card">
+            <div class="practice-title">
+              <span>🧩</span>
+              TRY A COGNITIVE CHALLENGE
+            </div>
+            
+            <button id="cognitiveStartBtn" class="btn-practice btn-practice-primary" style="margin-bottom: 1rem;">Challenge Me →</button>
+            
+            <div id="cognitivePractice" style="display: none;">
+              <p style="color: var(--text-teal-light); font-weight: 600; margin-bottom: 1rem;">Let's try counting backwards by 7s.</p>
+              
+              <p style="color: var(--text-secondary); margin-bottom: 0.5rem;">Start at 100. Type each number:</p>
+              
+              <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                <span style="color: var(--text-teal); font-weight: 600;">100</span>
+                <span style="color: var(--text-muted);">→</span>
+                <input type="text" id="count1" class="input-field" placeholder="93" style="width: 80px;">
+              </div>
+              
+              <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                <span style="color: var(--text-teal); font-weight: 600;" id="prevNumber">93</span>
+                <span style="color: var(--text-muted);">→</span>
+                <input type="text" id="count2" class="input-field" placeholder="86" style="width: 80px;">
+              </div>
+              
+              <div id="cognitiveFeedback" style="margin-top: 1rem; padding: 0.75rem; background: rgba(15,23,42,0.6); border-radius: 0.75rem; color: var(--text-secondary); font-size: 0.8125rem;">
+                Enter the next number in the sequence.
+              </div>
+              
+              <div style="margin-top: 1.5rem;">
+                <p style="color: var(--text-secondary); margin-bottom: 0.5rem;">Notice: Were you able to think about your distress while doing this?</p>
+                <div style="display: flex; gap: 0.75rem;">
+                  <button id="cognitiveYesBtn" class="reflection-btn">Yes</button>
+                  <button id="cognitiveNoBtn" class="reflection-btn">No - it took all my focus</button>
+                </div>
+              </div>
+            </div>
+            
+            <div class="safety-note" style="margin-top: 1rem;">
+              <strong>⚠️ Note:</strong> This is for MODERATE distress (5-7/10). At 9/10, your brain can't do math — use physical techniques first.
+            </div>
+          </div>
+          
+          <!-- SAVE POINT #2: COGNITIVE LOAD -->
+          <button id="saveCognitiveBtn" class="btn-save">
+            <span>🧩</span> Save Cognitive Load to Toolkit
+          </button>
+          <p id="cognitiveSaveFeedback" style="color: var(--success-emerald); font-size: 0.75rem; margin-top: 0.5rem; text-align: center; display: none;"></p>
+        </div>
+
+        <!-- ===== SECTION 3.3: INTENSE SENSATIONS (Non-Harmful) ===== -->
+        <!-- SAVE POINT #3: INTENSE SENSATIONS -->
+        <div class="card">
+          <div class="section-header">
+            <span class="section-icon">🌶️</span>
+            <span class="section-title-text">Intense Sensations — Safe Alternatives</span>
+          </div>
+          
+          <!-- The Science -->
+          <div style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 1rem;">
+            <p style="margin-bottom: 1rem;">
+              "Strong sensory input engages your sensory processing systems, which competes with emotional processing. This is why people in distress sometimes resort to harmful behaviors that create intense sensation — they're trying to 'snap out of' emotional pain. These techniques provide intense sensation safely."
+            </p>
+          </div>
+          
+          <!-- Effectiveness Stats -->
+          <div class="technique-stats">
+            <div class="stat">
+              <div class="stat-label">Speed</div>
+              <div class="stat-value">⚡ Immediate</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Best for</div>
+              <div class="stat-value">🎯 Numbness, dissociation</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Intensity</div>
+              <div class="stat-value">💪 High sensation</div>
+            </div>
+          </div>
+          
+          <!-- Safe Intense Sensations -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+            <div style="background: rgba(14,116,144,0.1); padding: 1rem; border-radius: 0.75rem;">
+              <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 0.5rem;">👅 Taste</p>
+              <ul style="color: var(--text-secondary); font-size: 0.8125rem; list-style-position: inside;">
+                <li>Bite into a lemon or lime</li>
+                <li>Eat hot sauce or wasabi</li>
+                <li>Peppermint extract on tongue</li>
+                <li>Sour candy (Warheads)</li>
+              </ul>
+            </div>
+            <div style="background: rgba(14,116,144,0.1); padding: 1rem; border-radius: 0.75rem;">
+              <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 0.5rem;">✋ Touch</p>
+              <ul style="color: var(--text-secondary); font-size: 0.8125rem; list-style-position: inside;">
+                <li>Snap rubber band on wrist</li>
+                <li>Grip ice cubes</li>
+                <li>Hot shower (not burning)</li>
+                <li>Firm massage</li>
+              </ul>
+            </div>
+            <div style="background: rgba(14,116,144,0.1); padding: 1rem; border-radius: 0.75rem;">
+              <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 0.5rem;">👃 Smell</p>
+              <ul style="color: var(--text-secondary); font-size: 0.8125rem; list-style-position: inside;">
+                <li>Ammonia capsule (smelling salts)</li>
+                <li>Peppermint oil</li>
+                <li>Eucalyptus</li>
+                <li>Strong perfume</li>
+              </ul>
+            </div>
+            <div style="background: rgba(14,116,144,0.1); padding: 1rem; border-radius: 0.75rem;">
+              <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 0.5rem;">🔊 Sound</p>
+              <ul style="color: var(--text-secondary); font-size: 0.8125rem; list-style-position: inside;">
+                <li>Very loud music</li>
+                <li>Yell into pillow</li>
+                <li>Clap hands loudly</li>
+              </ul>
+            </div>
+          </div>
+          
+          <!-- EXPERIENTIAL PRACTICE -->
+          <div class="practice-card">
+            <div class="practice-title">
+              <span>🌶️</span>
+              SENSATION EXPERIMENT
+            </div>
+            
+            <p style="color: var(--text-secondary); margin-bottom: 1rem;">Do you have access to:</p>
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; margin-bottom: 1rem;">
+              <label class="reflection-checkbox">
+                <input type="checkbox" id="lemon"> Lemon/lime/sour candy
+              </label>
+              <label class="reflection-checkbox">
+                <input type="checkbox" id="iceCubes"> Ice cubes
+              </label>
+              <label class="reflection-checkbox">
+                <input type="checkbox" id="hotWater"> Hot water
+              </label>
+              <label class="reflection-checkbox">
+                <input type="checkbox" id="strongSmell"> Strong smell
+              </label>
+            </div>
+            
+            <button id="sensationTryBtn" class="btn-practice btn-practice-primary">Yes - Try It</button>
+            <button id="sensationSkipBtn" class="btn-practice btn-practice-secondary" style="margin-top: 0.5rem;">Not Now</button>
+            
+            <div id="sensationPractice" style="display: none; margin-top: 1.5rem;">
+              <p style="color: var(--text-teal-light); font-weight: 600; margin-bottom: 1rem;">Choose one and try it RIGHT NOW:</p>
+              
+              <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
+                <button id="sensationIceBtn" class="reflection-btn">🧊 Ice</button>
+                <button id="sensationSourBtn" class="reflection-btn">🍋 Sour</button>
+                <button id="sensationHotBtn" class="reflection-btn">🔥 Hot</button>
+                <button id="sensationSmellBtn" class="reflection-btn">👃 Smell</button>
+              </div>
+              
+              <p style="color: var(--text-secondary); margin-bottom: 0.5rem;"><strong>Before:</strong> How present/connected do you feel? (0-10)</p>
+              <input type="range" id="presentBeforeSlider" min="0" max="10" value="4" step="1" style="width: 100%; margin-bottom: 1rem;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem;">
+                <span style="color: var(--text-muted); font-size: 0.75rem;">0 - Disconnected</span>
+                <span style="color: var(--text-teal); font-weight: 700;" id="presentBeforeValue">4</span>
+                <span style="color: var(--text-muted); font-size: 0.75rem;">10 - Fully present</span>
+              </div>
+              
+              <button id="sensationDoneBtn" class="btn-practice btn-practice-primary">Done →</button>
+              
+              <div id="sensationAfter" style="display: none; margin-top: 1.5rem;">
+                <p style="color: var(--text-secondary); margin-bottom: 0.5rem;"><strong>After:</strong> How present do you feel now? (0-10)</p>
+                <input type="range" id="presentAfterSlider" min="0" max="10" value="6" step="1" style="width: 100%; margin-bottom: 1rem;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                  <span style="color: var(--text-muted); font-size: 0.75rem;">0 - Disconnected</span>
+                  <span style="color: var(--text-teal); font-weight: 700;" id="presentAfterValue">6</span>
+                  <span style="color: var(--text-muted); font-size: 0.75rem;">10 - Fully present</span>
+                </div>
+                
+                <div id="sensationResult" style="background: rgba(14,116,144,0.15); padding: 1rem; border-radius: 0.75rem;">
+                  <p style="color: var(--text-teal-light);">Your result will appear here.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="safety-note">
+            <strong>⚠️ Critical:</strong> These should never cause injury. If you're using sensation to punish yourself, that's different — talk to a therapist.
+          </div>
+          
+          <!-- SAVE POINT #3: INTENSE SENSATIONS -->
+          <button id="saveSensationsBtn" class="btn-save">
+            <span>🌶️</span> Save Intense Sensations to Toolkit
+          </button>
+          <p id="sensationsSaveFeedback" style="color: var(--success-emerald); font-size: 0.75rem; margin-top: 0.5rem; text-align: center; display: none;"></p>
+        </div>
+
+        <!-- ===== SECTION 3.4: BILATERAL STIMULATION ===== -->
+        <!-- SAVE POINT #4: BILATERAL STIMULATION -->
+        <div class="card">
+          <div class="section-header">
+            <span class="section-icon">🦋</span>
+            <span class="section-title-text">Bilateral Stimulation</span>
+          </div>
+          
+          <!-- The Science -->
+          <div style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 1rem;">
+            <p style="margin-bottom: 1rem;">
+              "Alternating left-right stimulation may help process distress by engaging both brain hemispheres. This is used in EMDR therapy. While the mechanism isn't fully understood, many people find it calming."
+            </p>
+          </div>
+          
+          <!-- Effectiveness Stats -->
+          <div class="technique-stats">
+            <div class="stat">
+              <div class="stat-label">Speed</div>
+              <div class="stat-value">⚡ 2-5 min</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Best for</div>
+              <div class="stat-value">🎯 Anxiety, flashbacks</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Intensity</div>
+              <div class="stat-value">💪 Low</div>
+            </div>
+          </div>
+          
+          <!-- Techniques -->
+          <div class="instruction-box">
+            <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 0.75rem;">Techniques:</p>
+            
+            <p style="color: var(--text-teal-light); font-weight: 600; margin: 0.75rem 0 0.25rem;">🦋 Butterfly Hug</p>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.5rem;">• Cross arms over chest</p>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.5rem;">• Tap alternating shoulders slowly</p>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.75rem;">• Breathe slowly while tapping</p>
+            
+            <p style="color: var(--text-teal-light); font-weight: 600; margin: 0.75rem 0 0.25rem;">👁️ Eye Movements</p>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.5rem;">• Hold finger at arm's length</p>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.5rem;">• Move it slowly left-right</p>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.75rem;">• Follow with eyes only</p>
+            
+            <p style="color: var(--text-teal-light); font-weight: 600; margin: 0.75rem 0 0.25rem;">🚶 Walking</p>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.5rem;">• Walk slowly, noticing each foot</p>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.5rem;">• Left… right… left… right…</p>
+          </div>
+          
+          <!-- EXPERIENTIAL PRACTICE -->
+          <div class="practice-card">
+            <div class="practice-title">
+              <span>🦋</span>
+              TRY BUTTERFLY HUG
+            </div>
+            
+            <button id="butterflyStartBtn" class="btn-practice btn-practice-primary" style="margin-bottom: 1rem;">Guide Me Through It →</button>
+            
+            <div id="butterflyPractice" style="display: none;">
+              <p style="color: var(--text-teal-light); font-weight: 600; margin-bottom: 1rem;">Let's do this together.</p>
+              
+              <p style="color: var(--text-secondary); margin-bottom: 0.5rem;"><strong>Step 1:</strong> Cross your arms over your chest like you're hugging yourself.</p>
+              <p style="color: var(--text-secondary); margin-bottom: 0.5rem;"><strong>Step 2:</strong> Place hands on opposite shoulders.</p>
+              <p style="color: var(--text-secondary); margin-bottom: 1rem;"><strong>Step 3:</strong> We'll tap slowly, alternating sides.</p>
+              
+              <div style="text-align: center; margin-bottom: 1rem;">
+                <div style="display: flex; justify-content: center; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                  <span style="color: var(--text-teal); font-size: 1.5rem;" id="butterflySide">Left</span>
+                </div>
+                <button id="butterflyStartTimer" class="btn-practice btn-practice-primary">Start 2 Minutes</button>
+                <div id="butterflyTimer" style="margin-top: 1rem; font-size: 1.25rem; color: var(--text-teal); font-weight: 700;" class="timer-display">02:00</div>
+              </div>
+              
+              <div id="butterflyAfter" style="display: none; margin-top: 1.5rem;">
+                <p style="color: var(--text-secondary); margin-bottom: 1rem;">How do you feel?</p>
+                <div style="display: flex; gap: 0.75rem;">
+                  <button id="butterflyCalmBtn" class="reflection-btn">More calm</button>
+                  <button id="butterflySameBtn" class="reflection-btn">Same</button>
+                  <button id="butterflyUncomfortableBtn" class="reflection-btn">Uncomfortable</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- SAVE POINT #4: BILATERAL STIMULATION -->
+          <button id="saveBilateralBtn" class="btn-save">
+            <span>🦋</span> Save Bilateral Stim to Toolkit
+          </button>
+          <p id="bilateralSaveFeedback" style="color: var(--success-emerald); font-size: 0.75rem; margin-top: 0.5rem; text-align: center; display: none;"></p>
+        </div>
+
+        <!-- ===== SECTION 3.5: DISTRACTION (Strategic, Not Avoidance) ===== -->
+        <!-- SAVE POINT #5: DISTRACTION PLAN -->
+        <div class="card">
+          <div class="section-header">
+            <span class="section-icon">🎮</span>
+            <span class="section-title-text">Strategic Distraction</span>
+          </div>
+          
+          <!-- The Science -->
+          <div style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 1rem;">
+            <p style="margin-bottom: 1rem;">
+              "Distraction gets a bad reputation, but strategic distraction during the peak of emotional intensity is ADAPTIVE. You're not avoiding the problem — you're surviving the peak so you can address the problem when you're thinking clearly."
+            </p>
+          </div>
+          
+          <!-- Effectiveness Stats -->
+          <div class="technique-stats">
+            <div class="stat">
+              <div class="stat-label">Speed</div>
+              <div class="stat-value">⚡ 5-30 min</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Best for</div>
+              <div class="stat-value">🎯 Moderate intensity</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Intensity</div>
+              <div class="stat-value">💪 Low-medium</div>
+            </div>
+          </div>
+          
+          <!-- Distraction Hierarchy -->
+          <div class="instruction-box">
+            <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 0.75rem;">The Distraction Hierarchy:</p>
+            
+            <p style="color: var(--text-teal-light); font-weight: 600; margin: 0.75rem 0 0.25rem;">🔥 HIGH ENGAGEMENT (Best)</p>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.25rem;">• Puzzles (jigsaw, Sudoku, crossword)</p>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.25rem;">• Video games (requiring focus)</p>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.25rem;">• Complex recipes</p>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.5rem;">• Organizing/cleaning</p>
+            
+            <p style="color: var(--text-teal-light); font-weight: 600; margin: 0.75rem 0 0.25rem;">📺 MEDIUM ENGAGEMENT</p>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.25rem;">• TV/movies</p>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.25rem;">• Reading</p>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.5rem;">• Podcasts</p>
+            
+            <p style="color: var(--text-teal-light); font-weight: 600; margin: 0.75rem 0 0.25rem;">🪫 LOW ENGAGEMENT (Least effective)</p>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.25rem;">• Scrolling mindlessly</p>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.25rem;">• Lying in bed</p>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.5rem;">• Staring at walls</p>
+          </div>
+          
+          <!-- Build Your Distraction Menu -->
+          <div class="practice-card">
+            <div class="practice-title">
+              <span>📝</span>
+              YOUR DISTRACTION LIST
+            </div>
+            
+            <p style="color: var(--text-secondary); margin-bottom: 1rem;">What actually helps YOU?</p>
+            
+            <p style="color: var(--text-teal-light); font-weight: 600; margin-bottom: 0.5rem;">High engagement activities:</p>
+            <input type="text" id="distractionHigh1" class="input-field" placeholder="1. ___________">
+            <input type="text" id="distractionHigh2" class="input-field" placeholder="2. ___________">
+            <input type="text" id="distractionHigh3" class="input-field" placeholder="3. ___________">
+            
+            <p style="color: var(--text-teal-light); font-weight: 600; margin: 1rem 0 0.5rem;">Medium engagement:</p>
+            <input type="text" id="distractionMed1" class="input-field" placeholder="1. ___________">
+            <input type="text" id="distractionMed2" class="input-field" placeholder="2. ___________">
+          </div>
+          
+          <div class="safety-note">
+            <strong>⚠️ When NOT to use:</strong> 9/10 intensity (won't work — use physical techniques first). When you're avoiding dealing with a real problem long-term. When "distraction" = substances or harmful behaviors.
+          </div>
+          
+          <!-- SAVE POINT #5: DISTRACTION PLAN -->
+          <button id="saveDistractionBtn" class="btn-save">
+            <span>📝</span> Save Distraction Plan to Toolkit
+          </button>
+          <p id="distractionSaveFeedback" style="color: var(--success-emerald); font-size: 0.75rem; margin-top: 0.5rem; text-align: center; display: none;"></p>
+        </div>
+
+        <!-- ===== MODULE 3 SUMMARY ===== -->
+        <div class="reference-card">
+          <div class="reference-title">
+            <span>🧠</span>
+            MENTAL SURVIVAL TOOLS — Quick Reference
+          </div>
+          
+          <div class="reference-grid">
+            <div class="reference-item">
+              <span class="reference-icon">👁️</span>
+              <div class="reference-content">
+                <div class="reference-name">Grounding (5-4-3-2-1)</div>
+                <div class="reference-use">2-5 min • Panic, dissociation, flashbacks</div>
+              </div>
+            </div>
+            <div class="reference-item">
+              <span class="reference-icon">🧩</span>
+              <div class="reference-content">
+                <div class="reference-name">Cognitive Load</div>
+                <div class="reference-use">Immediate • Racing thoughts, rumination</div>
+              </div>
+            </div>
+            <div class="reference-item">
+              <span class="reference-icon">🌶️</span>
+              <div class="reference-content">
+                <div class="reference-name">Intense Sensations</div>
+                <div class="reference-use">Immediate • Numbness, dissociation</div>
+              </div>
+            </div>
+            <div class="reference-item">
+              <span class="reference-icon">🦋</span>
+              <div class="reference-content">
+                <div class="reference-name">Bilateral Stimulation</div>
+                <div class="reference-use">2-5 min • Anxiety, intrusive thoughts</div>
+              </div>
+            </div>
+            <div class="reference-item">
+              <span class="reference-icon">🎮</span>
+              <div class="reference-content">
+                <div class="reference-name">Strategic Distraction</div>
+                <div class="reference-use">5-30 min • Moderate intensity, urges</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== NAVIGATION ===== -->
+        <div class="btn-group">
+          <a href="crisis-module-2.html" class="btn btn-secondary">← Module 2</a>
+          <a href="crisis-module-4.html" class="btn btn-primary">Continue to Module 4 →</a>
+        </div>
+
+        <!-- ===== MARK AS PRACTICED ===== -->
+        <div style="display: flex; justify-content: center; margin: 0.5rem 0 1.5rem;">
+          <button id="markPracticedBtn" style="background: var(--success-bg); color: var(--success-emerald); border: 1px solid rgba(74,222,128,0.3); padding: 0.75rem 2rem; border-radius: 2rem; font-size: 0.8125rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem;">
+            ✓ I've practiced this module
+          </button>
+        </div>
+
+        <!-- ===== FOOTER ===== -->
+        <div class="footer">
+          <p style="color: #fca5a5; font-weight: 600; margin-bottom: 0.5rem;">⚠️ EDUCATIONAL ONLY — NOT THERAPY</p>
+          <p>988 Suicide & Crisis Lifeline: Call or text 988</p>
+          <p style="margin-top: 0.5rem;">Crisis Text Line: Text HOME to 741741</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  // ===== CHECK DISCLAIMER ACKNOWLEDGMENT =====
+  const acknowledged = localStorage.getItem('crisis_disclaimer_acknowledged');
+  if (!acknowledged) {
+    window.location.href = 'crisis-intro.html';
+    return;
+  }
+
+  // ===== UPDATE PROGRESS =====
+  let progress = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
+  progress.currentModule = 3;
+  progress.lastAccessed = new Date().toISOString();
+  localStorage.setItem('crisis_course_progress', JSON.stringify(progress));
+
+  // ===== GROUNDING PRACTICE =====
+  const groundingStartBtn = document.getElementById('groundingStartBtn');
+  const groundingPractice = document.getElementById('groundingPractice');
+  
+  if (groundingStartBtn) {
+    groundingStartBtn.addEventListener('click', function() {
+      groundingPractice.style.display = 'block';
+      groundingStartBtn.style.display = 'none';
+    });
+  }
+  
+  // ===== COGNITIVE LOAD PRACTICE =====
+  const cognitiveStartBtn = document.getElementById('cognitiveStartBtn');
+  const cognitivePractice = document.getElementById('cognitivePractice');
+  const count1 = document.getElementById('count1');
+  const count2 = document.getElementById('count2');
+  const prevNumber = document.getElementById('prevNumber');
+  const cognitiveFeedback = document.getElementById('cognitiveFeedback');
+  
+  let countStep = 1;
+  let currentNumber = 100;
+  
+  if (cognitiveStartBtn) {
+    cognitiveStartBtn.addEventListener('click', function() {
+      cognitivePractice.style.display = 'block';
+      cognitiveStartBtn.style.display = 'none';
+      countStep = 1;
+      currentNumber = 100;
+      if (prevNumber) prevNumber.textContent = '93';
+    });
+  }
+  
+  if (count1) {
+    count1.addEventListener('change', function() {
+      if (this.value === '93') {
+        countStep = 2;
+        if (prevNumber) prevNumber.textContent = '86';
+        cognitiveFeedback.innerHTML = '<span style="color: var(--success-emerald);">✓ Correct! Next number:</span>';
+      } else {
+        cognitiveFeedback.innerHTML = '<span style="color: #fca5a5;">✗ Try again. 100 - 7 = 93</span>';
+      }
+    });
+  }
+  
+  if (count2) {
+    count2.addEventListener('change', function() {
+      if (this.value === '86') {
+        cognitiveFeedback.innerHTML = '<span style="color: var(--success-emerald);">✓ Correct! You\'re doing it. 93 - 7 = 86</span>';
+      } else {
+        cognitiveFeedback.innerHTML = '<span style="color: #fca5a5;">✗ Try again. 93 - 7 = 86</span>';
+      }
+    });
+  }
+  
+  const cognitiveYesBtn = document.getElementById('cognitiveYesBtn');
+  const cognitiveNoBtn = document.getElementById('cognitiveNoBtn');
+  
+  if (cognitiveYesBtn) {
+    cognitiveYesBtn.addEventListener('click', function() {
+      this.classList.add('selected');
+      cognitiveNoBtn.classList.remove('selected');
+    });
+  }
+  
+  if (cognitiveNoBtn) {
+    cognitiveNoBtn.addEventListener('click', function() {
+      this.classList.add('selected');
+      cognitiveYesBtn.classList.remove('selected');
+    });
+  }
+
+  // ===== INTENSE SENSATIONS =====
+  const presentBeforeSlider = document.getElementById('presentBeforeSlider');
+  const presentBeforeValue = document.getElementById('presentBeforeValue');
+  const presentAfterSlider = document.getElementById('presentAfterSlider');
+  const presentAfterValue = document.getElementById('presentAfterValue');
+  
+  if (presentBeforeSlider && presentBeforeValue) {
+    presentBeforeSlider.addEventListener('input', function() {
+      presentBeforeValue.textContent = this.value;
+    });
+  }
+  
+  if (presentAfterSlider && presentAfterValue) {
+    presentAfterSlider.addEventListener('input', function() {
+      presentAfterValue.textContent = this.value;
+    });
+  }
+  
+  const sensationTryBtn = document.getElementById('sensationTryBtn');
+  const sensationSkipBtn = document.getElementById('sensationSkipBtn');
+  const sensationPractice = document.getElementById('sensationPractice');
+  const sensationDoneBtn = document.getElementById('sensationDoneBtn');
+  const sensationAfter = document.getElementById('sensationAfter');
+  const sensationResult = document.getElementById('sensationResult');
+  
+  if (sensationTryBtn) {
+    sensationTryBtn.addEventListener('click', function() {
+      sensationPractice.style.display = 'block';
+      sensationTryBtn.style.display = 'none';
+      sensationSkipBtn.style.display = 'none';
+    });
+  }
+  
+  if (sensationSkipBtn) {
+    sensationSkipBtn.addEventListener('click', function() {
+      this.textContent = 'Skipped';
+      this.disabled = true;
+    });
+  }
+  
+  if (sensationDoneBtn) {
+    sensationDoneBtn.addEventListener('click', function() {
+      sensationAfter.style.display = 'block';
+      sensationDoneBtn.style.display = 'none';
+      
+      const before = parseInt(presentBeforeSlider?.value || '4');
+      const after = parseInt(presentAfterSlider?.value || '6');
+      sensationResult.innerHTML = `<p style="color: var(--text-teal-light);">That's the power of sensation — it brings you back into your body.<br>Present: ${before} → ${after}</p>`;
+    });
+  }
+
+  // ===== BUTTERFLY HUG =====
+  const butterflyStartBtn = document.getElementById('butterflyStartBtn');
+  const butterflyPractice = document.getElementById('butterflyPractice');
+  const butterflyStartTimer = document.getElementById('butterflyStartTimer');
+  const butterflyTimer = document.getElementById('butterflyTimer');
+  const butterflySide = document.getElementById('butterflySide');
+  const butterflyAfter = document.getElementById('butterflyAfter');
+  
+  if (butterflyStartBtn) {
+    butterflyStartBtn.addEventListener('click', function() {
+      butterflyPractice.style.display = 'block';
+      butterflyStartBtn.style.display = 'none';
+    });
+  }
+  
+  if (butterflyStartTimer) {
+    let timeLeft = 120; // 2 minutes in seconds
+    let timerInterval;
+    let side = 'left';
+    
+    butterflyStartTimer.addEventListener('click', function() {
+      butterflyStartTimer.disabled = true;
+      butterflyTimer.style.display = 'block';
+      
+      timerInterval = setInterval(function() {
+        timeLeft--;
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        butterflyTimer.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        
+        // Alternate sides every 2 seconds
+        if (timeLeft % 2 === 0) {
+          side = side === 'left' ? 'right' : 'left';
+          butterflySide.textContent = side.charAt(0).toUpperCase() + side.slice(1);
+          butterflySide.style.color = side === 'left' ? 'var(--text-teal)' : 'var(--text-amber)';
+        }
+        
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          butterflyTimer.style.display = 'none';
+          butterflyAfter.style.display = 'block';
+          butterflyStartTimer.disabled = false;
+        }
+      }, 1000);
+    });
+  }
+
+  // ===== DISTRACTION PLAN - SAVE =====
+  const saveDistractionBtn = document.getElementById('saveDistractionBtn');
+  const distractionFeedback = document.getElementById('distractionSaveFeedback');
+  
+  if (saveDistractionBtn) {
+    saveDistractionBtn.addEventListener('click', function() {
+      const high1 = document.getElementById('distractionHigh1')?.value || '';
+      const high2 = document.getElementById('distractionHigh2')?.value || '';
+      const high3 = document.getElementById('distractionHigh3')?.value || '';
+      const med1 = document.getElementById('distractionMed1')?.value || '';
+      const med2 = document.getElementById('distractionMed2')?.value || '';
+      
+      let description = 'High engagement: ';
+      if (high1) description += high1 + '; ';
+      if (high2) description += high2 + '; ';
+      if (high3) description += high3 + '; ';
+      description += 'Medium: ';
+      if (med1) description += med1 + '; ';
+      if (med2) description += med2 + '; ';
+      
+      let toolkit = JSON.parse(localStorage.getItem('crisis_toolkit') || '[]');
+      toolkit = toolkit.filter(item => item.id !== 'distraction-plan');
+      
+      toolkit.push({
+        id: 'distraction-plan',
+        category: 'Module 3: Mental Techniques',
+        name: 'My Distraction Plan',
+        description: description,
+        date: new Date().toISOString()
+      });
+      
+      localStorage.setItem('crisis_toolkit', JSON.stringify(toolkit));
+      
+      saveDistractionBtn.classList.add('saved');
+      saveDistractionBtn.innerHTML = '<span>✓</span> Saved to Toolkit';
+      distractionFeedback.style.display = 'block';
+      distractionFeedback.textContent = '✓ Distraction plan saved to your toolkit.';
+      
+      setTimeout(() => {
+        saveDistractionBtn.classList.remove('saved');
+        saveDistractionBtn.innerHTML = '<span>📝</span> Save Distraction Plan to Toolkit';
+        distractionFeedback.style.display = 'none';
+      }, 3000);
+    });
+  }
+
+  // ===== SAVE POINT #1: GROUNDING =====
+  const saveGroundingBtn = document.getElementById('saveGroundingBtn');
+  const groundingFeedback = document.getElementById('groundingSaveFeedback');
+  
+  if (saveGroundingBtn) {
+    saveGroundingBtn.addEventListener('click', function() {
+      let toolkit = JSON.parse(localStorage.getItem('crisis_toolkit') || '[]');
+      toolkit = toolkit.filter(item => item.id !== 'grounding');
+      
+      toolkit.push({
+        id: 'grounding',
+        category: 'Module 3: Mental Techniques',
+        name: 'Grounding — 5-4-3-2-1',
+        description: '2-5 minutes • Panic, dissociation, flashbacks • Name 5 things you see, 4 you can touch, 3 you hear, 2 you smell, 1 you taste',
+        date: new Date().toISOString()
+      });
+      
+      localStorage.setItem('crisis_toolkit', JSON.stringify(toolkit));
+      
+      saveGroundingBtn.classList.add('saved');
+      saveGroundingBtn.innerHTML = '<span>✓</span> Saved to Toolkit';
+      groundingFeedback.style.display = 'block';
+      groundingFeedback.textContent = '✓ Grounding saved to your toolkit.';
+      
+      setTimeout(() => {
+        saveGroundingBtn.classList.remove('saved');
+        saveGroundingBtn.innerHTML = '<span>👁️</span> Save Grounding to Toolkit';
+        groundingFeedback.style.display = 'none';
+      }, 3000);
+    });
+  }
+
+  // ===== SAVE POINT #2: COGNITIVE LOAD =====
+  const saveCognitiveBtn = document.getElementById('saveCognitiveBtn');
+  const cognitiveSaveFeedback = document.getElementById('cognitiveSaveFeedback');
+  
+  if (saveCognitiveBtn) {
+    saveCognitiveBtn.addEventListener('click', function() {
+      let toolkit = JSON.parse(localStorage.getItem('crisis_toolkit') || '[]');
+      toolkit = toolkit.filter(item => item.id !== 'cognitive-load');
+      
+      toolkit.push({
+        id: 'cognitive-load',
+        category: 'Module 3: Mental Techniques',
+        name: 'Cognitive Load',
+        description: 'Immediate • Racing thoughts, rumination • Count backwards by 7s, name animals alphabetically, recite lyrics backwards',
+        date: new Date().toISOString()
+      });
+      
+      localStorage.setItem('crisis_toolkit', JSON.stringify(toolkit));
+      
+      saveCognitiveBtn.classList.add('saved');
+      saveCognitiveBtn.innerHTML = '<span>✓</span> Saved to Toolkit';
+      cognitiveSaveFeedback.style.display = 'block';
+      cognitiveSaveFeedback.textContent = '✓ Cognitive Load saved to your toolkit.';
+      
+      setTimeout(() => {
+        saveCognitiveBtn.classList.remove('saved');
+        saveCognitiveBtn.innerHTML = '<span>🧩</span> Save Cognitive Load to Toolkit';
+        cognitiveSaveFeedback.style.display = 'none';
+      }, 3000);
+    });
+  }
+
+  // ===== SAVE POINT #3: INTENSE SENSATIONS =====
+  const saveSensationsBtn = document.getElementById('saveSensationsBtn');
+  const sensationsFeedback = document.getElementById('sensationsSaveFeedback');
+  
+  if (saveSensationsBtn) {
+    saveSensationsBtn.addEventListener('click', function() {
+      let toolkit = JSON.parse(localStorage.getItem('crisis_toolkit') || '[]');
+      toolkit = toolkit.filter(item => item.id !== 'intense-sensations');
+      
+      toolkit.push({
+        id: 'intense-sensations',
+        category: 'Module 3: Mental Techniques',
+        name: 'Intense Sensations (Safe)',
+        description: 'Immediate • Numbness, dissociation • Taste: lemon, hot sauce • Touch: ice cubes, rubber band • Smell: peppermint, ammonia • Sound: loud music',
+        date: new Date().toISOString()
+      });
+      
+      localStorage.setItem('crisis_toolkit', JSON.stringify(toolkit));
+      
+      saveSensationsBtn.classList.add('saved');
+      saveSensationsBtn.innerHTML = '<span>✓</span> Saved to Toolkit';
+      sensationsFeedback.style.display = 'block';
+      sensationsFeedback.textContent = '✓ Intense Sensations saved to your toolkit.';
+      
+      setTimeout(() => {
+        saveSensationsBtn.classList.remove('saved');
+        saveSensationsBtn.innerHTML = '<span>🌶️</span> Save Intense Sensations to Toolkit';
+        sensationsFeedback.style.display = 'none';
+      }, 3000);
+    });
+  }
+
+  // ===== SAVE POINT #4: BILATERAL STIMULATION =====
+  const saveBilateralBtn = document.getElementById('saveBilateralBtn');
+  const bilateralFeedback = document.getElementById('bilateralSaveFeedback');
+  
+  if (saveBilateralBtn) {
+    saveBilateralBtn.addEventListener('click', function() {
+      let toolkit = JSON.parse(localStorage.getItem('crisis_toolkit') || '[]');
+      toolkit = toolkit.filter(item => item.id !== 'bilateral');
+      
+      toolkit.push({
+        id: 'bilateral',
+        category: 'Module 3: Mental Techniques',
+        name: 'Bilateral Stimulation',
+        description: '2-5 minutes • Anxiety, intrusive thoughts, flashbacks • Butterfly hug, eye movements, walking rhythm',
+        date: new Date().toISOString()
+      });
+      
+      localStorage.setItem('crisis_toolkit', JSON.stringify(toolkit));
+      
+      saveBilateralBtn.classList.add('saved');
+      saveBilateralBtn.innerHTML = '<span>✓</span> Saved to Toolkit';
+      bilateralFeedback.style.display = 'block';
+      bilateralFeedback.textContent = '✓ Bilateral Stimulation saved to your toolkit.';
+      
+      setTimeout(() => {
+        saveBilateralBtn.classList.remove('saved');
+        saveBilateralBtn.innerHTML = '<span>🦋</span> Save Bilateral Stim to Toolkit';
+        bilateralFeedback.style.display = 'none';
+      }, 3000);
+    });
+  }
+
+  // ===== MARK AS PRACTICED =====
+  const markBtn = document.getElementById('markPracticedBtn');
+  
+  if (markBtn) {
+    markBtn.addEventListener('click', function() {
+      let progress = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
+      if (!progress.practicedModules) progress.practicedModules = [];
+      
+      if (!progress.practicedModules.includes('module3')) {
+        progress.practicedModules.push('module3');
+      }
+      
+      progress.lastPracticed = new Date().toISOString();
+      progress.currentModule = 3;
+      
+      localStorage.setItem('crisis_course_progress', JSON.stringify(progress));
+      
+      markBtn.innerHTML = '✓ Module 3 marked as practiced';
+      markBtn.style.background = 'rgba(74,222,128,0.25)';
+      
+      setTimeout(() => {
+        markBtn.innerHTML = '✓ I\'ve practiced this module';
+        markBtn.style.background = 'rgba(34,197,94,0.12)';
+      }, 2000);
+    });
+  }
+})();
+</script>
+</body>
+</html>
