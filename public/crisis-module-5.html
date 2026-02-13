@@ -701,7 +701,7 @@ html, body {
     <div class="bg-blur-2"></div>
     <div class="main-content" id="mainContent">
       <div class="content-wrapper" id="content">
-        <!-- Content rendered by JavaScript -->
+        <!-- Content will be rendered by JavaScript -->
       </div>
     </div>
   </div>
@@ -876,19 +876,19 @@ html, body {
           <div class="drawer-title">
             <span>🧰</span> SKILLS LIBRARY
           </div>
-          <button class="close-btn" onclick="closeToolkit()">✕</button>
+          <button class="close-btn" onclick="window.closeToolkit()">✕</button>
         </div>
         
         <div class="tab-container">
-          <button class="tab-btn active" id="tabSaved" onclick="switchTab('saved')">⭐ MY SAVED</button>
-          <button class="tab-btn" id="tabAll" onclick="switchTab('all')">📚 ALL SKILLS</button>
+          <button class="tab-btn active" id="tabSaved" onclick="window.switchTab('saved')">⭐ MY SAVED</button>
+          <button class="tab-btn" id="tabAll" onclick="window.switchTab('all')">📚 ALL SKILLS</button>
         </div>
         
         <div id="savedSkillsContent" style="display: block;">
           <div class="skills-grid">
             ${savedSkillNames.length > 0 ? 
               allSkills.filter(s => savedSkillNames.includes(s.name)).map(skill => `
-                <div class="skill-item" onclick="insertSkill('${skill.name}', '${targetInputId}')">
+                <div class="skill-item" onclick="window.insertSkill('${skill.name}', '${targetInputId}')">
                   <span class="skill-icon">${skill.icon}</span>
                   <div>
                     <div class="skill-name">${skill.name}</div>
@@ -903,21 +903,28 @@ html, body {
         
         <div id="allSkillsContent" style="display: none;">
           <div class="skills-grid">
-            ${[1,2,3,4].map(moduleNum => `
-              <div class="module-header">${moduleNum === 1 ? '🧠 MODULE 1: Crisis Brain' : 
-                moduleNum === 2 ? '💪 MODULE 2: Physical Reset' : 
-                moduleNum === 3 ? '🌍 MODULE 3: Grounding' : 
-                '🧠 MODULE 4: Cognitive'}</div>
-              ${allSkills.filter(s => s.module === moduleNum).map(skill => `
-                <div class="skill-item" onclick="insertSkill('${skill.name}', '${targetInputId}')">
-                  <span class="skill-icon">${skill.icon}</span>
-                  <div>
-                    <div class="skill-name">${skill.name}</div>
-                    <div class="skill-desc">${skill.desc}</div>
+            ${[1,2,3,4].map(moduleNum => {
+              const moduleSkills = allSkills.filter(s => s.module === moduleNum);
+              if (moduleSkills.length === 0) return '';
+              
+              const moduleTitle = moduleNum === 1 ? '🧠 MODULE 1: Crisis Brain' : 
+                                 moduleNum === 2 ? '💪 MODULE 2: Physical Reset' : 
+                                 moduleNum === 3 ? '🌍 MODULE 3: Grounding' : 
+                                 '🧠 MODULE 4: Cognitive';
+              
+              return `
+                <div class="module-header">${moduleTitle}</div>
+                ${moduleSkills.map(skill => `
+                  <div class="skill-item" onclick="window.insertSkill('${skill.name}', '${targetInputId}')">
+                    <span class="skill-icon">${skill.icon}</span>
+                    <div>
+                      <div class="skill-name">${skill.name}</div>
+                      <div class="skill-desc">${skill.desc}</div>
+                    </div>
                   </div>
-                </div>
-              `).join('')}
-            `).join('')}
+                `).join('')}
+              `;
+            }).join('')}
           </div>
         </div>
         
@@ -936,17 +943,24 @@ html, body {
   };
 
   window.switchTab = function(tab) {
-    document.getElementById('tabSaved').classList.remove('active');
-    document.getElementById('tabAll').classList.remove('active');
-    document.getElementById('savedSkillsContent').style.display = 'none';
-    document.getElementById('allSkillsContent').style.display = 'none';
+    const tabSaved = document.getElementById('tabSaved');
+    const tabAll = document.getElementById('tabAll');
+    const savedContent = document.getElementById('savedSkillsContent');
+    const allContent = document.getElementById('allSkillsContent');
     
-    if (tab === 'saved') {
-      document.getElementById('tabSaved').classList.add('active');
-      document.getElementById('savedSkillsContent').style.display = 'block';
-    } else {
-      document.getElementById('tabAll').classList.add('active');
-      document.getElementById('allSkillsContent').style.display = 'block';
+    if (tabSaved && tabAll && savedContent && allContent) {
+      tabSaved.classList.remove('active');
+      tabAll.classList.remove('active');
+      savedContent.style.display = 'none';
+      allContent.style.display = 'none';
+      
+      if (tab === 'saved') {
+        tabSaved.classList.add('active');
+        savedContent.style.display = 'block';
+      } else {
+        tabAll.classList.add('active');
+        allContent.style.display = 'block';
+      }
     }
   };
 
@@ -957,7 +971,7 @@ html, body {
       targetInput.classList.add('highlight');
       setTimeout(() => targetInput.classList.remove('highlight'), 2000);
     }
-    closeToolkit();
+    window.closeToolkit();
   };
 
   window.openToolkit = function(targetInputId) {
@@ -1507,8 +1521,6 @@ html, body {
 
   // ===== STEP 9: COURSE COMPLETE =====
   function renderStep9() {
-    setTimeout(() => initComplete(), 10);
-    
     return `
       ${renderHeader()}
       
@@ -1749,21 +1761,32 @@ html, body {
   // ===== MAIN RENDER =====
   function render() {
     const content = document.getElementById('content');
+    if (!content) return;
+    
+    let html = '';
     
     switch(currentStep) {
-      case 1: content.innerHTML = renderStep1(); break;
-      case 2: content.innerHTML = renderStep2(); break;
-      case 3: content.innerHTML = renderStep3(); break;
-      case 4: content.innerHTML = renderStep4(); break;
-      case 5: content.innerHTML = renderStep5(); initValuesSave(); break;
-      case 6: content.innerHTML = renderStep6(); break;
-      case 7: content.innerHTML = renderStep7(); initCrisisCardSave(); break;
-      case 8: content.innerHTML = renderStep8(); initFullPlanSave(); break;
-      case 9: content.innerHTML = renderStep9(); break;
-      default: content.innerHTML = renderStep1();
+      case 1: html = renderStep1(); break;
+      case 2: html = renderStep2(); break;
+      case 3: html = renderStep3(); break;
+      case 4: html = renderStep4(); break;
+      case 5: html = renderStep5(); break;
+      case 6: html = renderStep6(); break;
+      case 7: html = renderStep7(); break;
+      case 8: html = renderStep8(); break;
+      case 9: html = renderStep9(); break;
+      default: html = renderStep1();
     }
     
-    // Load saved data after render
+    content.innerHTML = html;
+    
+    // Initialize save buttons after render
+    if (currentStep === 5) initValuesSave();
+    if (currentStep === 7) initCrisisCardSave();
+    if (currentStep === 8) initFullPlanSave();
+    if (currentStep === 9) initComplete();
+    
+    // Load saved data
     setTimeout(loadSavedPlan, 50);
   }
 
