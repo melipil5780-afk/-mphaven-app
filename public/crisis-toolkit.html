@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0f172a">
+<title>My Crisis Toolkit</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg-dark: #0f172a;
+    --bg-card: rgba(15, 23, 42, 0.98);
+    --bg-card-light: rgba(30, 41, 59, 0.65);
+    --bg-card-dark: rgba(15, 23, 42, 0.45);
+    --border-subtle: rgba(30, 41, 59, 0.5);
+    --border-softer: rgba(51, 65, 85, 0.4);
+    --primary-teal: #0e7490;
+    --primary-teal-dark: #0c627a;
+    --accent-amber: #d97706;
+    --accent-amber-dark: #b45309;
+    --text-primary: rgb(241, 245, 249);
+    --text-secondary: rgb(203, 213, 225);
+    --text-muted: rgb(148, 163, 184);
+    --text-teal-light: rgb(165, 243, 252);
+    --text-teal: rgb(94, 234, 212);
+    --text-amber: rgb(251, 191, 36);
+    --success-emerald: rgb(74, 222, 128);
+    --success-bg: rgba(34, 197, 94, 0.12);
+    --gradient-main: linear-gradient(135deg, #0e7490, #d97706);
+    --gradient-subtle: linear-gradient(135deg, rgba(14,116,144,0.15), rgba(217,119,6,0.10));
+    --crisis-red: #dc2626;
+    --crisis-red-dark: #b91c1c;
+    --crisis-bg: rgba(220, 38, 38, 0.08);
+}
+
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
+    -webkit-tap-highlight-color: transparent; 
+}
+
+html, body { 
+    width: 100%; 
+    height: 100%; 
+    overflow: hidden; 
+    background: var(--bg-dark); 
+    color: var(--text-primary); 
+}
+
+.container { 
+    width: 100%; 
+    height: 100vh; 
+    display: flex; 
+    flex-direction: column; 
+}
+
+.app-wrapper { 
+    width: 100%; 
+    max-width: 28rem; 
+    height: 100%; 
+    margin: 0 auto; 
+    background: var(--bg-card); 
+    display: flex; 
+    flex-direction: column; 
+    position: relative; 
+    overflow: hidden; 
+}
+
+.bg-blur-1, .bg-blur-2 { 
+    position: absolute; 
+    border-radius: 50%; 
+    pointer-events: none; 
+    z-index: 0; 
+    opacity: 0.3; 
+}
+
+.bg-blur-1 { 
+    top: -5%; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    width: 22rem; 
+    height: 22rem; 
+    background: rgba(14, 116, 144, 0.15); 
+}
+
+.bg-blur-2 { 
+    bottom: -5%; 
+    right: -5%; 
+    width: 18rem; 
+    height: 18rem; 
+    background: rgba(217, 119, 6, 0.15); 
+}
+
+.main-content { 
+    flex: 1; 
+    overflow-y: auto; 
+    -webkit-overflow-scrolling: touch; 
+    scrollbar-width: none; 
+    position: relative; 
+    z-index: 1; 
+}
+
+.main-content::-webkit-scrollbar { 
+    display: none; 
+}
+
+.content-wrapper { 
+    padding: 1rem 1.25rem 2rem; 
+    padding-bottom: calc(2rem + env(safe-area-inset-bottom)); 
+}
+
+.crisis-banner {
+    background: var(--crisis-bg);
+    border: 1px solid var(--crisis-red);
+    border-radius: 0.75rem;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.crisis-banner span {
+    color: #fca5a5;
+    font-size: 0.8125rem;
+    font-weight: 600;
+}
+
+.crisis-banner a {
+    color: #fca5a5;
+    font-weight: 700;
+    text-decoration: none;
+    background: rgba(220,38,38,0.2);
+    padding: 0.375rem 0.75rem;
+    border-radius: 2rem;
+    font-size: 0.75rem;
+}
+
+.nav-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.back-link:hover {
+    color: var(--text-primary);
+}
+
+.toolkit-title {
+    font-size: 1.75rem;
+    font-weight: 800;
+    margin-bottom: 0.25rem;
+    background: var(--gradient-main);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.toolkit-subtitle {
+    color: var(--text-secondary);
+    font-size: 0.9375rem;
+    margin-bottom: 1.5rem;
+}
+
+.stats-grid {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.stat-card {
+    background: var(--bg-card-light);
+    border: 1px solid var(--border-softer);
+    border-radius: 1rem;
+    padding: 1rem;
+    flex: 1;
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--text-teal);
+    line-height: 1;
+    margin-bottom: 0.25rem;
+}
+
+.stat-label {
+    color: var(--text-muted);
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+.category-section {
+    margin-bottom: 1.5rem;
+}
+
+.category-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-softer);
+}
+
+.category-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--text-teal-light);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.category-count {
+    background: var(--gradient-subtle);
+    color: var(--text-teal);
+    padding: 0.25rem 0.75rem;
+    border-radius: 2rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.skill-card {
+    background: linear-gradient(135deg, var(--bg-card-light), var(--bg-card-dark));
+    border: 1px solid var(--border-softer);
+    border-radius: 1rem;
+    padding: 1.25rem;
+    margin-bottom: 0.75rem;
+    transition: all 0.2s;
+}
+
+.skill-card:hover {
+    border-color: var(--primary-teal);
+}
+
+.skill-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.skill-name {
+    font-weight: 700;
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.skill-category-badge {
+    background: var(--gradient-subtle);
+    color: var(--text-teal-light);
+    padding: 0.25rem 0.75rem;
+    border-radius: 2rem;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    border: 1px solid rgba(14,116,144,0.25);
+}
+
+.skill-description {
+    color: var(--text-secondary);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    margin-bottom: 0.75rem;
+}
+
+.skill-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.6875rem;
+    color: var(--text-muted);
+}
+
+.skill-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+}
+
+.btn-small {
+    background: var(--bg-card-dark);
+    border: 1px solid var(--border-softer);
+    color: var(--text-secondary);
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+}
+
+.btn-small:hover {
+    border-color: var(--primary-teal);
+    color: var(--text-primary);
+}
+
+.btn-small.danger {
+    color: #fca5a5;
+    border-color: rgba(220,38,38,0.3);
+}
+
+.btn-small.danger:hover {
+    border-color: var(--crisis-red);
+    background: rgba(220,38,38,0.1);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    background: var(--bg-card-light);
+    border: 1px solid var(--border-softer);
+    border-radius: 1.5rem;
+}
+
+.empty-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.empty-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.empty-text {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    margin-bottom: 1.5rem;
+}
+
+.crisis-card-preview {
+    background: linear-gradient(135deg, rgba(14,116,144,0.2), rgba(217,119,6,0.1));
+    border: 2px solid var(--accent-amber);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.crisis-card-preview:before {
+    content: "🆘";
+    position: absolute;
+    top: 0.5rem;
+    right: 1rem;
+    font-size: 2rem;
+    opacity: 0.1;
+}
+
+.crisis-card-title {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--text-amber);
+    margin-bottom: 1rem;
+}
+
+.crisis-card-item {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+.crisis-card-number {
+    color: var(--text-amber);
+    font-weight: 700;
+    min-width: 1.5rem;
+}
+
+.btn {
+    padding: 0.875rem 1.5rem;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.btn-primary {
+    background: var(--gradient-main);
+    color: white;
+}
+
+.btn-secondary {
+    background: var(--bg-card-dark);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-softer);
+}
+
+.btn-block {
+    width: 100%;
+}
+
+.footer {
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 0.6875rem;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-subtle);
+}
+
+@media print {
+    .crisis-banner, .nav-header, .btn, .footer, .skill-actions {
+        display: none !important;
+    }
+    body { background: white; }
+    .app-wrapper { background: white; }
+    .skill-card { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="app-wrapper">
+    <div class="bg-blur-1"></div>
+    <div class="bg-blur-2"></div>
+    <div class="main-content">
+      <div class="content-wrapper">
+
+        <!-- CRISIS BANNER -->
+        <div class="crisis-banner">
+          <span>🚨 In crisis? Help is available 24/7</span>
+          <span style="display: flex; gap: 0.5rem;">
+            <a href="tel:988">Call 988</a>
+            <a href="sms:988">Text 988</a>
+          </span>
+        </div>
+
+        <!-- HEADER -->
+        <div class="nav-header">
+          <a href="crisis-intro.html" class="back-link">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M19 12H5M12 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Course Home
+          </a>
+          <a href="app.html" class="back-link">
+            Main App
+          </a>
+        </div>
+
+        <h1 class="toolkit-title">My Crisis Toolkit</h1>
+        <p class="toolkit-subtitle">Your saved skills • Ready when you need them</p>
+
+        <!-- STATS - DYNAMICALLY UPDATED -->
+        <div class="stats-grid" id="statsContainer">
+          <div class="stat-card">
+            <div class="stat-number" id="totalSkills">0</div>
+            <div class="stat-label">Saved Skills</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="practicedModules">0</div>
+            <div class="stat-label">Modules Practiced</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="crisisPlanStatus">—</div>
+            <div class="stat-label">Crisis Plan</div>
+          </div>
+        </div>
+
+        <!-- CRISIS CARD - QUICK REFERENCE -->
+        <div id="crisisCardContainer" style="display: none;">
+          <!-- Populated by JavaScript -->
+        </div>
+
+        <!-- TOOLKIT CONTENT -->
+        <div id="toolkitContent">
+          <!-- Populated by JavaScript -->
+        </div>
+
+        <!-- ACTIONS -->
+        <div style="display: flex; gap: 0.75rem; margin: 1.5rem 0;">
+          <button id="printToolkitBtn" class="btn btn-secondary" style="flex: 1;">
+            <span>🖨️</span> Print
+          </button>
+          <button id="clearToolkitBtn" class="btn btn-secondary" style="flex: 1; color: #fca5a5; border-color: rgba(220,38,38,0.3);">
+            <span>🗑️</span> Clear All
+          </button>
+        </div>
+
+        <!-- BACK TO COURSE -->
+        <a href="crisis-module-5.html" class="btn btn-primary btn-block" style="text-decoration: none; margin-bottom: 1rem;">
+          ← Back to Crisis Plan
+        </a>
+
+        <!-- FOOTER -->
+        <div class="footer">
+          <p style="color: #fca5a5; font-weight: 600; margin-bottom: 0.5rem;">⚠️ EDUCATIONAL ONLY — NOT THERAPY</p>
+          <p>988 Suicide & Crisis Lifeline: Call or text 988</p>
+          <p style="margin-top: 0.5rem;">Crisis Text Line: Text HOME to 741741</p>
+          <p style="margin-top: 1rem;">These are YOUR tools. Practice them when calm. Use them in crisis.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  // ===== CHECK DISCLAIMER ACKNOWLEDGMENT =====
+  const acknowledged = localStorage.getItem('crisis_disclaimer_acknowledged');
+  if (!acknowledged) {
+    window.location.href = 'crisis-intro.html';
+    return;
+  }
+
+  // ===== LOAD AND RENDER TOOLKIT =====
+  function loadToolkit() {
+    const toolkit = JSON.parse(localStorage.getItem('crisis_toolkit') || '[]');
+    const crisisPlan = JSON.parse(localStorage.getItem('crisis_plan') || '{}');
+    const progress = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
+    
+    // Update stats
+    document.getElementById('totalSkills').textContent = toolkit.length;
+    document.getElementById('practicedModules').textContent = progress.practicedModules?.length || 0;
+    document.getElementById('crisisPlanStatus').textContent = crisisPlan.completed ? '✓ Ready' : '—';
+    
+    // Render Crisis Card if exists
+    renderCrisisCard(crisisPlan);
+    
+    // Render toolkit items
+    renderToolkitItems(toolkit);
+  }
+
+  // ===== RENDER CRISIS CARD =====
+  function renderCrisisCard(crisisPlan) {
+    const container = document.getElementById('crisisCardContainer');
+    
+    if (crisisPlan.crisisCard) {
+      const card = crisisPlan.crisisCard;
+      container.style.display = 'block';
+      container.innerHTML = `
+        <div class="crisis-card-preview">
+          <div class="crisis-card-title">🆘 MY CRISIS CARD</div>
+          
+          <div class="crisis-card-item">
+            <span class="crisis-card-number">1.</span>
+            <span style="color: var(--text-primary);">PHYSICAL RESET:</span>
+            <span style="color: var(--text-secondary);">${card.physical || '—'}</span>
+          </div>
+          
+          <div class="crisis-card-item">
+            <span class="crisis-card-number">2.</span>
+            <span style="color: var(--text-primary);">WAIT 20 MIN:</span>
+            <span style="color: var(--text-secondary);">${card.wait || '—'}</span>
+          </div>
+          
+          <div class="crisis-card-item">
+            <span class="crisis-card-number">3.</span>
+            <span style="color: var(--text-primary);">ACCEPTANCE:</span>
+            <span style="color: var(--text-secondary);">${card.acceptance || '—'}</span>
+          </div>
+          
+          <div class="crisis-card-item">
+            <span class="crisis-card-number">4.</span>
+            <span style="color: var(--text-primary);">VALUES:</span>
+            <span style="color: var(--text-secondary);">${card.values || '—'}</span>
+          </div>
+          
+          <div class="crisis-card-item">
+            <span class="crisis-card-number">5.</span>
+            <span style="color: var(--text-primary);">EMERGENCY:</span>
+            <span style="color: var(--text-secondary);">${card.emergency || 'Call 988'}</span>
+          </div>
+          
+          <div style="margin-top: 1rem; text-align: center; color: var(--text-amber); font-style: italic; font-weight: 600;">
+            REMEMBER: The wave WILL pass.
+          </div>
+        </div>
+      `;
+    } else {
+      container.style.display = 'none';
+    }
+  }
+
+  // ===== RENDER TOOLKIT ITEMS =====
+  function renderToolkitItems(toolkit) {
+    const container = document.getElementById('toolkitContent');
+    
+    if (toolkit.length === 0) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">🧰</div>
+          <div class="empty-title">Your toolkit is empty</div>
+          <div class="empty-text">
+            Complete the Crisis Resilience course and save skills to build your personalized crisis toolkit.
+          </div>
+          <a href="crisis-intro.html" class="btn btn-primary" style="text-decoration: none; display: inline-block;">
+            Start Course →
+          </a>
+        </div>
+      `;
+      return;
+    }
+    
+    // Group by category
+    const categories = {};
+    toolkit.forEach(skill => {
+      const cat = skill.category || 'Other';
+      if (!categories[cat]) categories[cat] = [];
+      categories[cat].push(skill);
+    });
+    
+    let html = '';
+    
+    // Sort categories
+    const categoryOrder = [
+      'My Crisis Profile',
+      'Module 5: Crisis Plan',
+      'Module 4: Making Peace',
+      'Module 3: Mental Techniques',
+      'Module 2: Physical Reset',
+      'Module 1: Crisis Science',
+      'Other'
+    ];
+    
+    const sortedCategories = Object.keys(categories).sort((a, b) => {
+      const indexA = categoryOrder.indexOf(a);
+      const indexB = categoryOrder.indexOf(b);
+      if (indexA === -1) return 1;
+      if (indexB === -1) return -1;
+      return indexA - indexB;
+    });
+    
+    sortedCategories.forEach(category => {
+      const skills = categories[category];
+      
+      html += `
+        <div class="category-section">
+          <div class="category-header">
+            <div class="category-title">
+              <span>${getCategoryIcon(category)}</span>
+              ${category}
+            </div>
+            <span class="category-count">${skills.length}</span>
+          </div>
+      `;
+      
+      skills.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+      
+      skills.forEach(skill => {
+        const date = skill.date ? new Date(skill.date).toLocaleDateString() : '';
+        
+        html += `
+          <div class="skill-card" data-id="${skill.id}">
+            <div class="skill-header">
+              <div class="skill-name">${skill.name || 'Skill'}</div>
+              <span class="skill-category-badge">${getCategoryBadge(category)}</span>
+            </div>
+            <div class="skill-description">
+              ${skill.description?.replace(/\n/g, '<br>') || 'No description'}
+            </div>
+            <div class="skill-meta">
+              <span>📅 ${date || 'Recently'}</span>
+            </div>
+            <div class="skill-actions">
+              <button class="btn-small" onclick="practiceSkill('${skill.id}')">
+                <span>⚡</span> Practice
+              </button>
+              <button class="btn-small danger" onclick="removeSkill('${skill.id}')">
+                <span>🗑️</span> Remove
+              </button>
+            </div>
+          </div>
+        `;
+      });
+      
+      html += `</div>`;
+    });
+    
+    container.innerHTML = html;
+  }
+
+  // ===== HELPER FUNCTIONS =====
+  function getCategoryIcon(category) {
+    const icons = {
+      'My Crisis Profile': '👤',
+      'Module 5: Crisis Plan': '🆘',
+      'Module 4: Making Peace': '🕊️',
+      'Module 3: Mental Techniques': '🧠',
+      'Module 2: Physical Reset': '💪',
+      'Module 1: Crisis Science': '🧪',
+      'Other': '📌'
+    };
+    return icons[category] || '📌';
+  }
+
+  function getCategoryBadge(category) {
+    const badges = {
+      'My Crisis Profile': 'MY PLAN',
+      'Module 5: Crisis Plan': 'CRISIS PLAN',
+      'Module 4: Making Peace': 'ACCEPTANCE',
+      'Module 3: Mental Techniques': 'MENTAL',
+      'Module 2: Physical Reset': 'PHYSICAL',
+      'Module 1: Crisis Science': 'SCIENCE',
+      'Other': 'SKILL'
+    };
+    return badges[category] || 'SKILL';
+  }
+
+  // ===== PRACTICE SKILL =====
+  window.practiceSkill = function(skillId) {
+    // Find which module this skill belongs to
+    if (skillId.includes('cold') || skillId.includes('exercise') || skillId.includes('breathing') || skillId.includes('pmr') || skillId.includes('temperature')) {
+      window.location.href = 'crisis-module-2.html';
+    } else if (skillId.includes('grounding') || skillId.includes('cognitive') || skillId.includes('sensations') || skillId.includes('bilateral') || skillId.includes('distraction')) {
+      window.location.href = 'crisis-module-3.html';
+    } else if (skillId.includes('acceptance') || skillId.includes('compassion') || skillId.includes('defusion')) {
+      window.location.href = 'crisis-module-4.html';
+    } else if (skillId.includes('values') || skillId.includes('crisis-card') || skillId.includes('full-crisis')) {
+      window.location.href = 'crisis-module-5.html';
+    } else if (skillId.includes('urges') || skillId.includes('brain-facts')) {
+      window.location.href = 'crisis-module-1.html';
+    } else {
+      window.location.href = 'crisis-intro.html';
+    }
+  };
+
+  // ===== REMOVE SKILL =====
+  window.removeSkill = function(skillId) {
+    if (!confirm('Remove this skill from your toolkit?')) return;
+    
+    let toolkit = JSON.parse(localStorage.getItem('crisis_toolkit') || '[]');
+    toolkit = toolkit.filter(item => item.id !== skillId);
+    localStorage.setItem('crisis_toolkit', JSON.stringify(toolkit));
+    
+    // Re-render
+    loadToolkit();
+  };
+
+  // ===== CLEAR ALL SKILLS =====
+  document.getElementById('clearToolkitBtn')?.addEventListener('click', function() {
+    if (!confirm('Are you sure? This will remove ALL skills from your toolkit.')) return;
+    if (!confirm('This cannot be undone. Clear everything?')) return;
+    
+    localStorage.removeItem('crisis_toolkit');
+    loadToolkit();
+  });
+
+  // ===== PRINT TOOLKIT =====
+  document.getElementById('printToolkitBtn')?.addEventListener('click', function() {
+    window.print();
+  });
+
+  // ===== MARK COURSE AS ACCESSED =====
+  function init() {
+    // Update progress
+    let progress = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
+    progress.lastAccessed = new Date().toISOString();
+    localStorage.setItem('crisis_course_progress', JSON.stringify(progress));
+    
+    // Load data
+    loadToolkit();
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>
