@@ -30,7 +30,6 @@
     --crisis-red: #dc2626;
     --crisis-bg: rgba(220, 38, 38, 0.08);
     
-    /* Spacing */
     --space-xs: 0.5rem;
     --space-sm: 0.75rem;
     --space-md: 1rem;
@@ -113,7 +112,6 @@ html, body {
     display: none; 
 }
 
-/* Crisis Banner */
 .crisis-banner {
     background: var(--crisis-bg);
     border: 1px solid var(--crisis-red);
@@ -148,7 +146,6 @@ html, body {
     font-weight: 700;
 }
 
-/* Header with step navigation */
 .header {
     background: linear-gradient(135deg, var(--bg-card-light), var(--bg-card-dark));
     border: 1px solid var(--border-softer);
@@ -213,7 +210,6 @@ html, body {
     font-size: 0.875rem;
 }
 
-/* Cards */
 .card {
     background: linear-gradient(135deg, var(--bg-card-light), var(--bg-card-dark));
     border: 1px solid var(--border-softer);
@@ -249,7 +245,6 @@ html, body {
     color: var(--text-teal-light);
 }
 
-/* Buttons */
 .btn {
     width: 100%;
     padding: 0.875rem 1.25rem;
@@ -323,7 +318,6 @@ html, body {
     border-color: rgba(74,222,128,0.3);
 }
 
-/* Input fields */
 .input-field {
     width: 100%;
     padding: 0.875rem;
@@ -345,7 +339,6 @@ html, body {
     background: rgba(217,119,6,0.1);
 }
 
-/* Toolkit Drawer */
 .toolkit-drawer {
     background: linear-gradient(135deg, var(--bg-card-light), var(--bg-card-dark));
     border: 2px solid var(--primary-teal);
@@ -393,7 +386,6 @@ html, body {
     line-height: 1;
 }
 
-/* Tabs */
 .tab-container {
     display: flex;
     gap: 0.5rem;
@@ -421,7 +413,6 @@ html, body {
     border-color: transparent;
 }
 
-/* Skills grid */
 .skills-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -466,7 +457,6 @@ html, body {
     margin-top: 0.125rem;
 }
 
-/* Module headers in skills */
 .module-header {
     grid-column: span 2;
     color: var(--text-teal);
@@ -477,7 +467,6 @@ html, body {
     padding-left: 0.25rem;
 }
 
-/* Intensity plan */
 .intensity-section {
     background: rgba(14,116,144,0.1);
     border-radius: 1rem;
@@ -533,7 +522,6 @@ html, body {
     background: rgba(14,116,144,0.3);
 }
 
-/* Pros & Cons grid */
 .pros-cons-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -552,7 +540,6 @@ html, body {
     margin-bottom: var(--space-sm);
 }
 
-/* Values compass */
 .values-compass {
     background: rgba(14,116,144,0.15);
     border: 2px solid var(--primary-teal);
@@ -569,7 +556,6 @@ html, body {
     margin-bottom: var(--space-md);
 }
 
-/* Crisis card preview */
 .crisis-card-preview {
     background: linear-gradient(135deg, rgba(14,116,144,0.2), rgba(217,119,6,0.1));
     border: 2px solid var(--accent-amber);
@@ -611,7 +597,6 @@ html, body {
     min-width: 1.5rem;
 }
 
-/* Completion box */
 .completion-box {
     background: var(--gradient-subtle);
     border: 2px solid var(--primary-teal);
@@ -640,7 +625,6 @@ html, body {
     margin-bottom: var(--space-lg);
 }
 
-/* Footer */
 .footer {
     margin-top: var(--space-xxl);
     padding-top: var(--space-lg);
@@ -671,11 +655,6 @@ html, body {
 
 .save-feedback.show {
     display: block;
-}
-
-/* Utilities */
-.hidden {
-    display: none !important;
 }
 
 @media (max-width: 640px) {
@@ -975,27 +954,24 @@ html, body {
   };
 
   window.openToolkit = function(targetInputId) {
-    // Remove existing drawer
     const existing = document.getElementById('toolkitDrawer');
     if (existing) existing.remove();
     
     window.currentTargetInput = targetInputId;
     
-    // Insert drawer after the button
     const btn = document.getElementById(`insertBtn_${targetInputId}`);
     if (btn) {
       const drawerHtml = renderToolkitDrawer(targetInputId);
       btn.insertAdjacentHTML('afterend', drawerHtml);
     }
     
-    // Highlight target
     const targetInput = document.getElementById(targetInputId);
     if (targetInput) {
       targetInput.classList.add('highlight');
     }
   };
 
-  // ===== STEP 1: INTRODUCTION =====
+  // ===== STEP 1 =====
   function renderStep1() {
     return `
       ${renderHeader()}
@@ -1034,7 +1010,7 @@ html, body {
     `;
   }
 
-  // ===== STEP 2: INTENSITY PLAN (1-6) =====
+  // ===== STEP 2 =====
   function renderStep2() {
     return `
       ${renderHeader()}
@@ -1049,19 +1025,15 @@ html, body {
           Different intensity levels need different responses. Plan now so you don't have to think later.
         </p>
         
-        <!-- INTENSITY 1-3 -->
         <div class="intensity-section">
           <div class="intensity-badge">INTENSITY 1-3 — Mild Discomfort</div>
           <div class="input-row">
             <label>Use:</label>
             <input type="text" id="planMild" class="input-field" placeholder="e.g., Notice it, breathe, observe" style="flex: 1;">
-            <button class="insert-btn" id="insertBtn_planMild" onclick="window.openToolkit('planMild')">
-              <span>📋</span> Insert
-            </button>
+            <button class="insert-btn" id="insertBtn_planMild" onclick="window.openToolkit('planMild')">📋 Insert</button>
           </div>
         </div>
         
-        <!-- INTENSITY 4-6 -->
         <div class="intensity-section">
           <div class="intensity-badge">INTENSITY 4-6 — Moderate Distress</div>
           <p style="color: var(--text-teal); font-size: 0.875rem; margin-bottom: var(--space-sm);">Use 2-3 skills:</p>
@@ -1095,7 +1067,7 @@ html, body {
     `;
   }
 
-  // ===== STEP 3: INTENSITY PLAN (7-10) =====
+  // ===== STEP 3 =====
   function renderStep3() {
     return `
       ${renderHeader()}
@@ -1106,7 +1078,6 @@ html, body {
           <span class="section-title-text">Intensity-Based Plan (7-10)</span>
         </div>
         
-        <!-- INTENSITY 7-8 -->
         <div class="intensity-section">
           <div class="intensity-badge">INTENSITY 7-8 — High Crisis</div>
           <p style="color: var(--text-teal); font-size: 0.875rem; margin-bottom: var(--space-sm);">Physical techniques FIRST:</p>
@@ -1132,7 +1103,6 @@ html, body {
           </div>
         </div>
         
-        <!-- INTENSITY 9-10 -->
         <div class="intensity-section">
           <div class="intensity-badge high">INTENSITY 9-10 — Extreme Emergency</div>
           
@@ -1169,7 +1139,7 @@ html, body {
     `;
   }
 
-  // ===== STEP 4: PROS & CONS WORKSHEET =====
+  // ===== STEP 4 =====
   function renderStep4() {
     return `
       ${renderHeader()}
@@ -1231,7 +1201,7 @@ html, body {
     `;
   }
 
-  // ===== STEP 5: VALUES COMPASS =====
+  // ===== STEP 5 =====
   function renderStep5() {
     return `
       ${renderHeader()}
@@ -1282,7 +1252,7 @@ html, body {
     `;
   }
 
-  // ===== STEP 6: PHYSICAL CRISIS KIT =====
+  // ===== STEP 6 =====
   function renderStep6() {
     return `
       ${renderHeader()}
@@ -1368,7 +1338,7 @@ html, body {
     `;
   }
 
-  // ===== STEP 7: YOUR CRISIS CARD =====
+  // ===== STEP 7 =====
   function renderStep7() {
     return `
       ${renderHeader()}
@@ -1444,7 +1414,7 @@ html, body {
     `;
   }
 
-  // ===== STEP 8: PRACTICE SCHEDULE =====
+  // ===== STEP 8 =====
   function renderStep8() {
     return `
       ${renderHeader()}
@@ -1519,7 +1489,7 @@ html, body {
     `;
   }
 
-  // ===== STEP 9: COURSE COMPLETE =====
+  // ===== STEP 9 =====
   function renderStep9() {
     return `
       ${renderHeader()}
@@ -1780,17 +1750,14 @@ html, body {
     
     content.innerHTML = html;
     
-    // Initialize save buttons after render
     if (currentStep === 5) initValuesSave();
     if (currentStep === 7) initCrisisCardSave();
     if (currentStep === 8) initFullPlanSave();
     if (currentStep === 9) initComplete();
     
-    // Load saved data
     setTimeout(loadSavedPlan, 50);
   }
 
-  // Initialize
   loadProgress();
   render();
 })();
