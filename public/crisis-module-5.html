@@ -838,7 +838,7 @@ html, body {
       
       <div class="header">
         <div class="header-top">
-          <button class="back-btn" onclick="previousStep()">←</button>
+          <button class="back-btn" onclick="window.previousStep()">←</button>
           <span class="step-indicator">${currentStep} / ${totalSteps}</span>
         </div>
         <div class="progress-dots">
@@ -1028,7 +1028,7 @@ html, body {
         </div>
       </div>
       
-      <button class="btn btn-primary" onclick="nextStep()">Start Building Your Plan →</button>
+      <button class="btn btn-primary" onclick="window.nextStep()">Start Building Your Plan →</button>
       
       ${renderFooter()}
     `;
@@ -1055,7 +1055,7 @@ html, body {
           <div class="input-row">
             <label>Use:</label>
             <input type="text" id="planMild" class="input-field" placeholder="e.g., Notice it, breathe, observe" style="flex: 1;">
-            <button class="insert-btn" id="insertBtn_planMild" onclick="openToolkit('planMild')">
+            <button class="insert-btn" id="insertBtn_planMild" onclick="window.openToolkit('planMild')">
               <span>📋</span> Insert
             </button>
           </div>
@@ -1069,26 +1069,26 @@ html, body {
           <div class="input-row">
             <label>1.</label>
             <input type="text" id="planModerate1" class="input-field" placeholder="First skill" style="flex: 1;">
-            <button class="insert-btn" id="insertBtn_planModerate1" onclick="openToolkit('planModerate1')">📋</button>
+            <button class="insert-btn" id="insertBtn_planModerate1" onclick="window.openToolkit('planModerate1')">📋</button>
           </div>
           
           <div class="input-row">
             <label>2.</label>
             <input type="text" id="planModerate2" class="input-field" placeholder="Second skill" style="flex: 1;">
-            <button class="insert-btn" id="insertBtn_planModerate2" onclick="openToolkit('planModerate2')">📋</button>
+            <button class="insert-btn" id="insertBtn_planModerate2" onclick="window.openToolkit('planModerate2')">📋</button>
           </div>
           
           <div class="input-row">
             <label>3.</label>
             <input type="text" id="planModerate3" class="input-field" placeholder="Third skill (optional)" style="flex: 1;">
-            <button class="insert-btn" id="insertBtn_planModerate3" onclick="openToolkit('planModerate3')">📋</button>
+            <button class="insert-btn" id="insertBtn_planModerate3" onclick="window.openToolkit('planModerate3')">📋</button>
           </div>
         </div>
       </div>
       
       <div class="btn-group">
-        <button class="btn btn-secondary" onclick="previousStep()">← Back</button>
-        <button class="btn btn-primary" onclick="nextStep()">Continue →</button>
+        <button class="btn btn-secondary" onclick="window.previousStep()">← Back</button>
+        <button class="btn btn-primary" onclick="window.nextStep()">Continue →</button>
       </div>
       
       ${renderFooter()}
@@ -1114,13 +1114,13 @@ html, body {
           <div class="input-row">
             <label>1.</label>
             <input type="text" id="planPhysical1" class="input-field" placeholder="Physical skill (cold water, exercise...)" style="flex: 1;">
-            <button class="insert-btn" id="insertBtn_planPhysical1" onclick="openToolkit('planPhysical1')">📋</button>
+            <button class="insert-btn" id="insertBtn_planPhysical1" onclick="window.openToolkit('planPhysical1')">📋</button>
           </div>
           
           <div class="input-row">
             <label>2.</label>
             <input type="text" id="planPhysical2" class="input-field" placeholder="Physical skill (breathing, temperature...)" style="flex: 1;">
-            <button class="insert-btn" id="insertBtn_planPhysical2" onclick="openToolkit('planPhysical2')">📋</button>
+            <button class="insert-btn" id="insertBtn_planPhysical2" onclick="window.openToolkit('planPhysical2')">📋</button>
           </div>
           
           <p style="color: var(--text-teal); font-size: 0.875rem; margin: var(--space-md) 0 var(--space-sm);">Then mental technique:</p>
@@ -1128,7 +1128,7 @@ html, body {
           <div class="input-row">
             <label>3.</label>
             <input type="text" id="planMental" class="input-field" placeholder="Grounding or cognitive skill" style="flex: 1;">
-            <button class="insert-btn" id="insertBtn_planMental" onclick="openToolkit('planMental')">📋</button>
+            <button class="insert-btn" id="insertBtn_planMental" onclick="window.openToolkit('planMental')">📋</button>
           </div>
         </div>
         
@@ -1161,8 +1161,8 @@ html, body {
       </div>
       
       <div class="btn-group">
-        <button class="btn btn-secondary" onclick="previousStep()">← Back</button>
-        <button class="btn btn-primary" onclick="nextStep()">Continue →</button>
+        <button class="btn btn-secondary" onclick="window.previousStep()">← Back</button>
+        <button class="btn btn-primary" onclick="window.nextStep()">Continue →</button>
       </div>
       
       ${renderFooter()}
@@ -1223,8 +1223,8 @@ html, body {
       </div>
       
       <div class="btn-group">
-        <button class="btn btn-secondary" onclick="previousStep()">← Back</button>
-        <button class="btn btn-primary" onclick="nextStep()">Continue →</button>
+        <button class="btn btn-secondary" onclick="window.previousStep()">← Back</button>
+        <button class="btn btn-primary" onclick="window.nextStep()">Continue →</button>
       </div>
       
       ${renderFooter()}
@@ -1274,8 +1274,8 @@ html, body {
       </div>
       
       <div class="btn-group">
-        <button class="btn btn-secondary" onclick="previousStep()">← Back</button>
-        <button class="btn btn-primary" onclick="nextStep()">Continue →</button>
+        <button class="btn btn-secondary" onclick="window.previousStep()">← Back</button>
+        <button class="btn btn-primary" onclick="window.nextStep()">Continue →</button>
       </div>
       
       ${renderFooter()}
@@ -1360,8 +1360,8 @@ html, body {
       </div>
       
       <div class="btn-group">
-        <button class="btn btn-secondary" onclick="previousStep()">← Back</button>
-        <button class="btn btn-primary" onclick="nextStep()">Continue →</button>
+        <button class="btn btn-secondary" onclick="window.previousStep()">← Back</button>
+        <button class="btn btn-primary" onclick="window.nextStep()">Continue →</button>
       </div>
       
       ${renderFooter()}
@@ -1388,7 +1388,7 @@ html, body {
           </div>
           <div class="input-row" style="margin-left: 2rem;">
             <input type="text" id="cardPhysical" class="input-field" placeholder="e.g., Cold water, exercise" style="flex: 1;">
-            <button class="insert-btn" id="insertBtn_cardPhysical" onclick="openToolkit('cardPhysical')">📋</button>
+            <button class="insert-btn" id="insertBtn_cardPhysical" onclick="window.openToolkit('cardPhysical')">📋</button>
           </div>
           
           <div class="crisis-card-item" style="margin-top: var(--space-md);">
@@ -1397,7 +1397,7 @@ html, body {
           </div>
           <div class="input-row" style="margin-left: 2rem;">
             <input type="text" id="cardWait" class="input-field" placeholder="Grounding, distraction, cognitive load" style="flex: 1;">
-            <button class="insert-btn" id="insertBtn_cardWait" onclick="openToolkit('cardWait')">📋</button>
+            <button class="insert-btn" id="insertBtn_cardWait" onclick="window.openToolkit('cardWait')">📋</button>
           </div>
           
           <div class="crisis-card-item" style="margin-top: var(--space-md);">
@@ -1436,8 +1436,8 @@ html, body {
       </div>
       
       <div class="btn-group">
-        <button class="btn btn-secondary" onclick="previousStep()">← Back</button>
-        <button class="btn btn-primary" onclick="nextStep()">Continue →</button>
+        <button class="btn btn-secondary" onclick="window.previousStep()">← Back</button>
+        <button class="btn btn-primary" onclick="window.nextStep()">Continue →</button>
       </div>
       
       ${renderFooter()}
@@ -1464,7 +1464,7 @@ html, body {
         <div class="input-row">
           <label>1.</label>
           <input type="text" id="practiceSkill1" class="input-field" placeholder="Skill name" style="flex: 1;">
-          <button class="insert-btn" id="insertBtn_practiceSkill1" onclick="openToolkit('practiceSkill1')">📋</button>
+          <button class="insert-btn" id="insertBtn_practiceSkill1" onclick="window.openToolkit('practiceSkill1')">📋</button>
           <span style="color: var(--text-muted); font-size: 0.8125rem; margin-left: 0.5rem;">How often?</span>
           <input type="text" id="practiceFreq1" class="input-field" placeholder="daily" style="width: 100px;">
         </div>
@@ -1472,7 +1472,7 @@ html, body {
         <div class="input-row">
           <label>2.</label>
           <input type="text" id="practiceSkill2" class="input-field" placeholder="Skill name" style="flex: 1;">
-          <button class="insert-btn" id="insertBtn_practiceSkill2" onclick="openToolkit('practiceSkill2')">📋</button>
+          <button class="insert-btn" id="insertBtn_practiceSkill2" onclick="window.openToolkit('practiceSkill2')">📋</button>
           <span style="color: var(--text-muted); font-size: 0.8125rem; margin-left: 0.5rem;">How often?</span>
           <input type="text" id="practiceFreq2" class="input-field" placeholder="daily" style="width: 100px;">
         </div>
@@ -1480,7 +1480,7 @@ html, body {
         <div class="input-row">
           <label>3.</label>
           <input type="text" id="practiceSkill3" class="input-field" placeholder="Skill name" style="flex: 1;">
-          <button class="insert-btn" id="insertBtn_practiceSkill3" onclick="openToolkit('practiceSkill3')">📋</button>
+          <button class="insert-btn" id="insertBtn_practiceSkill3" onclick="window.openToolkit('practiceSkill3')">📋</button>
           <span style="color: var(--text-muted); font-size: 0.8125rem; margin-left: 0.5rem;">How often?</span>
           <input type="text" id="practiceFreq3" class="input-field" placeholder="daily" style="width: 100px;">
         </div>
@@ -1511,8 +1511,8 @@ html, body {
       </div>
       
       <div class="btn-group">
-        <button class="btn btn-secondary" onclick="previousStep()">← Back</button>
-        <button class="btn btn-primary" onclick="nextStep()">Complete Course →</button>
+        <button class="btn btn-secondary" onclick="window.previousStep()">← Back</button>
+        <button class="btn btn-primary" onclick="window.nextStep()">Complete Course →</button>
       </div>
       
       ${renderFooter()}
@@ -1545,7 +1545,7 @@ html, body {
       </div>
       
       <div class="btn-group">
-        <button class="btn btn-secondary" onclick="previousStep()">← Back</button>
+        <button class="btn btn-secondary" onclick="window.previousStep()">← Back</button>
         <a href="crisis-toolkit.html" class="btn btn-primary">View Toolkit →</a>
       </div>
       
