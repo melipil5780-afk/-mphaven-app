@@ -1394,55 +1394,106 @@ html, body {
     };
   }
 
-  function loadSavedPlan() {
-    const plan = JSON.parse(localStorage.getItem('crisis_plan') || '{}');
-    if (plan.intensityPlan) {
-      const p = plan.intensityPlan;
-      if (p.mild) document.getElementById('planMild')?.value = p.mild;
-      if (p.moderate) {
-        if (p.moderate[0]) document.getElementById('planModerate1')?.value = p.moderate[0];
-        if (p.moderate[1]) document.getElementById('planModerate2')?.value = p.moderate[1];
-        if (p.moderate[2]) document.getElementById('planModerate3')?.value = p.moderate[2];
-      }
-      if (p.high) {
-        if (p.high.physical) {
-          if (p.high.physical[0]) document.getElementById('planPhysical1')?.value = p.high.physical[0];
-          if (p.high.physical[1]) document.getElementById('planPhysical2')?.value = p.high.physical[1];
-        }
-        if (p.high.mental) document.getElementById('planMental')?.value = p.high.mental;
-      }
-      if (p.emergency) {
-        if (p.emergency.trusted) document.getElementById('planTrusted')?.value = p.emergency.trusted;
-        if (p.emergency.therapist) document.getElementById('planTherapist')?.value = p.emergency.therapist;
-        if (p.emergency.er) document.getElementById('planER')?.value = p.emergency.er;
-      }
+function loadSavedPlan() {
+  const plan = JSON.parse(localStorage.getItem('crisis_plan') || '{}');
+  if (plan.intensityPlan) {
+    const p = plan.intensityPlan;
+    const mildEl = document.getElementById('planMild');
+    if (p.mild && mildEl) mildEl.value = p.mild;
+    
+    if (p.moderate) {
+      const mod1El = document.getElementById('planModerate1');
+      if (p.moderate[0] && mod1El) mod1El.value = p.moderate[0];
+      
+      const mod2El = document.getElementById('planModerate2');
+      if (p.moderate[1] && mod2El) mod2El.value = p.moderate[1];
+      
+      const mod3El = document.getElementById('planModerate3');
+      if (p.moderate[2] && mod3El) mod3El.value = p.moderate[2];
     }
-    if (plan.values) {
-      const v = plan.values;
-      if (v.val1) document.getElementById('values1')?.value = v.val1;
-      if (v.val2) document.getElementById('values2')?.value = v.val2;
-      if (v.val3) document.getElementById('values3')?.value = v.val3;
-      if (v.rel) document.getElementById('valuesRelationships')?.value = v.rel;
-      if (v.best) document.getElementById('valuesBest')?.value = v.best;
+    
+    if (p.high) {
+      if (p.high.physical) {
+        const phys1El = document.getElementById('planPhysical1');
+        if (p.high.physical[0] && phys1El) phys1El.value = p.high.physical[0];
+        
+        const phys2El = document.getElementById('planPhysical2');
+        if (p.high.physical[1] && phys2El) phys2El.value = p.high.physical[1];
+      }
+      
+      const mentalEl = document.getElementById('planMental');
+      if (p.high.mental && mentalEl) mentalEl.value = p.high.mental;
     }
-    if (plan.crisisCard) {
-      const cc = plan.crisisCard;
-      if (cc.physical) document.getElementById('cardPhysical')?.value = cc.physical;
-      if (cc.wait) document.getElementById('cardWait')?.value = cc.wait;
-      if (cc.acceptance) document.getElementById('cardAcceptance')?.value = cc.acceptance;
-      if (cc.values) document.getElementById('cardValues')?.value = cc.values;
-      if (cc.emergency) document.getElementById('cardEmergency')?.value = cc.emergency;
-    }
-    if (plan.practicePlan) {
-      const pp = plan.practicePlan;
-      if (pp.skill1) document.getElementById('practiceSkill1')?.value = pp.skill1;
-      if (pp.freq1) document.getElementById('practiceFreq1')?.value = pp.freq1;
-      if (pp.skill2) document.getElementById('practiceSkill2')?.value = pp.skill2;
-      if (pp.freq2) document.getElementById('practiceFreq2')?.value = pp.freq2;
-      if (pp.skill3) document.getElementById('practiceSkill3')?.value = pp.skill3;
-      if (pp.freq3) document.getElementById('practiceFreq3')?.value = pp.freq3;
+    
+    if (p.emergency) {
+      const trustedEl = document.getElementById('planTrusted');
+      if (p.emergency.trusted && trustedEl) trustedEl.value = p.emergency.trusted;
+      
+      const therapistEl = document.getElementById('planTherapist');
+      if (p.emergency.therapist && therapistEl) therapistEl.value = p.emergency.therapist;
+      
+      const erEl = document.getElementById('planER');
+      if (p.emergency.er && erEl) erEl.value = p.emergency.er;
     }
   }
+  
+  if (plan.values) {
+    const v = plan.values;
+    const val1El = document.getElementById('values1');
+    if (v.val1 && val1El) val1El.value = v.val1;
+    
+    const val2El = document.getElementById('values2');
+    if (v.val2 && val2El) val2El.value = v.val2;
+    
+    const val3El = document.getElementById('values3');
+    if (v.val3 && val3El) val3El.value = v.val3;
+    
+    const relEl = document.getElementById('valuesRelationships');
+    if (v.rel && relEl) relEl.value = v.rel;
+    
+    const bestEl = document.getElementById('valuesBest');
+    if (v.best && bestEl) bestEl.value = v.best;
+  }
+  
+  if (plan.crisisCard) {
+    const cc = plan.crisisCard;
+    const physicalEl = document.getElementById('cardPhysical');
+    if (cc.physical && physicalEl) physicalEl.value = cc.physical;
+    
+    const waitEl = document.getElementById('cardWait');
+    if (cc.wait && waitEl) waitEl.value = cc.wait;
+    
+    const acceptEl = document.getElementById('cardAcceptance');
+    if (cc.acceptance && acceptEl) acceptEl.value = cc.acceptance;
+    
+    const valuesEl = document.getElementById('cardValues');
+    if (cc.values && valuesEl) valuesEl.value = cc.values;
+    
+    const emergencyEl = document.getElementById('cardEmergency');
+    if (cc.emergency && emergencyEl) emergencyEl.value = cc.emergency;
+  }
+  
+  if (plan.practicePlan) {
+    const pp = plan.practicePlan;
+    const skill1El = document.getElementById('practiceSkill1');
+    if (pp.skill1 && skill1El) skill1El.value = pp.skill1;
+    
+    const freq1El = document.getElementById('practiceFreq1');
+    if (pp.freq1 && freq1El) freq1El.value = pp.freq1;
+    
+    const skill2El = document.getElementById('practiceSkill2');
+    if (pp.skill2 && skill2El) skill2El.value = pp.skill2;
+    
+    const freq2El = document.getElementById('practiceFreq2');
+    if (pp.freq2 && freq2El) freq2El.value = pp.freq2;
+    
+    const skill3El = document.getElementById('practiceSkill3');
+    if (pp.skill3 && skill3El) skill3El.value = pp.skill3;
+    
+    const freq3El = document.getElementById('practiceFreq3');
+    if (pp.freq3 && freq3El) freq3El.value = pp.freq3;
+  }
+}
 
   function render() {
     const content = document.getElementById('content');
