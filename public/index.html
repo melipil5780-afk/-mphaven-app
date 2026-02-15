@@ -678,7 +678,8 @@
         </div>
        
         <div class="footer">
-            <p>By continuing, you agree to our <a href="terms.html">Terms of Service</a> and <a href="privacy.html">Privacy Policy</a></p>
+            <p>By continuing, you agree to our <a href="terms.html">Terms of Service </a>, <a href="privacy.html">Privacy Policy </a>, and <a href="disclaimer.html">Legal Disclaimer</a></p>
+            <p style="margin-top: 0.25rem; font-size: 0.7rem;">⚠️ Educational content only. Not therapy or medical treatment.</p>
         </div>
     </div>
    
@@ -762,14 +763,14 @@
         function getRedirectURL() {
             const baseURL = window.location.origin;
             console.log('Base URL:', baseURL);
-            // Ensure proper URL format
-            return `${baseURL.replace(/\/$/, '')}/app.html`;
+            // Redirect to auth-callback.html instead of app.html
+            return `${baseURL.replace(/\/$/, '')}/auth-callback.html`;
         }
        
         async function handleGoogleSignIn() {
             if (isProcessingAuth) return;
             
-            console.log('Starting Google sign-in...');
+            console.log('Starting Google sign-in with legal acknowledgment...');
            
             if (!sbClient) {
                 showError('Authentication service not available. Please refresh the page.');
@@ -779,18 +780,52 @@
             const googleBtn = document.getElementById('googleBtn');
             if (!googleBtn) return;
             
+            // ===== SHOW LEGAL NOTICE FIRST =====
+            const legalConfirmed = confirm(
+                '⚠️ LEGAL ACKNOWLEDGMENT REQUIRED\n\n' +
+                'By continuing with Google, you agree to our:\n\n' +
+                '• Terms of Service \n' +
+                '• Privacy Policy \n' +
+                '• Legal Disclaimer\n\n' +
+                'You acknowledge this is EDUCATIONAL CONTENT ONLY, not therapy or medical treatment.\n\n' +
+                'You assume full responsibility for your use of this app.\n\n' +
+                'Click OK to proceed with Google Sign-In.'
+            );
+            
+            if (!legalConfirmed) {
+                return; // User cancelled
+            }
+            
             googleBtn.disabled = true;
             isProcessingAuth = true;
            
             showLoading('Connecting to Google...');
            
             try {
-                const redirectTo = getRedirectURL();
+                // ===== STORE LEGAL AGREEMENT IN SESSION STORAGE =====
+                const agreementData = {
+                    terms: true,
+                    privacy: true,
+                    disclaimer: true,
+                    timestamp: new Date().toISOString(),
+                    version: '2026-v3.0',
+                    method: 'google',
+                    source: 'index.html',
+                    userAgent: navigator.userAgent
+                };
+                
+                sessionStorage.setItem('pending_legal_agreement', JSON.stringify(agreementData));
+                
+                // Also store as backup
+                localStorage.setItem('pending_google_agreement', 'true');
+                localStorage.setItem('pending_agreement_timestamp', new Date().toISOString());
+                
+                // ===== REDIRECT TO AUTH-CALLBACK.HTML INSTEAD OF APP.HTML =====
+                const redirectTo = window.location.origin + '/auth-callback.html';
                 console.log('Redirect URL:', redirectTo);
                
                 // iOS-specific handling
                 if (isIOS) {
-                    // For iOS, open in same window
                     const { data, error } = await sbClient.auth.signInWithOAuth({
                         provider: 'google',
                         options: {
@@ -802,11 +837,9 @@
                     if (error) throw error;
                     
                     if (data?.url) {
-                        // Direct navigation for iOS
                         window.location.href = data.url;
                     }
                 } else {
-                    // Standard flow for desktop/Android
                     const { data, error } = await sbClient.auth.signInWithOAuth({
                         provider: 'google',
                         options: {
@@ -851,6 +884,10 @@
                 }
                
                 showError(errorMessage);
+                
+                // Clear stored agreements on error
+                sessionStorage.removeItem('pending_legal_agreement');
+                localStorage.removeItem('pending_google_agreement');
             }
         }
        
@@ -860,7 +897,6 @@
             isProcessingAuth = true;
             showLoading('Loading sign up...');
             
-            // Small delay for smoother transition
             setTimeout(() => {
                 window.location.href = 'signup.html';
             }, 300);
@@ -891,17 +927,25 @@
                 }
                
                 if (session) {
-                    console.log('Active session found, redirecting...');
-                    showLoading('Welcome back!');
+                    console.log('Active session found, checking disclaimer status...');
                     
-                    // Clear any pending timeouts
-                    if (loadTimer) {
-                        clearTimeout(loadTimer);
+                    // Check if user has accepted disclaimer
+                    const disclaimerAcknowledged = localStorage.getItem('mphaven_disclaimer_acknowledged');
+                    const userMetadata = session.user?.user_metadata;
+                    
+                    if (disclaimerAcknowledged === 'true' || userMetadata?.terms_accepted) {
+                        // Already accepted, go to app
+                        showLoading('Welcome back!');
+                        setTimeout(() => {
+                            window.location.href = 'app.html';
+                        }, 800);
+                    } else {
+                        // Need to see disclaimer first
+                        console.log('User needs to accept disclaimer');
+                        setTimeout(() => {
+                            window.location.href = 'disclaimer.html';
+                        }, 800);
                     }
-                    
-                    setTimeout(() => {
-                        window.location.href = 'app.html';
-                    }, 800);
                     return true;
                 }
                
@@ -942,17 +986,49 @@
                 if (error) throw error;
                
                 if (data.session) {
-                    console.log('Session established, redirecting to app');
+                    console.log('Session established, checking legal agreement...');
+                    
+                    // ===== CHECK FOR PENDING LEGAL AGREEMENT =====
+                    const pendingAgreement = sessionStorage.getItem('pending_legal_agreement');
+                    
+                    if (pendingAgreement) {
+                        try {
+                            const agreement = JSON.parse(pendingAgreement);
+                            
+                            // Update user metadata with legal agreement
+                            await sbClient.auth.updateUser({
+                                data: {
+                                    terms_accepted: true,
+                                    terms_version: agreement.version,
+                                    terms_accepted_at: agreement.timestamp,
+                                    privacy_accepted: true,
+                                    disclaimer_accepted: true,
+                                    signup_method: 'google',
+                                    legal_agreement: agreement
+                                }
+                            });
+                            
+                            console.log('Legal agreement saved to user metadata');
+                            
+                            // Clear pending agreement
+                            sessionStorage.removeItem('pending_legal_agreement');
+                            localStorage.removeItem('pending_google_agreement');
+                            
+                        } catch (e) {
+                            console.warn('Failed to save legal agreement to metadata:', e);
+                        }
+                    }
                     
                     // Clear URL parameters
                     window.history.replaceState({}, document.title, '/');
                     
-                    // Show success message briefly
-                    showLoading('Welcome! Loading your account...');
+                    // Redirect to disclaimer first (they still need to see it)
+                    showLoading('Redirecting to legal disclaimer...');
                     
                     setTimeout(() => {
-                        window.location.href = 'app.html';
+                        window.location.href = 'disclaimer.html';
                     }, 1000);
+                    
                 } else {
                     throw new Error('No session after OAuth');
                 }
@@ -962,6 +1038,10 @@
                 isProcessingAuth = false;
                 showError('Sign-in failed. Please try again.');
                 window.history.replaceState({}, document.title, '/');
+                
+                // Clear pending agreements on error
+                sessionStorage.removeItem('pending_legal_agreement');
+                localStorage.removeItem('pending_google_agreement');
             }
         }
        
@@ -1021,7 +1101,9 @@
             const loginBtn = document.getElementById('loginBtn');
            
             if (googleBtn) {
-                googleBtn.addEventListener('click', handleGoogleSignIn);
+                // Remove any existing listeners and add new one
+                googleBtn.replaceWith(googleBtn.cloneNode(true));
+                document.getElementById('googleBtn').addEventListener('click', handleGoogleSignIn);
             }
            
             if (signupBtn) {
@@ -1060,11 +1142,11 @@
         document.addEventListener('DOMContentLoaded', async function() {
             console.log('DOM loaded');
             
-            // Check for OAuth callback first
-            await handleOAuthCallback();
-            
             // Initialize the app
             await initializeApp();
+            
+            // Check for OAuth callback
+            await handleOAuthCallback();
             
             // Then check for existing session (if not processing OAuth)
             if (!isProcessingAuth) {
@@ -1075,21 +1157,30 @@
         });
        
         // Listen for auth state changes
-        if (sbClient) {
-            sbClient.auth.onAuthStateChange((event, session) => {
-                console.log('Auth state changed:', event, session?.user?.email);
-               
-                if (event === 'SIGNED_IN' && session && !isProcessingAuth) {
-                    console.log('User signed in via listener, redirecting...');
-                    isProcessingAuth = true;
-                    showLoading('Loading your account...');
-                    
-                    setTimeout(() => {
-                        window.location.href = 'app.html';
-                    }, 800);
-                }
-            });
-        }
+        window.addEventListener('load', function() {
+            if (sbClient) {
+                sbClient.auth.onAuthStateChange((event, session) => {
+                    console.log('Auth state changed:', event, session?.user?.email);
+                   
+                    if (event === 'SIGNED_IN' && session && !isProcessingAuth) {
+                        console.log('User signed in via listener');
+                        
+                        // Check if they need to see disclaimer
+                        const disclaimerAcknowledged = localStorage.getItem('mphaven_disclaimer_acknowledged');
+                        
+                        if (disclaimerAcknowledged === 'true') {
+                            isProcessingAuth = true;
+                            showLoading('Welcome! Loading your account...');
+                            setTimeout(() => {
+                                window.location.href = 'app.html';
+                            }, 800);
+                        } else {
+                            window.location.href = 'disclaimer.html';
+                        }
+                    }
+                });
+            }
+        });
         
         // Handle page visibility changes
         document.addEventListener('visibilitychange', function() {
@@ -1115,11 +1206,16 @@
             console.log('LocalStorage available:', typeof localStorage !== 'undefined');
             console.log('Supabase client:', !!sbClient);
             console.log('Processing auth:', isProcessingAuth);
+            console.log('Disclaimer acknowledged:', localStorage.getItem('mphaven_disclaimer_acknowledged'));
+            console.log('Pending agreement:', sessionStorage.getItem('pending_legal_agreement'));
            
             if (sbClient) {
                 try {
                     const { data, error } = await sbClient.auth.getSession();
                     console.log('Session:', data, error);
+                    if (data?.session) {
+                        console.log('User metadata:', data.session.user.user_metadata);
+                    }
                 } catch (e) {
                     console.error('Session check failed:', e);
                 }
