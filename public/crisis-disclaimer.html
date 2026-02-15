@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0f172a">
+<title>Crisis Resilience - Legal Disclaimer</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg-dark: #0f172a;
+    --bg-card: rgba(15, 23, 42, 0.98);
+    --bg-card-light: rgba(30, 41, 59, 0.65);
+    --bg-card-dark: rgba(15, 23, 42, 0.45);
+    --border-subtle: rgba(30, 41, 59, 0.5);
+    --border-softer: rgba(51, 65, 85, 0.4);
+    --primary-teal: #0e7490;
+    --primary-teal-dark: #0c627a;
+    --accent-amber: #d97706;
+    --text-primary: rgb(241, 245, 249);
+    --text-secondary: rgb(203, 213, 225);
+    --text-muted: rgb(148, 163, 184);
+    --text-teal-light: rgb(165, 243, 252);
+    --crisis-red: #dc2626;
+    --crisis-bg: rgba(220, 38, 38, 0.08);
+    --gradient-main: linear-gradient(135deg, #0e7490, #d97706);
+    
+    --space-xs: 0.5rem;
+    --space-sm: 0.75rem;
+    --space-md: 1rem;
+    --space-lg: 1.5rem;
+    --space-xl: 2rem;
+}
+
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
+    -webkit-tap-highlight-color: transparent; 
+}
+
+html, body { 
+    width: 100%; 
+    height: 100%; 
+    overflow: hidden; 
+    background: var(--bg-dark); 
+    color: var(--text-primary); 
+}
+
+.container { 
+    width: 100%; 
+    height: 100vh; 
+    display: flex; 
+    flex-direction: column; 
+}
+
+.app-wrapper { 
+    width: 100%; 
+    max-width: 28rem; 
+    height: 100%; 
+    margin: 0 auto; 
+    background: var(--bg-card); 
+    display: flex; 
+    flex-direction: column; 
+    position: relative; 
+    overflow: hidden; 
+}
+
+.bg-blur-1, .bg-blur-2 { 
+    position: absolute; 
+    border-radius: 50%; 
+    pointer-events: none; 
+    z-index: 0; 
+    opacity: 0.3; 
+}
+
+.bg-blur-1 { 
+    top: -5%; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    width: 22rem; 
+    height: 22rem; 
+    background: rgba(14, 116, 144, 0.15); 
+}
+
+.bg-blur-2 { 
+    bottom: -5%; 
+    right: -5%; 
+    width: 18rem; 
+    height: 18rem; 
+    background: rgba(217, 119, 6, 0.15); 
+}
+
+.main-content { 
+    flex: 1; 
+    overflow-y: auto; 
+    -webkit-overflow-scrolling: touch; 
+    scrollbar-width: none; 
+    position: relative; 
+    z-index: 1; 
+    padding: var(--space-lg); 
+}
+
+.main-content::-webkit-scrollbar { 
+    display: none; 
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    margin-bottom: var(--space-xl);
+}
+
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.title {
+    font-size: 1.75rem;
+    font-weight: 800;
+    margin-bottom: var(--space-md);
+    background: var(--gradient-main);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.disclaimer-box { 
+    background: var(--crisis-bg); 
+    border: 2px solid var(--crisis-red); 
+    border-radius: 1.25rem; 
+    padding: var(--space-xl); 
+    margin-bottom: var(--space-xl); 
+}
+
+.disclaimer-title { 
+    display: flex; 
+    align-items: center; 
+    gap: 0.75rem; 
+    font-size: 1.25rem; 
+    font-weight: 700; 
+    color: #fca5a5; 
+    margin-bottom: var(--space-lg); 
+}
+
+.disclaimer-content { 
+    color: var(--text-secondary); 
+    font-size: 0.9375rem; 
+    line-height: 1.7; 
+}
+
+.disclaimer-content p { 
+    margin-bottom: var(--space-md); 
+}
+
+.legal-highlight {
+    background: rgba(220, 38, 38, 0.15);
+    border-left: 4px solid var(--crisis-red);
+    padding: var(--space-lg);
+    margin: var(--space-lg) 0;
+    border-radius: 0.75rem;
+}
+
+.crisis-contacts { 
+    background: rgba(220, 38, 38, 0.15); 
+    border-left: 4px solid var(--crisis-red);
+    border-radius: 0.75rem; 
+    padding: var(--space-lg); 
+    margin: var(--space-lg) 0; 
+}
+
+.crisis-contacts a { 
+    color: #fca5a5; 
+    font-weight: 700; 
+    text-decoration: none; 
+    font-size: 1rem;
+}
+
+.crisis-contacts a:hover {
+    text-decoration: underline;
+}
+
+.acknowledgment-box {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 1rem;
+    padding: var(--space-lg);
+    margin-bottom: var(--space-xl);
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-md);
+}
+
+.acknowledgment-box input[type="checkbox"] {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-top: 0.125rem;
+    accent-color: var(--crisis-red);
+    cursor: pointer;
+}
+
+.acknowledgment-label {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    line-height: 1.6;
+    flex: 1;
+}
+
+.acknowledgment-label strong {
+    color: var(--text-primary);
+}
+
+.btn {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    border-radius: 0.875rem;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+    text-align: center;
+    display: inline-block;
+    transition: all 0.2s;
+}
+
+.btn-primary { 
+    background: var(--gradient-main); 
+    color: white; 
+}
+
+.btn-primary:active { 
+    transform: scale(0.98); 
+    opacity: 0.9; 
+}
+
+.btn-secondary { 
+    background: var(--bg-card-light); 
+    color: var(--text-secondary); 
+    border: 1px solid var(--border-softer); 
+    text-decoration: none;
+}
+
+.btn-disabled {
+    opacity: 0.5;
+    pointer-events: none;
+    background: var(--bg-card-light);
+    color: var(--text-muted);
+}
+
+.btn-group {
+    display: flex;
+    gap: var(--space-md);
+    margin-top: var(--space-xl);
+}
+
+.footer-note {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    margin-top: var(--space-xl);
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--border-subtle);
+}
+
+@media (max-width: 640px) {
+    .btn-group { 
+        flex-direction: column; 
+    }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="app-wrapper">
+    <div class="bg-blur-1"></div>
+    <div class="bg-blur-2"></div>
+    <div class="main-content">
+      
+      <div class="header">
+        <a href="app.html" class="back-btn">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+          </svg>
+          Back to Home
+        </a>
+      </div>
+      
+      <h1 class="title">Legal Disclaimer</h1>
+      
+      <div class="disclaimer-box">
+        <div class="disclaimer-title">
+          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+          </svg>
+          ⚖️ REQUIRED ACKNOWLEDGMENT
+        </div>
+        <div class="disclaimer-content">
+          <div class="legal-highlight">
+            <p><strong style="color: #fca5a5; font-size: 1rem;">⚠️ THIS IS NOT THERAPY OR MEDICAL TREATMENT</strong></p>
+            <p style="margin-top: 0.5rem;">Crisis Resilience is an <strong>educational skills course only</strong>. It does not constitute mental health treatment, therapy, counseling, medical advice, or crisis intervention services.</p>
+          </div>
+          
+          <p><strong>NO THERAPEUTIC RELATIONSHIP:</strong> Your use of this course does not create a doctor-patient, therapist-client, or any other professional treatment relationship. The creators and MPHaven are not providing healthcare services to you.</p>
+          
+          <p><strong>NO GUARANTEES:</strong> We do not guarantee that these techniques will work for you. Individual results vary significantly. What helps one person may not help another.</p>
+          
+          <p><strong>YOUR RESPONSIBILITY:</strong> You are solely responsible for your own wellbeing. This course provides information only—you choose whether and how to use it.</p>
+          
+          <p><strong>NOT FOR CRISIS:</strong> If you are in emotional distress, experiencing thoughts of suicide or self-harm, or unable to keep yourself safe:</p>
+          
+          <div class="crisis-contacts">
+            <p style="margin-bottom:0.75rem; color: #fca5a5; font-weight: 700;">🚨 STOP AND GET HELP NOW:</p>
+            <p style="margin-bottom:0.5rem;">• <a href="tel:988"><strong>988 Suicide & Crisis Lifeline</strong></a> — Call or text 988 (24/7, free, confidential)</p>
+            <p style="margin-bottom:0.5rem;">• <a href="sms:741741"><strong>Crisis Text Line</strong></a> — Text HOME to 741741</p>
+            <p style="margin-bottom:0.5rem;">• <strong>Emergency Services</strong> — Call 911 or go to your nearest emergency room</p>
+          </div>
+
+          <p><strong>BY USING THIS COURSE, YOU ACKNOWLEDGE:</strong> That you have read and understood this disclaimer, that you are not in active crisis, and that you assume full responsibility for your use of these educational materials.</p>
+        </div>
+      </div>
+
+      <div class="acknowledgment-box">
+        <input type="checkbox" id="acknowledgeCheck">
+        <label for="acknowledgeCheck" class="acknowledgment-label">
+          <strong>I ACKNOWLEDGE AND AGREE:</strong> I understand this is an educational course, not therapy or medical treatment. I am not in active crisis. If I need help, I will contact 988 or emergency services. I assume full responsibility for my use of these materials.
+        </label>
+      </div>
+
+      <div class="btn-group">
+        <a id="continueBtn" class="btn btn-disabled">I Understand, Continue →</a>
+        <a href="app.html" class="btn btn-secondary">← Return to Home</a>
+      </div>
+
+      <div class="footer-note">
+        <p>By proceeding, you agree to the terms stated above.</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  // ===== CHECK IF ALREADY ACKNOWLEDGED =====
+  if (localStorage.getItem('crisis_disclaimer_acknowledged') === 'true') {
+    window.location.href = 'crisis-intro.html';
+    return;
+  }
+  
+  const check = document.getElementById('acknowledgeCheck');
+  const continueBtn = document.getElementById('continueBtn');
+  
+  // ===== UPDATE BUTTON STATE =====
+  function updateButton() {
+    if (check.checked) {
+      continueBtn.classList.remove('btn-disabled');
+      continueBtn.classList.add('btn-primary');
+      continueBtn.removeAttribute('disabled');
+      continueBtn.href = 'crisis-intro.html';
+    } else {
+      continueBtn.classList.add('btn-disabled');
+      continueBtn.classList.remove('btn-primary');
+      continueBtn.href = 'javascript:void(0)';
+    }
+  }
+  
+  check.addEventListener('change', updateButton);
+  
+  // ===== SAVE ACKNOWLEDGMENT =====
+  continueBtn.addEventListener('click', function(e) {
+    if (!check.checked) {
+      e.preventDefault();
+      alert('You must acknowledge the disclaimer before continuing.');
+      return;
+    }
+    
+    // Save acknowledgment to localStorage
+    localStorage.setItem('crisis_disclaimer_acknowledged', 'true');
+    localStorage.setItem('crisis_disclaimer_timestamp', new Date().toISOString());
+    
+    // Initialize course progress
+    const progress = {
+      courseId: 'crisis-resilience',
+      started: true,
+      currentModule: 1,
+      disclaimerAcknowledged: true,
+      lastAccessed: new Date().toISOString(),
+      practicedModules: []
+    };
+    localStorage.setItem('crisis_course_progress', JSON.stringify(progress));
+    
+    // Sync with main app if it exists
+    try {
+      const mainState = JSON.parse(localStorage.getItem('mphaven_state') || '{}');
+      if (!mainState.courses) mainState.courses = {};
+      if (!mainState.courses['crisis-resilience']) mainState.courses['crisis-resilience'] = {};
+      mainState.courses['crisis-resilience'].started = true;
+      mainState.courses['crisis-resilience'].disclaimerAcknowledged = true;
+      mainState.courses['crisis-resilience'].lastActivity = new Date().toISOString();
+      localStorage.setItem('mphaven_state', JSON.stringify(mainState));
+    } catch(e) {}
+  });
+})();
+</script>
+</body>
+</html>
