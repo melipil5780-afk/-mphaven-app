@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="MPHaven">
     <meta name="format-detection" content="telephone=no">
-    <meta name="theme-color" content="#020617">
+    <meta name="theme-color" content="#0f172a">
     <title>Sign In - MPHaven</title>
     <style>
         * {
@@ -19,7 +19,7 @@
 
         @keyframes pulse-glow {
             0%, 100% { opacity: 0.2; }
-            50% { opacity: 0.4; }
+            50% { opacity: 0.35; }
         }
         
         html, body {
@@ -32,7 +32,7 @@
         }
         
         body {
-            background: linear-gradient(to bottom, #020617, #0f172a, #020617);
+            background: linear-gradient(to bottom, #0f172a, #020617, #0f172a);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -64,15 +64,29 @@
         .bg-blur-1 {
             position: absolute;
             top: -10%;
-            left: 50%;
-            transform: translateX(-50%);
+            left: 30%;
             width: 30rem;
             height: 30rem;
-            background: rgba(147, 51, 234, 0.15);
+            background: rgba(14, 116, 144, 0.08);
             border-radius: 50%;
-            filter: blur(120px);
+            filter: blur(140px);
             pointer-events: none;
             animation: pulse-glow 4s ease-in-out infinite;
+            opacity: 0.35;
+        }
+
+        .bg-blur-2 {
+            position: absolute;
+            bottom: -10%;
+            right: 30%;
+            width: 25rem;
+            height: 25rem;
+            background: rgba(217, 119, 6, 0.08);
+            border-radius: 50%;
+            filter: blur(140px);
+            pointer-events: none;
+            animation: pulse-glow 4s ease-in-out infinite 2s;
+            opacity: 0.35;
         }
         
         .content {
@@ -104,7 +118,7 @@
         }
         
         .back-btn:hover {
-            color: white;
+            color: rgb(165, 243, 252);
         }
         
         .back-btn svg {
@@ -113,7 +127,7 @@
         }
         
         h1 {
-            color: white;
+            color: rgb(241, 245, 249);
             font-size: 2.5rem;
             font-weight: 700;
             letter-spacing: -0.025em;
@@ -142,9 +156,9 @@
             width: 100%;
             padding: 0.875rem 1rem;
             background: rgba(30, 41, 59, 0.6);
-            border: 1px solid rgba(100, 116, 139, 0.3);
+            border: 1px solid rgba(51, 65, 85, 0.4);
             border-radius: 0.75rem;
-            color: white;
+            color: rgb(241, 245, 249);
             font-size: 1rem;
             transition: all 0.3s;
             -webkit-appearance: none;
@@ -152,9 +166,9 @@
         
         input:focus {
             outline: none;
-            border-color: #9333EA;
+            border-color: #0e7490;
             background: rgba(30, 41, 59, 0.8);
-            box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.1);
+            box-shadow: 0 0 0 3px rgba(14, 116, 144, 0.25);
         }
         
         input::placeholder {
@@ -180,6 +194,7 @@
             width: 1.125rem;
             height: 1.125rem;
             cursor: pointer;
+            accent-color: #0e7490;
         }
         
         .checkbox-label {
@@ -188,7 +203,7 @@
         }
         
         .forgot-link {
-            color: #9333EA;
+            color: rgb(165, 243, 252);
             font-size: 0.875rem;
             text-decoration: none;
             font-weight: 500;
@@ -196,6 +211,7 @@
         
         .forgot-link:hover {
             text-decoration: underline;
+            color: rgb(94, 234, 212);
         }
         
         .btn {
@@ -227,13 +243,13 @@
         }
         
         .btn-primary {
-            background: linear-gradient(135deg, #9333EA, #7C3AED);
-            color: white;
-            box-shadow: 0 10px 25px rgba(147, 51, 234, 0.4);
+            background: linear-gradient(135deg, #0e7490, #d97706);
+            color: rgb(241, 245, 249);
+            box-shadow: 0 10px 25px rgba(14, 116, 144, 0.4);
         }
         
         .btn-primary:hover:not(:disabled) {
-            box-shadow: 0 15px 35px rgba(147, 51, 234, 0.5);
+            box-shadow: 0 15px 35px rgba(14, 116, 144, 0.5);
             transform: translateY(-2px);
         }
         
@@ -247,7 +263,7 @@
         .divider-line {
             flex: 1;
             height: 1px;
-            background: rgba(100, 116, 139, 0.3);
+            background: rgba(51, 65, 85, 0.4);
         }
         
         .divider-text {
@@ -262,9 +278,9 @@
             border-radius: 0.75rem;
             font-size: 0.875rem;
             font-weight: 600;
-            border: 1px solid rgba(100, 116, 139, 0.3);
+            border: 1px solid rgba(51, 65, 85, 0.4);
             background: rgba(30, 41, 59, 0.6);
-            color: white;
+            color: rgb(241, 245, 249);
             cursor: pointer;
             transition: all 0.3s;
             display: flex;
@@ -279,7 +295,7 @@
         
         .social-btn:hover {
             background: rgba(30, 41, 59, 0.8);
-            border-color: rgba(100, 116, 139, 0.5);
+            border-color: rgba(14, 116, 144, 0.5);
         }
         
         .social-btn svg {
@@ -295,13 +311,14 @@
         }
         
         .signup-link a {
-            color: #9333EA;
+            color: rgb(165, 243, 252);
             text-decoration: none;
             font-weight: 600;
         }
         
         .signup-link a:hover {
             text-decoration: underline;
+            color: rgb(94, 234, 212);
         }
         
         .error-message {
@@ -341,14 +358,14 @@
         .loading-spinner {
             width: 3rem;
             height: 3rem;
-            border: 3px solid rgba(100, 116, 139, 0.3);
-            border-top: 3px solid #9333EA;
+            border: 3px solid rgba(51, 65, 85, 0.4);
+            border-top: 3px solid #0e7490;
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
         
         .loading-text {
-            color: white;
+            color: rgb(241, 245, 249);
             font-size: 1rem;
         }
         
@@ -383,6 +400,7 @@
 <body>
     <div class="container">
         <div class="bg-blur-1"></div>
+        <div class="bg-blur-2"></div>
 
         <div class="content">
             <button class="back-btn" id="backBtn">
