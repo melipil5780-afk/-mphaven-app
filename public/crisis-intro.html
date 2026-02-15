@@ -6,34 +6,36 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#0f172a">
-<title>Crisis Resilience - What This Course Is (And Isn't)</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<title>Crisis Resilience - Course Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
     --bg-dark: #0f172a;
     --bg-card: rgba(15, 23, 42, 0.98);
-    --bg-card-light: rgba(30, 41, 59, 0.65);
-    --bg-card-dark: rgba(15, 23, 42, 0.45);
+    --bg-card-light: rgba(30, 41, 59, 0.7);
+    --bg-card-dark: rgba(15, 23, 42, 0.5);
     --border-subtle: rgba(30, 41, 59, 0.5);
     --border-softer: rgba(51, 65, 85, 0.4);
     --primary-teal: #0e7490;
-    --primary-teal-dark: #0c627a;
     --accent-amber: #d97706;
-    --accent-amber-dark: #b45309;
     --text-primary: rgb(241, 245, 249);
     --text-secondary: rgb(203, 213, 225);
     --text-muted: rgb(148, 163, 184);
     --text-teal-light: rgb(165, 243, 252);
     --text-teal: rgb(94, 234, 212);
-    --text-amber: rgb(251, 191, 36);
-    --text-amber-dark: rgb(217, 119, 6);
     --success-emerald: rgb(74, 222, 128);
     --success-bg: rgba(34, 197, 94, 0.12);
     --gradient-main: linear-gradient(135deg, #0e7490, #d97706);
     --gradient-subtle: linear-gradient(135deg, rgba(14,116,144,0.15), rgba(217,119,6,0.10));
     --crisis-red: #dc2626;
-    --crisis-red-dark: #b91c1c;
     --crisis-bg: rgba(220, 38, 38, 0.08);
+    
+    --space-xs: 0.5rem;
+    --space-sm: 0.75rem;
+    --space-md: 1rem;
+    --space-lg: 1.5rem;
+    --space-xl: 2rem;
+    --space-xxl: 2.5rem;
 }
 
 * { 
@@ -76,7 +78,7 @@ html, body {
     border-radius: 50%; 
     pointer-events: none; 
     z-index: 0; 
-    opacity: 0.3; 
+    opacity: 0.2; 
 }
 
 .bg-blur-1 { 
@@ -103,42 +105,49 @@ html, body {
     scrollbar-width: none; 
     position: relative; 
     z-index: 1; 
+    padding: var(--space-md) var(--space-md) calc(2rem + env(safe-area-inset-bottom));
 }
 
 .main-content::-webkit-scrollbar { 
     display: none; 
 }
 
-.content-wrapper { 
-    padding: 1rem 1.25rem 2rem; 
-    padding-bottom: calc(2rem + env(safe-area-inset-bottom)); 
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-lg);
 }
 
-.header { 
-    text-align: center; 
-    margin-bottom: 2rem; 
-    padding: 2rem 1rem 1rem; 
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
 }
 
-.back-btn { 
-    display: inline-flex; 
-    align-items: center; 
-    gap: 0.5rem; 
-    color: var(--text-muted); 
-    font-size: 0.875rem; 
-    font-weight: 600; 
-    margin-bottom: 1rem; 
-    text-decoration: none; 
-}
-
-.back-btn:active { 
-    opacity: 0.7; 
+.toolkit-link {
+    background: var(--gradient-subtle);
+    color: var(--text-teal-light);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border: 1px solid rgba(14,116,144,0.3);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
 }
 
 .title { 
     font-size: 2rem; 
     font-weight: 800; 
-    margin-bottom: 0.5rem; 
+    margin-bottom: 0.25rem; 
     background: var(--gradient-main); 
     -webkit-background-clip: text; 
     -webkit-text-fill-color: transparent; 
@@ -147,207 +156,270 @@ html, body {
 .subtitle { 
     color: var(--text-secondary); 
     font-size: 1rem; 
+    margin-bottom: var(--space-lg);
 }
 
-.card { 
-    background: linear-gradient(135deg, var(--bg-card-light), var(--bg-card-dark)); 
-    border: 1px solid var(--border-softer); 
-    border-radius: 1.25rem; 
-    padding: 1.5rem; 
-    margin-bottom: 1rem; 
+/* Progress Overview */
+.progress-overview {
+    background: var(--bg-card-light);
+    border: 1px solid var(--border-softer);
+    border-radius: 1.25rem;
+    padding: var(--space-lg);
+    margin-bottom: var(--space-xl);
 }
 
-/* ===== IRONCLAD LEGAL DISCLAIMER ===== */
-.disclaimer-box { 
-    background: var(--crisis-bg); 
-    border: 2px solid var(--crisis-red); 
-    border-radius: 1rem; 
-    padding: 1.5rem; 
-    margin-bottom: 2rem; 
-}
-
-.disclaimer-title { 
-    display: flex; 
-    align-items: center; 
-    gap: 0.75rem; 
-    font-size: 1.125rem; 
-    font-weight: 700; 
-    color: #fca5a5; 
-    margin-bottom: 1rem; 
-}
-
-.disclaimer-content { 
-    color: var(--text-secondary); 
-    font-size: 0.9375rem; 
-    line-height: 1.6; 
-}
-
-.disclaimer-content p { 
-    margin-bottom: 0.75rem; 
-}
-
-.disclaimer-content strong { 
-    color: var(--text-primary); 
-    font-weight: 700; 
-}
-
-.legal-highlight {
-    background: rgba(220, 38, 38, 0.15);
-    border-left: 4px solid var(--crisis-red);
-    padding: 1rem;
-    margin: 1rem 0;
-    border-radius: 0.5rem;
-}
-
-.crisis-contacts { 
-    background: rgba(220, 38, 38, 0.15); 
-    border-left: 4px solid var(--crisis-red);
-    border-radius: 0.75rem; 
-    padding: 1.25rem; 
-    margin-top: 1rem; 
-}
-
-.crisis-contacts a { 
-    color: #fca5a5; 
-    font-weight: 700; 
-    text-decoration: none; 
-    font-size: 1.125rem;
-}
-
-.crisis-contacts a:hover {
-    text-decoration: underline;
-}
-
-/* ===== ACKNOWLEDGMENT CHECKBOX ===== */
-.acknowledgment-box {
-    background: var(--bg-card);
-    border: 1px solid var(--border-subtle);
-    border-radius: 1rem;
-    padding: 1.25rem;
-    margin-bottom: 1.5rem;
+.progress-stats {
     display: flex;
-    align-items: flex-start;
-    gap: 0.75rem;
+    justify-content: space-between;
+    margin-bottom: var(--space-md);
 }
 
-.acknowledgment-box input[type="checkbox"] {
-    width: 1.25rem;
-    height: 1.25rem;
-    margin-top: 0.125rem;
-    accent-color: var(--crisis-red);
-    cursor: pointer;
-}
-
-.acknowledgment-label {
-    color: var(--text-secondary);
-    font-size: 0.875rem;
-    line-height: 1.5;
+.stat {
+    text-align: center;
     flex: 1;
 }
 
-.acknowledgment-label strong {
-    color: var(--text-primary);
+.stat-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-teal);
+    line-height: 1.2;
+}
+
+.stat-label {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.progress-bar-bg {
+    height: 0.5rem;
+    background: rgba(148,163,184,0.2);
+    border-radius: 1rem;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--gradient-main);
+    border-radius: 1rem;
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+/* Card */
+.card { 
+    background: linear-gradient(135deg, var(--bg-card-light), var(--bg-card-dark)); 
+    border: 1px solid var(--border-softer); 
+    border-radius: 1.5rem; 
+    padding: var(--space-xl); 
+    margin-bottom: var(--space-xl); 
+}
+
+.card-highlight {
+    background: var(--gradient-subtle);
+    border: 1px solid rgba(14,116,144,0.3);
+    border-radius: 1.5rem;
+    padding: var(--space-xl);
+    margin-bottom: var(--space-xl);
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-lg);
+}
+
+.section-icon {
+    font-size: 1.8rem;
 }
 
 .section-title { 
-    font-size: 1.25rem; 
+    font-size: 1.3rem; 
     font-weight: 700; 
-    margin-bottom: 1rem; 
+    color: var(--text-teal-light);
+    margin: 0;
 }
 
-.section-content { 
-    color: var(--text-secondary); 
-    font-size: 0.9375rem; 
-    line-height: 1.6; 
+/* Quote */
+.quote-text {
+    font-size: 1.05rem;
+    color: var(--text-teal-light);
+    font-style: italic;
+    line-height: 1.7;
 }
 
-.section-content p { 
-    margin-bottom: 0.75rem; 
+/* Slider */
+.slider-container {
+    margin: var(--space-lg) 0;
 }
 
-.list-item { 
-    display: flex; 
-    align-items: start; 
-    gap: 0.75rem; 
-    margin-bottom: 0.75rem; 
+.slider-label {
+    display: flex;
+    justify-content: space-between;
+    color: var(--text-secondary);
+    margin-bottom: var(--space-sm);
 }
 
-.list-icon { 
-    font-size: 1.25rem; 
-    flex-shrink: 0; 
-    margin-top: 0.125rem; 
+.slider {
+    width: 100%;
+    height: 0.5rem;
+    background: rgba(30,41,59,0.8);
+    border-radius: 1rem;
+    -webkit-appearance: none;
 }
 
-.list-icon-check { 
-    color: var(--success-emerald); 
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 1.5rem;
+    height: 1.5rem;
+    background: var(--gradient-main);
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid var(--text-teal-light);
 }
 
-.list-icon-x { 
-    color: var(--crisis-red); 
+.slider-value {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-teal);
+    margin: var(--space-sm) 0;
 }
 
-.rules-grid { 
-    display: grid; 
-    gap: 1rem; 
-    margin-top: 1rem; 
+.slider-labels {
+    display: flex;
+    justify-content: space-between;
+    color: var(--text-muted);
+    font-size: 0.8125rem;
 }
 
-.rule-card { 
-    background: rgba(15, 23, 42, 0.6); 
-    border: 1px solid var(--border-softer); 
-    border-radius: 0.75rem; 
-    padding: 1rem; 
+.feedback-box {
+    margin-top: var(--space-lg);
+    padding: var(--space-lg);
+    background: rgba(15,23,42,0.6);
+    border-radius: 1rem;
+    color: var(--text-teal-light);
+    font-size: 0.9375rem;
+    line-height: 1.6;
 }
 
-.rule-label { 
-    font-weight: 600; 
-    color: var(--text-primary); 
-    margin-bottom: 0.25rem; 
-    font-size: 0.875rem; 
+/* Module Cards */
+.modules-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    margin: var(--space-lg) 0;
 }
 
-.rule-text { 
-    color: var(--text-muted); 
-    font-size: 0.8125rem; 
-    line-height: 1.4; 
+.module-card {
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid var(--border-softer);
+    border-radius: 1.25rem;
+    padding: var(--space-lg);
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    transition: all 0.2s;
+    text-decoration: none;
+    color: inherit;
 }
 
-.commitment-box { 
-    background: var(--gradient-subtle); 
-    border: 2px solid rgba(14, 116, 144, 0.4); 
-    border-radius: 1rem; 
-    padding: 1.5rem; 
-    text-align: center; 
-    margin: 2rem 0; 
+.module-card:active {
+    transform: scale(0.98);
+    background: rgba(30, 41, 59, 0.8);
 }
 
-.commitment-text { 
-    font-size: 1rem; 
-    font-weight: 600; 
-    color: var(--text-primary); 
-    margin-bottom: 1.5rem; 
-    line-height: 1.5; 
+.module-card.completed {
+    border-color: var(--success-emerald);
+    background: rgba(34, 197, 94, 0.05);
 }
 
-.btn-group { 
-    display: flex; 
-    gap: 1rem; 
-    justify-content: center; 
-    flex-wrap: wrap; 
+.module-number {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background: var(--gradient-main);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.25rem;
+    flex-shrink: 0;
 }
 
-.btn { 
-    padding: 0.875rem 1.75rem; 
-    border-radius: 0.75rem; 
-    font-weight: 600; 
-    font-size: 0.9375rem; 
-    cursor: pointer; 
-    border: none; 
-    transition: all 0.2s; 
-    text-decoration: none; 
-    display: inline-block; 
-    text-align: center; 
-    min-height: 44px; 
+.module-card.completed .module-number {
+    background: var(--success-bg);
+    color: var(--success-emerald);
+    border: 1px solid var(--success-emerald);
+}
+
+.module-info {
+    flex: 1;
+}
+
+.module-title {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.completed-badge {
+    background: var(--success-bg);
+    color: var(--success-emerald);
+    font-size: 0.6875rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 2rem;
+    font-weight: 600;
+    border: 1px solid var(--success-emerald);
+}
+
+.module-duration {
+    color: var(--text-muted);
+    font-size: 0.8125rem;
+    margin-bottom: 0.5rem;
+}
+
+.module-progress {
+    height: 0.25rem;
+    background: rgba(148,163,184,0.2);
+    border-radius: 1rem;
+    overflow: hidden;
+    width: 100%;
+}
+
+.module-progress-fill {
+    height: 100%;
+    background: var(--text-teal);
+    border-radius: 1rem;
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+.module-card.completed .module-progress-fill {
+    background: var(--success-emerald);
+}
+
+/* Buttons */
+.btn {
+    padding: 0.875rem 1.5rem;
+    border-radius: 0.875rem;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
 }
 
 .btn-primary { 
@@ -361,7 +433,7 @@ html, body {
 }
 
 .btn-secondary { 
-    background: var(--bg-card-light); 
+    background: var(--bg-card-dark); 
     color: var(--text-secondary); 
     border: 1px solid var(--border-softer); 
 }
@@ -370,73 +442,56 @@ html, body {
     transform: scale(0.98); 
 }
 
-.btn-disabled {
-    opacity: 0.5;
-    pointer-events: none;
-    background: var(--bg-card-light);
-    color: var(--text-muted);
+.btn-toolkit {
+    background: var(--gradient-subtle);
+    color: var(--text-teal-light);
+    border: 1px solid rgba(14,116,144,0.3);
+    padding: 0.875rem 1.25rem;
+    border-radius: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    margin-top: var(--space-md);
+    text-decoration: none;
+    font-weight: 600;
 }
 
-.modules-preview { 
-    margin-top: 2rem; 
+.btn-toolkit:active {
+    background: rgba(14,116,144,0.25);
+    transform: scale(0.98);
 }
 
-.module-item { 
-    background: rgba(15, 23, 42, 0.4); 
-    border: 1px solid var(--border-softer); 
-    border-radius: 0.75rem; 
-    padding: 1rem; 
-    margin-bottom: 0.75rem; 
-    display: flex; 
-    align-items: center; 
-    gap: 1rem; 
+.btn-group {
+    display: flex;
+    gap: var(--space-md);
+    margin: var(--space-lg) 0;
 }
 
-.module-number { 
-    width: 2.5rem; 
-    height: 2.5rem; 
-    border-radius: 50%; 
-    background: var(--gradient-main); 
-    color: white; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    font-weight: 700; 
-    font-size: 1rem; 
-    flex-shrink: 0; 
-}
-
-.module-info { 
-    flex: 1; 
-}
-
-.module-title { 
-    font-weight: 600; 
-    color: var(--text-primary); 
-    margin-bottom: 0.25rem; 
-    font-size: 0.9375rem; 
-}
-
-.module-duration { 
-    color: var(--text-muted); 
-    font-size: 0.8125rem; 
-}
-
+/* Footer */
 .footer-note {
     text-align: center;
-    color: var(--text-dim);
-    font-size: 0.6875rem;
-    margin-top: 2rem;
-    padding-top: 1rem;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    margin-top: var(--space-xxl);
+    padding-top: var(--space-lg);
     border-top: 1px solid var(--border-subtle);
+}
+
+.footer-warning {
+    color: #fca5a5;
+    font-weight: 600;
+    font-size: 0.8125rem;
+    margin-bottom: var(--space-sm);
 }
 
 @media (max-width: 640px) {
     .btn-group { 
         flex-direction: column; 
     }
-    .btn { 
-        width: 100%; 
+    .module-card {
+        padding: var(--space-md);
     }
 }
 </style>
@@ -449,209 +504,174 @@ html, body {
     <div class="main-content">
       <div class="content-wrapper">
 
+        <!-- HEADER WITH TOOLKIT LINK -->
         <div class="header">
-          <a href="app.html" class="back-btn">
+          <a href="app.html" class="back-link">
             <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
             </svg>
-            Back to Home
+            Home
           </a>
-          <h1 class="title">Crisis Resilience</h1>
-          <p class="subtitle">Your Survival Toolkit</p>
+          <a href="crisis-toolkit.html" class="toolkit-link">
+            <span>🧰</span> My Toolkit
+          </a>
         </div>
 
-        <!-- ===== IRONCLAD LEGAL DISCLAIMER ===== -->
-        <div class="disclaimer-box">
-          <div class="disclaimer-title">
-            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-            </svg>
-            ⚖️ LEGAL DISCLAIMER & TERMS OF USE
-          </div>
-          <div class="disclaimer-content">
-            <div class="legal-highlight">
-              <p><strong style="color: #fca5a5; font-size: 1rem;">⚠️ THIS IS NOT THERAPY OR MEDICAL TREATMENT</strong></p>
-              <p style="margin-top: 0.5rem;">Crisis Resilience is an <strong>educational skills course only</strong>. It does not constitute mental health treatment, therapy, counseling, medical advice, or crisis intervention services.</p>
-            </div>
-            
-            <p><strong style="color: var(--text-primary);">NO THERAPEUTIC RELATIONSHIP:</strong> Your use of this course does not create a doctor-patient, therapist-client, or any other professional treatment relationship. The creators and MPHaven are not providing healthcare services to you.</p>
-            
-            <p><strong style="color: var(--text-primary);">NO GUARANTEES:</strong> We do not guarantee that these techniques will work for you. Individual results vary significantly. What helps one person may not help another.</p>
-            
-            <p><strong style="color: var(--text-primary);">YOUR RESPONSIBILITY:</strong> You are solely responsible for your own wellbeing. This course provides information only—you choose whether and how to use it.</p>
-            
-            <p><strong style="color: var(--text-primary);">NOT FOR CRISIS:</strong> If you are in emotional distress, experiencing thoughts of suicide or self-harm, or unable to keep yourself safe:</p>
-            
-            <div class="crisis-contacts">
-              <p style="margin-bottom:0.75rem; color: #fca5a5; font-weight: 700;">🚨 STOP USING THIS COURSE AND GET HELP NOW:</p>
-              <p style="margin-bottom:0.5rem;">• <a href="tel:988"><strong>988 Suicide & Crisis Lifeline</strong></a> — Call or text 988 (24/7, free, confidential)</p>
-              <p style="margin-bottom:0.5rem;">• <a href="sms:741741"><strong>Crisis Text Line</strong></a> — Text HOME to 741741</p>
-              <p style="margin-bottom:0.5rem;">• <strong>Emergency Services</strong> — Call 911 or go to your nearest emergency room</p>
-              <p style="margin-top:0.75rem; font-size:0.8125rem; color: var(--text-muted);">These are free, confidential resources available 24 hours a day, 7 days a week.</p>
-            </div>
+        <h1 class="title">Crisis Resilience</h1>
+        <p class="subtitle">Your Survival Toolkit</p>
 
-            <p style="margin-top: 1rem;"><strong style="color: var(--text-primary);">BY USING THIS COURSE, YOU ACKNOWLEDGE:</strong> That you have read and understood this disclaimer, that you are not in active crisis, and that you assume full responsibility for your use of these educational materials.</p>
+        <!-- PROGRESS OVERVIEW -->
+        <div class="progress-overview" id="progressOverview">
+          <div class="progress-stats">
+            <div class="stat">
+              <div class="stat-value" id="completedModules">0</div>
+              <div class="stat-label">Completed</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value" id="totalModules">5</div>
+              <div class="stat-label">Total Modules</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value" id="toolkitCount">0</div>
+              <div class="stat-label">Toolkit Items</div>
+            </div>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-fill" id="overallProgress" style="width: 0%;"></div>
           </div>
         </div>
 
-        <!-- ===== REQUIRED ACKNOWLEDGMENT CHECKBOX ===== -->
-        <div class="acknowledgment-box">
-          <input type="checkbox" id="acknowledgeCheck">
-          <label for="acknowledgeCheck" class="acknowledgment-label">
-            <strong>I ACKNOWLEDGE AND AGREE:</strong> I understand this is an educational course, not therapy or medical treatment. I am not in active crisis. If I need help, I will contact 988 or emergency services. I assume full responsibility for my use of these materials.
-          </label>
+        <!-- OPENING QUOTE -->
+        <div class="card-highlight">
+          <p class="quote-text">"You're here because sometimes emotions feel unbearable. Maybe you've had moments where you wanted to escape so badly you'd do anything—even things that hurt you."</p>
         </div>
 
-        <!-- ===== OPENING QUOTE - YOUR EXACT WORDS ===== -->
+        <!-- EMOTIONAL PULSE -->
         <div class="card">
-          <div class="section-content">
-            <p style="font-size: 1.05rem; font-weight: 500; color: var(--text-teal-light); margin-bottom: 1rem;">"You're here because sometimes emotions feel unbearable. Maybe you've had moments where you wanted to escape so badly you'd do anything—even things that hurt you."</p>
-            
-            <p><strong>This course won't fix your problems or make pain disappear.</strong> But it will teach you how to survive the worst 20 minutes without making your life worse.</p>
-            
-            <p style="margin-top: 1rem; padding: 1rem; background: rgba(14,116,144,0.1); border-radius: 0.75rem; border-left: 4px solid var(--primary-teal);">
-              These are <strong style="color: var(--text-teal);">crisis skills</strong>—emergency tools for when you're at 8/10 intensity and climbing. They're not therapy, not permanent solutions, not ways to avoid your feelings forever. <strong style="color: var(--text-teal);">They're survival gear.</strong>
-            </p>
+          <div class="section-header">
+            <span class="section-icon">❤️</span>
+            <h2 class="section-title">Take Your Emotional Pulse</h2>
           </div>
-        </div>
-
-        <!-- ===== TAKE YOUR EMOTIONAL PULSE - INTERACTIVE SLIDER ===== -->
-        <div class="card" style="background: var(--gradient-subtle);">
-          <h2 class="section-title" style="display: flex; align-items: center; gap: 0.5rem;">
-            <span style="font-size: 1.5rem;">❤️</span>
-            Take Your Emotional Pulse
-          </h2>
-          <div style="margin: 1rem 0;">
-            <p style="color: var(--text-secondary); margin-bottom: 1rem;">How distressed are you RIGHT NOW? (0-10)</p>
-            <input type="range" id="distressSlider" min="0" max="10" value="3" step="1" style="width: 100%; height: 0.5rem; background: rgba(30,41,59,0.8); border-radius: 1rem; -webkit-appearance: none;">
-            <div style="display: flex; justify-content: space-between; margin-top: 0.5rem;">
-              <span style="color: var(--text-muted); font-size: 0.75rem;">0 - Calm</span>
-              <span style="color: var(--text-teal); font-weight: 700; font-size: 1.25rem;" id="distressValue">3</span>
-              <span style="color: var(--text-muted); font-size: 0.75rem;">10 - Overwhelming</span>
+          
+          <div class="slider-container">
+            <p style="color: var(--text-secondary); margin-bottom: var(--space-md);">How distressed are you RIGHT NOW? (0-10)</p>
+            
+            <input type="range" id="distressSlider" class="slider" min="0" max="10" value="3" step="1">
+            
+            <div class="slider-value" id="distressValue">3</div>
+            
+            <div class="slider-labels">
+              <span>0 - Calm</span>
+              <span>5 - Moderate</span>
+              <span>10 - Overwhelming</span>
             </div>
-            <div id="distressFeedback" style="margin-top: 1.25rem; padding: 1rem; background: rgba(15,23,42,0.6); border-radius: 0.75rem; color: var(--text-teal-light); font-size: 0.9375rem;">
+            
+            <div id="distressFeedback" class="feedback-box">
               You're in a good state to learn. Your thinking brain is online.
             </div>
           </div>
         </div>
 
-        <!-- ===== WHAT YOU'LL LEARN ===== -->
+        <!-- COURSE MODULES WITH PROGRESS -->
         <div class="card">
-          <h2 class="section-title">What You'll Learn</h2>
-          <div class="section-content">
-            <div class="list-item">
-              <span class="list-icon list-icon-check">✓</span>
-              <div><strong>Why your brain betrays you in crisis</strong> — Amygdala, emotional waves, window of tolerance</div>
-            </div>
-            <div class="list-item">
-              <span class="list-icon list-icon-check">✓</span>
-              <div><strong>Emergency physical resets</strong> — Cold water, intense exercise, breathing techniques</div>
-            </div>
-            <div class="list-item">
-              <span class="list-icon list-icon-check">✓</span>
-              <div><strong>Mental techniques to ride it out</strong> — Grounding, cognitive load, sensory techniques</div>
-            </div>
-            <div class="list-item">
-              <span class="list-icon list-icon-check">✓</span>
-              <div><strong>Making peace with reality</strong> — Radical acceptance, self-compassion, defusion</div>
-            </div>
-            <div class="list-item">
-              <span class="list-icon list-icon-check">✓</span>
-              <div><strong>Your personalized crisis plan</strong> — Build a toolkit that works for YOU</div>
-            </div>
+          <div class="section-header">
+            <span class="section-icon">📚</span>
+            <h2 class="section-title">Your Course Modules</h2>
           </div>
-        </div>
-
-        <!-- ===== COURSE RULES ===== -->
-        <div class="card">
-          <h2 class="section-title">Course Rules</h2>
-          <div class="rules-grid">
-            <div class="rule-card">
-              <div class="rule-label" style="color: var(--success-emerald);">✅ Practice when calm first</div>
-              <div class="rule-text">Skills only work if you've practiced them BEFORE crisis hits</div>
-            </div>
-            <div class="rule-card">
-              <div class="rule-label" style="color: var(--success-emerald);">✅ Expect some techniques to feel silly or not work for you</div>
-              <div class="rule-text">That's normal. Save what works, skip what doesn't.</div>
-            </div>
-            <div class="rule-card">
-              <div class="rule-label" style="color: var(--success-emerald);">✅ Save what works to your toolkit</div>
-              <div class="rule-text">Build your personal crisis plan as you go</div>
-            </div>
-            <div class="rule-card">
-              <div class="rule-label" style="color: var(--success-emerald);">✅ Return to practice regularly</div>
-              <div class="rule-text">This isn't one-and-done. Come back to refresh skills.</div>
-            </div>
-            <div class="rule-card" style="border-color: rgba(220,38,38,0.3);">
-              <div class="rule-label" style="color: #fca5a5;">❌ Don't use these to avoid dealing with problems long-term</div>
-              <div class="rule-text">Crisis skills are for surviving peaks, not avoiding life</div>
-            </div>
-            <div class="rule-card" style="border-color: rgba(220,38,38,0.3);">
-              <div class="rule-label" style="color: #fca5a5;">❌ Don't expect perfection</div>
-              <div class="rule-text">You'll still have crises. These tools just help you survive them better.</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ===== COURSE MODULES ===== -->
-        <div class="card">
-          <h2 class="section-title">Course Modules (60-75 minutes total)</h2>
-          <div class="modules-preview">
-            <div class="module-item">
+          
+          <div class="modules-container" id="modulesContainer">
+            <!-- Module 1 -->
+            <a href="crisis-module-1.html" class="module-card" id="module1">
               <div class="module-number">1</div>
               <div class="module-info">
-                <div class="module-title">Why Your Brain Goes Haywire</div>
+                <div class="module-title">
+                  Why Your Brain Goes Haywire
+                  <span class="completed-badge" id="module1Badge" style="display: none;">✓ Completed</span>
+                </div>
                 <div class="module-duration">8 min • Understanding your crisis response</div>
+                <div class="module-progress">
+                  <div class="module-progress-fill" id="module1Progress" style="width: 0%;"></div>
+                </div>
               </div>
-            </div>
-            <div class="module-item">
+            </a>
+            
+            <!-- Module 2 -->
+            <a href="crisis-module-2.html" class="module-card" id="module2">
               <div class="module-number">2</div>
               <div class="module-info">
-                <div class="module-title">Physical Reset — Body to Brain</div>
+                <div class="module-title">
+                  Physical Reset — Body to Brain
+                  <span class="completed-badge" id="module2Badge" style="display: none;">✓ Completed</span>
+                </div>
                 <div class="module-duration">18 min • Cold water, exercise, breathing, PMR</div>
+                <div class="module-progress">
+                  <div class="module-progress-fill" id="module2Progress" style="width: 0%;"></div>
+                </div>
               </div>
-            </div>
-            <div class="module-item">
+            </a>
+            
+            <!-- Module 3 -->
+            <a href="crisis-module-3.html" class="module-card" id="module3">
               <div class="module-number">3</div>
               <div class="module-info">
-                <div class="module-title">Riding the Wave — Mental Techniques</div>
+                <div class="module-title">
+                  Riding the Wave — Mental Techniques
+                  <span class="completed-badge" id="module3Badge" style="display: none;">✓ Completed</span>
+                </div>
                 <div class="module-duration">15 min • Grounding, cognitive load, sensations</div>
+                <div class="module-progress">
+                  <div class="module-progress-fill" id="module3Progress" style="width: 0%;"></div>
+                </div>
               </div>
-            </div>
-            <div class="module-item">
+            </a>
+            
+            <!-- Module 4 -->
+            <a href="crisis-module-4.html" class="module-card" id="module4">
               <div class="module-number">4</div>
               <div class="module-info">
-                <div class="module-title">Making Peace with Reality</div>
+                <div class="module-title">
+                  Making Peace with Reality
+                  <span class="completed-badge" id="module4Badge" style="display: none;">✓ Completed</span>
+                </div>
                 <div class="module-duration">12 min • Acceptance, self-compassion, defusion</div>
+                <div class="module-progress">
+                  <div class="module-progress-fill" id="module4Progress" style="width: 0%;"></div>
+                </div>
               </div>
-            </div>
-            <div class="module-item">
+            </a>
+            
+            <!-- Module 5 -->
+            <a href="crisis-module-5.html" class="module-card" id="module5">
               <div class="module-number">5</div>
               <div class="module-info">
-                <div class="module-title">Your Crisis Action Plan</div>
+                <div class="module-title">
+                  Your Crisis Action Plan
+                  <span class="completed-badge" id="module5Badge" style="display: none;">✓ Completed</span>
+                </div>
                 <div class="module-duration">10 min • Build your personalized toolkit</div>
+                <div class="module-progress">
+                  <div class="module-progress-fill" id="module5Progress" style="width: 0%;"></div>
+                </div>
               </div>
-            </div>
+            </a>
           </div>
+          
+          <a href="crisis-toolkit.html" class="btn-toolkit">
+            <span>🧰</span> View My Saved Toolkit
+          </a>
         </div>
 
-        <!-- ===== COMMITMENT CHECK - YOUR EXACT WORDS ===== -->
-        <div class="commitment-box">
-          <div class="commitment-text">
-            "This course takes 60-75 minutes total. But you won't learn it in one sitting. You need to PRACTICE these skills when you're calm so they're available when you're not.<br><br>
-            Are you willing to actually try these, not just read about them?"
-          </div>
-          <div class="btn-group">
-            <a id="beginButton" class="btn btn-disabled">Yes, I'll Practice</a>
-            <a href="app.html" class="btn btn-secondary">← Return to Home</a>
-          </div>
+        <!-- QUICK ACTIONS -->
+        <div class="btn-group">
+          <a href="crisis-module-1.html" class="btn btn-primary" id="continueBtn">Start Module 1</a>
+          <a href="app.html" class="btn btn-secondary">Main App</a>
         </div>
 
-        <!-- ===== FOOTER ===== -->
+        <!-- FOOTER -->
         <div class="footer-note">
-          <p style="color: #fca5a5; font-weight: 600; margin-bottom: 0.5rem;">⚠️ EDUCATIONAL ONLY — NOT THERAPY</p>
-          <p>988 Suicide & Crisis Lifeline: Call or text 988 | Crisis Text Line: Text HOME to 741741</p>
-          <p style="margin-top: 0.75rem;">By using this course, you agree to the terms stated in the disclaimer. No therapeutic relationship exists.</p>
+          <p class="footer-warning">⚠️ EDUCATIONAL ONLY — NOT THERAPY</p>
+          <p>988 Suicide & Crisis Lifeline: Call or text 988</p>
+          <p>Crisis Text Line: Text HOME to 741741</p>
         </div>
 
       </div>
@@ -661,6 +681,67 @@ html, body {
 
 <script>
 (function() {
+  // ===== CHECK DISCLAIMER ACKNOWLEDGMENT =====
+  // This runs immediately - if no acknowledgment, redirect to disclaimer
+  const acknowledged = localStorage.getItem('crisis_disclaimer_acknowledged');
+  if (!acknowledged) {
+    window.location.href = 'crisis-disclaimer.html';
+    return;
+  }
+
+  // ===== LOAD PROGRESS DATA =====
+  function loadProgress() {
+    const progress = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
+    const toolkit = JSON.parse(localStorage.getItem('crisis_toolkit') || '[]');
+    const practicedModules = progress.practicedModules || [];
+    
+    // Update stats
+    document.getElementById('completedModules').textContent = practicedModules.length;
+    document.getElementById('toolkitCount').textContent = toolkit.length;
+    
+    // Overall progress percentage
+    const percentComplete = (practicedModules.length / 5) * 100;
+    document.getElementById('overallProgress').style.width = percentComplete + '%';
+    
+    // Update each module
+    for (let i = 1; i <= 5; i++) {
+      const badge = document.getElementById(`module${i}Badge`);
+      const progressFill = document.getElementById(`module${i}Progress`);
+      const moduleCard = document.getElementById(`module${i}`);
+      
+      if (practicedModules.includes(`module${i}`)) {
+        if (badge) badge.style.display = 'inline-block';
+        if (progressFill) progressFill.style.width = '100%';
+        if (moduleCard) moduleCard.classList.add('completed');
+      } else {
+        if (badge) badge.style.display = 'none';
+        if (progressFill) progressFill.style.width = '0%';
+        if (moduleCard) moduleCard.classList.remove('completed');
+      }
+    }
+    
+    // Update continue button based on progress
+    const continueBtn = document.getElementById('continueBtn');
+    if (practicedModules.length > 0) {
+      // Find the first incomplete module
+      let nextModule = 1;
+      for (let i = 1; i <= 5; i++) {
+        if (!practicedModules.includes(`module${i}`)) {
+          nextModule = i;
+          break;
+        }
+      }
+      // If all are completed, nextModule will be 6, so default to 5 for review
+      if (nextModule > 5) nextModule = 5;
+      
+      continueBtn.textContent = `Continue Module ${nextModule}`;
+      continueBtn.href = `crisis-module-${nextModule}.html`;
+    } else {
+      continueBtn.textContent = 'Start Module 1';
+      continueBtn.href = 'crisis-module-1.html';
+    }
+  }
+  
   // ===== EMOTIONAL PULSE SLIDER =====
   const slider = document.getElementById('distressSlider');
   const value = document.getElementById('distressValue');
@@ -672,83 +753,40 @@ html, body {
       value.textContent = val;
       
       if (val <= 3) {
-        feedback.innerHTML = '<span style="color: var(--text-teal);">0-3: You\'re in a good state to learn. Your thinking brain is online.</span>';
+        feedback.innerHTML = '<span style="color: var(--text-teal);">0-3: You\'re in a good state to learn. Your thinking brain is online. Great time to practice!</span>';
       } else if (val <= 6) {
-        feedback.innerHTML = '<span style="color: var(--text-amber);">4-6: You\'re managing, but starting to feel it. Good time to practice tools.</span>';
+        feedback.innerHTML = '<span style="color: var(--text-amber);">4-6: You\'re managing, but starting to feel it. Good time to practice tools. Consider starting with Module 2 (Physical Reset).</span>';
       } else {
-        feedback.innerHTML = '<span style="color: #fca5a5;">7-10: You\'re in crisis now. Skip to Module 2 (Physical Reset) and come back to learning when you\'re calmer.</span>';
+        feedback.innerHTML = '<span style="color: #fca5a5;">7-10: You\'re in crisis now. Skip to Module 2 (Physical Reset) for immediate relief. Come back to learning when you\'re calmer.</span>';
       }
     });
   }
   
-  // ===== DISCLAIMER ACKNOWLEDGMENT REQUIRED =====
-  const check = document.getElementById('acknowledgeCheck');
-  const beginBtn = document.getElementById('beginButton');
-  
-  function updateButton() {
-    if (check && beginBtn) {
-      if (check.checked) {
-        beginBtn.classList.remove('btn-disabled');
-        beginBtn.classList.add('btn-primary');
-        beginBtn.removeAttribute('disabled');
-        beginBtn.href = 'crisis-module-1.html';
-      } else {
-        beginBtn.classList.add('btn-disabled');
-        beginBtn.classList.remove('btn-primary');
-        beginBtn.href = 'javascript:void(0)';
-      }
+  // ===== AUTO-REFRESH PROGRESS WHEN PAGE BECOMES VISIBLE =====
+  document.addEventListener('visibilitychange', function() {
+    if (!document.hidden) {
+      loadProgress();
     }
-  }
+  });
   
-  if (check) {
-    check.addEventListener('change', updateButton);
-    
-    // Check if already acknowledged
-    const acknowledged = localStorage.getItem('crisis_disclaimer_acknowledged');
-    if (acknowledged === 'true') {
-      check.checked = true;
-      updateButton();
-    }
-  }
+  // ===== INITIAL LOAD =====
+  loadProgress();
   
-  // ===== SAVE ACKNOWLEDGMENT AND BEGIN =====
-  if (beginBtn) {
-    beginBtn.addEventListener('click', function(e) {
-      if (check && !check.checked) {
-        e.preventDefault();
-        alert('You must acknowledge the disclaimer before beginning.');
-        return;
-      }
-      
-      // Save acknowledgment
-      localStorage.setItem('crisis_disclaimer_acknowledged', 'true');
-      localStorage.setItem('crisis_disclaimer_timestamp', new Date().toISOString());
-      
-      // Save course progress
-      const progress = {
-        courseId: 'crisis-resilience',
-        started: true,
-        currentModule: 1,
-        disclaimerAcknowledged: true,
-        lastAccessed: new Date().toISOString(),
-        practicedModules: []
-      };
-      localStorage.setItem('crisis_course_progress', JSON.stringify(progress));
-      
-      // Sync with main app
-      try {
-        const mainState = JSON.parse(localStorage.getItem('mphaven_state') || '{}');
-        if (!mainState.courses) mainState.courses = {};
-        if (!mainState.courses['crisis-resilience']) mainState.courses['crisis-resilience'] = {};
-        mainState.courses['crisis-resilience'].started = true;
-        mainState.courses['crisis-resilience'].disclaimerAcknowledged = true;
-        mainState.courses['crisis-resilience'].lastActivity = new Date().toISOString();
-        localStorage.setItem('mphaven_state', JSON.stringify(mainState));
-      } catch(e) {}
-    });
-  }
+  // ===== UPDATE COURSE PROGRESS =====
+  let progress = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
+  progress.lastAccessed = new Date().toISOString();
+  localStorage.setItem('crisis_course_progress', JSON.stringify(progress));
+  
+  // ===== SYNC WITH MAIN APP =====
+  try {
+    const mainState = JSON.parse(localStorage.getItem('mphaven_state') || '{}');
+    if (!mainState.courses) mainState.courses = {};
+    if (!mainState.courses['crisis-resilience']) mainState.courses['crisis-resilience'] = {};
+    mainState.courses['crisis-resilience'].lastActivity = new Date().toISOString();
+    mainState.courses['crisis-resilience'].progress = Math.round((progress.practicedModules?.length || 0) / 5 * 100);
+    localStorage.setItem('mphaven_state', JSON.stringify(mainState));
+  } catch(e) {}
 })();
 </script>
-
 </body>
 </html>
