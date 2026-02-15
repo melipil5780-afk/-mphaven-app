@@ -92,7 +92,6 @@
             max-width: 28rem;
             height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
             background: var(--bg-card);
-            /* Reduced blur for performance */
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             box-shadow: var(--shadow-card);
@@ -106,7 +105,6 @@
             scrollbar-width: none;
             margin-top: env(safe-area-inset-top);
             margin-bottom: env(safe-area-inset-bottom);
-            /* Hardware acceleration */
             transform: translateZ(0);
             -webkit-transform: translateZ(0);
             will-change: transform;
@@ -678,7 +676,7 @@
         </div>
        
         <div class="footer">
-            <p>By continuing, you agree to our <a href="terms.html">Terms of Service </a>, <a href="privacy.html">Privacy Policy </a>, and <a href="disclaimer.html">Legal Disclaimer</a></p>
+            <p>By continuing, you agree to our <a href="terms.html">Terms of Service</a>, <a href="privacy.html">Privacy Policy </a></p>
             <p style="margin-top: 0.25rem; font-size: 0.7rem;">⚠️ Educational content only. Not therapy or medical treatment.</p>
         </div>
     </div>
@@ -690,7 +688,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
    
     <script>
-        // ========== CRITICAL FIXES ==========
+        // ========== SIMPLIFIED & GLITCH-FREE ==========
         
         // Prevent multiple initializations
         let isInitialized = false;
@@ -699,10 +697,7 @@
         
         // Device detection
         const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-        const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
         
-        console.log('Device info:', { isIOS, isSafari, userAgent: navigator.userAgent });
-       
         // Supabase configuration
         const SUPABASE_URL = 'https://ocdwpaefmslyidelkzde.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jZHdwYWVmbXNseWlkZWxremRlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk0NjQ1OTQsImV4cCI6MjA4NTA0MDU5NH0.OAYuCQhxrmZMLI_H8OuaJvs7dKVm82gUPgGzQDUYq-Q';
@@ -720,17 +715,11 @@
             if (text) text.textContent = message;
             overlay.classList.add('show');
             
-            // Clear any existing timer
-            if (loadTimer) {
-                clearTimeout(loadTimer);
-                loadTimer = null;
-            }
+            if (loadTimer) clearTimeout(loadTimer);
             
-            // Safety timeout
             loadTimer = setTimeout(() => {
-                console.warn('Loading timeout - hiding overlay');
                 hideLoading();
-            }, 15000); // 15 second timeout
+            }, 15000);
         }
        
         function hideLoading() {
@@ -752,25 +741,20 @@
             errorDiv.textContent = message;
             errorDiv.classList.add('show');
             
-            // Auto-hide after 5 seconds
             setTimeout(() => {
                 errorDiv.classList.remove('show');
             }, 5000);
         }
        
-        // ========== AUTH FUNCTIONS ==========
+        // ========== GOOGLE SIGN-IN - FIXED (NO CONFIRM DIALOG) ==========
         
-        function getRedirectURL() {
-            const baseURL = window.location.origin;
-            console.log('Base URL:', baseURL);
-            // Redirect to auth-callback.html instead of app.html
-            return `${baseURL.replace(/\/$/, '')}/auth-callback.html`;
-        }
-       
         async function handleGoogleSignIn() {
-            if (isProcessingAuth) return;
+            if (isProcessingAuth) {
+                console.log('Already processing auth');
+                return;
+            }
             
-            console.log('Starting Google sign-in with legal acknowledgment...');
+            console.log('Starting Google sign-in...');
            
             if (!sbClient) {
                 showError('Authentication service not available. Please refresh the page.');
@@ -780,97 +764,35 @@
             const googleBtn = document.getElementById('googleBtn');
             if (!googleBtn) return;
             
-            // ===== SHOW LEGAL NOTICE FIRST =====
-            const legalConfirmed = confirm(
-                '⚠️ LEGAL ACKNOWLEDGMENT REQUIRED\n\n' +
-                'By continuing with Google, you agree to our:\n\n' +
-                '• Terms of Service \n' +
-                '• Privacy Policy \n' +
-                '• Legal Disclaimer\n\n' +
-                'You acknowledge this is EDUCATIONAL CONTENT ONLY, not therapy or medical treatment.\n\n' +
-                'You assume full responsibility for your use of this app.\n\n' +
-                'Click OK to proceed with Google Sign-In.'
-            );
-            
-            if (!legalConfirmed) {
-                return; // User cancelled
-            }
-            
+            // Disable button immediately
             googleBtn.disabled = true;
             isProcessingAuth = true;
            
             showLoading('Connecting to Google...');
            
             try {
-                // ===== STORE LEGAL AGREEMENT IN SESSION STORAGE =====
-                const agreementData = {
-                    terms: true,
-                    privacy: true,
-                    disclaimer: true,
-                    timestamp: new Date().toISOString(),
-                    version: '2026-v3.0',
-                    method: 'google',
-                    source: 'index.html',
-                    userAgent: navigator.userAgent
-                };
-                
-                sessionStorage.setItem('pending_legal_agreement', JSON.stringify(agreementData));
-                
-                // Also store as backup
-                localStorage.setItem('pending_google_agreement', 'true');
-                localStorage.setItem('pending_agreement_timestamp', new Date().toISOString());
-                
-                // ===== REDIRECT TO AUTH-CALLBACK.HTML INSTEAD OF APP.HTML =====
+                // Simple redirect - NO CONFIRM DIALOG that causes freezing
                 const redirectTo = window.location.origin + '/auth-callback.html';
                 console.log('Redirect URL:', redirectTo);
                
-                // iOS-specific handling
-                if (isIOS) {
-                    const { data, error } = await sbClient.auth.signInWithOAuth({
-                        provider: 'google',
-                        options: {
-                            redirectTo: redirectTo,
-                            skipBrowserRedirect: true
-                        }
-                    });
-                   
-                    if (error) throw error;
-                    
-                    if (data?.url) {
-                        window.location.href = data.url;
+                const { data, error } = await sbClient.auth.signInWithOAuth({
+                    provider: 'google',
+                    options: {
+                        redirectTo: redirectTo,
+                        skipBrowserRedirect: isIOS ? true : false
                     }
-                } else {
-                    const { data, error } = await sbClient.auth.signInWithOAuth({
-                        provider: 'google',
-                        options: {
-                            redirectTo: redirectTo,
-                            queryParams: {
-                                access_type: 'offline',
-                                prompt: 'consent',
-                            }
-                        }
-                    });
-                    
-                    if (error) throw error;
-                    
-                    // Safety timeout
-                    setTimeout(() => {
-                        if (isProcessingAuth) {
-                            console.warn('OAuth popup timeout');
-                            hideLoading();
-                            googleBtn.disabled = false;
-                            isProcessingAuth = false;
-                            showError('Sign-in window may have been blocked. Please check your popup settings.');
-                        }
-                    }, 10000);
+                });
+                   
+                if (error) throw error;
+                
+                if (isIOS && data?.url) {
+                    window.location.href = data.url;
                 }
                
             } catch (error) {
                 console.error('Google sign-in error:', error);
                 hideLoading();
-                
-                const googleBtn = document.getElementById('googleBtn');
-                if (googleBtn) googleBtn.disabled = false;
+                googleBtn.disabled = false;
                 isProcessingAuth = false;
                
                 let errorMessage = 'Unable to sign in with Google. ';
@@ -878,25 +800,21 @@
                 if (error.message.includes('popup')) {
                     errorMessage += 'Please allow popups for this site.';
                 } else if (isIOS) {
-                    errorMessage += 'Please ensure Safari cookies are enabled and you are not in Private Browsing mode.';
+                    errorMessage += 'Please ensure Safari cookies are enabled.';
                 } else {
                     errorMessage += error.message || 'Please try again.';
                 }
                
                 showError(errorMessage);
-                
-                // Clear stored agreements on error
-                sessionStorage.removeItem('pending_legal_agreement');
-                localStorage.removeItem('pending_google_agreement');
             }
         }
        
+        // ========== SIMPLE NAVIGATION ==========
+        
         function handleSignUp() {
             if (isProcessingAuth) return;
-            
             isProcessingAuth = true;
             showLoading('Loading sign up...');
-            
             setTimeout(() => {
                 window.location.href = 'signup.html';
             }, 300);
@@ -904,16 +822,14 @@
        
         function handleLogin() {
             if (isProcessingAuth) return;
-            
             isProcessingAuth = true;
             showLoading('Loading login...');
-            
             setTimeout(() => {
                 window.location.href = 'login.html';
             }, 300);
         }
        
-        // ========== SESSION MANAGEMENT ==========
+        // ========== SESSION CHECK ==========
         
         async function checkSession() {
             if (!sbClient || isProcessingAuth) return false;
@@ -927,21 +843,16 @@
                 }
                
                 if (session) {
-                    console.log('Active session found, checking disclaimer status...');
+                    console.log('Active session found');
                     
-                    // Check if user has accepted disclaimer
                     const disclaimerAcknowledged = localStorage.getItem('mphaven_disclaimer_acknowledged');
-                    const userMetadata = session.user?.user_metadata;
                     
-                    if (disclaimerAcknowledged === 'true' || userMetadata?.terms_accepted) {
-                        // Already accepted, go to app
+                    if (disclaimerAcknowledged === 'true') {
                         showLoading('Welcome back!');
                         setTimeout(() => {
                             window.location.href = 'app.html';
                         }, 800);
                     } else {
-                        // Need to see disclaimer first
-                        console.log('User needs to accept disclaimer');
                         setTimeout(() => {
                             window.location.href = 'disclaimer.html';
                         }, 800);
@@ -956,95 +867,6 @@
             }
         }
        
-        async function handleOAuthCallback() {
-            // Check URL for OAuth parameters
-            const hash = window.location.hash;
-            const search = window.location.search;
-           
-            if (!hash.includes('access_token') && !hash.includes('error') && !search.includes('code=')) {
-                return; // Not an OAuth callback
-            }
-           
-            console.log('OAuth callback detected');
-           
-            if (!sbClient) {
-                console.error('Supabase not initialized for OAuth callback');
-                showError('Authentication error. Please try signing in again.');
-                window.history.replaceState({}, document.title, '/');
-                return;
-            }
-           
-            showLoading('Completing sign in...');
-            isProcessingAuth = true;
-           
-            try {
-                // Small delay to ensure Supabase processes the token
-                await new Promise(resolve => setTimeout(resolve, 500));
-                
-                const { data, error } = await sbClient.auth.getSession();
-               
-                if (error) throw error;
-               
-                if (data.session) {
-                    console.log('Session established, checking legal agreement...');
-                    
-                    // ===== CHECK FOR PENDING LEGAL AGREEMENT =====
-                    const pendingAgreement = sessionStorage.getItem('pending_legal_agreement');
-                    
-                    if (pendingAgreement) {
-                        try {
-                            const agreement = JSON.parse(pendingAgreement);
-                            
-                            // Update user metadata with legal agreement
-                            await sbClient.auth.updateUser({
-                                data: {
-                                    terms_accepted: true,
-                                    terms_version: agreement.version,
-                                    terms_accepted_at: agreement.timestamp,
-                                    privacy_accepted: true,
-                                    disclaimer_accepted: true,
-                                    signup_method: 'google',
-                                    legal_agreement: agreement
-                                }
-                            });
-                            
-                            console.log('Legal agreement saved to user metadata');
-                            
-                            // Clear pending agreement
-                            sessionStorage.removeItem('pending_legal_agreement');
-                            localStorage.removeItem('pending_google_agreement');
-                            
-                        } catch (e) {
-                            console.warn('Failed to save legal agreement to metadata:', e);
-                        }
-                    }
-                    
-                    // Clear URL parameters
-                    window.history.replaceState({}, document.title, '/');
-                    
-                    // Redirect to disclaimer first (they still need to see it)
-                    showLoading('Redirecting to legal disclaimer...');
-                    
-                    setTimeout(() => {
-                        window.location.href = 'disclaimer.html';
-                    }, 1000);
-                    
-                } else {
-                    throw new Error('No session after OAuth');
-                }
-            } catch (error) {
-                console.error('OAuth callback error:', error);
-                hideLoading();
-                isProcessingAuth = false;
-                showError('Sign-in failed. Please try again.');
-                window.history.replaceState({}, document.title, '/');
-                
-                // Clear pending agreements on error
-                sessionStorage.removeItem('pending_legal_agreement');
-                localStorage.removeItem('pending_google_agreement');
-            }
-        }
-       
         // ========== INITIALIZATION ==========
         
         async function initializeApp() {
@@ -1053,42 +875,17 @@
             
             console.log('Initializing app...');
             
-            // Initialize Supabase
             try {
                 sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
                     auth: {
                         autoRefreshToken: true,
                         persistSession: true,
                         detectSessionInUrl: true,
-                        flowType: 'pkce',
-                        storage: {
-                            getItem: (key) => {
-                                try {
-                                    return localStorage.getItem(key);
-                                } catch (e) {
-                                    console.warn('Storage access error:', e);
-                                    return null;
-                                }
-                            },
-                            setItem: (key, value) => {
-                                try {
-                                    localStorage.setItem(key, value);
-                                } catch (e) {
-                                    console.warn('Storage write error:', e);
-                                }
-                            },
-                            removeItem: (key) => {
-                                try {
-                                    localStorage.removeItem(key);
-                                } catch (e) {
-                                    console.warn('Storage remove error:', e);
-                                }
-                            }
-                        }
+                        flowType: 'pkce'
                     }
                 });
                
-                console.log('Supabase initialized successfully');
+                console.log('Supabase initialized');
                
             } catch (error) {
                 console.error('Failed to initialize Supabase:', error);
@@ -1096,23 +893,9 @@
             }
             
             // Setup button listeners
-            const googleBtn = document.getElementById('googleBtn');
-            const signupBtn = document.getElementById('signupBtn');
-            const loginBtn = document.getElementById('loginBtn');
-           
-            if (googleBtn) {
-                // Remove any existing listeners and add new one
-                googleBtn.replaceWith(googleBtn.cloneNode(true));
-                document.getElementById('googleBtn').addEventListener('click', handleGoogleSignIn);
-            }
-           
-            if (signupBtn) {
-                signupBtn.addEventListener('click', handleSignUp);
-            }
-           
-            if (loginBtn) {
-                loginBtn.addEventListener('click', handleLogin);
-            }
+            document.getElementById('googleBtn')?.addEventListener('click', handleGoogleSignIn);
+            document.getElementById('signupBtn')?.addEventListener('click', handleSignUp);
+            document.getElementById('loginBtn')?.addEventListener('click', handleLogin);
             
             // iOS specific fixes
             if (isIOS) {
@@ -1122,13 +905,6 @@
                 };
                 setVH();
                 window.addEventListener('resize', setVH);
-                
-                // Prevent bounce scrolling
-                document.addEventListener('touchmove', function(e) {
-                    if (e.target.closest('.container')) {
-                        e.stopPropagation();
-                    }
-                }, { passive: false });
             }
             
             // Mark page as loaded
@@ -1141,81 +917,24 @@
         
         document.addEventListener('DOMContentLoaded', async function() {
             console.log('DOM loaded');
-            
-            // Initialize the app
             await initializeApp();
             
-            // Check for OAuth callback
-            await handleOAuthCallback();
-            
-            // Then check for existing session (if not processing OAuth)
-            if (!isProcessingAuth) {
-                setTimeout(() => {
-                    checkSession();
-                }, 1000);
-            }
-        });
-       
-        // Listen for auth state changes
-        window.addEventListener('load', function() {
-            if (sbClient) {
-                sbClient.auth.onAuthStateChange((event, session) => {
-                    console.log('Auth state changed:', event, session?.user?.email);
-                   
-                    if (event === 'SIGNED_IN' && session && !isProcessingAuth) {
-                        console.log('User signed in via listener');
-                        
-                        // Check if they need to see disclaimer
-                        const disclaimerAcknowledged = localStorage.getItem('mphaven_disclaimer_acknowledged');
-                        
-                        if (disclaimerAcknowledged === 'true') {
-                            isProcessingAuth = true;
-                            showLoading('Welcome! Loading your account...');
-                            setTimeout(() => {
-                                window.location.href = 'app.html';
-                            }, 800);
-                        } else {
-                            window.location.href = 'disclaimer.html';
-                        }
-                    }
-                });
-            }
-        });
-        
-        // Handle page visibility changes
-        document.addEventListener('visibilitychange', function() {
-            if (document.visibilityState === 'visible' && isInitialized && !isProcessingAuth) {
-                // Re-check session when user returns to tab
-                setTimeout(checkSession, 500);
-            }
-        });
-        
-        // Handle beforeunload
-        window.addEventListener('beforeunload', function() {
-            // Clean up
-            if (loadTimer) {
-                clearTimeout(loadTimer);
-            }
+            setTimeout(() => {
+                checkSession();
+            }, 1000);
         });
        
         // Debug helper
         window.debugAuth = async function() {
             console.log('=== AUTH DEBUG ===');
-            console.log('Device:', { isIOS, isSafari });
-            console.log('Current URL:', window.location.href);
-            console.log('LocalStorage available:', typeof localStorage !== 'undefined');
+            console.log('isIOS:', isIOS);
             console.log('Supabase client:', !!sbClient);
-            console.log('Processing auth:', isProcessingAuth);
-            console.log('Disclaimer acknowledged:', localStorage.getItem('mphaven_disclaimer_acknowledged'));
-            console.log('Pending agreement:', sessionStorage.getItem('pending_legal_agreement'));
+            console.log('Disclaimer:', localStorage.getItem('mphaven_disclaimer_acknowledged'));
            
             if (sbClient) {
                 try {
                     const { data, error } = await sbClient.auth.getSession();
                     console.log('Session:', data, error);
-                    if (data?.session) {
-                        console.log('User metadata:', data.session.user.user_metadata);
-                    }
                 } catch (e) {
                     console.error('Session check failed:', e);
                 }
