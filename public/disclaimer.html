@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#0f172a">
+    <title>MPHaven - Legal Disclaimer (2026)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --bg-dark: #0f172a;
+            --bg-card: rgba(15, 23, 42, 0.98);
+            --bg-card-light: rgba(30, 41, 59, 0.65);
+            --border-subtle: rgba(30, 41, 59, 0.5);
+            --border-softer: rgba(51, 65, 85, 0.4);
+            --primary-teal: #0e7490;
+            --crisis-red: #dc2626;
+            --crisis-bg: rgba(220, 38, 38, 0.08);
+            --text-primary: rgb(241, 245, 249);
+            --text-secondary: rgb(203, 213, 225);
+            --text-muted: rgb(148, 163, 184);
+            --gradient-main: linear-gradient(135deg, #0e7490, #d97706);
+            --space-md: 1rem;
+            --space-lg: 1.5rem;
+            --space-xl: 2rem;
+            --space-xxl: 2.5rem;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: linear-gradient(to bottom, #020617, #0f172a, #020617);
+            color: var(--text-primary);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 28rem;
+            height: 100vh;
+            max-height: 844px;
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+            border: 1px solid rgba(30, 41, 59, 0.5);
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            border-radius: 2.5rem;
+            margin: 20px;
+        }
+
+        .container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .bg-blur-1 {
+            position: absolute;
+            top: -10%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30rem;
+            height: 30rem;
+            background: rgba(220, 38, 38, 0.1);
+            border-radius: 50%;
+            filter: blur(120px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .content {
+            position: relative;
+            z-index: 10;
+            padding: var(--space-xl);
+            flex: 1;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.875rem;
+            margin-bottom: var(--space-lg);
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .back-link:hover {
+            color: white;
+        }
+
+        .title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: var(--space-md);
+            background: linear-gradient(135deg, #fca5a5, #dc2626);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .effective-date {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            margin-bottom: var(--space-lg);
+            padding-bottom: var(--space-sm);
+            border-bottom: 1px solid var(--border-softer);
+        }
+
+        .disclaimer-box {
+            background: var(--crisis-bg);
+            border: 2px solid var(--crisis-red);
+            border-radius: 1.5rem;
+            padding: var(--space-xl);
+            margin-bottom: var(--space-xl);
+        }
+
+        .disclaimer-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: #fca5a5;
+            margin-bottom: var(--space-lg);
+            border-bottom: 1px solid rgba(220, 38, 38, 0.3);
+            padding-bottom: var(--space-md);
+        }
+
+        .disclaimer-content {
+            color: var(--text-secondary);
+            font-size: 0.9375rem;
+            line-height: 1.8;
+        }
+
+        .disclaimer-content p {
+            margin-bottom: var(--space-md);
+        }
+
+        .legal-highlight {
+            background: rgba(220, 38, 38, 0.15);
+            border-left: 4px solid var(--crisis-red);
+            padding: var(--space-lg);
+            margin: var(--space-lg) 0;
+            border-radius: 0.75rem;
+        }
+
+        .legal-clause {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border-softer);
+            border-radius: 0.75rem;
+            padding: var(--space-md);
+            margin-bottom: var(--space-md);
+        }
+
+        .legal-clause strong {
+            color: #fca5a5;
+            display: block;
+            margin-bottom: 0.25rem;
+            font-size: 1rem;
+        }
+
+        .crisis-contacts {
+            background: rgba(220, 38, 38, 0.2);
+            border: 1px solid var(--crisis-red);
+            border-radius: 1rem;
+            padding: var(--space-lg);
+            margin: var(--space-xl) 0;
+        }
+
+        .crisis-contacts p {
+            margin-bottom: 0.5rem;
+        }
+
+        .crisis-contacts a {
+            color: #fca5a5;
+            font-weight: 700;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        .crisis-contacts a:hover {
+            text-decoration: underline;
+        }
+
+        .acknowledgment-box {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid var(--border-softer);
+            border-radius: 1rem;
+            padding: var(--space-lg);
+            margin: var(--space-xl) 0;
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-md);
+        }
+
+        .acknowledgment-box input[type="checkbox"] {
+            width: 1.5rem;
+            height: 1.5rem;
+            margin-top: 0.125rem;
+            accent-color: var(--crisis-red);
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .acknowledgment-label {
+            color: var(--text-secondary);
+            font-size: 0.9375rem;
+            line-height: 1.6;
+            flex: 1;
+            font-weight: 500;
+        }
+
+        .acknowledgment-label strong {
+            color: #fca5a5;
+            font-size: 1rem;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border-radius: 1rem;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            border: none;
+            text-align: center;
+            display: inline-block;
+            transition: all 0.2s;
+            text-decoration: none;
+            letter-spacing: 0.02em;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #0e7490, #d97706);
+            color: white;
+            box-shadow: 0 10px 25px rgba(14, 116, 144, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(14, 116, 144, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(30, 41, 59, 0.6);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-softer);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(30, 41, 59, 0.8);
+            border-color: var(--text-muted);
+        }
+
+        .btn-disabled {
+            opacity: 0.5;
+            pointer-events: none;
+            background: rgba(30, 41, 59, 0.6);
+            color: var(--text-muted);
+            box-shadow: none;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: var(--space-md);
+            margin: var(--space-xl) 0;
+        }
+
+        .legal-footer {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            line-height: 1.6;
+            margin-top: var(--space-xl);
+            padding-top: var(--space-lg);
+            border-top: 1px solid var(--border-softer);
+        }
+
+        .legal-footer a {
+            color: var(--primary-teal);
+            text-decoration: none;
+        }
+
+        @media (max-width: 640px) {
+            .btn-group { 
+                flex-direction: column; 
+            }
+            .container {
+                margin: 0;
+                border-radius: 0;
+                height: 100vh;
+                max-height: 100vh;
+            }
+            .content {
+                padding: var(--space-lg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="bg-blur-1"></div>
+        
+        <div class="content">
+            <button class="back-link" onclick="goBack()">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                </svg>
+                Back
+            </button>
+            
+            <h1 class="title">⚠️ LEGAL DISCLAIMER</h1>
+            <div class="effective-date">Effective Date: January 1, 2026 | Last Updated: February 2026 | Version 3.0</div>
+            
+            <div class="disclaimer-box">
+                <div class="disclaimer-title">
+                    ⚖️ YOU MUST READ AND ACKNOWLEDGE
+                </div>
+                
+                <div class="disclaimer-content">
+                    <!-- CRITICAL: Primary disclaimer -->
+                    <div class="legal-highlight">
+                        <p style="font-size: 1.1rem; font-weight: 800; color: #fca5a5; margin-bottom: 0.5rem;">THIS IS NOT THERAPY OR MEDICAL TREATMENT</p>
+                        <p>MPHaven provides <strong>educational content only</strong>. It does NOT constitute mental health treatment, therapy, counseling, medical advice, diagnosis, or crisis intervention services.</p>
+                    </div>
+                    
+                    <!-- NO THERAPEUTIC RELATIONSHIP -->
+                    <div class="legal-clause">
+                        <strong>NO THERAPEUTIC RELATIONSHIP:</strong>
+                        <p>Your use of this app does not create a doctor-patient, therapist-client, or any other professional treatment relationship. The creators, operators, and MPHaven are not providing healthcare services to you.</p>
+                    </div>
+                    
+                    <!-- NO GUARANTEES -->
+                    <div class="legal-clause">
+                        <strong>NO GUARANTEES OR WARRANTIES:</strong>
+                        <p>We make NO guarantees that these techniques will work for you. Individual results vary significantly. This content is provided "AS IS" and "AS AVAILABLE" without any warranties, express or implied, including but not limited to implied warranties of merchantability, fitness for a particular purpose, or non-infringement.</p>
+                    </div>
+                    
+                    <!-- YOUR RESPONSIBILITY -->
+                    <div class="legal-clause">
+                        <strong>YOUR SOLE RESPONSIBILITY:</strong>
+                        <p>You are solely and fully responsible for your own wellbeing, choices, and actions. This course provides information only—you choose whether and how to use it. MPHaven is not responsible for any consequences of your use or non-use of this information.</p>
+                    </div>
+                    
+                    <!-- LIMITATION OF LIABILITY -->
+                    <div class="legal-clause">
+                        <strong>LIMITATION OF LIABILITY:</strong>
+                        <p>To the maximum extent permitted by law, MPHaven and its creators, operators, employees, affiliates, successors, and assigns shall NOT be liable for any direct, indirect, incidental, special, consequential, or punitive damages, including but not limited to loss of profits, data, use, goodwill, or other intangible losses, resulting from (i) your access to or use of or inability to access or use the app; (ii) any conduct or content of any third party on the app; (iii) any content obtained from the app; and (iv) unauthorized access, use, or alteration of your transmissions or content, whether based on warranty, contract, tort (including negligence), or any other legal theory, whether or not we have been informed of the possibility of such damage.</p>
+                    </div>
+                    
+                    <!-- INDEMNIFICATION -->
+                    <div class="legal-clause">
+                        <strong>INDEMNIFICATION:</strong>
+                        <p>You agree to defend, indemnify, and hold harmless MPHaven and its creators, operators, employees, affiliates, successors, and assigns from and against any claims, liabilities, damages, losses, and expenses, including without limitation reasonable legal and accounting fees, arising out of or in any way connected with (i) your access to or use of the app; (ii) your violation of these terms; (iii) your violation of any rights of another party, including any third-party claims that any content or information you provided caused harm to a third party.</p>
+                    </div>
+                    
+                    <!-- GOVERNING LAW -->
+                    <div class="legal-clause">
+                        <strong>GOVERNING LAW AND JURISDICTION:</strong>
+                        <p>These terms shall be governed by and construed in accordance with the laws of the state in which the user resides, or if no such state can be determined, the laws of the State of Delaware, without regard to its conflict of law provisions. Any legal suit, action, or proceeding arising out of or relating to these terms or the app shall be instituted exclusively in the federal or state courts located in the county of the user's residence, or if no such county can be determined, in the courts of Kent County, Delaware. You waive any and all objections to the exercise of jurisdiction over you by such courts and to venue in such courts.</p>
+                    </div>
+
+                    <!-- SEVERABILITY -->
+                    <div class="legal-clause">
+                        <strong>SEVERABILITY:</strong>
+                        <p>If any provision of these terms is held to be unenforceable or invalid, such provision will be changed and interpreted to accomplish the objectives of such provision to the greatest extent possible under applicable law and the remaining provisions will continue in full force and effect.</p>
+                    </div>
+
+                    <!-- ENTIRE AGREEMENT -->
+                    <div class="legal-clause">
+                        <strong>ENTIRE AGREEMENT:</strong>
+                        <p>These terms, together with the Terms of Service, Privacy Policy, and any other agreements incorporated by reference, constitute the sole and entire agreement between you and MPHaven regarding the app and supersede all prior and contemporaneous understandings, agreements, representations, and warranties, both written and oral, regarding such subject matter.</p>
+                    </div>
+
+                    <!-- NO WAIVER -->
+                    <div class="legal-clause">
+                        <strong>NO WAIVER:</strong>
+                        <p>No failure or delay by MPHaven in exercising any right, power, or privilege under these terms shall operate as a waiver thereof, nor shall any single or partial exercise thereof preclude any other or further exercise thereof or the exercise of any other right, power, or privilege.</p>
+                    </div>
+                    
+                    <!-- FORCE MAJEURE -->
+                    <div class="legal-clause">
+                        <strong>FORCE MAJEURE:</strong>
+                        <p>MPHaven shall not be liable for any failure or delay in performance due to circumstances beyond its reasonable control, including but not limited to acts of God, war, terrorism, pandemics, strikes, internet failures, or governmental actions.</p>
+                    </div>
+                    
+                    <!-- DISPUTE RESOLUTION -->
+                    <div class="legal-clause">
+                        <strong>DISPUTE RESOLUTION AND ARBITRATION:</strong>
+                        <p>Any dispute, claim, or controversy arising out of or relating to these terms or the app shall be resolved by binding arbitration administered by the American Arbitration Association under its Consumer Arbitration Rules. The arbitration shall be held in the county of the user's residence, or if no such county can be determined, in Kent County, Delaware. You agree that any arbitration shall be conducted on an individual basis and not as a class action. You expressly waive any right to participate in any class action lawsuit or class-wide arbitration.</p>
+                    </div>
+                    
+                    <!-- CLASS ACTION WAIVER -->
+                    <div class="legal-clause">
+                        <strong>CLASS ACTION WAIVER:</strong>
+                        <p>You and MPHaven agree that any proceedings to resolve disputes will be conducted on an individual basis and not in a class, consolidated, or representative action. This prevents you from bringing claims as a class member in any class action against MPHaven.</p>
+                    </div>
+                    
+                    <!-- JURY TRIAL WAIVER -->
+                    <div class="legal-clause">
+                        <strong>JURY TRIAL WAIVER:</strong>
+                        <p>To the fullest extent permitted by law, you and MPHaven irrevocably waive any right to trial by jury in any legal proceeding arising out of or relating to these terms or the app.</p>
+                    </div>
+                    
+                    <!-- NO SUICIDE PREVENTION -->
+                    <div class="legal-clause">
+                        <strong>NO SUICIDE PREVENTION WARRANTY:</strong>
+                        <p>This app is NOT a suicide prevention program or crisis intervention service. If you are experiencing thoughts of suicide, self-harm, or are unable to keep yourself safe, STOP using this app immediately and contact professional help using the crisis resources below.</p>
+                    </div>
+                    
+                    <!-- THIRD-PARTY PAYMENT PROCESSORS -->
+                    <div class="legal-clause">
+                        <strong>THIRD-PARTY PAYMENT PROCESSORS:</strong>
+                        <p>Any payments made through MPHaven are processed by third-party payment processors, including but not limited to Stripe, PayPal, and/or other financial institutions. MPHaven does not store, process, or have access to your full payment credentials. All payment information is handled directly by these third-party processors and is subject to their respective terms of service and privacy policies. By making a payment, you agree to the terms of these third-party processors. MPHaven is not responsible for any issues, disputes, or losses arising from the use of third-party payment processors.</p>
+                    </div>
+                    
+                    <!-- SUBSCRIPTIONS AND REFUNDS -->
+                    <div class="legal-clause">
+                        <strong>SUBSCRIPTIONS, PAYMENTS, AND REFUNDS:</strong>
+                        <p>If you purchase a subscription or make a payment through MPHaven, you agree to pay all applicable fees. All payments are final and non-refundable except as required by law or as explicitly stated in our refund policy. Subscriptions automatically renew unless cancelled at least 24 hours before the renewal date. You may cancel your subscription through your account settings or by contacting support. MPHaven may change subscription fees with 30 days notice. Failure to pay may result in suspension or termination of your access. All disputes regarding payments shall be handled through our third-party payment processors' dispute resolution processes.</p>
+                    </div>
+                    
+                    <!-- TAXES -->
+                    <div class="legal-clause">
+                        <strong>TAXES:</strong>
+                        <p>You are solely responsible for any and all taxes, duties, or levies applicable to your use of MPHaven or any payments you make through the app.</p>
+                    </div>
+                    
+                    <!-- INTELLECTUAL PROPERTY -->
+                    <div class="legal-clause">
+                        <strong>INTELLECTUAL PROPERTY:</strong>
+                        <p>All content, features, and functionality of MPHaven, including but not limited to text, graphics, logos, icons, images, audio clips, video clips, data compilations, and software, are owned by MPHaven or its licensors and are protected by United States and international copyright, trademark, patent, trade secret, and other intellectual property laws. You may not reproduce, distribute, modify, create derivative works of, publicly display, publicly perform, republish, download, store, or transmit any of the material on our app without our prior written consent.</p>
+                    </div>
+                    
+                    <!-- USER CONTENT -->
+                    <div class="legal-clause">
+                        <strong>USER CONTENT:</strong>
+                        <p>If you submit, post, or upload any content to MPHaven, you grant MPHaven a non-exclusive, worldwide, royalty-free, perpetual, irrevocable, and fully sublicensable license to use, reproduce, modify, adapt, publish, translate, create derivative works from, distribute, and display such content in connection with operating and improving the app. You represent and warrant that you own or have the necessary rights to any content you submit.</p>
+                    </div>
+                    
+                    <!-- PROHIBITED CONDUCT -->
+                    <div class="legal-clause">
+                        <strong>PROHIBITED CONDUCT:</strong>
+                        <p>You agree not to: (a) use the app for any illegal purpose; (b) harass, abuse, or harm another person; (c) impersonate any person or entity; (d) interfere with or disrupt the app or servers; (e) attempt to gain unauthorized access to any part of the app; (f) use the app to distribute malware or harmful code; (g) collect or store personal data about other users without their consent; (h) use the app in any way that could overburden, disable, or impair the app.</p>
+                    </div>
+                    
+                    <!-- TERMINATION -->
+                    <div class="legal-clause">
+                        <strong>TERMINATION:</strong>
+                        <p>MPHaven reserves the right to terminate or suspend your access to the app immediately, without prior notice or liability, for any reason whatsoever, including without limitation if you breach these terms. Upon termination, your right to use the app will cease immediately.</p>
+                    </div>
+                    
+                    <!-- SURVIVAL -->
+                    <div class="legal-clause">
+                        <strong>SURVIVAL:</strong>
+                        <p>All provisions of these terms which by their nature should survive termination shall survive termination, including, without limitation, ownership provisions, warranty disclaimers, indemnity, and limitations of liability.</p>
+                    </div>
+                    
+                    <!-- NOTICES -->
+                    <div class="legal-clause">
+                        <strong>NOTICES:</strong>
+                        <p>MPHaven may provide notices to you via email, push notification, or by posting on the app. You agree to receive notices electronically.</p>
+                    </div>
+                    
+                    <!-- CONTACT INFORMATION -->
+                    <div class="legal-clause">
+                        <strong>CONTACT INFORMATION:</strong>
+                        <p>For legal notices or questions regarding this disclaimer:</p>
+                        <p style="margin-left: 1rem; margin-top: 0.25rem;">
+                            Email: legal@mphaven.com<br>
+                            DMCA/Copyright: dmca@mphaven.com<br>
+                            Privacy: privacy@mphaven.com<br>
+                            Support: support@mphaven.com
+                        </p>
+                    </div>
+                    
+                    <!-- CRISIS RESOURCES -->
+                    <div class="crisis-contacts">
+                        <p style="font-size: 1.1rem; font-weight: 800; color: #fca5a5; margin-bottom: 0.75rem;">🚨 IN CRISIS? STOP. GET HELP NOW.</p>
+                        <p style="margin-bottom: 0.5rem;">• <a href="tel:988"><strong>988 Suicide & Crisis Lifeline</strong></a> — Call or text 988 (24/7, free, confidential)</p>
+                        <p style="margin-bottom: 0.5rem;">• <a href="sms:741741"><strong>Crisis Text Line</strong></a> — Text HOME to 741741</p>
+                        <p style="margin-bottom: 0.5rem;">• <a href="tel:911"><strong>Emergency Services</strong></a> — Call 911 or go to your nearest emergency room</p>
+                        <p style="margin-top: 0.75rem; color: #fca5a5; font-weight: 600;">⚠️ DO NOT use this app if you are in crisis. Call 988 or 911 immediately.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="acknowledgment-box">
+                <input type="checkbox" id="acknowledgeCheck">
+                <label for="acknowledgeCheck" class="acknowledgment-label">
+                    <strong>I ACKNOWLEDGE AND AGREE TO ALL OF THE ABOVE:</strong> I have read and understand this entire disclaimer, including all legal clauses. I know this is educational content, not therapy or medical treatment. I am not in crisis. I assume full responsibility for my use of this app. I agree to indemnify MPHaven as stated above. I consent to arbitration and waive my right to participate in class actions.
+                </label>
+            </div>
+
+            <div class="btn-group">
+                <a id="continueBtn" class="btn btn-disabled">✓ I UNDERSTAND & AGREE — CONTINUE</a>
+                <button class="btn btn-secondary" onclick="goBack()">← RETURN</button>
+            </div>
+
+            <div class="legal-footer">
+                <p>By continuing, you agree to our 
+                    <a href="terms.html" target="_blank" rel="noopener noreferrer">Terms of Service (2026)</a>, 
+                    <a href="privacy.html" target="_blank" rel="noopener noreferrer">Privacy Policy (2026)</a>, and 
+                    <a href="disclaimer.html" target="_blank" rel="noopener noreferrer">Legal Disclaimer (2026)</a>.
+                </p>
+                <p style="margin-top: 0.5rem; font-size: 0.65rem; color: var(--text-dim);">
+                    © 2026 MPHaven. All rights reserved. | 
+                    <a href="#" onclick="showCookiePreferences(event)" style="color: var(--text-dim);">Cookie Preferences</a> | 
+                    <a href="#" onclick="showDoNotSell(event)" style="color: var(--text-dim);">Do Not Sell My Information</a> | 
+                    <a href="#" onclick="showCCPA(event)" style="color: var(--text-dim);">CCPA Notice</a> | 
+                    <a href="#" onclick="showArbitration(event)" style="color: var(--text-dim);">Arbitration Notice</a>
+                </p>
+                <p style="margin-top: 0.5rem; font-size: 0.6rem; color: var(--text-dim); opacity: 0.7;">
+                    Payments processed by Stripe, PayPal, and/or other third-party processors. Version 3.0 | Last updated: February 2026
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    (function() {
+        // ===== CHECK IF ALREADY ACKNOWLEDGED =====
+        const acknowledged = localStorage.getItem('mphaven_disclaimer_acknowledged');
+        const timestamp = localStorage.getItem('mphaven_disclaimer_timestamp');
+        const version = localStorage.getItem('mphaven_disclaimer_version');
+        
+        // If already acknowledged and not expired (30 days) and version matches, send straight to app
+        if (acknowledged === 'true' && timestamp && version === '3.0') {
+            const thirtyDays = 30 * 24 * 60 * 60 * 1000;
+            if (Date.now() - new Date(timestamp).getTime() < thirtyDays) {
+                window.location.href = 'app.html';
+                return;
+            } else {
+                // Expired - clear and show again
+                localStorage.removeItem('mphaven_disclaimer_acknowledged');
+                localStorage.removeItem('mphaven_disclaimer_timestamp');
+                localStorage.removeItem('mphaven_disclaimer_version');
+            }
+        }
+        
+        // ===== DOM ELEMENTS =====
+        const check = document.getElementById('acknowledgeCheck');
+        const continueBtn = document.getElementById('continueBtn');
+        
+        if (!check || !continueBtn) return;
+        
+        // ===== UPDATE BUTTON STATE =====
+        function updateButtonState() {
+            if (check.checked) {
+                continueBtn.classList.remove('btn-disabled');
+                continueBtn.classList.add('btn-primary');
+                continueBtn.removeAttribute('disabled');
+                continueBtn.style.pointerEvents = 'auto';
+                continueBtn.style.cursor = 'pointer';
+            } else {
+                continueBtn.classList.add('btn-disabled');
+                continueBtn.classList.remove('btn-primary');
+                continueBtn.style.pointerEvents = 'none';
+            }
+        }
+        
+        check.addEventListener('change', updateButtonState);
+        
+        // ===== CONTINUE BUTTON =====
+        continueBtn.addEventListener('click', function(e) {
+            if (!check.checked) {
+                e.preventDefault();
+                alert('You must check the box to acknowledge the disclaimer before continuing.');
+                return;
+            }
+            
+            // Save to localStorage with timestamp
+            const now = new Date().toISOString();
+            localStorage.setItem('mphaven_disclaimer_acknowledged', 'true');
+            localStorage.setItem('mphaven_disclaimer_timestamp', now);
+            localStorage.setItem('mphaven_disclaimer_version', '3.0'); // Track version for future updates
+            
+            // Save user agent for extra proof
+            localStorage.setItem('mphaven_disclaimer_useragent', navigator.userAgent);
+            localStorage.setItem('mphaven_disclaimer_ip_consent', 'IP address may be collected by payment processors');
+            
+            // Redirect to app
+            window.location.href = 'app.html';
+        });
+        
+        // ===== CHECK FOR PENDING SIGNUP =====
+        const pendingSignup = sessionStorage.getItem('pending_signup');
+        if (pendingSignup === 'true') {
+            sessionStorage.removeItem('pending_signup');
+        }
+        
+    })();
+    
+    // ===== NAVIGATION FUNCTIONS =====
+    function goBack() {
+        const referrer = document.referrer;
+        if (referrer.includes('signup.html') || referrer.includes('login.html') || referrer.includes('index.html')) {
+            window.location.href = referrer;
+        } else {
+            window.location.href = 'index.html';
+        }
+    }
+    
+    function showCookiePreferences(e) {
+        e.preventDefault();
+        alert('🍪 COOKIE PREFERENCES (2026):\n\nMPHaven uses only essential local storage for disclaimer acknowledgment. No tracking cookies are used by MPHaven. However, our payment processors (Stripe, PayPal) may use cookies necessary for transaction processing. You can manage cookie settings in your browser.\n\nFor more information, see our Privacy Policy.');
+    }
+    
+    function showDoNotSell(e) {
+        e.preventDefault();
+        alert('🚫 DO NOT SELL MY PERSONAL INFORMATION (2026):\n\nMPHaven does NOT sell your personal information. This is in compliance with the California Consumer Privacy Act (CCPA) as amended in 2026.\n\nIf you are a California resident, you have the right to opt out of the sale of your personal information. Since we do not sell data, no action is needed. For questions, contact: privacy@mphaven.com');
+    }
+    
+    function showCCPA(e) {
+        e.preventDefault();
+        alert('📋 CALIFORNIA PRIVACY RIGHTS (CCPA 2026):\n\nCalifornia residents have the following rights:\n\n• RIGHT TO KNOW: Request information about personal information collected, used, disclosed, or sold.\n• RIGHT TO DELETE: Request deletion of personal information (subject to exceptions).\n• RIGHT TO OPT-OUT: Opt out of sale of personal information (we do not sell data).\n• RIGHT TO CORRECT: Request correction of inaccurate personal information.\n• RIGHT TO NON-DISCRIMINATION: No discrimination for exercising these rights.\n\nTo exercise your rights: privacy@mphaven.com\n\nWe will verify your identity before processing requests.');
+    }
+    
+    function showArbitration(e) {
+        e.preventDefault();
+        alert('⚖️ ARBITRATION AND CLASS ACTION WAIVER (2026):\n\nBy using MPHaven, you agree that:\n\n• Any disputes will be resolved through binding individual arbitration, not in court.\n• You waive your right to participate in class action lawsuits.\n• You waive your right to a jury trial.\n• Arbitration is administered by the American Arbitration Association.\n• Arbitration shall be held in your county of residence or Kent County, Delaware.\n\nThis provision is governed by the Federal Arbitration Act.');
+    }
+    
+    // Make functions global
+    window.goBack = goBack;
+    window.showCookiePreferences = showCookiePreferences;
+    window.showDoNotSell = showDoNotSell;
+    window.showCCPA = showCCPA;
+    window.showArbitration = showArbitration;
+    </script>
+</body>
+</html>
