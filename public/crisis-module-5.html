@@ -10,651 +10,700 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
-    --bg-dark: #0f172a;
-    --bg-card: rgba(15, 23, 42, 0.98);
-    --bg-card-light: rgba(30, 41, 59, 0.7);
-    --bg-card-dark: rgba(15, 23, 42, 0.5);
-    --border-subtle: rgba(30, 41, 59, 0.5);
-    --border-softer: rgba(51, 65, 85, 0.4);
-    --primary-teal: #0e7490;
-    --accent-amber: #d97706;
-    --text-primary: rgb(241, 245, 249);
-    --text-secondary: rgb(203, 213, 225);
-    --text-muted: rgb(148, 163, 184);
-    --text-teal-light: rgb(165, 243, 252);
-    --text-teal: rgb(94, 234, 212);
-    --success-emerald: rgb(74, 222, 128);
-    --success-bg: rgba(34, 197, 94, 0.12);
-    --gradient-main: linear-gradient(135deg, #0e7490, #d97706);
-    --gradient-subtle: linear-gradient(135deg, rgba(14,116,144,0.15), rgba(217,119,6,0.10));
-    --crisis-red: #dc2626;
-    --crisis-bg: rgba(220, 38, 38, 0.08);
-    --text-amber: #fbbf24;
-    --space-xs: 0.5rem;
-    --space-sm: 0.75rem;
-    --space-md: 1rem;
-    --space-lg: 1.5rem;
-    --space-xl: 2rem;
-    --space-xxl: 2.5rem;
+  --bg-dark: #0f172a;
+  --bg-card: rgba(15, 23, 42, 0.98);
+  --bg-card-light: rgba(30, 41, 59, 0.7);
+  --bg-card-dark: rgba(15, 23, 42, 0.5);
+  --border-subtle: rgba(30, 41, 59, 0.5);
+  --border-softer: rgba(51, 65, 85, 0.4);
+  --primary-teal: #0e7490;
+  --accent-amber: #d97706;
+  --text-primary: rgb(241, 245, 249);
+  --text-secondary: rgb(203, 213, 225);
+  --text-muted: rgb(148, 163, 184);
+  --text-teal-light: rgb(165, 243, 252);
+  --text-teal: rgb(94, 234, 212);
+  --success-emerald: rgb(74, 222, 128);
+  --success-bg: rgba(34, 197, 94, 0.12);
+  --gradient-main: linear-gradient(135deg, #0e7490, #d97706);
+  --gradient-subtle: linear-gradient(135deg, rgba(14,116,144,0.15), rgba(217,119,6,0.10));
+  --crisis-red: #dc2626;
+  --crisis-bg: rgba(220, 38, 38, 0.08);
+  --text-amber: #fbbf24;
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-xxl: 2.5rem;
 }
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    -webkit-tap-highlight-color: transparent;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html, body {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background: var(--bg-dark);
-    color: var(--text-primary);
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg-dark);
+  color: var(--text-primary);
 }
 
 .container {
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .app-wrapper {
-    width: 100%;
-    max-width: 28rem;
-    height: 100%;
-    margin: 0 auto;
-    background: var(--bg-card);
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    overflow: hidden;
+  width: 100%;
+  max-width: 28rem;
+  height: 100%;
+  margin: 0 auto;
+  background: var(--bg-card);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
 }
 
 .bg-blur-1, .bg-blur-2 {
-    position: absolute;
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.2;
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.2;
 }
 
 .bg-blur-1 {
-    top: -5%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 22rem;
-    height: 22rem;
-    background: rgba(14, 116, 144, 0.15);
+  top: -5%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 22rem;
+  height: 22rem;
+  background: rgba(14, 116, 144, 0.15);
 }
 
 .bg-blur-2 {
-    bottom: -5%;
-    right: -5%;
-    width: 18rem;
-    height: 18rem;
-    background: rgba(217, 119, 6, 0.15);
+  bottom: -5%;
+  right: -5%;
+  width: 18rem;
+  height: 18rem;
+  background: rgba(217, 119, 6, 0.15);
 }
 
 .main-content {
-    flex: 1;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    position: relative;
-    z-index: 1;
-    padding: var(--space-md) var(--space-md) calc(2rem + env(safe-area-inset-bottom));
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  position: relative;
+  z-index: 1;
+  padding: var(--space-md) var(--space-md) calc(2rem + env(safe-area-inset-bottom));
 }
 
 .main-content::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 .crisis-banner {
-    background: var(--crisis-bg);
-    border: 1px solid var(--crisis-red);
-    border-radius: 0.75rem;
-    padding: var(--space-sm) var(--space-md);
-    margin-bottom: var(--space-lg);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: var(--space-sm);
+  background: var(--crisis-bg);
+  border: 1px solid var(--crisis-red);
+  border-radius: 0.75rem;
+  padding: var(--space-sm) var(--space-md);
+  margin-bottom: var(--space-lg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
 }
 
 .crisis-text {
-    color: #fca5a5;
-    font-size: 0.8125rem;
-    font-weight: 600;
+  color: #fca5a5;
+  font-size: 0.8125rem;
+  font-weight: 600;
 }
 
 .crisis-actions {
-    display: flex;
-    gap: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
 }
 
 .crisis-link {
-    color: white;
-    background: var(--crisis-red);
-    text-decoration: none;
-    padding: 0.4rem 0.875rem;
-    border-radius: 2rem;
-    font-size: 0.75rem;
-    font-weight: 700;
+  color: white;
+  background: var(--crisis-red);
+  text-decoration: none;
+  padding: 0.4rem 0.875rem;
+  border-radius: 2rem;
+  font-size: 0.75rem;
+  font-weight: 700;
 }
 
 .header {
-    background: linear-gradient(135deg, var(--bg-card-light), var(--bg-card-dark));
-    border: 1px solid var(--border-softer);
-    border-radius: 1.25rem;
-    padding: var(--space-lg) var(--space-md);
-    margin-bottom: var(--space-xl);
+  background: linear-gradient(135deg, var(--bg-card-light), var(--bg-card-dark));
+  border: 1px solid var(--border-softer);
+  border-radius: 1.25rem;
+  padding: var(--space-lg) var(--space-md);
+  margin-bottom: var(--space-xl);
 }
 
 .header-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: var(--space-sm);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-sm);
 }
 
 .back-btn {
-    background: none;
-    border: none;
-    color: var(--text-muted);
-    font-size: 1.5rem;
-    cursor: pointer;
-    line-height: 1;
-    padding: 0;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.5rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
 }
 
 .step-indicator {
-    color: var(--text-muted);
-    font-size: 0.8125rem;
-    font-weight: 600;
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+  font-weight: 600;
 }
 
 .progress-dots {
-    display: flex;
-    gap: 0.375rem;
-    margin-bottom: var(--space-sm);
+  display: flex;
+  gap: 0.375rem;
+  margin-bottom: var(--space-sm);
 }
 
 .progress-dot {
-    flex: 1;
-    height: 0.375rem;
-    background: rgba(148,163,184,0.2);
-    border-radius: 1rem;
-    transition: all 0.3s;
+  flex: 1;
+  height: 0.375rem;
+  background: rgba(148,163,184,0.2);
+  border-radius: 1rem;
+  transition: all 0.3s;
 }
 
 .progress-dot.active {
-    background: var(--gradient-main);
+  background: var(--gradient-main);
 }
 
 .step-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    background: var(--gradient-main);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 0.25rem;
-    line-height: 1.3;
+  font-size: 1.5rem;
+  font-weight: 700;
+  background: var(--gradient-main);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 0.25rem;
+  line-height: 1.3;
 }
 
 .step-subtitle {
-    color: var(--text-secondary);
-    font-size: 0.875rem;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
 }
 
 .card {
-    background: linear-gradient(135deg, var(--bg-card-light), var(--bg-card-dark));
-    border: 1px solid var(--border-softer);
-    border-radius: 1.5rem;
-    padding: var(--space-xl) var(--space-lg);
-    margin-bottom: var(--space-xl);
+  background: linear-gradient(135deg, var(--bg-card-light), var(--bg-card-dark));
+  border: 1px solid var(--border-softer);
+  border-radius: 1.5rem;
+  padding: var(--space-xl) var(--space-lg);
+  margin-bottom: var(--space-xl);
 }
 
 .card-highlight {
-    background: var(--gradient-subtle);
-    border: 1px solid rgba(14,116,144,0.3);
-    border-radius: 1.5rem;
-    padding: var(--space-xl) var(--space-lg);
-    margin-bottom: var(--space-xl);
+  background: var(--gradient-subtle);
+  border: 1px solid rgba(14,116,144,0.3);
+  border-radius: 1.5rem;
+  padding: var(--space-xl) var(--space-lg);
+  margin-bottom: var(--space-xl);
 }
 
 .section-header {
-    display: flex;
-    align-items: center;
-    gap: var(--space-sm);
-    margin-bottom: var(--space-lg);
-    padding-bottom: var(--space-sm);
-    border-bottom: 1px solid var(--border-softer);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--border-softer);
 }
 
 .section-icon {
-    font-size: 1.8rem;
+  font-size: 1.8rem;
 }
 
 .section-title-text {
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: var(--text-teal-light);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-teal-light);
 }
 
 .btn {
-    width: 100%;
-    padding: 0.875rem 1.25rem;
-    border-radius: 0.875rem;
-    font-weight: 600;
-    font-size: 0.9375rem;
-    cursor: pointer;
-    border: none;
-    text-decoration: none;
-    text-align: center;
-    display: inline-block;
-    line-height: 1.4;
+  width: 100%;
+  padding: 0.875rem 1.25rem;
+  border-radius: 0.875rem;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  text-align: center;
+  display: inline-block;
+  line-height: 1.4;
+  transition: all 0.2s;
 }
 
 .btn-primary {
-    background: var(--gradient-main);
-    color: white;
+  background: var(--gradient-main);
+  color: white;
 }
 
 .btn-secondary {
-    background: var(--bg-card-dark);
-    color: var(--text-secondary);
-    border: 1px solid var(--border-softer);
+  background: var(--bg-card-dark);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-softer);
 }
 
 .btn-group {
-    display: flex;
-    gap: var(--space-md);
-    margin: var(--space-xl) 0 var(--space-lg);
+  display: flex;
+  gap: var(--space-md);
+  margin: var(--space-xl) 0 var(--space-lg);
 }
 
 .btn-save {
-    background: var(--gradient-subtle);
-    color: var(--text-teal-light);
-    border: 1px solid rgba(14,116,144,0.3);
-    padding: 0.75rem 1.25rem;
-    border-radius: 2rem;
-    font-weight: 500;
-    font-size: 0.875rem;
-    cursor: pointer;
-    width: 100%;
-    margin-top: var(--space-md);
-    line-height: 1.4;
+  background: var(--gradient-subtle);
+  color: var(--text-teal-light);
+  border: 1px solid rgba(14,116,144,0.3);
+  padding: 0.75rem 1.25rem;
+  border-radius: 2rem;
+  font-weight: 500;
+  font-size: 0.875rem;
+  cursor: pointer;
+  width: 100%;
+  margin-top: var(--space-md);
+  line-height: 1.4;
 }
 
 .btn-save.saved {
-    background: var(--success-bg);
-    color: var(--success-emerald);
-    border-color: rgba(74,222,128,0.3);
+  background: var(--success-bg);
+  color: var(--success-emerald);
+  border-color: rgba(74,222,128,0.3);
+}
+
+.btn-practice {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+}
+
+.btn-practice-primary {
+  background: var(--gradient-main);
+  color: white;
+}
+
+.btn-practice-secondary {
+  background: var(--bg-card-dark);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-softer);
+}
+
+.practice-buttons {
+  display: flex;
+  gap: var(--space-sm);
+  margin: var(--space-lg) 0;
 }
 
 .input-field {
-    width: 100%;
-    padding: 0.875rem;
-    background: rgba(15,23,42,0.6);
-    border: 1px solid var(--border-softer);
-    border-radius: 0.75rem;
-    color: var(--text-primary);
-    font-size: 0.875rem;
-    transition: all 0.2s;
+  width: 100%;
+  padding: 0.875rem;
+  background: rgba(15,23,42,0.6);
+  border: 1px solid var(--border-softer);
+  border-radius: 0.75rem;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  transition: all 0.2s;
 }
 
 .input-field:focus {
-    outline: none;
-    border-color: var(--primary-teal);
+  outline: none;
+  border-color: var(--primary-teal);
 }
 
 .input-field.highlight {
-    border: 2px solid var(--accent-amber);
-    background: rgba(217,119,6,0.1);
+  border: 2px solid var(--accent-amber);
+  background: rgba(217,119,6,0.1);
 }
 
+/* Toolkit drawer – mobile-first */
 .toolkit-drawer {
-    background: linear-gradient(135deg, var(--bg-card-light), var(--bg-card-dark));
-    border: 2px solid var(--primary-teal);
-    border-radius: 1.5rem;
-    padding: var(--space-lg);
-    margin-bottom: var(--space-xl);
-    position: relative;
-    z-index: 10;
-    animation: slideDown 0.3s ease-out;
+  background: linear-gradient(135deg, var(--bg-card-light), var(--bg-card-dark));
+  border: 2px solid var(--primary-teal);
+  border-radius: 1.5rem;
+  padding: var(--space-lg);
+  margin: var(--space-lg) 0;
+  position: relative;
+  z-index: 10;
+  animation: slideDown 0.3s ease-out;
+  max-height: 70vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 @keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .drawer-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: var(--space-md);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-md);
+  position: sticky;
+  top: 0;
+  background: inherit;
+  z-index: 2;
+  padding-bottom: var(--space-xs);
 }
 
 .drawer-title {
-    color: var(--text-teal-light);
-    font-size: 1.2rem;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+  color: var(--text-teal-light);
+  font-size: 1.2rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .close-btn {
-    background: none;
-    border: none;
-    color: var(--text-muted);
-    font-size: 1.5rem;
-    cursor: pointer;
-    line-height: 1;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.5rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0.25rem;
+  transition: all 0.2s;
+}
+
+.close-btn:hover {
+  color: var(--text-primary);
 }
 
 .tab-container {
-    display: flex;
-    gap: 0.5rem;
-    margin-bottom: var(--space-lg);
-    border-bottom: 1px solid var(--border-softer);
-    padding-bottom: var(--space-sm);
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: var(--space-lg);
+  border-bottom: 1px solid var(--border-softer);
+  padding-bottom: var(--space-sm);
+  position: sticky;
+  top: 3rem;
+  background: inherit;
+  z-index: 2;
 }
 
 .tab-btn {
-    flex: 1;
-    padding: 0.75rem;
-    background: var(--bg-card-dark);
-    color: var(--text-secondary);
-    border: 1px solid var(--border-softer);
-    border-radius: 2rem;
-    font-weight: 600;
-    font-size: 0.875rem;
-    cursor: pointer;
-    transition: all 0.2s;
+  flex: 1;
+  padding: 0.75rem;
+  background: var(--bg-card-dark);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-softer);
+  border-radius: 2rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
 .tab-btn.active {
-    background: var(--gradient-main);
-    color: white;
-    border-color: transparent;
+  background: var(--gradient-main);
+  color: white;
+  border-color: transparent;
 }
 
 .skills-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.75rem;
-    max-height: 350px;
-    overflow-y: auto;
-    padding-right: 0.25rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.75rem;
+  max-height: none;
+  padding-bottom: var(--space-sm);
+}
+
+@media (max-width: 480px) {
+  .skills-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .skill-item {
-    background: rgba(14,116,144,0.1);
-    border: 1px solid transparent;
-    border-radius: 0.75rem;
-    padding: 0.75rem;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+  background: rgba(14,116,144,0.1);
+  border: 1px solid transparent;
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 4rem;
 }
 
 .skill-item:hover {
-    background: rgba(14,116,144,0.2);
-    border-color: var(--primary-teal);
-    transform: translateY(-2px);
+  background: rgba(14,116,144,0.2);
+  border-color: var(--primary-teal);
+  transform: translateY(-2px);
 }
 
 .skill-icon {
-    font-size: 1.2rem;
-    min-width: 1.5rem;
+  font-size: 1.2rem;
+  min-width: 1.5rem;
 }
 
 .skill-name {
-    font-weight: 600;
-    color: var(--text-primary);
-    font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.8125rem;
 }
 
 .skill-desc {
-    color: var(--text-muted);
-    font-size: 0.6875rem;
-    margin-top: 0.125rem;
+  color: var(--text-muted);
+  font-size: 0.6875rem;
+  margin-top: 0.125rem;
 }
 
 .module-header {
-    grid-column: span 2;
-    color: var(--text-teal);
-    font-weight: 700;
-    font-size: 0.875rem;
-    margin-top: 0.5rem;
-    margin-bottom: 0.25rem;
-    padding-left: 0.25rem;
+  grid-column: 1 / -1;
+  color: var(--text-teal);
+  font-weight: 700;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
+  padding-left: 0.25rem;
 }
 
 .intensity-section {
-    background: rgba(14,116,144,0.1);
-    border-radius: 1rem;
-    padding: var(--space-lg);
-    margin-bottom: var(--space-lg);
+  background: rgba(14,116,144,0.1);
+  border-radius: 1rem;
+  padding: var(--space-lg);
+  margin-bottom: var(--space-lg);
 }
 
 .intensity-badge {
-    display: inline-block;
-    background: var(--gradient-subtle);
-    color: var(--text-teal-light);
-    padding: 0.25rem 0.75rem;
-    border-radius: 2rem;
-    font-size: 0.75rem;
-    font-weight: 700;
-    margin-bottom: var(--space-sm);
+  display: inline-block;
+  background: var(--gradient-subtle);
+  color: var(--text-teal-light);
+  padding: 0.25rem 0.75rem;
+  border-radius: 2rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-bottom: var(--space-sm);
 }
 
 .intensity-badge.high {
-    background: var(--crisis-bg);
-    color: #fca5a5;
-    border: 1px solid var(--crisis-red);
+  background: var(--crisis-bg);
+  color: #fca5a5;
+  border: 1px solid var(--crisis-red);
 }
 
 .input-row {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
 }
 
 .input-row label {
-    color: var(--text-secondary);
-    font-size: 0.875rem;
-    min-width: 60px;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  min-width: 60px;
 }
 
 .insert-btn {
-    background: var(--gradient-subtle);
-    border: none;
-    color: var(--text-teal-light);
-    padding: 0.5rem 0.75rem;
-    border-radius: 0.5rem;
-    cursor: pointer;
-    font-size: 0.75rem;
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    transition: all 0.2s;
+  background: var(--gradient-subtle);
+  border: 1px solid rgba(14,116,144,0.3);
+  color: var(--text-teal-light);
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  transition: all 0.2s;
+  white-space: nowrap;
 }
 
 .insert-btn:hover {
-    background: rgba(14,116,144,0.3);
+  background: rgba(14,116,144,0.3);
 }
 
 .pros-cons-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-md);
-    margin: var(--space-lg) 0;
-}
-
-.pros-cons-box {
-    background: rgba(15,23,42,0.6);
-    border-radius: 1rem;
-    padding: var(--space-md);
-}
-
-.pros-cons-title {
-    font-weight: 700;
-    margin-bottom: var(--space-sm);
-}
-
-.values-compass {
-    background: rgba(14,116,144,0.15);
-    border: 2px solid var(--primary-teal);
-    border-radius: 1.5rem;
-    padding: var(--space-xl) var(--space-lg);
-    margin: var(--space-lg) 0;
-    text-align: center;
-}
-
-.compass-question {
-    font-size: 1.125rem;
-    font-weight: 700;
-    color: var(--text-teal-light);
-    margin-bottom: var(--space-md);
-}
-
-.crisis-card-preview {
-    background: linear-gradient(135deg, rgba(14,116,144,0.2), rgba(217,119,6,0.1));
-    border: 2px solid var(--accent-amber);
-    border-radius: 1.5rem;
-    padding: var(--space-xl) var(--space-lg);
-    margin: var(--space-xl) 0;
-    position: relative;
-    overflow: hidden;
-}
-
-.crisis-card-preview:before {
-    content: "🆘";
-    position: absolute;
-    top: 0.5rem;
-    right: 1rem;
-    font-size: 2rem;
-    opacity: 0.1;
-}
-
-.crisis-card-title {
-    font-size: 1.25rem;
-    font-weight: 800;
-    color: var(--text-amber);
-    margin-bottom: var(--space-lg);
-}
-
-.crisis-card-item {
-    display: flex;
-    align-items: baseline;
-    gap: 0.5rem;
-    margin-bottom: var(--space-sm);
-    color: var(--text-secondary);
-    font-size: 0.875rem;
-}
-
-.crisis-card-number {
-    color: var(--text-amber);
-    font-weight: 700;
-    min-width: 1.5rem;
-}
-
-.completion-box {
-    background: var(--gradient-subtle);
-    border: 2px solid var(--primary-teal);
-    border-radius: 1.5rem;
-    padding: var(--space-xxl) var(--space-lg);
-    margin: var(--space-xxl) 0;
-    text-align: center;
-}
-
-.completion-icon {
-    font-size: 3rem;
-    margin-bottom: var(--space-md);
-}
-
-.completion-title {
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: var(--text-teal-light);
-    margin-bottom: var(--space-sm);
-}
-
-.completion-text {
-    color: var(--text-secondary);
-    font-size: 0.9375rem;
-    line-height: 1.6;
-    margin-bottom: var(--space-lg);
-}
-
-.footer {
-    margin-top: var(--space-xxl);
-    padding-top: var(--space-lg);
-    border-top: 1px solid var(--border-subtle);
-    text-align: center;
-}
-
-.footer-warning {
-    color: #fca5a5;
-    font-weight: 600;
-    font-size: 0.8125rem;
-    margin-bottom: var(--space-sm);
-}
-
-.footer-resources {
-    color: var(--text-muted);
-    font-size: 0.75rem;
-    line-height: 1.6;
-}
-
-.save-feedback {
-    color: var(--success-emerald);
-    font-size: 0.75rem;
-    text-align: center;
-    margin-top: 0.5rem;
-    display: none;
-}
-
-.save-feedback.show {
-    display: block;
-}
-
-.hidden {
-    display: none !important;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+  margin: var(--space-lg) 0;
 }
 
 @media (max-width: 640px) {
-    .pros-cons-grid {
-        grid-template-columns: 1fr;
-    }
-    .btn-group {
-        flex-direction: column;
-    }
-    .skills-grid {
-        grid-template-columns: 1fr;
-    }
-    .module-header {
-        grid-column: span 1;
-    }
+  .pros-cons-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pros-cons-box {
+  background: rgba(15,23,42,0.6);
+  border-radius: 1rem;
+  padding: var(--space-md);
+}
+
+.pros-cons-title {
+  font-weight: 700;
+  margin-bottom: var(--space-sm);
+}
+
+.values-compass {
+  background: rgba(14,116,144,0.15);
+  border: 2px solid var(--primary-teal);
+  border-radius: 1.5rem;
+  padding: var(--space-xl) var(--space-lg);
+  margin: var(--space-lg) 0;
+  text-align: center;
+}
+
+.compass-question {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--text-teal-light);
+  margin-bottom: var(--space-md);
+}
+
+.crisis-card-preview {
+  background: linear-gradient(135deg, rgba(14,116,144,0.2), rgba(217,119,6,0.1));
+  border: 2px solid var(--accent-amber);
+  border-radius: 1.5rem;
+  padding: var(--space-xl) var(--space-lg);
+  margin: var(--space-xl) 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.crisis-card-preview:before {
+  content: "🆘";
+  position: absolute;
+  top: 0.5rem;
+  right: 1rem;
+  font-size: 2rem;
+  opacity: 0.1;
+}
+
+.crisis-card-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-amber);
+  margin-bottom: var(--space-lg);
+}
+
+.crisis-card-item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: var(--space-sm);
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.crisis-card-number {
+  color: var(--text-amber);
+  font-weight: 700;
+  min-width: 1.5rem;
+}
+
+.completion-box {
+  background: var(--gradient-subtle);
+  border: 2px solid var(--primary-teal);
+  border-radius: 1.5rem;
+  padding: var(--space-xxl) var(--space-lg);
+  margin: var(--space-xxl) 0;
+  text-align: center;
+}
+
+.completion-icon {
+  font-size: 3rem;
+  margin-bottom: var(--space-md);
+}
+
+.completion-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-teal-light);
+  margin-bottom: var(--space-sm);
+}
+
+.completion-text {
+  color: var(--text-secondary);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  margin-bottom: var(--space-lg);
+}
+
+.footer {
+  margin-top: var(--space-xxl);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--border-subtle);
+  text-align: center;
+}
+
+.footer-warning {
+  color: #fca5a5;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  margin-bottom: var(--space-sm);
+}
+
+.footer-resources {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  line-height: 1.6;
+}
+
+.save-feedback {
+  color: var(--success-emerald);
+  font-size: 0.75rem;
+  text-align: center;
+  margin-top: 0.5rem;
+  display: none;
+}
+
+.save-feedback.show {
+  display: block;
+}
+
+.hidden {
+  display: none !important;
+}
+
+@media (max-width: 640px) {
+  .btn-group {
+    flex-direction: column;
+  }
+  .practice-buttons {
+    flex-direction: column;
+  }
 }
 </style>
-
 </head>
 <body>
 <div class="container">
@@ -663,6 +712,7 @@ html, body {
     <div class="bg-blur-2"></div>
     <div class="main-content" id="mainContent">
       <div class="content-wrapper" id="content">
+        <!-- JS will render -->
       </div>
     </div>
   </div>
@@ -677,7 +727,7 @@ html, body {
 
   let currentStep = 1;
   const totalSteps = 9;
-  
+
   const stepTitles = {
     1: 'Introduction',
     2: 'Intensity Plan (1-6)',
@@ -690,38 +740,35 @@ html, body {
     9: 'Course Complete!'
   };
 
+  // Corrected skills – only what's actually taught in modules 1-4
   const allSkills = [
-    { module: 1, name: 'Name It', icon: '🏷️', desc: 'Label the emotion - "This is a wave"' },
-    { module: 1, name: 'Observe', icon: '👁️', desc: 'Watch thoughts like clouds passing' },
-    { module: 1, name: 'Name the Urge', icon: '📝', desc: '"I\'m having the urge to..."' },
-    { module: 1, name: 'Crisis Timeline', icon: '⏱️', desc: 'This will pass in X minutes' },
-    { module: 1, name: 'Physiology Check', icon: '💓', desc: 'Notice heartbeat, breathing, temperature' },
-    { module: 2, name: 'Cold Water', icon: '🧊', desc: 'Dive reflex - 30-60 sec face dunk' },
+    // Module 1
+    { module: 1, name: 'Crisis Brain Facts', icon: '🧠', desc: 'Thinking brain offline • Emotions peak 10-20 min • Wave passes' },
+
+    // Module 2
+    { module: 2, name: 'Cold Water', icon: '🧊', desc: 'Dive reflex – 30-60 sec face dunk' },
     { module: 2, name: 'Intense Exercise', icon: '💪', desc: '3-5 min sprints, jumping jacks, stairs' },
     { module: 2, name: 'Paced Breathing', icon: '🌬️', desc: '4-7-8 or box breathing' },
     { module: 2, name: 'PMR', icon: '💆', desc: 'Tense/release muscle groups' },
     { module: 2, name: 'Temperature Shock', icon: '🌡️', desc: 'Ice cubes or hot shower' },
-    { module: 3, name: '5-4-3-2-1 Grounding', icon: '🔢', desc: '5 things you see, 4 you feel, etc.' },
-    { module: 3, name: 'Temperature Grounding', icon: '❄️', desc: 'Hold ice, cold water' },
-    { module: 3, name: 'Descriptive Grounding', icon: '📝', desc: 'Describe surroundings in detail' },
-    { module: 3, name: 'Physical Sensation', icon: '🫧', desc: 'Run hands under water' },
-    { module: 3, name: 'Intentional Distraction', icon: '🎯', desc: 'Choose activity for 20 min' },
-    { module: 3, name: 'Cognitive Load', icon: '🔢', desc: 'Count backwards, math problems' },
-    { module: 4, name: 'Wise Mind', icon: '⚖️', desc: 'Balance emotion + reason' },
-    { module: 4, name: 'Opposite Action', icon: '🔄', desc: 'Do opposite of urge' },
-    { module: 4, name: 'Acceptance', icon: '🤲', desc: '"It is what it is"' },
-    { module: 4, name: 'Values Check', icon: '🧭', desc: 'Does this align with who I want to be?' },
-    { module: 4, name: 'Radical Acceptance', icon: '🌊', desc: 'Full acceptance of reality' },
-    { module: 4, name: 'Pros & Cons', icon: '⚖️', desc: 'Short-term vs long-term' },
-    { module: 4, name: 'Urge Surfing', icon: '🏄', desc: 'Ride the wave like a surfer' },
-    { module: 4, name: 'STOP Skill', icon: '✋', desc: 'Stop, Take a breath, Observe, Proceed' }
+
+    // Module 3
+    { module: 3, name: 'Grounding (5-4-3-2-1)', icon: '👁️', desc: 'Name 5 things you see, 4 touch, 3 hear, 2 smell, 1 taste' },
+    { module: 3, name: 'Cognitive Load', icon: '🧩', desc: 'Count backwards by 7, word games, memory tasks' },
+    { module: 3, name: 'Intense Sensations', icon: '🌶️', desc: 'Lemon, ice, peppermint, loud sounds' },
+    { module: 3, name: 'Bilateral Stimulation', icon: '🦋', desc: 'Butterfly hug, eye movements, walking rhythm' },
+    { module: 3, name: 'Strategic Distraction', icon: '🎮', desc: 'High‑engagement activities to ride out the peak' },
+
+    // Module 4
+    { module: 4, name: 'Radical Acceptance', icon: '✋', desc: '"It is what it is" – stop fighting reality' },
+    { module: 4, name: 'Willing Hands', icon: '🙏', desc: 'Open palms, relaxed shoulders – physical acceptance' },
+    { module: 4, name: 'Half‑Smile', icon: '😌', desc: 'Subtle lift of mouth corners, soften jaw' },
+    { module: 4, name: 'Self‑Compassion', icon: '💝', desc: 'Treat yourself like a friend – "Of course this is hard"' },
+    { module: 4, name: 'Defusion', icon: '🎭', desc: '"I\'m having the thought that…" – thoughts aren\'t facts' }
   ];
 
   function saveProgress() {
-    localStorage.setItem('crisis_module5_progress', JSON.stringify({
-      step: currentStep,
-      timestamp: Date.now()
-    }));
+    localStorage.setItem('crisis_module5_progress', JSON.stringify({ step: currentStep, timestamp: Date.now() }));
   }
 
   function loadProgress() {
@@ -729,9 +776,7 @@ html, body {
       const saved = localStorage.getItem('crisis_module5_progress');
       if (saved) {
         const data = JSON.parse(saved);
-        if (Date.now() - data.timestamp < 86400000) {
-          currentStep = data.step || 1;
-        }
+        if (Date.now() - data.timestamp < 86400000) currentStep = data.step || 1;
       }
     } catch (e) {}
   }
@@ -739,7 +784,7 @@ html, body {
   function saveToToolkit(item) {
     let toolkit = JSON.parse(localStorage.getItem('crisis_toolkit') || '[]');
     toolkit = toolkit.filter(t => t.id !== item.id);
-    toolkit.push({...item, date: new Date().toISOString()});
+    toolkit.push({ ...item, date: new Date().toISOString() });
     localStorage.setItem('crisis_toolkit', JSON.stringify(toolkit));
   }
 
@@ -755,23 +800,11 @@ html, body {
   }
 
   window.nextStep = function() {
-    if (currentStep < totalSteps) {
-      currentStep++;
-      saveProgress();
-      render();
-      scrollToTop();
-    }
+    if (currentStep < totalSteps) { currentStep++; saveProgress(); render(); scrollToTop(); }
   };
-
   window.previousStep = function() {
-    if (currentStep > 1) {
-      currentStep--;
-      saveProgress();
-      render();
-      scrollToTop();
-    } else {
-      window.location.href = 'crisis-module-4.html';
-    }
+    if (currentStep > 1) { currentStep--; saveProgress(); render(); scrollToTop(); }
+    else window.location.href = 'crisis-module-4.html';
   };
 
   function renderHeader() {
@@ -783,16 +816,13 @@ html, body {
           <a href="sms:988" class="crisis-link">Text 988</a>
         </div>
       </div>
-      
       <div class="header">
         <div class="header-top">
           <button class="back-btn" onclick="window.previousStep()">←</button>
           <span class="step-indicator">${currentStep} / ${totalSteps}</span>
         </div>
         <div class="progress-dots">
-          ${Array(totalSteps).fill(0).map((_, i) => 
-            `<div class="progress-dot ${i < currentStep ? 'active' : ''}"></div>`
-          ).join('')}
+          ${Array(totalSteps).fill(0).map((_, i) => `<div class="progress-dot ${i < currentStep ? 'active' : ''}"></div>`).join('')}
         </div>
         <h1 class="step-title">${stepTitles[currentStep]}</h1>
         <p class="step-subtitle">Module 5: Your Crisis Action Plan</p>
@@ -816,144 +846,87 @@ html, body {
   function renderToolkitDrawer(targetInputId) {
     const toolkit = JSON.parse(localStorage.getItem('crisis_toolkit') || '[]');
     const savedSkillNames = toolkit.map(t => t.name);
-    
     return `
       <div class="toolkit-drawer" id="toolkitDrawer">
         <div class="drawer-header">
-          <div class="drawer-title">
-            <span>🧰</span> SKILLS LIBRARY
-          </div>
+          <div class="drawer-title"><span>🧰</span> SKILLS LIBRARY</div>
           <button class="close-btn" onclick="window.closeToolkit()">✕</button>
         </div>
-        
         <div class="tab-container">
           <button class="tab-btn active" id="tabSaved" onclick="window.switchTab('saved')">⭐ MY SAVED</button>
           <button class="tab-btn" id="tabAll" onclick="window.switchTab('all')">📚 ALL SKILLS</button>
         </div>
-        
         <div id="savedSkillsContent" style="display: block;">
           <div class="skills-grid">
-            ${savedSkillNames.length > 0 ? 
-              allSkills.filter(s => savedSkillNames.includes(s.name)).map(skill => `
-                <div class="skill-item" onclick="window.insertSkill('${skill.name}', '${targetInputId}')">
-                  <span class="skill-icon">${skill.icon}</span>
-                  <div>
-                    <div class="skill-name">${skill.name}</div>
-                    <div class="skill-desc">${skill.desc}</div>
-                  </div>
-                </div>
-              `).join('') : 
-              '<p style="grid-column: span 2; color: var(--text-muted); text-align: center; padding: 1rem;">No saved skills yet. Complete modules 1-4 first.</p>'
-            }
+            ${savedSkillNames.length ? allSkills.filter(s => savedSkillNames.includes(s.name)).map(skill => `
+              <div class="skill-item" onclick="window.insertSkill('${skill.name}', '${targetInputId}')">
+                <span class="skill-icon">${skill.icon}</span>
+                <div><div class="skill-name">${skill.name}</div><div class="skill-desc">${skill.desc}</div></div>
+              </div>
+            `).join('') : '<p style="grid-column: span 2; color: var(--text-muted); text-align: center; padding: 1rem;">No saved skills yet.</p>'}
           </div>
         </div>
-        
         <div id="allSkillsContent" style="display: none;">
           <div class="skills-grid">
             ${[1,2,3,4].map(moduleNum => {
               const moduleSkills = allSkills.filter(s => s.module === moduleNum);
-              if (moduleSkills.length === 0) return '';
-              
-              const moduleTitle = moduleNum === 1 ? '🧠 MODULE 1: Crisis Brain' : 
-                                 moduleNum === 2 ? '💪 MODULE 2: Physical Reset' : 
-                                 moduleNum === 3 ? '🌍 MODULE 3: Grounding' : 
-                                 '🧠 MODULE 4: Cognitive';
-              
+              if (!moduleSkills.length) return '';
+              const moduleTitle = moduleNum === 1 ? '🧠 MODULE 1: Crisis Brain' : moduleNum === 2 ? '💪 MODULE 2: Physical Reset' : moduleNum === 3 ? '🌍 MODULE 3: Mental Techniques' : '🧠 MODULE 4: Acceptance';
               return `
                 <div class="module-header">${moduleTitle}</div>
                 ${moduleSkills.map(skill => `
                   <div class="skill-item" onclick="window.insertSkill('${skill.name}', '${targetInputId}')">
                     <span class="skill-icon">${skill.icon}</span>
-                    <div>
-                      <div class="skill-name">${skill.name}</div>
-                      <div class="skill-desc">${skill.desc}</div>
-                    </div>
+                    <div><div class="skill-name">${skill.name}</div><div class="skill-desc">${skill.desc}</div></div>
                   </div>
                 `).join('')}
               `;
             }).join('')}
           </div>
         </div>
-        
-        <p style="color: var(--text-muted); font-size: 0.75rem; margin-top: 1rem; text-align: center;">
-          Click any skill to insert it into the plan
-        </p>
+        <p style="color: var(--text-muted); font-size: 0.75rem; margin-top: 1rem; text-align: center;">Click any skill to insert it</p>
       </div>
     `;
   }
 
   window.closeToolkit = function() {
-    const drawer = document.getElementById('toolkitDrawer');
-    if (drawer) drawer.remove();
-    window.currentTargetInput = null;
+    const d = document.getElementById('toolkitDrawer'); if (d) d.remove();
   };
-
   window.switchTab = function(tab) {
-    const tabSaved = document.getElementById('tabSaved');
-    const tabAll = document.getElementById('tabAll');
-    const savedContent = document.getElementById('savedSkillsContent');
-    const allContent = document.getElementById('allSkillsContent');
-    
-    if (tabSaved && tabAll && savedContent && allContent) {
-      tabSaved.classList.remove('active');
-      tabAll.classList.remove('active');
-      savedContent.style.display = 'none';
-      allContent.style.display = 'none';
-      
-      if (tab === 'saved') {
-        tabSaved.classList.add('active');
-        savedContent.style.display = 'block';
-      } else {
-        tabAll.classList.add('active');
-        allContent.style.display = 'block';
-      }
-    }
+    const savedTab = document.getElementById('tabSaved'), allTab = document.getElementById('tabAll');
+    const savedContent = document.getElementById('savedSkillsContent'), allContent = document.getElementById('allSkillsContent');
+    if (!savedTab || !allTab || !savedContent || !allContent) return;
+    savedTab.classList.remove('active'); allTab.classList.remove('active');
+    savedContent.style.display = 'none'; allContent.style.display = 'none';
+    if (tab === 'saved') { savedTab.classList.add('active'); savedContent.style.display = 'block'; }
+    else { allTab.classList.add('active'); allContent.style.display = 'block'; }
   };
-
   window.insertSkill = function(skillName, targetInputId) {
-    const targetInput = document.getElementById(targetInputId);
-    if (targetInput) {
-      targetInput.value = skillName;
-      targetInput.classList.add('highlight');
-      setTimeout(() => targetInput.classList.remove('highlight'), 2000);
-    }
+    const inp = document.getElementById(targetInputId);
+    if (inp) { inp.value = skillName; inp.classList.add('highlight'); setTimeout(() => inp.classList.remove('highlight'), 2000); }
     window.closeToolkit();
   };
-
   window.openToolkit = function(targetInputId) {
-    const existing = document.getElementById('toolkitDrawer');
-    if (existing) existing.remove();
-    
-    window.currentTargetInput = targetInputId;
-    
+    const existing = document.getElementById('toolkitDrawer'); if (existing) existing.remove();
     const btn = document.getElementById(`insertBtn_${targetInputId}`);
-    if (btn) {
-      const drawerHtml = renderToolkitDrawer(targetInputId);
-      btn.insertAdjacentHTML('afterend', drawerHtml);
-    }
-    
-    const targetInput = document.getElementById(targetInputId);
-    if (targetInput) {
-      targetInput.classList.add('highlight');
-    }
+    if (btn) btn.insertAdjacentHTML('afterend', renderToolkitDrawer(targetInputId));
+    const inp = document.getElementById(targetInputId); if (inp) inp.classList.add('highlight');
   };
 
+  // ----- FULL STEP RENDER FUNCTIONS (1-9) -----
   function renderStep1() {
     return `
       ${renderHeader()}
-      
       <div class="card-highlight">
         <p style="font-size: 1rem; color: var(--text-teal-light); font-style: italic; line-height: 1.6; margin: 0;">
-          "You've learned the skills. Now we build YOUR personalized plan. In crisis, your thinking brain is impaired — that's why you need a plan made NOW, when you can think clearly."
+          “You've learned the skills. Now we build YOUR personalized plan. In crisis, your thinking brain is impaired — that's why you need a plan made NOW, when you can think clearly.”
         </p>
       </div>
-      
       <div class="card">
         <div class="section-header">
           <span class="section-icon">🆘</span>
           <span class="section-title-text">Why a Crisis Plan?</span>
         </div>
-        
         <div style="display: flex; flex-direction: column; gap: var(--space-md);">
           <div style="display: flex; gap: var(--space-sm);">
             <span style="color: var(--text-teal); font-weight: 600; font-size: 1rem;">1.</span>
@@ -969,9 +942,7 @@ html, body {
           </div>
         </div>
       </div>
-      
       <button class="btn btn-primary" onclick="window.nextStep()">Start Building Your Plan →</button>
-      
       ${renderFooter()}
     `;
   }
@@ -979,44 +950,35 @@ html, body {
   function renderStep2() {
     return `
       ${renderHeader()}
-      
       <div class="card">
         <div class="section-header">
           <span class="section-icon">📊</span>
           <span class="section-title-text">Intensity-Based Plan (1-6)</span>
         </div>
-        
         <p style="color: var(--text-secondary); margin-bottom: var(--space-lg); font-size: 0.9375rem;">
           Different intensity levels need different responses. Plan now so you don't have to think later.
         </p>
-        
         <div class="intensity-section">
           <div class="intensity-badge">INTENSITY 1-3 — Mild Discomfort</div>
           <div class="input-row">
             <label>Use:</label>
             <input type="text" id="planMild" class="input-field" placeholder="e.g., Notice it, breathe, observe" style="flex: 1;">
-            <button class="insert-btn" id="insertBtn_planMild" onclick="window.openToolkit('planMild')">
-              <span>📋</span> Insert
-            </button>
+            <button class="insert-btn" id="insertBtn_planMild" onclick="window.openToolkit('planMild')"><span>📋</span> Insert</button>
           </div>
         </div>
-        
         <div class="intensity-section">
           <div class="intensity-badge">INTENSITY 4-6 — Moderate Distress</div>
           <p style="color: var(--text-teal); font-size: 0.875rem; margin-bottom: var(--space-sm);">Use 2-3 skills:</p>
-          
           <div class="input-row">
             <label>1.</label>
             <input type="text" id="planModerate1" class="input-field" placeholder="First skill" style="flex: 1;">
             <button class="insert-btn" id="insertBtn_planModerate1" onclick="window.openToolkit('planModerate1')">📋</button>
           </div>
-          
           <div class="input-row">
             <label>2.</label>
             <input type="text" id="planModerate2" class="input-field" placeholder="Second skill" style="flex: 1;">
             <button class="insert-btn" id="insertBtn_planModerate2" onclick="window.openToolkit('planModerate2')">📋</button>
           </div>
-          
           <div class="input-row">
             <label>3.</label>
             <input type="text" id="planModerate3" class="input-field" placeholder="Third skill (optional)" style="flex: 1;">
@@ -1024,12 +986,10 @@ html, body {
           </div>
         </div>
       </div>
-      
       <div class="btn-group">
         <button class="btn btn-secondary" onclick="window.previousStep()">← Back</button>
         <button class="btn btn-primary" onclick="window.nextStep()">Continue →</button>
       </div>
-      
       ${renderFooter()}
     `;
   }
@@ -1037,70 +997,57 @@ html, body {
   function renderStep3() {
     return `
       ${renderHeader()}
-      
       <div class="card">
         <div class="section-header">
           <span class="section-icon">📊</span>
           <span class="section-title-text">Intensity-Based Plan (7-10)</span>
         </div>
-        
         <div class="intensity-section">
           <div class="intensity-badge">INTENSITY 7-8 — High Crisis</div>
           <p style="color: var(--text-teal); font-size: 0.875rem; margin-bottom: var(--space-sm);">Physical techniques FIRST:</p>
-          
           <div class="input-row">
             <label>1.</label>
             <input type="text" id="planPhysical1" class="input-field" placeholder="Physical skill (cold water, exercise...)" style="flex: 1;">
             <button class="insert-btn" id="insertBtn_planPhysical1" onclick="window.openToolkit('planPhysical1')">📋</button>
           </div>
-          
           <div class="input-row">
             <label>2.</label>
             <input type="text" id="planPhysical2" class="input-field" placeholder="Physical skill (breathing, temperature...)" style="flex: 1;">
             <button class="insert-btn" id="insertBtn_planPhysical2" onclick="window.openToolkit('planPhysical2')">📋</button>
           </div>
-          
           <p style="color: var(--text-teal); font-size: 0.875rem; margin: var(--space-md) 0 var(--space-sm);">Then mental technique:</p>
-          
           <div class="input-row">
             <label>3.</label>
             <input type="text" id="planMental" class="input-field" placeholder="Grounding or cognitive skill" style="flex: 1;">
             <button class="insert-btn" id="insertBtn_planMental" onclick="window.openToolkit('planMental')">📋</button>
           </div>
         </div>
-        
         <div class="intensity-section">
           <div class="intensity-badge high">INTENSITY 9-10 — Extreme Emergency</div>
-          
           <div style="background: var(--crisis-bg); padding: var(--space-md); border-radius: 0.75rem; margin-bottom: var(--space-md);">
             <p style="color: #fca5a5; font-weight: 700; margin-bottom: var(--space-xs);">🚨 Emergency Contacts:</p>
             <p style="color: var(--text-secondary); font-size: 0.875rem;">• <strong style="color: #fca5a5;">988 Suicide & Crisis Lifeline</strong> — Call or text 988</p>
             <p style="color: var(--text-secondary); font-size: 0.875rem;">• <strong style="color: #fca5a5;">Crisis Text Line</strong> — Text HOME to 741741</p>
             <p style="color: var(--text-secondary); font-size: 0.875rem;">• <strong style="color: #fca5a5;">Emergency Services</strong> — Call 911</p>
           </div>
-          
           <div class="input-row">
             <label>Trusted person:</label>
             <input type="text" id="planTrusted" class="input-field" placeholder="Name / phone" style="flex: 1;">
           </div>
-          
           <div class="input-row">
             <label>Therapist:</label>
             <input type="text" id="planTherapist" class="input-field" placeholder="Name / phone" style="flex: 1;">
           </div>
-          
           <div class="input-row">
             <label>Emergency room:</label>
             <input type="text" id="planER" class="input-field" placeholder="Hospital / location" style="flex: 1;">
           </div>
         </div>
       </div>
-      
       <div class="btn-group">
         <button class="btn btn-secondary" onclick="window.previousStep()">← Back</button>
         <button class="btn btn-primary" onclick="window.nextStep()">Continue →</button>
       </div>
-      
       ${renderFooter()}
     `;
   }
@@ -1108,23 +1055,18 @@ html, body {
   function renderStep4() {
     return `
       ${renderHeader()}
-      
       <div class="card">
         <div class="section-header">
           <span class="section-icon">⚖️</span>
           <span class="section-title-text">Pros & Cons Worksheet</span>
         </div>
-        
         <div style="color: var(--text-secondary); line-height: 1.6; margin-bottom: var(--space-lg);">
           <p>"When you have a strong urge to do something destructive, your brain is focused on SHORT-TERM relief. This tool forces you to consider LONG-TERM consequences."</p>
         </div>
-        
         <div style="background: rgba(15,23,42,0.6); border-radius: 1rem; padding: var(--space-lg);">
           <p style="color: var(--text-teal); font-weight: 700; margin-bottom: var(--space-md);">⚖️ PROS & CONS WORKSHEET</p>
-          
           <p style="color: var(--text-secondary); margin-bottom: var(--space-xs);">URGE:</p>
           <input type="text" id="urgeInput" class="input-field" placeholder="e.g., Send angry text, self-harm, drink...">
-          
           <div class="pros-cons-grid">
             <div class="pros-cons-box">
               <div class="pros-cons-title" style="color: #fca5a5;">PROS of acting</div>
@@ -1132,7 +1074,6 @@ html, body {
               <input type="text" id="prosAct1" class="input-field" placeholder="•" style="margin-bottom: 0.5rem;">
               <input type="text" id="prosAct2" class="input-field" placeholder="•">
             </div>
-            
             <div class="pros-cons-box">
               <div class="pros-cons-title" style="color: #fca5a5;">CONS of acting</div>
               <p style="color: var(--text-muted); font-size: 0.75rem; margin-bottom: 0.5rem;">(long-term)</p>
@@ -1140,14 +1081,12 @@ html, body {
               <input type="text" id="consAct2" class="input-field" placeholder="•" style="margin-bottom: 0.5rem;">
               <input type="text" id="consAct3" class="input-field" placeholder="•">
             </div>
-            
             <div class="pros-cons-box">
               <div class="pros-cons-title" style="color: var(--success-emerald);">PROS of resisting</div>
               <p style="color: var(--text-muted); font-size: 0.75rem; margin-bottom: 0.5rem;">(long-term)</p>
               <input type="text" id="prosResist1" class="input-field" placeholder="•" style="margin-bottom: 0.5rem;">
               <input type="text" id="prosResist2" class="input-field" placeholder="•">
             </div>
-            
             <div class="pros-cons-box">
               <div class="pros-cons-title" style="color: var(--success-emerald);">CONS of resisting</div>
               <p style="color: var(--text-muted); font-size: 0.75rem; margin-bottom: 0.5rem;">(short-term)</p>
@@ -1156,12 +1095,10 @@ html, body {
           </div>
         </div>
       </div>
-      
       <div class="btn-group">
         <button class="btn btn-secondary" onclick="window.previousStep()">← Back</button>
         <button class="btn btn-primary" onclick="window.nextStep()">Continue →</button>
       </div>
-      
       ${renderFooter()}
     `;
   }
@@ -1169,30 +1106,24 @@ html, body {
   function renderStep5() {
     return `
       ${renderHeader()}
-      
       <div class="card">
         <div class="section-header">
           <span class="section-icon">🧭</span>
           <span class="section-title-text">Values Compass</span>
         </div>
-        
         <div class="values-compass">
           <div class="compass-question">🧭 YOUR VALUES COMPASS</div>
           <p style="color: var(--text-teal-light); margin-bottom: var(--space-lg); font-style: italic;">
             "In this moment of crisis, what action would be consistent with the person I want to be?"
           </p>
-          
           <p style="color: var(--text-secondary); margin-bottom: 0.5rem; text-align: left;">The kind of person I want to be is someone who:</p>
           <input type="text" id="values1" class="input-field" placeholder="1. ___________">
           <input type="text" id="values2" class="input-field" placeholder="2. ___________">
           <input type="text" id="values3" class="input-field" placeholder="3. ___________">
-          
           <p style="color: var(--text-secondary); margin-top: var(--space-md); margin-bottom: 0.5rem; text-align: left;">In relationships, I value:</p>
           <input type="text" id="valuesRelationships" class="input-field" placeholder="___________">
-          
           <p style="color: var(--text-secondary); margin-top: var(--space-md); margin-bottom: 0.5rem; text-align: left;">When I'm at my best, I:</p>
           <input type="text" id="valuesBest" class="input-field" placeholder="___________">
-          
           <div style="background: rgba(14,116,144,0.2); border-radius: 0.75rem; padding: var(--space-md); margin-top: var(--space-lg);">
             <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 0.5rem;">Ask yourself in crisis:</p>
             <p style="color: var(--text-teal-light); font-size: 1rem; font-weight: 600; font-style: italic;">
@@ -1200,18 +1131,13 @@ html, body {
             </p>
           </div>
         </div>
-        
-        <button id="saveValuesBtn" class="btn-save">
-          <span>🧭</span> Save Values Compass to Toolkit
-        </button>
+        <button id="saveValuesBtn" class="btn-save"><span>🧭</span> Save Values Compass to Toolkit</button>
         <div id="valuesSaveFeedback" class="save-feedback"></div>
       </div>
-      
       <div class="btn-group">
         <button class="btn btn-secondary" onclick="window.previousStep()">← Back</button>
         <button class="btn btn-primary" onclick="window.nextStep()">Continue →</button>
       </div>
-      
       ${renderFooter()}
     `;
   }
@@ -1219,84 +1145,40 @@ html, body {
   function renderStep6() {
     return `
       ${renderHeader()}
-      
       <div class="card">
         <div class="section-header">
           <span class="section-icon">🧰</span>
           <span class="section-title-text">Your Physical Crisis Kit</span>
         </div>
-        
         <div style="color: var(--text-secondary); line-height: 1.6; margin-bottom: var(--space-md);">
           <p>"Create an actual physical kit you can grab in crisis."</p>
         </div>
-        
         <div style="background: rgba(14,116,144,0.1); padding: var(--space-lg); border-radius: 1rem; margin-bottom: var(--space-lg);">
           <p style="color: var(--text-teal-light); font-weight: 700; margin-bottom: var(--space-md);">Suggested Items:</p>
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
-            <div style="display: flex; align-items: center; gap: 0.5rem;">
-              <span style="color: var(--text-teal);">•</span>
-              <span style="color: var(--text-secondary); font-size: 0.8125rem;">Ice packs</span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 0.5rem;">
-              <span style="color: var(--text-teal);">•</span>
-              <span style="color: var(--text-secondary); font-size: 0.8125rem;">Sour candy/lemon</span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 0.5rem;">
-              <span style="color: var(--text-teal);">•</span>
-              <span style="color: var(--text-secondary); font-size: 0.8125rem;">Stress ball</span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 0.5rem;">
-              <span style="color: var(--text-teal);">•</span>
-              <span style="color: var(--text-secondary); font-size: 0.8125rem;">Rubber band</span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 0.5rem;">
-              <span style="color: var(--text-teal);">•</span>
-              <span style="color: var(--text-secondary); font-size: 0.8125rem;">Photos of loved ones</span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 0.5rem;">
-              <span style="color: var(--text-teal);">•</span>
-              <span style="color: var(--text-secondary); font-size: 0.8125rem;">Essential oil</span>
-            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--text-teal);">•</span><span style="color: var(--text-secondary); font-size: 0.8125rem;">Ice packs</span></div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--text-teal);">•</span><span style="color: var(--text-secondary); font-size: 0.8125rem;">Sour candy/lemon</span></div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--text-teal);">•</span><span style="color: var(--text-secondary); font-size: 0.8125rem;">Stress ball</span></div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--text-teal);">•</span><span style="color: var(--text-secondary); font-size: 0.8125rem;">Rubber band</span></div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--text-teal);">•</span><span style="color: var(--text-secondary); font-size: 0.8125rem;">Photos of loved ones</span></div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;"><span style="color: var(--text-teal);">•</span><span style="color: var(--text-secondary); font-size: 0.8125rem;">Essential oil</span></div>
           </div>
         </div>
-        
         <p style="color: var(--text-teal); font-weight: 700; margin-bottom: var(--space-md);">Your Kit Contents:</p>
-        
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: var(--space-md);">
-          <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; background: rgba(15,23,42,0.6); border-radius: 0.75rem;">
-            <input type="checkbox" id="kitIcePacks"> Ice packs
-          </label>
-          <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; background: rgba(15,23,42,0.6); border-radius: 0.75rem;">
-            <input type="checkbox" id="kitSourCandy"> Sour candy
-          </label>
-          <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; background: rgba(15,23,42,0.6); border-radius: 0.75rem;">
-            <input type="checkbox" id="kitStressBall"> Stress ball
-          </label>
-          <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; background: rgba(15,23,42,0.6); border-radius: 0.75rem;">
-            <input type="checkbox" id="kitRubberBand"> Rubber band
-          </label>
+          <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; background: rgba(15,23,42,0.6); border-radius: 0.75rem;"><input type="checkbox" id="kitIcePacks"> Ice packs</label>
+          <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; background: rgba(15,23,42,0.6); border-radius: 0.75rem;"><input type="checkbox" id="kitSourCandy"> Sour candy</label>
+          <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; background: rgba(15,23,42,0.6); border-radius: 0.75rem;"><input type="checkbox" id="kitStressBall"> Stress ball</label>
+          <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; background: rgba(15,23,42,0.6); border-radius: 0.75rem;"><input type="checkbox" id="kitRubberBand"> Rubber band</label>
         </div>
-        
-        <div class="input-row">
-          <span style="color: var(--text-secondary); font-size: 0.875rem;">Other:</span>
-          <input type="text" id="kitOther1" class="input-field" placeholder="___________" style="flex: 1;">
-        </div>
-        
-        <div class="input-row">
-          <input type="text" id="kitOther2" class="input-field" placeholder="___________" style="flex: 1;">
-        </div>
-        
-        <div class="input-row">
-          <span style="color: var(--text-secondary); font-size: 0.875rem;">Where will you keep it?</span>
-          <input type="text" id="kitLocation" class="input-field" placeholder="e.g., freezer, nightstand, car" style="flex: 1;">
-        </div>
+        <div class="input-row"><span style="color: var(--text-secondary); font-size: 0.875rem;">Other:</span><input type="text" id="kitOther1" class="input-field" placeholder="___________" style="flex: 1;"></div>
+        <div class="input-row"><input type="text" id="kitOther2" class="input-field" placeholder="___________" style="flex: 1;"></div>
+        <div class="input-row"><span style="color: var(--text-secondary); font-size: 0.875rem;">Where will you keep it?</span><input type="text" id="kitLocation" class="input-field" placeholder="e.g., freezer, nightstand, car" style="flex: 1;"></div>
       </div>
-      
       <div class="btn-group">
         <button class="btn btn-secondary" onclick="window.previousStep()">← Back</button>
         <button class="btn btn-primary" onclick="window.nextStep()">Continue →</button>
       </div>
-      
       ${renderFooter()}
     `;
   }
@@ -1304,74 +1186,34 @@ html, body {
   function renderStep7() {
     return `
       ${renderHeader()}
-      
       <div class="card">
         <div class="section-header">
           <span class="section-icon">🆘</span>
           <span class="section-title-text">Your Crisis Card</span>
         </div>
-        
         <div class="crisis-card-preview">
           <div class="crisis-card-title">🆘 MY CRISIS CARD</div>
-          
-          <div class="crisis-card-item">
-            <span class="crisis-card-number">1.</span>
-            <span style="color: var(--text-primary);">PHYSICAL RESET:</span>
-          </div>
-          <div class="input-row" style="margin-left: 2rem;">
-            <input type="text" id="cardPhysical" class="input-field" placeholder="e.g., Cold water, exercise" style="flex: 1;">
-            <button class="insert-btn" id="insertBtn_cardPhysical" onclick="window.openToolkit('cardPhysical')">📋</button>
-          </div>
-          
-          <div class="crisis-card-item" style="margin-top: var(--space-md);">
-            <span class="crisis-card-number">2.</span>
-            <span style="color: var(--text-primary);">WAIT 20 MINUTES:</span>
-          </div>
-          <div class="input-row" style="margin-left: 2rem;">
-            <input type="text" id="cardWait" class="input-field" placeholder="Grounding, distraction, cognitive load" style="flex: 1;">
-            <button class="insert-btn" id="insertBtn_cardWait" onclick="window.openToolkit('cardWait')">📋</button>
-          </div>
-          
-          <div class="crisis-card-item" style="margin-top: var(--space-md);">
-            <span class="crisis-card-number">3.</span>
-            <span style="color: var(--text-primary);">ACCEPTANCE:</span>
-          </div>
-          <div class="input-row" style="margin-left: 2rem;">
-            <input type="text" id="cardAcceptance" class="input-field" placeholder='"It is what it is"' style="flex: 1;">
-          </div>
-          
-          <div class="crisis-card-item" style="margin-top: var(--space-md);">
-            <span class="crisis-card-number">4.</span>
-            <span style="color: var(--text-primary);">VALUES CHECK:</span>
-          </div>
-          <div class="input-row" style="margin-left: 2rem;">
-            <input type="text" id="cardValues" class="input-field" placeholder="Will this align with who I want to be?" style="flex: 1;">
-          </div>
-          
-          <div class="crisis-card-item" style="margin-top: var(--space-md);">
-            <span class="crisis-card-number">5.</span>
-            <span style="color: var(--text-primary);">IF STILL 9/10:</span>
-          </div>
-          <div class="input-row" style="margin-left: 2rem;">
-            <input type="text" id="cardEmergency" class="input-field" placeholder="Call 988 / trusted person" style="flex: 1;">
-          </div>
-          
+          <div class="crisis-card-item"><span class="crisis-card-number">1.</span><span style="color: var(--text-primary);">PHYSICAL RESET:</span></div>
+          <div class="input-row" style="margin-left: 2rem;"><input type="text" id="cardPhysical" class="input-field" placeholder="e.g., Cold water, exercise" style="flex: 1;"><button class="insert-btn" id="insertBtn_cardPhysical" onclick="window.openToolkit('cardPhysical')">📋</button></div>
+          <div class="crisis-card-item" style="margin-top: var(--space-md);"><span class="crisis-card-number">2.</span><span style="color: var(--text-primary);">WAIT 20 MINUTES:</span></div>
+          <div class="input-row" style="margin-left: 2rem;"><input type="text" id="cardWait" class="input-field" placeholder="Grounding, distraction, cognitive load" style="flex: 1;"><button class="insert-btn" id="insertBtn_cardWait" onclick="window.openToolkit('cardWait')">📋</button></div>
+          <div class="crisis-card-item" style="margin-top: var(--space-md);"><span class="crisis-card-number">3.</span><span style="color: var(--text-primary);">ACCEPTANCE:</span></div>
+          <div class="input-row" style="margin-left: 2rem;"><input type="text" id="cardAcceptance" class="input-field" placeholder='"It is what it is"' style="flex: 1;"></div>
+          <div class="crisis-card-item" style="margin-top: var(--space-md);"><span class="crisis-card-number">4.</span><span style="color: var(--text-primary);">VALUES CHECK:</span></div>
+          <div class="input-row" style="margin-left: 2rem;"><input type="text" id="cardValues" class="input-field" placeholder="Will this align with who I want to be?" style="flex: 1;"></div>
+          <div class="crisis-card-item" style="margin-top: var(--space-md);"><span class="crisis-card-number">5.</span><span style="color: var(--text-primary);">IF STILL 9/10:</span></div>
+          <div class="input-row" style="margin-left: 2rem;"><input type="text" id="cardEmergency" class="input-field" placeholder="Call 988 / trusted person" style="flex: 1;"></div>
           <div style="margin-top: var(--space-lg); padding-top: var(--space-md); border-top: 1px solid rgba(217,119,6,0.3); text-align: center;">
             <p style="color: var(--text-amber); font-style: italic; font-weight: 600;">REMEMBER: The wave WILL pass.</p>
           </div>
         </div>
-        
-        <button id="saveCrisisCardBtn" class="btn-save">
-          <span>🆘</span> Save Crisis Card to Toolkit
-        </button>
+        <button id="saveCrisisCardBtn" class="btn-save"><span>🆘</span> Save Crisis Card to Toolkit</button>
         <div id="crisisCardSaveFeedback" class="save-feedback"></div>
       </div>
-      
       <div class="btn-group">
         <button class="btn btn-secondary" onclick="window.previousStep()">← Back</button>
         <button class="btn btn-primary" onclick="window.nextStep()">Continue →</button>
       </div>
-      
       ${renderFooter()}
     `;
   }
@@ -1379,19 +1221,15 @@ html, body {
   function renderStep8() {
     return `
       ${renderHeader()}
-      
       <div class="card">
         <div class="section-header">
           <span class="section-icon">📅</span>
           <span class="section-title-text">Your Practice Plan</span>
         </div>
-        
         <div style="color: var(--text-secondary); line-height: 1.6; margin-bottom: var(--space-lg);">
           <p>"These skills only work if you practice them when calm. Learning in crisis is like trying to learn to swim while drowning."</p>
         </div>
-        
         <p style="color: var(--text-teal); font-weight: 700; margin-bottom: var(--space-md);">Which skills will you practice this week? (Choose 3 max)</p>
-        
         <div class="input-row">
           <label>1.</label>
           <input type="text" id="practiceSkill1" class="input-field" placeholder="Skill name" style="flex: 1;">
@@ -1399,7 +1237,6 @@ html, body {
           <span style="color: var(--text-muted); font-size: 0.8125rem; margin-left: 0.5rem;">How often?</span>
           <input type="text" id="practiceFreq1" class="input-field" placeholder="daily" style="width: 100px;">
         </div>
-        
         <div class="input-row">
           <label>2.</label>
           <input type="text" id="practiceSkill2" class="input-field" placeholder="Skill name" style="flex: 1;">
@@ -1407,7 +1244,6 @@ html, body {
           <span style="color: var(--text-muted); font-size: 0.8125rem; margin-left: 0.5rem;">How often?</span>
           <input type="text" id="practiceFreq2" class="input-field" placeholder="daily" style="width: 100px;">
         </div>
-        
         <div class="input-row">
           <label>3.</label>
           <input type="text" id="practiceSkill3" class="input-field" placeholder="Skill name" style="flex: 1;">
@@ -1415,37 +1251,20 @@ html, body {
           <span style="color: var(--text-muted); font-size: 0.8125rem; margin-left: 0.5rem;">How often?</span>
           <input type="text" id="practiceFreq3" class="input-field" placeholder="daily" style="width: 100px;">
         </div>
-        
         <p style="color: var(--text-teal); font-weight: 700; margin: var(--space-lg) 0 var(--space-md);">When will you practice?</p>
-        
         <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: var(--space-md);">
-          <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; background: rgba(15,23,42,0.6); border-radius: 0.75rem;">
-            <input type="checkbox" id="practiceMorning"> Morning routine
-          </label>
-          <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; background: rgba(15,23,42,0.6); border-radius: 0.75rem;">
-            <input type="checkbox" id="practiceEvening"> Before bed
-          </label>
-          <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; background: rgba(15,23,42,0.6); border-radius: 0.75rem;">
-            <input type="checkbox" id="practiceLunch"> During lunch
-          </label>
+          <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; background: rgba(15,23,42,0.6); border-radius: 0.75rem;"><input type="checkbox" id="practiceMorning"> Morning routine</label>
+          <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; background: rgba(15,23,42,0.6); border-radius: 0.75rem;"><input type="checkbox" id="practiceEvening"> Before bed</label>
+          <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; background: rgba(15,23,42,0.6); border-radius: 0.75rem;"><input type="checkbox" id="practiceLunch"> During lunch</label>
         </div>
-        
-        <div class="input-row">
-          <span style="color: var(--text-secondary); font-size: 0.875rem;">Other:</span>
-          <input type="text" id="practiceOther" class="input-field" placeholder="___________" style="flex: 1;">
-        </div>
-        
-        <button id="saveFullPlanBtn" class="btn-save" style="margin-top: var(--space-xl);">
-          <span>📋</span> Save My Complete Crisis Plan
-        </button>
+        <div class="input-row"><span style="color: var(--text-secondary); font-size: 0.875rem;">Other:</span><input type="text" id="practiceOther" class="input-field" placeholder="___________" style="flex: 1;"></div>
+        <button id="saveFullPlanBtn" class="btn-save" style="margin-top: var(--space-xl);"><span>📋</span> Save My Complete Crisis Plan</button>
         <div id="fullPlanSaveFeedback" class="save-feedback"></div>
       </div>
-      
       <div class="btn-group">
         <button class="btn btn-secondary" onclick="window.previousStep()">← Back</button>
         <button class="btn btn-primary" onclick="window.nextStep()">Complete Course →</button>
       </div>
-      
       ${renderFooter()}
     `;
   }
@@ -1453,7 +1272,6 @@ html, body {
   function renderStep9() {
     return `
       ${renderHeader()}
-      
       <div class="completion-box">
         <div class="completion-icon">🌊</div>
         <div class="completion-title">You've completed the course</div>
@@ -1461,103 +1279,66 @@ html, body {
           You now have survival tools for intense emotional moments.<br>
           <strong style="color: var(--text-teal-light);">Practice when calm. Use in crisis. Seek help when needed.</strong>
         </div>
-        
         <div style="display: flex; gap: 0.75rem; justify-content: center; margin-top: 0.5rem;">
           <a href="crisis-toolkit.html" class="btn btn-primary" style="flex: 1; text-decoration: none;">View My Toolkit</a>
           <a href="app.html" class="btn btn-secondary" style="flex: 1; text-decoration: none;">Return Home</a>
         </div>
       </div>
-      
       <div style="text-align: center; margin: var(--space-xl) 0;">
         <button id="practiceBtn" style="background: var(--success-bg); color: var(--success-emerald); border: 1px solid rgba(74,222,128,0.3); padding: 0.75rem 2rem; border-radius: 2rem; font-size: 0.875rem; font-weight: 600; cursor: pointer;">
           ✓ Mark Course as Completed
         </button>
       </div>
-      
       <div class="btn-group">
         <button class="btn btn-secondary" onclick="window.previousStep()">← Back</button>
         <a href="crisis-toolkit.html" class="btn btn-primary">View Toolkit →</a>
       </div>
-      
       ${renderFooter()}
     `;
   }
 
+  // ----- INIT FUNCTIONS (Save handlers) -----
   function initValuesSave() {
     const btn = document.getElementById('saveValuesBtn');
-    const feedback = document.getElementById('valuesSaveFeedback');
+    const fb = document.getElementById('valuesSaveFeedback');
     if (!btn) return;
-    
     btn.onclick = function() {
       const val1 = document.getElementById('values1')?.value || '';
       const val2 = document.getElementById('values2')?.value || '';
       const val3 = document.getElementById('values3')?.value || '';
       const rel = document.getElementById('valuesRelationships')?.value || '';
       const best = document.getElementById('valuesBest')?.value || '';
-      
-      let description = `My values: ${val1}${val2 ? ', ' + val2 : ''}${val3 ? ', ' + val3 : ''}`;
-      
-      saveToToolkit({
-        id: 'values-compass',
-        category: 'Module 5: Crisis Plan',
-        name: 'My Values Compass',
-        description: description
-      });
-      
+      const desc = `My values: ${val1}${val2 ? ', ' + val2 : ''}${val3 ? ', ' + val3 : ''}`;
+      saveToToolkit({ id: 'values-compass', category: 'Module 5: Crisis Plan', name: 'My Values Compass', description: desc });
       saveToCrisisPlan('values', { val1, val2, val3, rel, best });
-      
-      btn.classList.add('saved');
-      btn.innerHTML = '<span>✓</span> Saved!';
-      feedback.textContent = '✓ Values Compass saved';
-      feedback.classList.add('show');
-      
-      setTimeout(() => {
-        btn.classList.remove('saved');
-        btn.innerHTML = '<span>🧭</span> Save Values Compass to Toolkit';
-        feedback.classList.remove('show');
-      }, 2000);
+      btn.classList.add('saved'); btn.innerHTML = '<span>✓</span> Saved!';
+      fb.textContent = '✓ Values Compass saved'; fb.classList.add('show');
+      setTimeout(() => { btn.classList.remove('saved'); btn.innerHTML = '<span>🧭</span> Save Values Compass to Toolkit'; fb.classList.remove('show'); }, 2000);
     };
   }
 
   function initCrisisCardSave() {
     const btn = document.getElementById('saveCrisisCardBtn');
-    const feedback = document.getElementById('crisisCardSaveFeedback');
+    const fb = document.getElementById('crisisCardSaveFeedback');
     if (!btn) return;
-    
     btn.onclick = function() {
       const physical = document.getElementById('cardPhysical')?.value || '';
       const wait = document.getElementById('cardWait')?.value || '';
       const acceptance = document.getElementById('cardAcceptance')?.value || '';
       const values = document.getElementById('cardValues')?.value || '';
       const emergency = document.getElementById('cardEmergency')?.value || '';
-      
-      saveToToolkit({
-        id: 'crisis-card',
-        category: 'Module 5: Crisis Plan',
-        name: 'My Crisis Card',
-        description: `Physical: ${physical} | Wait: ${wait} | Emergency: ${emergency}`
-      });
-      
+      saveToToolkit({ id: 'crisis-card', category: 'Module 5: Crisis Plan', name: 'My Crisis Card', description: `Physical: ${physical} | Wait: ${wait} | Emergency: ${emergency}` });
       saveToCrisisPlan('crisisCard', { physical, wait, acceptance, values, emergency });
-      
-      btn.classList.add('saved');
-      btn.innerHTML = '<span>✓</span> Saved!';
-      feedback.textContent = '✓ Crisis Card saved';
-      feedback.classList.add('show');
-      
-      setTimeout(() => {
-        btn.classList.remove('saved');
-        btn.innerHTML = '<span>🆘</span> Save Crisis Card to Toolkit';
-        feedback.classList.remove('show');
-      }, 2000);
+      btn.classList.add('saved'); btn.innerHTML = '<span>✓</span> Saved!';
+      fb.textContent = '✓ Crisis Card saved'; fb.classList.add('show');
+      setTimeout(() => { btn.classList.remove('saved'); btn.innerHTML = '<span>🆘</span> Save Crisis Card to Toolkit'; fb.classList.remove('show'); }, 2000);
     };
   }
 
   function initFullPlanSave() {
     const btn = document.getElementById('saveFullPlanBtn');
-    const feedback = document.getElementById('fullPlanSaveFeedback');
+    const fb = document.getElementById('fullPlanSaveFeedback');
     if (!btn) return;
-    
     btn.onclick = function() {
       const mild = document.getElementById('planMild')?.value || '';
       const mod1 = document.getElementById('planModerate1')?.value || '';
@@ -1569,11 +1350,9 @@ html, body {
       const trusted = document.getElementById('planTrusted')?.value || '';
       const therapist = document.getElementById('planTherapist')?.value || '';
       const er = document.getElementById('planER')?.value || '';
-      
       const urge = document.getElementById('urgeInput')?.value || '';
       const skill1 = document.getElementById('practiceSkill1')?.value || '';
       const freq1 = document.getElementById('practiceFreq1')?.value || '';
-      
       const crisisPlan = {
         intensityPlan: { mild, moderate: [mod1, mod2, mod3], high: { physical: [phys1, phys2], mental }, emergency: { trusted, therapist, er } },
         urge,
@@ -1587,190 +1366,86 @@ html, body {
         lastUpdated: new Date().toISOString(),
         completed: true
       };
-      
       localStorage.setItem('crisis_plan', JSON.stringify(crisisPlan));
-      
-      saveToToolkit({
-        id: 'full-crisis-plan',
-        category: 'Module 5: Crisis Plan',
-        name: 'My Complete Crisis Plan',
-        description: `Intensity plan saved • Practice: ${skill1 || 'none'}`
-      });
-      
-      btn.classList.add('saved');
-      btn.innerHTML = '<span>✓</span> Saved!';
-      feedback.textContent = '✓ Complete crisis plan saved';
-      feedback.classList.add('show');
-      
-      setTimeout(() => {
-        btn.classList.remove('saved');
-        btn.innerHTML = '<span>📋</span> Save My Complete Crisis Plan';
-        feedback.classList.remove('show');
-      }, 2000);
+      saveToToolkit({ id: 'full-crisis-plan', category: 'Module 5: Crisis Plan', name: 'My Complete Crisis Plan', description: `Intensity plan saved • Practice: ${skill1 || 'none'}` });
+      btn.classList.add('saved'); btn.innerHTML = '<span>✓</span> Saved!';
+      fb.textContent = '✓ Complete crisis plan saved'; fb.classList.add('show');
+      setTimeout(() => { btn.classList.remove('saved'); btn.innerHTML = '<span>📋</span> Save My Complete Crisis Plan'; fb.classList.remove('show'); }, 2000);
     };
   }
 
   function initComplete() {
     const btn = document.getElementById('practiceBtn');
     if (!btn) return;
-    
-    let progress = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
-    if (!progress.practicedModules) progress.practicedModules = [];
-    
-    if (progress.practicedModules.includes('module5')) {
-      btn.innerHTML = '✓ Course Completed';
-    }
-    
+    let prog = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
+    if (!prog.practicedModules) prog.practicedModules = [];
+    if (prog.practicedModules.includes('module5')) btn.innerHTML = '✓ Course Completed';
     btn.onclick = function() {
-      if (!progress.practicedModules.includes('module5')) {
-        progress.practicedModules.push('module5');
-        progress.completed = true;
-        progress.lastPracticed = new Date().toISOString();
-        localStorage.setItem('crisis_course_progress', JSON.stringify(progress));
+      if (!prog.practicedModules.includes('module5')) {
+        prog.practicedModules.push('module5');
+        prog.completed = true;
+        prog.lastPracticed = new Date().toISOString();
+        localStorage.setItem('crisis_course_progress', JSON.stringify(prog));
         btn.innerHTML = '✓ Course Completed';
       }
     };
   }
 
   function loadSavedPlan() {
-    const crisisPlan = JSON.parse(localStorage.getItem('crisis_plan') || '{}');
-    
-    if (crisisPlan.intensityPlan) {
-      const p = crisisPlan.intensityPlan;
-      if (p.mild) {
-        const el = document.getElementById('planMild');
-        if (el) el.value = p.mild;
-      }
+    const plan = JSON.parse(localStorage.getItem('crisis_plan') || '{}');
+    if (plan.intensityPlan) {
+      const p = plan.intensityPlan;
+      if (p.mild) document.getElementById('planMild')?.value = p.mild;
       if (p.moderate) {
-        if (p.moderate[0]) {
-          const el = document.getElementById('planModerate1');
-          if (el) el.value = p.moderate[0];
-        }
-        if (p.moderate[1]) {
-          const el = document.getElementById('planModerate2');
-          if (el) el.value = p.moderate[1];
-        }
-        if (p.moderate[2]) {
-          const el = document.getElementById('planModerate3');
-          if (el) el.value = p.moderate[2];
-        }
+        if (p.moderate[0]) document.getElementById('planModerate1')?.value = p.moderate[0];
+        if (p.moderate[1]) document.getElementById('planModerate2')?.value = p.moderate[1];
+        if (p.moderate[2]) document.getElementById('planModerate3')?.value = p.moderate[2];
       }
       if (p.high) {
         if (p.high.physical) {
-          if (p.high.physical[0]) {
-            const el = document.getElementById('planPhysical1');
-            if (el) el.value = p.high.physical[0];
-          }
-          if (p.high.physical[1]) {
-            const el = document.getElementById('planPhysical2');
-            if (el) el.value = p.high.physical[1];
-          }
+          if (p.high.physical[0]) document.getElementById('planPhysical1')?.value = p.high.physical[0];
+          if (p.high.physical[1]) document.getElementById('planPhysical2')?.value = p.high.physical[1];
         }
-        if (p.high.mental) {
-          const el = document.getElementById('planMental');
-          if (el) el.value = p.high.mental;
-        }
+        if (p.high.mental) document.getElementById('planMental')?.value = p.high.mental;
       }
       if (p.emergency) {
-        if (p.emergency.trusted) {
-          const el = document.getElementById('planTrusted');
-          if (el) el.value = p.emergency.trusted;
-        }
-        if (p.emergency.therapist) {
-          const el = document.getElementById('planTherapist');
-          if (el) el.value = p.emergency.therapist;
-        }
-        if (p.emergency.er) {
-          const el = document.getElementById('planER');
-          if (el) el.value = p.emergency.er;
-        }
+        if (p.emergency.trusted) document.getElementById('planTrusted')?.value = p.emergency.trusted;
+        if (p.emergency.therapist) document.getElementById('planTherapist')?.value = p.emergency.therapist;
+        if (p.emergency.er) document.getElementById('planER')?.value = p.emergency.er;
       }
     }
-    
-    if (crisisPlan.values) {
-      const v = crisisPlan.values;
-      if (v.val1) {
-        const el = document.getElementById('values1');
-        if (el) el.value = v.val1;
-      }
-      if (v.val2) {
-        const el = document.getElementById('values2');
-        if (el) el.value = v.val2;
-      }
-      if (v.val3) {
-        const el = document.getElementById('values3');
-        if (el) el.value = v.val3;
-      }
-      if (v.rel) {
-        const el = document.getElementById('valuesRelationships');
-        if (el) el.value = v.rel;
-      }
-      if (v.best) {
-        const el = document.getElementById('valuesBest');
-        if (el) el.value = v.best;
-      }
+    if (plan.values) {
+      const v = plan.values;
+      if (v.val1) document.getElementById('values1')?.value = v.val1;
+      if (v.val2) document.getElementById('values2')?.value = v.val2;
+      if (v.val3) document.getElementById('values3')?.value = v.val3;
+      if (v.rel) document.getElementById('valuesRelationships')?.value = v.rel;
+      if (v.best) document.getElementById('valuesBest')?.value = v.best;
     }
-    
-    if (crisisPlan.crisisCard) {
-      const cc = crisisPlan.crisisCard;
-      if (cc.physical) {
-        const el = document.getElementById('cardPhysical');
-        if (el) el.value = cc.physical;
-      }
-      if (cc.wait) {
-        const el = document.getElementById('cardWait');
-        if (el) el.value = cc.wait;
-      }
-      if (cc.acceptance) {
-        const el = document.getElementById('cardAcceptance');
-        if (el) el.value = cc.acceptance;
-      }
-      if (cc.values) {
-        const el = document.getElementById('cardValues');
-        if (el) el.value = cc.values;
-      }
-      if (cc.emergency) {
-        const el = document.getElementById('cardEmergency');
-        if (el) el.value = cc.emergency;
-      }
+    if (plan.crisisCard) {
+      const cc = plan.crisisCard;
+      if (cc.physical) document.getElementById('cardPhysical')?.value = cc.physical;
+      if (cc.wait) document.getElementById('cardWait')?.value = cc.wait;
+      if (cc.acceptance) document.getElementById('cardAcceptance')?.value = cc.acceptance;
+      if (cc.values) document.getElementById('cardValues')?.value = cc.values;
+      if (cc.emergency) document.getElementById('cardEmergency')?.value = cc.emergency;
     }
-    
-    if (crisisPlan.practicePlan) {
-      const pp = crisisPlan.practicePlan;
-      if (pp.skill1) {
-        const el = document.getElementById('practiceSkill1');
-        if (el) el.value = pp.skill1;
-      }
-      if (pp.freq1) {
-        const el = document.getElementById('practiceFreq1');
-        if (el) el.value = pp.freq1;
-      }
-      if (pp.skill2) {
-        const el = document.getElementById('practiceSkill2');
-        if (el) el.value = pp.skill2;
-      }
-      if (pp.freq2) {
-        const el = document.getElementById('practiceFreq2');
-        if (el) el.value = pp.freq2;
-      }
-      if (pp.skill3) {
-        const el = document.getElementById('practiceSkill3');
-        if (el) el.value = pp.skill3;
-      }
-      if (pp.freq3) {
-        const el = document.getElementById('practiceFreq3');
-        if (el) el.value = pp.freq3;
-      }
+    if (plan.practicePlan) {
+      const pp = plan.practicePlan;
+      if (pp.skill1) document.getElementById('practiceSkill1')?.value = pp.skill1;
+      if (pp.freq1) document.getElementById('practiceFreq1')?.value = pp.freq1;
+      if (pp.skill2) document.getElementById('practiceSkill2')?.value = pp.skill2;
+      if (pp.freq2) document.getElementById('practiceFreq2')?.value = pp.freq2;
+      if (pp.skill3) document.getElementById('practiceSkill3')?.value = pp.skill3;
+      if (pp.freq3) document.getElementById('practiceFreq3')?.value = pp.freq3;
     }
   }
 
   function render() {
     const content = document.getElementById('content');
     if (!content) return;
-    
     let html = '';
-    
-    switch(currentStep) {
+    switch (currentStep) {
       case 1: html = renderStep1(); break;
       case 2: html = renderStep2(); break;
       case 3: html = renderStep3(); break;
@@ -1782,14 +1457,11 @@ html, body {
       case 9: html = renderStep9(); break;
       default: html = renderStep1();
     }
-    
     content.innerHTML = html;
-    
     if (currentStep === 5) initValuesSave();
     if (currentStep === 7) initCrisisCardSave();
     if (currentStep === 8) initFullPlanSave();
     if (currentStep === 9) initComplete();
-    
     setTimeout(loadSavedPlan, 50);
   }
 
@@ -1797,6 +1469,5 @@ html, body {
   render();
 })();
 </script>
-
 </body>
 </html>
