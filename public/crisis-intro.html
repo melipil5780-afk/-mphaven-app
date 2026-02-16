@@ -3,498 +3,80 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#0f172a">
-<title>Crisis Resilience - Course Hub</title>
+<title>Crisis Resilience - MPHaven</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root {
-    --bg-dark: #0f172a;
-    --bg-card: rgba(15, 23, 42, 0.98);
-    --bg-card-light: rgba(30, 41, 59, 0.7);
-    --bg-card-dark: rgba(15, 23, 42, 0.5);
-    --border-subtle: rgba(30, 41, 59, 0.5);
-    --border-softer: rgba(51, 65, 85, 0.4);
-    --primary-teal: #0e7490;
-    --accent-amber: #d97706;
-    --text-primary: rgb(241, 245, 249);
-    --text-secondary: rgb(203, 213, 225);
-    --text-muted: rgb(148, 163, 184);
-    --text-teal-light: rgb(165, 243, 252);
-    --text-teal: rgb(94, 234, 212);
-    --text-amber: #d97706;
-    --success-emerald: rgb(74, 222, 128);
-    --success-bg: rgba(34, 197, 94, 0.12);
-    --gradient-main: linear-gradient(135deg, #0e7490, #d97706);
-    --gradient-subtle: linear-gradient(135deg, rgba(14,116,144,0.15), rgba(217,119,6,0.10));
-    --crisis-red: #dc2626;
-    --crisis-bg: rgba(220, 38, 38, 0.08);
-    
-    --space-xs: 0.5rem;
-    --space-sm: 0.75rem;
-    --space-md: 1rem;
-    --space-lg: 1.5rem;
-    --space-xl: 2rem;
-    --space-xxl: 2.5rem;
-}
-
-* { 
-    margin: 0; 
-    padding: 0; 
-    box-sizing: border-box; 
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
-    -webkit-tap-highlight-color: transparent; 
-}
-
-html, body { 
-    width: 100%; 
-    height: 100%; 
-    overflow: hidden; 
-    background: var(--bg-dark); 
-    color: var(--text-primary); 
-}
-
-.container { 
-    width: 100%; 
-    height: 100vh; 
-    display: flex; 
-    flex-direction: column; 
-}
-
-.app-wrapper { 
-    width: 100%; 
-    max-width: 28rem; 
-    height: 100%; 
-    margin: 0 auto; 
-    background: var(--bg-card); 
-    display: flex; 
-    flex-direction: column; 
-    position: relative; 
-    overflow: hidden; 
-}
-
-.bg-blur-1, .bg-blur-2 { 
-    position: absolute; 
-    border-radius: 50%; 
-    pointer-events: none; 
-    z-index: 0; 
-    opacity: 0.2; 
-}
-
-.bg-blur-1 { 
-    top: -5%; 
-    left: 50%; 
-    transform: translateX(-50%); 
-    width: 22rem; 
-    height: 22rem; 
-    background: rgba(14, 116, 144, 0.15); 
-}
-
-.bg-blur-2 { 
-    bottom: -5%; 
-    right: -5%; 
-    width: 18rem; 
-    height: 18rem; 
-    background: rgba(217, 119, 6, 0.15); 
-}
-
-.main-content { 
-    flex: 1; 
-    overflow-y: auto; 
-    -webkit-overflow-scrolling: touch; 
-    scrollbar-width: none; 
-    position: relative; 
-    z-index: 1; 
-    padding: var(--space-md) var(--space-md) calc(2rem + env(safe-area-inset-bottom));
-}
-
-.main-content::-webkit-scrollbar { 
-    display: none; 
-}
-
-/* Header */
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: var(--space-lg);
-}
-
-.back-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--text-muted);
-    text-decoration: none;
-    font-size: 0.875rem;
-    font-weight: 500;
-}
-
-.toolkit-link {
-    background: var(--gradient-subtle);
-    color: var(--text-teal-light);
-    text-decoration: none;
-    padding: 0.5rem 1rem;
-    border-radius: 2rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    border: 1px solid rgba(14,116,144,0.3);
-    display: inline-flex;
-    align-items: center;
-    gap: 0.375rem;
-}
-
-.title { 
-    font-size: 2rem; 
-    font-weight: 800; 
-    margin-bottom: 0.25rem; 
-    background: var(--gradient-main); 
-    -webkit-background-clip: text; 
-    -webkit-text-fill-color: transparent; 
-}
-
-.subtitle { 
-    color: var(--text-secondary); 
-    font-size: 1rem; 
-    margin-bottom: var(--space-lg);
-}
-
-/* Progress Overview */
-.progress-overview {
-    background: var(--bg-card-light);
-    border: 1px solid var(--border-softer);
-    border-radius: 1.25rem;
-    padding: var(--space-lg);
-    margin-bottom: var(--space-xl);
-}
-
-.progress-stats {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: var(--space-md);
-}
-
-.stat {
-    text-align: center;
-    flex: 1;
-}
-
-.stat-value {
-    font-size: 1.75rem;
-    font-weight: 700;
-    color: var(--text-teal);
-    line-height: 1.2;
-}
-
-.stat-label {
-    color: var(--text-muted);
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-}
-
-.progress-bar-bg {
-    height: 0.5rem;
-    background: rgba(148,163,184,0.2);
-    border-radius: 1rem;
-    overflow: hidden;
-}
-
-.progress-fill {
-    height: 100%;
-    background: var(--gradient-main);
-    border-radius: 1rem;
-    width: 0%;
-    transition: width 0.3s ease;
-}
-
-/* Card */
-.card { 
-    background: linear-gradient(135deg, var(--bg-card-light), var(--bg-card-dark)); 
-    border: 1px solid var(--border-softer); 
-    border-radius: 1.5rem; 
-    padding: var(--space-xl); 
-    margin-bottom: var(--space-xl); 
-}
-
-.card-highlight {
-    background: var(--gradient-subtle);
-    border: 1px solid rgba(14,116,144,0.3);
-    border-radius: 1.5rem;
-    padding: var(--space-xl);
-    margin-bottom: var(--space-xl);
-}
-
-.section-header {
-    display: flex;
-    align-items: center;
-    gap: var(--space-sm);
-    margin-bottom: var(--space-lg);
-}
-
-.section-icon {
-    font-size: 1.8rem;
-}
-
-.section-title { 
-    font-size: 1.3rem; 
-    font-weight: 700; 
-    color: var(--text-teal-light);
-    margin: 0;
-}
-
-/* Quote */
-.quote-text {
-    font-size: 1.05rem;
-    color: var(--text-teal-light);
-    font-style: italic;
-    line-height: 1.7;
-}
-
-/* Slider */
-.slider-container {
-    margin: var(--space-lg) 0;
-}
-
-.slider-label {
-    display: flex;
-    justify-content: space-between;
-    color: var(--text-secondary);
-    margin-bottom: var(--space-sm);
-}
-
-.slider {
-    width: 100%;
-    height: 0.5rem;
-    background: rgba(30,41,59,0.8);
-    border-radius: 1rem;
-    -webkit-appearance: none;
-}
-
-.slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 1.5rem;
-    height: 1.5rem;
-    background: var(--gradient-main);
-    border-radius: 50%;
-    cursor: pointer;
-    border: 2px solid var(--text-teal-light);
-}
-
-.slider-value {
-    text-align: center;
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--text-teal);
-    margin: var(--space-sm) 0;
-}
-
-.slider-labels {
-    display: flex;
-    justify-content: space-between;
-    color: var(--text-muted);
-    font-size: 0.8125rem;
-}
-
-.feedback-box {
-    margin-top: var(--space-lg);
-    padding: var(--space-lg);
-    background: rgba(15,23,42,0.6);
-    border-radius: 1rem;
-    color: var(--text-teal-light);
-    font-size: 0.9375rem;
-    line-height: 1.6;
-}
-
-/* Module Cards */
-.modules-container {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-md);
-    margin: var(--space-lg) 0;
-}
-
-.module-card {
-    background: rgba(15, 23, 42, 0.6);
-    border: 1px solid var(--border-softer);
-    border-radius: 1.25rem;
-    padding: var(--space-lg);
-    display: flex;
-    align-items: center;
-    gap: var(--space-md);
-    transition: all 0.2s;
-    text-decoration: none;
-    color: inherit;
-}
-
-.module-card:active {
-    transform: scale(0.98);
-    background: rgba(30, 41, 59, 0.8);
-}
-
-.module-card.completed {
-    border-color: var(--success-emerald);
-    background: rgba(34, 197, 94, 0.05);
-}
-
-.module-number {
-    width: 3rem;
-    height: 3rem;
-    border-radius: 50%;
-    background: var(--gradient-main);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 1.25rem;
-    flex-shrink: 0;
-}
-
-.module-card.completed .module-number {
-    background: var(--success-bg);
-    color: var(--success-emerald);
-    border: 1px solid var(--success-emerald);
-}
-
-.module-info {
-    flex: 1;
-}
-
-.module-title {
-    font-weight: 600;
-    color: var(--text-primary);
-    margin-bottom: 0.25rem;
-    font-size: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-}
-
-.completed-badge {
-    background: var(--success-bg);
-    color: var(--success-emerald);
-    font-size: 0.6875rem;
-    padding: 0.25rem 0.75rem;
-    border-radius: 2rem;
-    font-weight: 600;
-    border: 1px solid var(--success-emerald);
-}
-
-.module-duration {
-    color: var(--text-muted);
-    font-size: 0.8125rem;
-    margin-bottom: 0.5rem;
-}
-
-.module-progress {
-    height: 0.25rem;
-    background: rgba(148,163,184,0.2);
-    border-radius: 1rem;
-    overflow: hidden;
-    width: 100%;
-}
-
-.module-progress-fill {
-    height: 100%;
-    background: var(--text-teal);
-    border-radius: 1rem;
-    width: 0%;
-    transition: width 0.3s ease;
-}
-
-.module-card.completed .module-progress-fill {
-    background: var(--success-emerald);
-}
-
-/* Buttons */
-.btn {
-    padding: 0.875rem 1.5rem;
-    border-radius: 0.875rem;
-    font-weight: 600;
-    font-size: 0.9375rem;
-    cursor: pointer;
-    border: none;
-    transition: all 0.2s;
-    text-decoration: none;
-    display: inline-block;
-    text-align: center;
-}
-
-.btn-primary { 
-    background: var(--gradient-main); 
-    color: white; 
-}
-
-.btn-primary:active { 
-    transform: scale(0.98); 
-    opacity: 0.9; 
-}
-
-.btn-secondary { 
-    background: var(--bg-card-dark); 
-    color: var(--text-secondary); 
-    border: 1px solid var(--border-softer); 
-}
-
-.btn-secondary:active { 
-    transform: scale(0.98); 
-}
-
-.btn-toolkit {
-    background: var(--gradient-subtle);
-    color: var(--text-teal-light);
-    border: 1px solid rgba(14,116,144,0.3);
-    padding: 0.875rem 1.25rem;
-    border-radius: 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    width: 100%;
-    margin-top: var(--space-md);
-    text-decoration: none;
-    font-weight: 600;
-}
-
-.btn-toolkit:active {
-    background: rgba(14,116,144,0.25);
-    transform: scale(0.98);
-}
-
-.btn-group {
-    display: flex;
-    gap: var(--space-md);
-    margin: var(--space-lg) 0;
-}
-
-/* Footer */
-.footer-note {
-    text-align: center;
-    color: var(--text-muted);
-    font-size: 0.75rem;
-    margin-top: var(--space-xxl);
-    padding-top: var(--space-lg);
-    border-top: 1px solid var(--border-subtle);
-}
-
-.footer-warning {
-    color: #fca5a5;
-    font-weight: 600;
-    font-size: 0.8125rem;
-    margin-bottom: var(--space-sm);
-}
-
-@media (max-width: 640px) {
-    .btn-group { 
-        flex-direction: column; 
-    }
-    .module-card {
-        padding: var(--space-md);
-    }
-}
+:root{--bg-dark:#0f172a;--bg-card:rgba(15,23,42,0.98);--bg-card-light:rgba(30,41,59,0.7);--bg-card-dark:rgba(15,23,42,0.5);--border-subtle:rgba(30,41,59,0.5);--border-softer:rgba(51,65,85,0.4);--primary-teal:#0e7490;--accent-amber:#d97706;--text-primary:rgb(241,245,249);--text-secondary:rgb(203,213,225);--text-muted:rgb(148,163,184);--text-teal-light:rgb(165,243,252);--text-teal:rgb(94,234,212);--success-emerald:rgb(74,222,128);--success-bg:rgba(34,197,94,0.12);--gradient-main:linear-gradient(135deg,#0e7490,#d97706);--gradient-subtle:linear-gradient(135deg,rgba(14,116,144,0.15),rgba(217,119,6,0.10));--crisis-red:#dc2626}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;-webkit-tap-highlight-color:transparent}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--bg-dark);color:var(--text-primary)}
+.container{width:100%;height:100vh;display:flex;flex-direction:column}
+.app-wrapper{width:100%;max-width:28rem;height:100%;margin:0 auto;background:var(--bg-card);display:flex;flex-direction:column;position:relative;overflow:hidden}
+.bg-blur-1,.bg-blur-2{position:absolute;border-radius:50%;pointer-events:none;z-index:0;opacity:0.2;filter:blur(80px)}
+.bg-blur-1{top:-5%;left:50%;transform:translateX(-50%);width:22rem;height:22rem;background:rgba(14,116,144,0.15)}
+.bg-blur-2{bottom:-5%;right:-5%;width:18rem;height:18rem;background:rgba(217,119,6,0.15)}
+.main-content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;position:relative;z-index:1;padding:1rem 1rem calc(2rem + env(safe-area-inset-bottom))}
+.main-content::-webkit-scrollbar{display:none}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{animation:fadeIn 0.4s ease-out}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem}
+.back-link{display:inline-flex;align-items:center;gap:0.5rem;color:var(--text-muted);text-decoration:none;font-size:0.875rem;font-weight:500;transition:color 0.2s}
+.back-link:hover{color:var(--text-primary)}
+.toolkit-link{background:var(--gradient-subtle);color:var(--text-teal-light);text-decoration:none;padding:0.5rem 1rem;border-radius:2rem;font-size:0.75rem;font-weight:600;border:1px solid rgba(14,116,144,0.3);display:inline-flex;align-items:center;gap:0.375rem;transition:all 0.2s}
+.toolkit-link:active{transform:scale(0.95);background:rgba(14,116,144,0.25)}
+.title{font-size:2rem;font-weight:800;margin-bottom:0.25rem;background:var(--gradient-main);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.subtitle{color:var(--text-secondary);font-size:1rem;margin-bottom:1.5rem}
+.progress-overview{background:var(--bg-card-light);border:1px solid var(--border-softer);border-radius:1.25rem;padding:1.5rem;margin-bottom:2rem;backdrop-filter:blur(10px)}
+.progress-stats{display:flex;justify-content:space-between;margin-bottom:1rem}
+.stat{text-align:center;flex:1}
+.stat-value{font-size:1.75rem;font-weight:700;color:var(--text-teal);line-height:1.2}
+.stat-label{color:var(--text-muted);font-size:0.75rem;text-transform:uppercase;letter-spacing:0.3px;margin-top:0.25rem}
+.progress-bar-bg{height:0.5rem;background:rgba(148,163,184,0.2);border-radius:1rem;overflow:hidden}
+.progress-fill{height:100%;background:var(--gradient-main);border-radius:1rem;width:0%;transition:width 0.5s ease}
+.card{background:linear-gradient(135deg,var(--bg-card-light),var(--bg-card-dark));border:1px solid var(--border-softer);border-radius:1.5rem;padding:2rem;margin-bottom:2rem}
+.card-highlight{background:var(--gradient-subtle);border:1px solid rgba(14,116,144,0.3);border-radius:1.5rem;padding:2rem;margin-bottom:2rem}
+.section-header{display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem}
+.section-icon{font-size:1.8rem;line-height:1}
+.section-title{font-size:1.3rem;font-weight:700;color:var(--text-teal-light);margin:0}
+.quote-text{font-size:1.05rem;color:var(--text-teal-light);font-style:italic;line-height:1.7}
+.slider-container{margin:1.5rem 0}
+.slider{width:100%;height:0.5rem;background:rgba(30,41,59,0.8);border-radius:1rem;-webkit-appearance:none;appearance:none;outline:none}
+.slider::-webkit-slider-thumb{-webkit-appearance:none;width:1.5rem;height:1.5rem;background:var(--gradient-main);border-radius:50%;cursor:pointer;border:2px solid var(--text-teal-light);box-shadow:0 2px 8px rgba(0,0,0,0.3);transition:transform 0.2s}
+.slider::-webkit-slider-thumb:active{transform:scale(1.2)}
+.slider::-moz-range-thumb{width:1.5rem;height:1.5rem;background:var(--gradient-main);border-radius:50%;cursor:pointer;border:2px solid var(--text-teal-light);box-shadow:0 2px 8px rgba(0,0,0,0.3)}
+.slider-value{text-align:center;font-size:1.5rem;font-weight:700;color:var(--text-teal);margin:0.75rem 0}
+.slider-labels{display:flex;justify-content:space-between;color:var(--text-muted);font-size:0.8125rem;margin-top:0.5rem}
+.feedback-box{margin-top:1.5rem;padding:1.5rem;background:rgba(15,23,42,0.6);border-radius:1rem;font-size:0.9375rem;line-height:1.6;border-left:4px solid var(--text-teal)}
+.modules-container{display:flex;flex-direction:column;gap:1rem;margin:1.5rem 0}
+.module-card{background:rgba(15,23,42,0.6);border:1px solid var(--border-softer);border-radius:1.25rem;padding:1.5rem;display:flex;align-items:center;gap:1rem;transition:all 0.2s;text-decoration:none;color:inherit}
+.module-card:active{transform:scale(0.98);background:rgba(30,41,59,0.8)}
+.module-card.completed{border-color:var(--success-emerald);background:rgba(34,197,94,0.05);box-shadow:0 0 20px rgba(34,197,94,0.1)}
+.module-number{width:3rem;height:3rem;border-radius:50%;background:var(--gradient-main);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.25rem;flex-shrink:0}
+.module-card.completed .module-number{background:var(--success-bg);color:var(--success-emerald);border:1px solid var(--success-emerald)}
+.module-info{flex:1;min-width:0}
+.module-title{font-weight:600;color:var(--text-primary);margin-bottom:0.25rem;font-size:1rem;display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap}
+.completed-badge{background:var(--success-bg);color:var(--success-emerald);font-size:0.6875rem;padding:0.25rem 0.75rem;border-radius:2rem;font-weight:600;border:1px solid var(--success-emerald);display:none;white-space:nowrap}
+.module-duration{color:var(--text-muted);font-size:0.8125rem;margin-bottom:0.5rem}
+.module-progress{height:0.25rem;background:rgba(148,163,184,0.2);border-radius:1rem;overflow:hidden;width:100%}
+.module-progress-fill{height:100%;background:var(--text-teal);border-radius:1rem;width:0%;transition:width 0.5s ease}
+.module-card.completed .module-progress-fill{background:var(--success-emerald)}
+.btn{padding:0.875rem 1.5rem;border-radius:0.875rem;font-weight:600;font-size:0.9375rem;cursor:pointer;border:none;transition:all 0.2s;text-decoration:none;display:inline-block;text-align:center;-webkit-user-select:none;user-select:none}
+.btn-primary{background:var(--gradient-main);color:white;box-shadow:0 4px 12px rgba(14,116,144,0.3)}
+.btn-primary:active{transform:scale(0.98);box-shadow:0 2px 8px rgba(14,116,144,0.3)}
+.btn-secondary{background:var(--bg-card-dark);color:var(--text-secondary);border:1px solid var(--border-softer)}
+.btn-secondary:active{transform:scale(0.98)}
+.btn-toolkit{background:var(--gradient-subtle);color:var(--text-teal-light);border:1px solid rgba(14,116,144,0.3);padding:0.875rem 1.25rem;border-radius:2rem;display:flex;align-items:center;justify-content:center;gap:0.5rem;width:100%;margin-top:1rem;text-decoration:none;font-weight:600;transition:all 0.2s}
+.btn-toolkit:active{background:rgba(14,116,144,0.25);transform:scale(0.98)}
+.btn-group{display:flex;gap:1rem;margin:1.5rem 0}
+.footer-note{text-align:center;color:var(--text-muted);font-size:0.75rem;margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid var(--border-subtle)}
+.footer-warning{color:#fca5a5;font-weight:600;font-size:0.8125rem;margin-bottom:0.75rem}
+@media (max-width:640px){.btn-group{flex-direction:column}.module-card{padding:1rem}.card,.card-highlight{padding:1.5rem}}
+@media (min-width:640px){.app-wrapper{border-left:1px solid var(--border-subtle);border-right:1px solid var(--border-subtle)}}
 </style>
 </head>
 <body>
@@ -503,9 +85,8 @@ html, body {
     <div class="bg-blur-1"></div>
     <div class="bg-blur-2"></div>
     <div class="main-content">
-      <div class="content-wrapper">
+      <div class="content-wrapper fade-in">
 
-        <!-- HEADER WITH TOOLKIT LINK -->
         <div class="header">
           <a href="app.html" class="back-link">
             <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -514,48 +95,45 @@ html, body {
             Home
           </a>
           <a href="crisis-toolkit.html" class="toolkit-link">
-            <span>🧰</span> My Toolkit
+            <span>🧰</span> Toolkit
           </a>
         </div>
 
         <h1 class="title">Crisis Resilience</h1>
         <p class="subtitle">Your Survival Toolkit</p>
 
-        <!-- PROGRESS OVERVIEW -->
-        <div class="progress-overview" id="progressOverview">
+        <div class="progress-overview">
           <div class="progress-stats">
             <div class="stat">
               <div class="stat-value" id="completedModules">0</div>
               <div class="stat-label">Completed</div>
             </div>
             <div class="stat">
-              <div class="stat-value" id="totalModules">5</div>
-              <div class="stat-label">Total Modules</div>
+              <div class="stat-value">5</div>
+              <div class="stat-label">Total</div>
             </div>
             <div class="stat">
               <div class="stat-value" id="toolkitCount">0</div>
-              <div class="stat-label">Toolkit Items</div>
+              <div class="stat-label">Tools</div>
             </div>
           </div>
           <div class="progress-bar-bg">
-            <div class="progress-fill" id="overallProgress" style="width: 0%;"></div>
+            <div class="progress-fill" id="overallProgress"></div>
           </div>
         </div>
 
-        <!-- OPENING QUOTE -->
         <div class="card-highlight">
           <p class="quote-text">"You're here because sometimes emotions feel unbearable. Maybe you've had moments where you wanted to escape so badly you'd do anything—even things that hurt you."</p>
         </div>
 
-        <!-- EMOTIONAL PULSE -->
         <div class="card">
           <div class="section-header">
             <span class="section-icon">❤️</span>
-            <h2 class="section-title">Take Your Emotional Pulse</h2>
+            <h2 class="section-title">Emotional Pulse</h2>
           </div>
           
           <div class="slider-container">
-            <p style="color: var(--text-secondary); margin-bottom: var(--space-md);">How distressed are you RIGHT NOW? (0-10)</p>
+            <p style="color:var(--text-secondary);margin-bottom:1rem">How distressed are you right now? (0-10)</p>
             
             <input type="range" id="distressSlider" class="slider" min="0" max="10" value="3" step="1">
             
@@ -564,7 +142,7 @@ html, body {
             <div class="slider-labels">
               <span>0 - Calm</span>
               <span>5 - Moderate</span>
-              <span>10 - Overwhelming</span>
+              <span>10 - Crisis</span>
             </div>
             
             <div id="distressFeedback" class="feedback-box">
@@ -573,106 +151,97 @@ html, body {
           </div>
         </div>
 
-        <!-- COURSE MODULES WITH PROGRESS -->
         <div class="card">
           <div class="section-header">
             <span class="section-icon">📚</span>
-            <h2 class="section-title">Your Course Modules</h2>
+            <h2 class="section-title">Course Modules</h2>
           </div>
           
-          <div class="modules-container" id="modulesContainer">
-            <!-- Module 1 -->
+          <div class="modules-container">
             <a href="crisis-module-1.html" class="module-card" id="module1">
               <div class="module-number">1</div>
               <div class="module-info">
                 <div class="module-title">
                   Why Your Brain Goes Haywire
-                  <span class="completed-badge" id="module1Badge" style="display: none;">✓ Completed</span>
+                  <span class="completed-badge" id="module1Badge">✓</span>
                 </div>
-                <div class="module-duration">8 min • Understanding your crisis response</div>
+                <div class="module-duration">8 min • Crisis response basics</div>
                 <div class="module-progress">
-                  <div class="module-progress-fill" id="module1Progress" style="width: 0%;"></div>
+                  <div class="module-progress-fill" id="module1Progress"></div>
                 </div>
               </div>
             </a>
             
-            <!-- Module 2 -->
             <a href="crisis-module-2.html" class="module-card" id="module2">
               <div class="module-number">2</div>
               <div class="module-info">
                 <div class="module-title">
                   Physical Reset — Body to Brain
-                  <span class="completed-badge" id="module2Badge" style="display: none;">✓ Completed</span>
+                  <span class="completed-badge" id="module2Badge">✓</span>
                 </div>
-                <div class="module-duration">18 min • Cold water, exercise, breathing, PMR</div>
+                <div class="module-duration">18 min • Cold water, breathing, exercise</div>
                 <div class="module-progress">
-                  <div class="module-progress-fill" id="module2Progress" style="width: 0%;"></div>
+                  <div class="module-progress-fill" id="module2Progress"></div>
                 </div>
               </div>
             </a>
             
-            <!-- Module 3 -->
             <a href="crisis-module-3.html" class="module-card" id="module3">
               <div class="module-number">3</div>
               <div class="module-info">
                 <div class="module-title">
                   Riding the Wave — Mental Techniques
-                  <span class="completed-badge" id="module3Badge" style="display: none;">✓ Completed</span>
+                  <span class="completed-badge" id="module3Badge">✓</span>
                 </div>
-                <div class="module-duration">15 min • Grounding, cognitive load, sensations</div>
+                <div class="module-duration">15 min • Grounding & cognitive tools</div>
                 <div class="module-progress">
-                  <div class="module-progress-fill" id="module3Progress" style="width: 0%;"></div>
+                  <div class="module-progress-fill" id="module3Progress"></div>
                 </div>
               </div>
             </a>
             
-            <!-- Module 4 -->
             <a href="crisis-module-4.html" class="module-card" id="module4">
               <div class="module-number">4</div>
               <div class="module-info">
                 <div class="module-title">
                   Making Peace with Reality
-                  <span class="completed-badge" id="module4Badge" style="display: none;">✓ Completed</span>
+                  <span class="completed-badge" id="module4Badge">✓</span>
                 </div>
-                <div class="module-duration">12 min • Acceptance, self-compassion, defusion</div>
+                <div class="module-duration">12 min • Acceptance & self-compassion</div>
                 <div class="module-progress">
-                  <div class="module-progress-fill" id="module4Progress" style="width: 0%;"></div>
+                  <div class="module-progress-fill" id="module4Progress"></div>
                 </div>
               </div>
             </a>
             
-            <!-- Module 5 -->
             <a href="crisis-module-5.html" class="module-card" id="module5">
               <div class="module-number">5</div>
               <div class="module-info">
                 <div class="module-title">
                   Your Crisis Action Plan
-                  <span class="completed-badge" id="module5Badge" style="display: none;">✓ Completed</span>
+                  <span class="completed-badge" id="module5Badge">✓</span>
                 </div>
                 <div class="module-duration">10 min • Build your personalized toolkit</div>
                 <div class="module-progress">
-                  <div class="module-progress-fill" id="module5Progress" style="width: 0%;"></div>
+                  <div class="module-progress-fill" id="module5Progress"></div>
                 </div>
               </div>
             </a>
           </div>
           
           <a href="crisis-toolkit.html" class="btn-toolkit">
-            <span>🧰</span> View My Saved Toolkit
+            <span>🧰</span> View My Toolkit
           </a>
         </div>
 
-        <!-- QUICK ACTIONS -->
         <div class="btn-group">
           <a href="crisis-module-1.html" class="btn btn-primary" id="continueBtn">Start Module 1</a>
-          <a href="app.html" class="btn btn-secondary">Main App</a>
+          <a href="app.html" class="btn btn-secondary">Back to App</a>
         </div>
 
-        <!-- FOOTER -->
         <div class="footer-note">
           <p class="footer-warning">⚠️ EDUCATIONAL ONLY — NOT THERAPY</p>
-          <p>988 Suicide & Crisis Lifeline: Call or text 988</p>
-          <p>Crisis Text Line: Text HOME to 741741</p>
+          <p>988 Suicide & Crisis Lifeline | Text HOME to 741741</p>
         </div>
 
       </div>
@@ -681,116 +250,7 @@ html, body {
 </div>
 
 <script>
-(function() {
-  // ===== REMOVED DISCLAIMER CHECK =====
-  // No more redirect - user can access directly
-  // They've already accepted in the main app
-
-  // ===== LOAD PROGRESS DATA =====
-  function loadProgress() {
-    const progress = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
-    const toolkit = JSON.parse(localStorage.getItem('crisis_toolkit') || '[]');
-    const practicedModules = progress.practicedModules || [];
-    
-    // Update stats
-    document.getElementById('completedModules').textContent = practicedModules.length;
-    document.getElementById('toolkitCount').textContent = toolkit.length;
-    
-    // Overall progress percentage
-    const percentComplete = (practicedModules.length / 5) * 100;
-    document.getElementById('overallProgress').style.width = percentComplete + '%';
-    
-    // Update each module
-    for (let i = 1; i <= 5; i++) {
-      const badge = document.getElementById(`module${i}Badge`);
-      const progressFill = document.getElementById(`module${i}Progress`);
-      const moduleCard = document.getElementById(`module${i}`);
-      
-      if (practicedModules.includes(`module${i}`)) {
-        if (badge) badge.style.display = 'inline-block';
-        if (progressFill) progressFill.style.width = '100%';
-        if (moduleCard) moduleCard.classList.add('completed');
-      } else {
-        if (badge) badge.style.display = 'none';
-        if (progressFill) progressFill.style.width = '0%';
-        if (moduleCard) moduleCard.classList.remove('completed');
-      }
-    }
-    
-    // Update continue button based on progress
-    const continueBtn = document.getElementById('continueBtn');
-    if (practicedModules.length > 0) {
-      // Find the first incomplete module
-      let nextModule = 1;
-      for (let i = 1; i <= 5; i++) {
-        if (!practicedModules.includes(`module${i}`)) {
-          nextModule = i;
-          break;
-        }
-      }
-      // If all are completed, nextModule will be 6, so default to 5 for review
-      if (nextModule > 5) nextModule = 5;
-      
-      continueBtn.textContent = `Continue Module ${nextModule}`;
-      continueBtn.href = `crisis-module-${nextModule}.html`;
-    } else {
-      continueBtn.textContent = 'Start Module 1';
-      continueBtn.href = 'crisis-module-1.html';
-    }
-  }
-  
-  // ===== EMOTIONAL PULSE SLIDER =====
-  const slider = document.getElementById('distressSlider');
-  const value = document.getElementById('distressValue');
-  const feedback = document.getElementById('distressFeedback');
-  
-  if (slider && value && feedback) {
-    slider.addEventListener('input', function() {
-      const val = this.value;
-      value.textContent = val;
-      
-      if (val <= 3) {
-        feedback.innerHTML = '<span style="color: var(--text-teal);">0-3: You\'re in a good state to learn. Your thinking brain is online. Great time to practice!</span>';
-      } else if (val <= 6) {
-        feedback.innerHTML = '<span style="color: var(--text-amber);">4-6: You\'re managing, but starting to feel it. Good time to practice tools. Consider starting with Module 2 (Physical Reset).</span>';
-      } else {
-        feedback.innerHTML = '<span style="color: #fca5a5;">7-10: You\'re in crisis now. Skip to Module 2 (Physical Reset) for immediate relief. Come back to learning when you\'re calmer.</span>';
-      }
-    });
-  }
-  
-  // ===== AUTO-REFRESH PROGRESS WHEN PAGE BECOMES VISIBLE =====
-  document.addEventListener('visibilitychange', function() {
-    if (!document.hidden) {
-      loadProgress();
-    }
-  });
-  
-  // ===== INITIAL LOAD =====
-  loadProgress();
-  
-  // ===== UPDATE COURSE PROGRESS =====
-  let progress = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
-  progress.lastAccessed = new Date().toISOString();
-  localStorage.setItem('crisis_course_progress', JSON.stringify(progress));
-  
-  // ===== SYNC WITH MAIN APP =====
-  try {
-    const mainState = JSON.parse(localStorage.getItem('mphaven_state') || '{}');
-    if (!mainState.courses) mainState.courses = {};
-    if (!mainState.courses['crisis-resilience']) mainState.courses['crisis-resilience'] = {};
-    mainState.courses['crisis-resilience'].lastActivity = new Date().toISOString();
-    mainState.courses['crisis-resilience'].progress = Math.round((progress.practicedModules?.length || 0) / 5 * 100);
-    localStorage.setItem('mphaven_state', JSON.stringify(mainState));
-  } catch(e) {}
-
-  // ===== ADDED: Listen for storage events from other tabs/modules =====
-  window.addEventListener('storage', function(e) {
-    if (e.key === 'crisis_course_progress' || e.key === 'crisis_toolkit') {
-      loadProgress();
-    }
-  });
-})();
+(function(){function u(){try{const e=localStorage.getItem('crisis_course_progress'),t=localStorage.getItem('crisis_toolkit');let o=[];if(e){const i=JSON.parse(e);o=i.practicedModules||[]}let s=[];t&&(s=JSON.parse(t)),document.getElementById('completedModules').textContent=o.length,document.getElementById('toolkitCount').textContent=s.length;const c=(o.length/5)*100;document.getElementById('overallProgress').style.width=c+'%';for(let n=1;n<=5;n++){const a=document.getElementById('module'+n+'Badge'),r=document.getElementById('module'+n+'Progress'),l=document.getElementById('module'+n);o.includes('module'+n)?(a.style.display='inline-block',r.style.width='100%',l.classList.add('completed')):(a.style.display='none',r.style.width='0%',l.classList.remove('completed'))}const d=document.getElementById('continueBtn');if(o.length===0)d.textContent='Start Module 1',d.href='crisis-module-1.html';else if(o.length===5)d.textContent='Review Course',d.href='crisis-module-5.html';else for(let m=1;m<=5;m++)if(!o.includes('module'+m)){d.textContent='Continue Module '+m,d.href='crisis-module-'+m+'.html';break}}catch(f){}}const p=document.getElementById('distressSlider');if(p){const g=document.getElementById('distressValue'),h=document.getElementById('distressFeedback');p.addEventListener('input',function(){const y=this.value;g.textContent=y,y<=3?h.innerHTML='<span style="color:var(--text-teal)">0-3: You\'re in a good state to learn. Your thinking brain is online.</span>':y<=6?h.innerHTML='<span style="color:var(--accent-amber)">4-6: You\'re managing but feeling it. Good time to practice tools. Try Module 2 (Physical Reset).</span>':y<=8?h.innerHTML='<span style="color:#fca5a5">7-8: You\'re in crisis now. Skip to Module 2 (Physical Reset) for immediate relief. Return to learning when calmer.</span>':h.innerHTML='<span style="color:#fca5a5;font-weight:700">🚨 9-10: CRISIS LEVEL - Please call <a href="tel:988" style="color:#fca5a5;text-decoration:underline;font-weight:800">988</a> (Suicide & Crisis Lifeline) or text HOME to <a href="sms:741741" style="color:#fca5a5;text-decoration:underline;font-weight:800">741741</a> (Crisis Text Line) NOW. You need professional help, not an app.</span>'})}u();try{const b=new Date().toISOString();let v=JSON.parse(localStorage.getItem('crisis_course_progress')||'{}');v.lastAccessed=b,localStorage.setItem('crisis_course_progress',JSON.stringify(v))}catch(w){}window.addEventListener('storage',function(x){(x.key==='crisis_course_progress'||x.key==='crisis_toolkit')&&u()})})();
 </script>
 </body>
 </html>
