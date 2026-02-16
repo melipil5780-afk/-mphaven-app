@@ -242,6 +242,12 @@ html, body {
     border: 1px solid rgba(14, 116, 144, 0.3);
 }
 
+.card--celebration {
+    background: linear-gradient(135deg, rgba(14,116,144,0.2), rgba(217,119,6,0.15));
+    border-color: rgba(94,234,212,0.3);
+    text-align: center;
+}
+
 .card__icon {
     font-size: 3rem;
     text-align: center;
@@ -291,6 +297,15 @@ html, body {
 
 .card__content ol li:last-child {
     margin-bottom: 0;
+}
+
+.card__content ul {
+    margin: 1rem 0 1rem 1.5rem;
+    color: var(--text-secondary);
+}
+
+.card__content ul li {
+    margin-bottom: 0.5rem;
 }
 
 /* Callout */
@@ -884,6 +899,7 @@ html, body {
     align-items: center;
     justify-content: center;
     gap: 0.625rem;
+    text-decoration: none;
 }
 
 .btn--primary {
@@ -915,7 +931,7 @@ html, body {
 .btn-group {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1rem;
+    gap: 0.75rem;
     margin-top: 1.5rem;
 }
 
@@ -971,6 +987,32 @@ html, body {
 
 .practice-btn.marked {
     background: rgba(34, 197, 94, 0.25);
+}
+
+/* Completion Stats */
+.completion-stats {
+    display: flex;
+    justify-content: space-around;
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background: rgba(15, 23, 42, 0.6);
+    border-radius: 1rem;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-teal);
+}
+
+.stat-label {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    text-transform: uppercase;
 }
 
 /* Footer */
@@ -1063,6 +1105,9 @@ html, body {
 <script>
 (function() {
     'use strict';
+    
+    // CONFIGURATION
+    const COURSE_HUB_URL = 'crisis-resilience-course-hub.html'; // Change this to match your hub filename
     
     // State
     let currentStep = 1;
@@ -1176,7 +1221,8 @@ html, body {
         if (currentStep > 1) {
             goToStep(currentStep - 1);
         } else {
-            window.location.href = 'crisis-intro.html';
+            // Go back to course hub when on first step
+            window.location.href = COURSE_HUB_URL;
         }
     }
     
@@ -1632,41 +1678,95 @@ html, body {
         `;
     }
     
+    // UPDATED STEP 8 - IMPROVED COMPLETION SCREEN
     function renderStep8() {
         setTimeout(() => {
             initPracticeBtn();
         }, 100);
         
+        // Get progress data
+        const progress = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
+        const isPracticed = progress.practicedModules?.includes('module1') || false;
+        const toolkitCount = JSON.parse(localStorage.getItem('crisis_toolkit') || '[]').length;
+        
         return `
             <div class="step-content">
                 ${renderHeader()}
                 
-                <div class="card card--highlight">
-                    <div class="card__icon">✅</div>
-                    <div class="card__title">Module 1 Complete!</div>
-                    <div class="card__content">
-                        <p>You now understand why your brain goes haywire in crisis.</p>
-                        
-                        <p><strong>Next:</strong> Module 2 will teach you the physical reset techniques to bring your brain back online.</p>
+                <!-- CELEBRATION CARD -->
+                <div class="card card--celebration">
+                    <div style="font-size: 4rem; margin-bottom: 1rem;">🎉</div>
+                    <h2 style="font-size: 2rem; font-weight: 800; background: var(--gradient-main); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.5rem;">Module Complete!</h2>
+                    <p style="color: var(--text-teal); font-size: 1.1rem; margin-bottom: 1.5rem;">You've mastered the science of crisis</p>
+                    
+                    <div class="completion-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">${currentStep}/${totalSteps}</div>
+                            <div class="stat-label">STEPS DONE</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${toolkitCount}</div>
+                            <div class="stat-label">TOOLKIT ITEMS</div>
+                        </div>
+                    </div>
+                    
+                    <div class="card__content" style="text-align: left;">
+                        <p><strong>You've learned:</strong></p>
+                        <ul>
+                            <li>How your amygdala takes over in crisis</li>
+                            <li>Why your thinking brain goes offline</li>
+                            <li>That emotions peak in 10-20 minutes</li>
+                            <li>Your personal action urges</li>
+                            <li>Your window of tolerance</li>
+                        </ul>
                     </div>
                 </div>
                 
+                <!-- MARK AS PRACTICED BUTTON -->
                 <div class="practice-section">
-                    <button id="practiceBtn" class="practice-btn">
-                        <span>✓</span>
-                        <span>Mark Module as Practiced</span>
+                    <button id="practiceBtn" class="practice-btn ${isPracticed ? 'marked' : ''}">
+                        <span>${isPracticed ? '✓' : '○'}</span>
+                        <span>${isPracticed ? 'Module 1 Practiced' : 'Mark Module as Practiced'}</span>
                     </button>
+                    <p style="color: var(--text-muted); font-size: 0.8rem; margin-top: 0.5rem;">Marking as practiced updates your progress on the course hub</p>
                 </div>
                 
-                <div class="btn-group">
-                    <button class="btn btn--secondary" onclick="previousStep()">
-                        <span>←</span>
-                        <span>Back</span>
+                <!-- ACTION BUTTONS -->
+                <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1.5rem;">
+                    <!-- Primary options in a grid -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                        <a href="${COURSE_HUB_URL}" class="btn btn--secondary">
+                            <span>🏠</span>
+                            <span>Course Hub</span>
+                        </a>
+                        
+                        <a href="crisis-module-2.html" class="btn btn--primary">
+                            <span>Module 2 →</span>
+                        </a>
+                    </div>
+                    
+                    <!-- Secondary options -->
+                    <button class="btn btn--save" onclick="goToStep(1)" style="margin-top: 0.25rem;">
+                        <span>↻</span>
+                        <span>Review Module 1 Again</span>
                     </button>
-                    <a href="crisis-module-2.html" class="btn btn--primary">
-                        <span>Module 2</span>
-                        <span>→</span>
+                    
+                    <!-- Toolkit link -->
+                    <a href="crisis-toolkit.html" class="btn btn--save" style="background: rgba(217,119,6,0.1);">
+                        <span>🧰</span>
+                        <span>View My Toolkit</span>
                     </a>
+                </div>
+                
+                <!-- NEXT MODULE PREVIEW -->
+                <div class="card" style="margin-top: 1.5rem; background: rgba(14,116,144,0.08);">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="font-size: 2rem;">⏭️</div>
+                        <div>
+                            <h3 style="color: var(--text-teal); margin-bottom: 0.25rem;">Up Next: Module 2</h3>
+                            <p style="color: var(--text-muted); font-size: 0.9rem;">Physical Reset — learn body-based techniques to calm your brain</p>
+                        </div>
+                    </div>
                 </div>
                 
                 ${renderFooter()}
@@ -1902,28 +2002,46 @@ html, body {
     function initPracticeBtn() {
         const btn = document.getElementById('practiceBtn');
         
+        if (!btn) return;
+        
         let progress = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
-        if (progress.practicedModules && progress.practicedModules.includes('module1')) {
+        if (!progress.practicedModules) {
+            progress.practicedModules = [];
+        }
+        
+        // Update button state based on current progress
+        if (progress.practicedModules.includes('module1')) {
             btn.classList.add('marked');
             btn.innerHTML = '<span>✓</span><span>Module 1 Practiced</span>';
         }
         
-        if (btn) {
-            btn.addEventListener('click', () => {
-                if (!progress.practicedModules) {
-                    progress.practicedModules = [];
-                }
+        btn.addEventListener('click', () => {
+            if (!progress.practicedModules.includes('module1')) {
+                progress.practicedModules.push('module1');
+                progress.lastPracticed = new Date().toISOString();
+                localStorage.setItem('crisis_course_progress', JSON.stringify(progress));
                 
-                if (!progress.practicedModules.includes('module1')) {
-                    progress.practicedModules.push('module1');
-                    progress.lastPracticed = new Date().toISOString();
-                    localStorage.setItem('crisis_course_progress', JSON.stringify(progress));
-                    
-                    btn.classList.add('marked');
-                    btn.innerHTML = '<span>✓</span><span>Module 1 Practiced</span>';
-                }
-            });
-        }
+                btn.classList.add('marked');
+                btn.innerHTML = '<span>✓</span><span>Module 1 Practiced</span>';
+                
+                // Show a quick feedback
+                const feedback = document.createElement('div');
+                feedback.style.cssText = 'color: var(--success-emerald); text-align: center; margin-top: 0.5rem; font-size: 0.9rem;';
+                feedback.textContent = '✓ Progress saved! Check the course hub.';
+                btn.parentNode.appendChild(feedback);
+                setTimeout(() => feedback.remove(), 3000);
+                
+                // Update the main app state if it exists
+                try {
+                    const mainState = JSON.parse(localStorage.getItem('mphaven_state') || '{}');
+                    if (!mainState.courses) mainState.courses = {};
+                    if (!mainState.courses['crisis-resilience']) mainState.courses['crisis-resilience'] = {};
+                    mainState.courses['crisis-resilience'].lastActivity = new Date().toISOString();
+                    mainState.courses['crisis-resilience'].progress = Math.round((progress.practicedModules.length / 5) * 100);
+                    localStorage.setItem('mphaven_state', JSON.stringify(mainState));
+                } catch(e) {}
+            }
+        });
     }
     
     // Main render
@@ -1956,6 +2074,13 @@ html, body {
     window.previousStep = previousStep;
     window.goToStep = goToStep;
     window.showCrisisInfo = showCrisisInfo;
+    
+    // Check disclaimer
+    const acknowledged = localStorage.getItem('crisis_disclaimer_acknowledged');
+    if (!acknowledged && window.location.pathname.indexOf('crisis-disclaimer.html') === -1) {
+        window.location.href = 'crisis-disclaimer.html';
+        return;
+    }
     
     // Initialize
     loadProgress();
