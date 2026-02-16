@@ -676,7 +676,7 @@
         </div>
        
         <div class="footer">
-            <p>By continuing, you agree to our <a href="terms.html">Terms of Service</a>, <a href="privacy.html">Privacy Policy </a></p>
+            <p>By continuing, you agree to our <a href="terms.html">Terms of Service</a>, <a href="privacy.html">Privacy Policy</a></p>
             <p style="margin-top: 0.25rem; font-size: 0.7rem;">⚠️ Educational content only. Not therapy or medical treatment.</p>
         </div>
     </div>
@@ -746,7 +746,7 @@
             }, 5000);
         }
        
-        // ========== GOOGLE SIGN-IN - FIXED (NO CONFIRM DIALOG) ==========
+        // ========== GOOGLE SIGN-IN - FIXED (NOW REDIRECTS TO DISCLAIMER) ==========
         
         async function handleGoogleSignIn() {
             if (isProcessingAuth) {
@@ -771,8 +771,8 @@
             showLoading('Connecting to Google...');
            
             try {
-                // Simple redirect - NO CONFIRM DIALOG that causes freezing
-                const redirectTo = window.location.origin + '/auth-callback.html';
+                // ===== FIXED: Redirect directly to disclaimer.html =====
+                const redirectTo = window.location.origin + '/disclaimer.html';
                 console.log('Redirect URL:', redirectTo);
                
                 const { data, error } = await sbClient.auth.signInWithOAuth({
