@@ -23,6 +23,7 @@
         h3 { font-size: 1rem; margin: 1rem 0 0.25rem; color: #0e7490; }
         p { margin-bottom: 1rem; color: rgb(203, 213, 225); }
         ul { margin-left: 2rem; margin-bottom: 1rem; color: rgb(203, 213, 225); }
+        li { margin-bottom: 0.5rem; }
         .back { display: inline-block; margin-bottom: 2rem; color: rgb(148, 163, 184); text-decoration: none; }
         .back:hover { color: white; }
         hr { border: 1px solid rgba(51, 65, 85, 0.4); margin: 2rem 0; }
@@ -31,9 +32,16 @@
         .footer-links a:hover { text-decoration: underline; }
         .highlight { background: rgba(14, 116, 144, 0.1); padding: 1rem; border-radius: 0.5rem; border-left: 3px solid #0e7490; margin-bottom: 1.5rem; }
         .payment-note { background: rgba(217, 119, 6, 0.1); padding: 1rem; border-radius: 0.5rem; border-left: 3px solid #d97706; margin: 1.5rem 0; }
+        .warning-box { background: rgba(220, 38, 38, 0.1); padding: 1rem; border-radius: 0.5rem; border-left: 3px solid #dc2626; margin: 1.5rem 0; }
+        .success-box { background: rgba(34, 197, 94, 0.1); padding: 1rem; border-radius: 0.5rem; border-left: 3px solid #22c55e; margin: 1.5rem 0; }
         table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
-        th { background: rgba(14, 116, 144, 0.3); color: white; padding: 0.5rem; text-align: left; }
-        td { border: 1px solid rgba(51, 65, 85, 0.4); padding: 0.5rem; color: rgb(203, 213, 225); }
+        th { background: rgba(14, 116, 144, 0.3); color: white; padding: 0.5rem; text-align: left; font-size: 0.9rem; }
+        td { border: 1px solid rgba(51, 65, 85, 0.4); padding: 0.5rem; color: rgb(203, 213, 225); font-size: 0.875rem; }
+        .toc { background: rgba(30, 41, 59, 0.5); padding: 1rem; border-radius: 0.5rem; margin-bottom: 2rem; }
+        .toc ul { margin: 0; list-style-position: inside; }
+        .toc li { margin-bottom: 0.25rem; }
+        .toc a { color: #0e7490; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
@@ -43,174 +51,444 @@
         <p class="effective"><strong>Effective Date:</strong> January 1, 2026 | <strong>Last Updated:</strong> February 2026 | <strong>Version:</strong> 3.0</p>
         
         <div class="highlight">
-            <p><strong>OUR COMMITMENT TO PRIVACY:</strong> MPHaven is committed to protecting your privacy. This policy explains what information we collect, how we use it, and your rights. We do not sell your personal information.</p>
+            <p><strong>OUR COMMITMENT TO PRIVACY:</strong> MPHaven is committed to protecting your privacy and being transparent about our data practices. This policy explains what information we collect, how we use it, and your rights. <strong>We do not sell your personal information.</strong></p>
+        </div>
+
+        <div class="toc">
+            <p style="font-weight: 600; margin-bottom: 0.5rem; color: var(--text-primary);">Quick Navigation:</p>
+            <ul style="columns: 2; -webkit-columns: 2; -moz-columns: 2;">
+                <li><a href="#section1">What We Collect</a></li>
+                <li><a href="#section2">How We Use Data</a></li>
+                <li><a href="#section3">Payment Processing</a></li>
+                <li><a href="#section4">Third-Party Services</a></li>
+                <li><a href="#section5">Data Security</a></li>
+                <li><a href="#section6">Data Retention</a></li>
+                <li><a href="#section7">Your Rights</a></li>
+                <li><a href="#section8">Children's Privacy</a></li>
+                <li><a href="#section9">International Users</a></li>
+                <li><a href="#section10">Cookies</a></li>
+            </ul>
         </div>
         
-        <h2>1. Information We Collect</h2>
+        <h2 id="section1">1. Information We Collect</h2>
         
-        <h3>1.1 Information You Provide</h3>
+        <h3>1.1 Information You Provide Directly</h3>
         <ul>
-            <li><strong>Account Information:</strong> When you create an account, we collect your name, email address, and password (securely hashed).</li>
-            <li><strong>Profile Information:</strong> Any information you choose to add to your profile.</li>
-            <li><strong>User Content:</strong> Notes, journal entries, reflections, or other content you create within the app.</li>
-            <li><strong>Communications:</strong> Information you provide when contacting support or customer service.</li>
+            <li><strong>Account Information:</strong> Name, email address, and password (securely hashed using bcrypt or similar)</li>
+            <li><strong>Profile Information:</strong> Optional information you add to your profile (display name, timezone preferences)</li>
+            <li><strong>User Content:</strong> Notes, journal entries, reflections, mood tracking data, or other content you create within the app</li>
+            <li><strong>Communications:</strong> Information you provide when contacting support, including email correspondence and attached files</li>
+            <li><strong>Feedback and Surveys:</strong> Responses to optional surveys or feedback forms</li>
         </ul>
         
         <h3>1.2 Information Collected Automatically</h3>
         <ul>
-            <li><strong>Local Storage:</strong> Disclaimer acknowledgment, timestamp, version, and user agent stored in your browser's local storage.</li>
-            <li><strong>Usage Data:</strong> App interactions, features used, time spent (anonymized).</li>
-            <li><strong>Device Information:</strong> Device type, operating system, browser type, IP address (may be collected by third-party services).</li>
+            <li><strong>Local Storage Data:</strong> Disclaimer acknowledgment, timestamp, version number, and user agent string stored in your browser's local storage</li>
+            <li><strong>Usage Data:</strong> Features accessed, time spent in app, page views, click patterns (anonymized and aggregated)</li>
+            <li><strong>Device Information:</strong> Device type, operating system version, browser type and version, screen resolution</li>
+            <li><strong>Log Data:</strong> IP address (may be truncated or hashed), access times, error logs, performance data</li>
+            <li><strong>Session Data:</strong> Login/logout times, session duration</li>
         </ul>
         
         <h3>1.3 Information from Third Parties</h3>
         <ul>
-            <li><strong>Authentication Providers:</strong> If you sign in with Google, we receive your name and email from Google.</li>
-            <li><strong>Payment Processors:</strong> Stripe and PayPal process payments and may collect billing information. We do not receive or store full payment credentials.</li>
+            <li><strong>Authentication Providers (Google OAuth):</strong> If you sign in with Google, we receive your name and email address from Google. We do not receive your Google password.</li>
+            <li><strong>Payment Processors (Stripe, PayPal):</strong> Transaction details, subscription status, payment method type (e.g., "Visa ending in 1234"). We do NOT receive or store full credit card numbers, CVV codes, or full banking information.</li>
         </ul>
+
+        <h3>1.4 Sensitive Health Information</h3>
+        <div class="warning-box">
+            <p><strong>⚠️ IMPORTANT:</strong> While MPHaven is a mental health and wellness app, we treat certain information as sensitive health information, including:</p>
+            <ul style="margin: 0.5rem 0 0 1.5rem;">
+                <li>Your journal entries and notes about mental health</li>
+                <li>Mood tracking data</li>
+                <li>Crisis check responses</li>
+                <li>Any other content that reveals information about your mental health status</li>
+            </ul>
+            <p style="margin-top: 0.5rem;">We limit use of this information to providing the app services. We do not share this information with third parties except as necessary to operate the app (e.g., encrypted storage on Supabase servers).</p>
+        </div>
         
-        <h2>2. How We Use Information</h2>
-        <p>We use your information to:</p>
+        <h2 id="section2">2. How We Use Information</h2>
+        <p>We use your information for the following purposes:</p>
+        
+        <h3>2.1 To Provide and Improve the App</h3>
         <ul>
-            <li>Provide, operate, and maintain the app</li>
             <li>Create and manage your account</li>
-            <li>Process payments and subscriptions</li>
-            <li>Remember your disclaimer acknowledgment</li>
-            <li>Respond to your comments and questions</li>
-            <li>Send technical notices, updates, and support messages</li>
-            <li>Monitor and analyze usage trends</li>
-            <li>Prevent fraud and enhance security</li>
-            <li>Comply with legal obligations</li>
+            <li>Authenticate your identity and maintain session security</li>
+            <li>Store and retrieve your User Content</li>
+            <li>Remember your disclaimer acknowledgment (required for legal compliance)</li>
+            <li>Provide customer support and respond to your inquiries</li>
+            <li>Analyze usage patterns to improve features and user experience (using anonymized data)</li>
+            <li>Develop new features and services</li>
         </ul>
         
-        <h2>3. Payment Processing</h2>
+        <h3>2.2 To Process Payments and Subscriptions</h3>
+        <ul>
+            <li>Process subscription payments through third-party processors</li>
+            <li>Manage subscription renewals and cancellations</li>
+            <li>Send payment confirmations and receipts</li>
+            <li>Handle billing disputes and refund requests</li>
+        </ul>
+        
+        <h3>2.3 To Communicate with You</h3>
+        <ul>
+            <li>Send essential service communications (account verification, password resets, payment confirmations)</li>
+            <li>Provide technical notices and security alerts</li>
+            <li>Respond to your support requests</li>
+            <li>Send updates about Terms or Privacy Policy changes (when legally required)</li>
+            <li><strong>Optional:</strong> Send product updates, tips, or educational content (you may opt out)</li>
+        </ul>
+        
+        <h3>2.4 For Security and Legal Compliance</h3>
+        <ul>
+            <li>Prevent fraud, abuse, and unauthorized access</li>
+            <li>Detect and respond to security incidents</li>
+            <li>Enforce our Terms of Service</li>
+            <li>Comply with legal obligations (e.g., valid subpoenas, court orders)</li>
+            <li>Protect the rights, property, and safety of MPHaven, our users, and the public</li>
+        </ul>
+        
+        <h3>2.5 We Do NOT Use Your Data For</h3>
+        <div class="success-box">
+            <ul style="margin: 0;">
+                <li>✅ <strong>Selling to third parties</strong> — We never sell your personal information</li>
+                <li>✅ <strong>Advertising</strong> — We do not use your data for targeted advertising</li>
+                <li>✅ <strong>Training AI models</strong> — Your User Content is not used to train AI systems</li>
+                <li>✅ <strong>Sharing with data brokers</strong> — We do not share data with data brokers</li>
+            </ul>
+        </div>
+        
+        <h2 id="section3">3. Payment Processing</h2>
         <div class="payment-note">
-            <p><strong>IMPORTANT:</strong> MPHaven does not store, process, or have access to your full payment credentials. All payments are handled by third-party payment processors:</p>
+            <p><strong>IMPORTANT:</strong> MPHaven does not store, process, or have access to your full payment credentials. All payments are handled by PCI-DSS compliant third-party payment processors:</p>
         </div>
         
         <table>
             <tr>
                 <th>Processor</th>
-                <th>Information Collected</th>
+                <th>Information They Collect</th>
                 <th>Privacy Policy</th>
             </tr>
             <tr>
-                <td>Stripe</td>
-                <td>Payment method details, billing address, IP address</td>
+                <td><strong>Stripe</strong></td>
+                <td>Payment card details, billing address, IP address, device information</td>
                 <td><a href="https://stripe.com/privacy" target="_blank" style="color: #0e7490;">stripe.com/privacy</a></td>
             </tr>
             <tr>
-                <td>PayPal</td>
-                <td>Payment method details, billing address, IP address</td>
+                <td><strong>PayPal</strong></td>
+                <td>Payment account details, billing address, IP address, transaction history</td>
                 <td><a href="https://paypal.com/privacy" target="_blank" style="color: #0e7490;">paypal.com/privacy</a></td>
             </tr>
         </table>
-        <p>By making a payment, you agree to the terms and privacy policies of these processors. We encourage you to review their policies.</p>
         
-        <h2>4. Third-Party Services</h2>
-        <p>We use the following third-party services:</p>
+        <p><strong>What MPHaven Receives:</strong> We receive limited information from payment processors, including:</p>
+        <ul>
+            <li>Transaction confirmation (success/failure)</li>
+            <li>Subscription status (active, cancelled, expired)</li>
+            <li>Payment method type (e.g., "Visa ending in 1234")</li>
+            <li>Billing email address</li>
+        </ul>
+        <p>We do NOT receive full card numbers, CVV codes, banking credentials, or other sensitive payment information.</p>
+        
+        <p>By making a payment, you agree to the terms of service and privacy policies of these processors. We encourage you to review their policies.</p>
+        
+        <h2 id="section4">4. Third-Party Services</h2>
+        <p>We use the following third-party services to operate the app:</p>
+        
         <table>
             <tr>
                 <th>Service</th>
                 <th>Purpose</th>
                 <th>Data Shared</th>
+                <th>Privacy Policy</th>
             </tr>
             <tr>
-                <td>Supabase</td>
-                <td>Authentication, database</td>
-                <td>Email, name, account credentials</td>
+                <td><strong>Supabase</strong></td>
+                <td>Authentication, database, backend infrastructure</td>
+                <td>Email, name, hashed password, User Content, usage metadata</td>
+                <td><a href="https://supabase.com/privacy" target="_blank" style="color: #0e7490;">supabase.com/privacy</a></td>
             </tr>
             <tr>
-                <td>Google OAuth</td>
-                <td>Sign-in</td>
-                <td>Name, email (if you choose Google sign-in)</td>
+                <td><strong>Google OAuth</strong></td>
+                <td>Sign-in authentication (optional)</td>
+                <td>Name, email (only if you choose Google sign-in)</td>
+                <td><a href="https://policies.google.com/privacy" target="_blank" style="color: #0e7490;">Google Privacy Policy</a></td>
             </tr>
             <tr>
-                <td>Stripe</td>
+                <td><strong>Stripe</strong></td>
                 <td>Payment processing</td>
-                <td>Payment details, billing info</td>
+                <td>Payment details, billing info, email</td>
+                <td><a href="https://stripe.com/privacy" target="_blank" style="color: #0e7490;">stripe.com/privacy</a></td>
             </tr>
             <tr>
-                <td>PayPal</td>
-                <td>Payment processing</td>
-                <td>Payment details, billing info</td>
+                <td><strong>PayPal</strong></td>
+                <td>Payment processing (alternative)</td>
+                <td>Payment details, billing info, email</td>
+                <td><a href="https://paypal.com/privacy" target="_blank" style="color: #0e7490;">paypal.com/privacy</a></td>
             </tr>
         </table>
-        <p>We are not responsible for the privacy practices of these third parties. Your use of their services is subject to their respective policies.</p>
         
-        <h2>5. Data Storage and Security</h2>
-        <p><strong>Local Storage:</strong> Disclaimer acknowledgment and related data are stored locally in your browser. You can clear this data at any time through your browser settings.</p>
-        <p><strong>Server Storage:</strong> Account information and user content are stored on Supabase servers located in the United States. We implement reasonable security measures, including encryption in transit and at rest, to protect your data.</p>
-        <p><strong>Payment Data:</strong> Full payment credentials are not stored by MPHaven. They are processed and stored by Stripe and PayPal, which are PCI-DSS compliant.</p>
-        <p><strong>Security Practices:</strong> We use industry-standard security practices, but no method of transmission over the Internet is 100% secure. We cannot guarantee absolute security.</p>
+        <p><strong>Our Responsibility:</strong> We select third-party service providers that maintain strong security and privacy standards. However, we are not responsible for the privacy practices of these third parties. Your use of their services is subject to their respective terms and privacy policies.</p>
         
-        <h2>6. Data Retention</h2>
+        <h2 id="section5">5. Data Storage and Security</h2>
+        
+        <h3>5.1 Where Your Data Is Stored</h3>
         <ul>
-            <li><strong>Account Information:</strong> Retained as long as your account is active. You may delete your account at any time.</li>
-            <li><strong>User Content:</strong> Retained until you delete it or delete your account.</li>
-            <li><strong>Local Storage:</strong> Remains on your device until cleared.</li>
-            <li><strong>Payment Records:</strong> Retained by Stripe/PayPal according to their policies and legal requirements.</li>
-            <li><strong>Backup Copies:</strong> May exist for up to 30 days after deletion.</li>
+            <li><strong>Local Storage (Your Device):</strong> Disclaimer acknowledgment, user preferences, session tokens. You can clear this anytime via browser settings.</li>
+            <li><strong>Supabase Servers (United States):</strong> Account information, User Content, usage metadata. Servers are located in AWS data centers in the U.S.</li>
+            <li><strong>Payment Processor Servers:</strong> Stripe and PayPal store payment information on their own PCI-DSS compliant servers.</li>
         </ul>
         
-        <h2>7. Your Privacy Rights</h2>
+        <h3>5.2 How We Protect Your Data</h3>
+        <ul>
+            <li><strong>Encryption in Transit:</strong> All data transmitted between your device and our servers uses TLS 1.2+ encryption</li>
+            <li><strong>Encryption at Rest:</strong> Sensitive data is encrypted in the database using AES-256 encryption</li>
+            <li><strong>Password Security:</strong> Passwords are hashed using bcrypt with salt before storage. We never store plain-text passwords.</li>
+            <li><strong>Access Controls:</strong> Strict role-based access controls limit who can access data. Only authorized personnel have access.</li>
+            <li><strong>Regular Security Audits:</strong> We conduct regular security reviews and vulnerability assessments</li>
+            <li><strong>Monitoring:</strong> We monitor for suspicious activity and unauthorized access attempts</li>
+        </ul>
+        
+        <h3>5.3 Security Limitations</h3>
+        <div class="warning-box">
+            <p><strong>⚠️ IMPORTANT:</strong> No method of transmission over the Internet or electronic storage is 100% secure. While we implement industry-standard security measures, we cannot guarantee absolute security. You use the app at your own risk.</p>
+            <p style="margin-top: 0.5rem;"><strong>Your Responsibility:</strong> You are responsible for maintaining the security of your account credentials. Do not share your password with others. Use a strong, unique password.</p>
+        </div>
+        
+        <h2 id="section6">6. Data Retention</h2>
+        <p>We retain your information for as long as necessary to provide the app and comply with legal obligations:</p>
+        
+        <table>
+            <tr>
+                <th>Data Type</th>
+                <th>Retention Period</th>
+                <th>Reason</th>
+            </tr>
+            <tr>
+                <td>Account Information</td>
+                <td>While account is active + 30 days after deletion</td>
+                <td>Provide service; allow account recovery; comply with legal obligations</td>
+            </tr>
+            <tr>
+                <td>User Content</td>
+                <td>Until you delete it or delete your account + 30 days</td>
+                <td>Provide service; backup recovery</td>
+            </tr>
+            <tr>
+                <td>Payment Records</td>
+                <td>7 years (or as required by payment processor)</td>
+                <td>Tax compliance; fraud prevention; dispute resolution</td>
+            </tr>
+            <tr>
+                <td>Support Communications</td>
+                <td>3 years after last contact</td>
+                <td>Customer service; legal compliance</td>
+            </tr>
+            <tr>
+                <td>Usage Data (Anonymized)</td>
+                <td>2 years</td>
+                <td>Analytics; product improvement</td>
+            </tr>
+            <tr>
+                <td>Local Storage</td>
+                <td>Until you clear browser data</td>
+                <td>Store preferences; disclaimer acknowledgment</td>
+            </tr>
+            <tr>
+                <td>Backup Copies</td>
+                <td>30 days after deletion</td>
+                <td>Disaster recovery; data integrity</td>
+            </tr>
+        </table>
+        
+        <p><strong>Deleting Your Data:</strong> You may request deletion of your data at any time by contacting privacy@mphaven.com or deleting your account through account settings. We will delete your data within 30 days, except where we are required to retain it for legal compliance (e.g., payment records for tax purposes).</p>
+        
+        <h2 id="section7">7. Your Privacy Rights</h2>
         
         <h3>7.1 California Privacy Rights (CCPA/CPRA 2026)</h3>
         <p>If you are a California resident, you have the following rights under the California Consumer Privacy Act (CCPA) as amended by the California Privacy Rights Act (CPRA):</p>
-        <ul>
-            <li><strong>Right to Know:</strong> Request information about the categories and specific pieces of personal information we have collected about you.</li>
-            <li><strong>Right to Delete:</strong> Request deletion of personal information we have collected, subject to certain exceptions.</li>
-            <li><strong>Right to Correct:</strong> Request correction of inaccurate personal information.</li>
-            <li><strong>Right to Opt-Out:</strong> Opt out of the sale or sharing of personal information. We do not sell your data.</li>
-            <li><strong>Right to Limit Use of Sensitive Information:</strong> Limit use of sensitive personal information. We do not use sensitive information beyond what is necessary.</li>
-            <li><strong>Right to Non-Discrimination:</strong> We will not discriminate against you for exercising these rights.</li>
-        </ul>
         
-        <h3>7.2 Other State Rights</h3>
-        <p>Residents of other states may have similar rights under applicable state privacy laws, including:</p>
+        <table>
+            <tr>
+                <th>Right</th>
+                <th>What You Can Do</th>
+            </tr>
+            <tr>
+                <td><strong>Right to Know</strong></td>
+                <td>Request information about the categories and specific pieces of personal information we have collected, used, disclosed, or sold about you in the past 12 months</td>
+            </tr>
+            <tr>
+                <td><strong>Right to Delete</strong></td>
+                <td>Request deletion of personal information we have collected, subject to certain exceptions (e.g., completing transactions, complying with legal obligations)</td>
+            </tr>
+            <tr>
+                <td><strong>Right to Correct</strong></td>
+                <td>Request correction of inaccurate personal information we maintain about you</td>
+            </tr>
+            <tr>
+                <td><strong>Right to Opt-Out of Sale/Sharing</strong></td>
+                <td>Opt out of the sale or sharing of personal information. <strong>We do not sell or share your data, so no action is needed.</strong></td>
+            </tr>
+            <tr>
+                <td><strong>Right to Limit Use of Sensitive Information</strong></td>
+                <td>Limit use of sensitive personal information. We only use sensitive information (health data, precise location) as necessary to provide the app.</td>
+            </tr>
+            <tr>
+                <td><strong>Right to Non-Discrimination</strong></td>
+                <td>We will not discriminate against you for exercising these rights (e.g., denying service, charging different prices)</td>
+            </tr>
+        </table>
+        
+        <h3>7.2 Other State Privacy Rights</h3>
+        <p>Residents of the following states have similar rights under their respective state privacy laws:</p>
         <ul>
-            <li>Virginia (VCDPA)</li>
-            <li>Colorado (CPA)</li>
-            <li>Connecticut (CTDPA)</li>
-            <li>Utah (UCPA)</li>
-            <li>And others as enacted</li>
+            <li><strong>Virginia (VCDPA):</strong> Right to access, correct, delete, and opt out of targeted advertising and sale</li>
+            <li><strong>Colorado (CPA):</strong> Right to access, correct, delete, and opt out of targeted advertising and sale</li>
+            <li><strong>Connecticut (CTDPA):</strong> Right to access, correct, delete, and opt out of targeted advertising and sale</li>
+            <li><strong>Utah (UCPA):</strong> Right to access, delete, and opt out of targeted advertising and sale</li>
+            <li><strong>Other states:</strong> As additional state privacy laws are enacted, we will comply with applicable requirements</li>
         </ul>
         
         <h3>7.3 How to Exercise Your Rights</h3>
-        <p>To exercise your privacy rights, please contact us at: <strong>privacy@mphaven.com</strong></p>
-        <p>We will verify your identity before processing your request. We may need to request additional information to verify your identity. We will respond within 45 days.</p>
+        <p>To exercise any of the above rights, please contact us at: <strong>privacy@mphaven.com</strong></p>
         
-        <h2>8. Children's Privacy</h2>
-        <p>MPHaven is not intended for users under 18. We do not knowingly collect personal information from children under 18. If you are a parent or guardian and believe your child has provided us with personal information, please contact us at privacy@mphaven.com. If we become aware that we have collected personal information from a child under 18, we will take steps to delete it.</p>
+        <p><strong>What to Include in Your Request:</strong></p>
+        <ul>
+            <li>Your full name</li>
+            <li>Email address associated with your account</li>
+            <li>Description of the right you wish to exercise</li>
+            <li>Specific information you're requesting (if applicable)</li>
+        </ul>
         
-        <h2>9. International Users</h2>
-        <p>MPHaven is based in the United States and is intended for users in the United States. If you access the app from outside the U.S., please be aware that your information may be transferred to, stored, and processed in the U.S., where our servers are located. By using the app, you consent to the transfer of your information to the U.S.</p>
+        <p><strong>Verification Process:</strong> To protect your privacy, we will verify your identity before processing your request. We may ask for:</p>
+        <ul>
+            <li>Email confirmation from your registered account</li>
+            <li>Additional identifying information to match our records</li>
+            <li>Government-issued ID (for sensitive requests like account deletion)</li>
+        </ul>
         
-        <h2>10. Cookies and Tracking Technologies</h2>
-        <p><strong>Local Storage:</strong> We use local storage to remember your disclaimer acknowledgment. This is essential for app functionality.</p>
-        <p><strong>Third-Party Cookies:</strong> Our payment processors (Stripe, PayPal) may use cookies necessary for transaction processing. We do not control these cookies.</p>
-        <p><strong>Do Not Track:</strong> Our app does not respond to "Do Not Track" signals at this time.</p>
-        <p><strong>Cookie Preferences:</strong> You can manage cookies through your browser settings.</p>
+        <p><strong>Response Time:</strong> We will respond to verified requests within 45 days. If we need additional time, we will notify you and may extend by another 45 days.</p>
         
-        <h2>11. Data Breach Notification</h2>
-        <p>In the event of a data breach that affects your personal information, we will notify you within 72 hours of becoming aware of the breach, as required by applicable law. Notifications will be sent via email or through the app.</p>
+        <p><strong>Authorized Agents:</strong> You may designate an authorized agent to make requests on your behalf. The agent must provide proof of authorization.</p>
         
-        <h2>12. Changes to This Privacy Policy</h2>
-        <p>We may update this Privacy Policy from time to time. If we make material changes, we will notify you by email or through the app. Your continued use of the app after the effective date constitutes acceptance of the updated policy. We encourage you to review this policy periodically.</p>
+        <h3>7.4 General Data Rights (All Users)</h3>
+        <p>Regardless of your location, you can:</p>
+        <ul>
+            <li><strong>Access Your Data:</strong> View and download your User Content through the app</li>
+            <li><strong>Update Your Information:</strong> Edit your profile and account settings</li>
+            <li><strong>Delete Your Account:</strong> Delete your account through account settings or by contacting support</li>
+            <li><strong>Opt Out of Marketing:</strong> Unsubscribe from promotional emails using the link in each email</li>
+            <li><strong>Manage Cookies:</strong> Control cookies through your browser settings</li>
+        </ul>
         
-        <h2>13. Contact Information</h2>
+        <h2 id="section8">8. Children's Privacy</h2>
+        <div class="warning-box">
+            <p><strong>⚠️ AGE RESTRICTION:</strong> MPHaven is not intended for users under 18 years of age. We do not knowingly collect personal information from anyone under 18.</p>
+        </div>
+        
+        <p>If you are a parent or guardian and believe your child under 18 has provided us with personal information, please contact us immediately at privacy@mphaven.com. We will take steps to delete the information within 30 days.</p>
+        
+        <p>If we become aware that we have collected personal information from a child under 18 without verification of parental consent, we will delete that information as quickly as possible.</p>
+        
+        <h2 id="section9">9. International Users</h2>
+        <p><strong>U.S.-Based Service:</strong> MPHaven is based in the United States and is intended primarily for users in the United States. Our servers are located in the U.S., and your data is stored and processed in the U.S.</p>
+        
+        <p><strong>International Data Transfers:</strong> If you access the app from outside the U.S., please be aware that your information will be transferred to, stored, and processed in the U.S., where data protection laws may differ from those in your country.</p>
+        
+        <p><strong>European Union Users:</strong> If you are in the EU or EEA, you may have additional rights under the General Data Protection Regulation (GDPR), including:</p>
+        <ul>
+            <li>Right to data portability (receive your data in a machine-readable format)</li>
+            <li>Right to object to processing</li>
+            <li>Right to withdraw consent</li>
+            <li>Right to lodge a complaint with your local data protection authority</li>
+        </ul>
+        
+        <p>By using the app, you consent to the transfer of your information to the U.S. and processing as described in this Privacy Policy.</p>
+        
+        <h2 id="section10">10. Cookies and Tracking Technologies</h2>
+        
+        <h3>10.1 What We Use</h3>
+        <ul>
+            <li><strong>Local Storage (Essential):</strong> We use browser local storage to remember your disclaimer acknowledgment and session preferences. This is essential for app functionality and cannot be disabled without breaking the app.</li>
+            <li><strong>Session Tokens:</strong> Stored in local storage or cookies to keep you logged in. These expire after your session ends or when you log out.</li>
+        </ul>
+        
+        <h3>10.2 Third-Party Cookies</h3>
+        <p>Our third-party service providers may use cookies:</p>
+        <ul>
+            <li><strong>Stripe/PayPal:</strong> Use cookies necessary for secure payment processing and fraud detection. We do not control these cookies.</li>
+            <li><strong>Google OAuth:</strong> May use cookies if you sign in with Google. Managed by Google.</li>
+        </ul>
+        
+        <h3>10.3 Analytics</h3>
+        <p><strong>Current Status:</strong> We do not currently use third-party analytics tools (e.g., Google Analytics). If we add analytics in the future, we will update this policy and provide opt-out options.</p>
+        
+        <h3>10.4 Do Not Track</h3>
+        <p>Our app does not currently respond to "Do Not Track" (DNT) browser signals. We may add DNT support in the future.</p>
+        
+        <h3>10.5 Managing Cookies</h3>
+        <p>You can manage cookies through your browser settings:</p>
+        <ul>
+            <li><strong>Chrome:</strong> Settings → Privacy and Security → Cookies</li>
+            <li><strong>Safari:</strong> Preferences → Privacy</li>
+            <li><strong>Firefox:</strong> Settings → Privacy & Security</li>
+        </ul>
+        <p><strong>Note:</strong> Disabling essential cookies/local storage will prevent the app from functioning properly.</p>
+        
+        <h2>11. Automated Decision-Making</h2>
+        <p><strong>We Do Not Use Automated Decision-Making:</strong> MPHaven does not use automated decision-making systems (including AI or algorithms) that have legal or similarly significant effects on you. Any features involving algorithms (e.g., content recommendations) are purely suggestive and do not make decisions affecting your rights.</p>
+        
+        <h2>12. Data Breach Notification</h2>
+        <p>In the event of a data breach that compromises your personal information, we will:</p>
+        <ul>
+            <li>Notify you within 72 hours of becoming aware of the breach (as required by applicable law)</li>
+            <li>Describe the nature of the breach and what information was affected</li>
+            <li>Explain steps we are taking to address the breach</li>
+            <li>Provide recommendations on how you can protect yourself</li>
+        </ul>
+        <p>Notifications will be sent via email to the address on your account and/or through in-app notification.</p>
+        
+        <h2>13. Changes to This Privacy Policy</h2>
+        <p>We may update this Privacy Policy from time to time to reflect changes in our practices, technology, legal requirements, or for other reasons.</p>
+        
+        <p><strong>How We Notify You:</strong></p>
+        <ul>
+            <li>Material changes: Email notification + in-app notice</li>
+            <li>Minor changes: Updated "Last Updated" date + notice on the app</li>
+        </ul>
+        
+        <p><strong>When Changes Take Effect:</strong> Changes become effective 30 days after notification. Your continued use after the effective date constitutes acceptance.</p>
+        
+        <p><strong>Disagreeing with Changes:</strong> If you do not agree to the changes, you must stop using the app and may delete your account before the changes take effect.</p>
+        
+        <p>We encourage you to review this Privacy Policy periodically.</p>
+        
+        <h2>14. Contact Information</h2>
+        <p>If you have questions, concerns, or requests regarding this Privacy Policy or our data practices, please contact us:</p>
+        
         <p>
             <strong>Privacy Officer:</strong> privacy@mphaven.com<br>
             <strong>Data Protection Inquiries:</strong> dpo@mphaven.com<br>
             <strong>California Privacy Requests:</strong> privacy@mphaven.com<br>
+            <strong>EU Data Subject Requests:</strong> gdpr@mphaven.com<br>
+            <strong>General Support:</strong> support@mphaven.com<br>
             <strong>Legal Notices:</strong> legal@mphaven.com
         </p>
+        
+        <p><strong>Mailing Address:</strong><br>
+        MPHaven<br>
+        Attn: Privacy Officer<br>
+        [Your Business Address]<br>
+        United States</p>
+        
+        <p><strong>Response Time:</strong> We will respond to privacy inquiries within 7 business days, and requests exercising privacy rights within 45 days.</p>
         
         <hr>
         <div class="footer-links">
             <a href="terms.html">Terms of Service (2026)</a> | 
             <a href="disclaimer.html">Legal Disclaimer (2026)</a> |
-            <a href="#" onclick="window.print()">Print Privacy Policy</a>
+            <a href="#" onclick="window.print()">Print Privacy Policy</a> |
+            <a href="mailto:privacy@mphaven.com">Contact Privacy Team</a>
         </div>
         <p style="text-align: center; margin-top: 2rem; font-size: 0.7rem; color: rgb(100, 116, 139);">© 2026 MPHaven. All rights reserved.</p>
     </div>
