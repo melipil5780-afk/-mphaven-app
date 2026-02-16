@@ -2075,12 +2075,6 @@ html, body {
     window.goToStep = goToStep;
     window.showCrisisInfo = showCrisisInfo;
     
-    // Check disclaimer
-    const acknowledged = localStorage.getItem('crisis_disclaimer_acknowledged');
-    if (!acknowledged && window.location.pathname.indexOf('crisis-disclaimer.html') === -1) {
-        window.location.href = 'crisis-disclaimer.html';
-        return;
-    }
     
     // Initialize
     loadProgress();
