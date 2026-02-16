@@ -23,6 +23,7 @@
     --text-muted: rgb(148, 163, 184);
     --text-teal-light: rgb(165, 243, 252);
     --text-teal: rgb(94, 234, 212);
+    --text-amber: #d97706;
     --success-emerald: rgb(74, 222, 128);
     --success-bg: rgba(34, 197, 94, 0.12);
     --gradient-main: linear-gradient(135deg, #0e7490, #d97706);
@@ -681,13 +682,9 @@ html, body {
 
 <script>
 (function() {
-  // ===== CHECK DISCLAIMER ACKNOWLEDGMENT =====
-  // This runs immediately - if no acknowledgment, redirect to disclaimer
-  const acknowledged = localStorage.getItem('crisis_disclaimer_acknowledged');
-  if (!acknowledged) {
-    window.location.href = 'crisis-disclaimer.html';
-    return;
-  }
+  // ===== REMOVED DISCLAIMER CHECK =====
+  // No more redirect - user can access directly
+  // They've already accepted in the main app
 
   // ===== LOAD PROGRESS DATA =====
   function loadProgress() {
@@ -786,6 +783,13 @@ html, body {
     mainState.courses['crisis-resilience'].progress = Math.round((progress.practicedModules?.length || 0) / 5 * 100);
     localStorage.setItem('mphaven_state', JSON.stringify(mainState));
   } catch(e) {}
+
+  // ===== ADDED: Listen for storage events from other tabs/modules =====
+  window.addEventListener('storage', function(e) {
+    if (e.key === 'crisis_course_progress' || e.key === 'crisis_toolkit') {
+      loadProgress();
+    }
+  });
 })();
 </script>
 </body>
