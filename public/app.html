@@ -141,11 +141,127 @@ body { background: var(--bg-dark); touch-action: pan-y; }
   </div>
 </div>
 
+<!-- ========== DISCLAIMER & CRISIS CHECK SYSTEM ========== -->
+<div id="crisisModal" class="logout-modal" style="z-index:20000">
+  <div class="logout-modal-content" style="max-width:360px">
+    <h3 style="color:var(--text-primary);font-size:1.25rem;font-weight:700;margin-bottom:.5rem">🚨 Safety Check</h3>
+    <p style="color:var(--text-secondary);font-size:.9375rem;margin-bottom:1.5rem;line-height:1.5">Before you continue, please confirm:</p>
+    
+    <div style="background:rgba(220,38,38,0.1);border:1px solid rgba(220,38,38,0.3);border-radius:.75rem;padding:1rem;margin-bottom:1.5rem">
+      <p style="color:#fca5a5;font-size:.875rem;font-weight:600;margin-bottom:.5rem">Are you currently experiencing:</p>
+      <ul style="color:var(--text-secondary);font-size:.8125rem;margin-left:1.25rem;line-height:1.6">
+        <li>Thoughts of suicide or self-harm?</li>
+        <li>Plans to hurt yourself or others?</li>
+        <li>Unable to keep yourself safe right now?</li>
+      </ul>
+    </div>
+    
+    <div style="display:flex;gap:.75rem;flex-direction:column">
+      <button onclick="handleCrisisResponse(true)" style="padding:1rem;background:rgba(220,38,38,0.2);border:2px solid var(--crisis-red);color:#fca5a5;border-radius:.75rem;font-weight:600;cursor:pointer;font-size:.9375rem;width:100%;-webkit-tap-highlight-color:transparent">Yes - Show Crisis Resources</button>
+      <button onclick="handleCrisisResponse(false)" style="padding:1rem;background:var(--gradient-main);color:white;border:none;border-radius:.75rem;font-weight:600;cursor:pointer;font-size:.9375rem;width:100%;-webkit-tap-highlight-color:transparent">No - I'm Safe to Continue</button>
+    </div>
+    
+    <div id="crisisResources" style="display:none;margin-top:1.5rem;padding:1rem;background:rgba(0,0,0,0.4);border-left:4px solid var(--crisis-red);border-radius:.5rem">
+      <p style="color:#fca5a5;font-size:.9375rem;font-weight:600;margin-bottom:.75rem">🚨 Please get help now:</p>
+      <p style="color:var(--text-secondary);font-size:.8125rem;margin-bottom:.5rem">• <a href="tel:988" style="color:#fca5a5;font-weight:600;text-decoration:none">988 Suicide & Crisis Lifeline</a> — Call or text 988</p>
+      <p style="color:var(--text-secondary);font-size:.8125rem;margin-bottom:.5rem">• <a href="sms:741741" style="color:#fca5a5;font-weight:600;text-decoration:none">Crisis Text Line</a> — Text HOME to 741741</p>
+      <p style="color:var(--text-secondary);font-size:.8125rem">• <a href="tel:911" style="color:#fca5a5;font-weight:600;text-decoration:none">911 Emergency</a> — Or go to nearest ER</p>
+    </div>
+  </div>
+</div>
+
 <script>
+// ========== DISCLAIMER & CRISIS CHECK SYSTEM ==========
+const DISCLAIMER_VERSION = '3.0';
+const CRISIS_SESSION_TIMEOUT = 5 * 60 * 1000; // 5 minutes
+
+// Check if disclaimer has been acknowledged
+function checkDisclaimerStatus() {
+  const acknowledged = localStorage.getItem('mphaven_disclaimer_acknowledged');
+  const version = localStorage.getItem('mphaven_disclaimer_version');
+  const lastCrisisCheck = localStorage.getItem('mphaven_last_crisis_check');
+  
+  // If never acknowledged or version changed, redirect to full disclaimer
+  if (acknowledged !== 'true' || version !== DISCLAIMER_VERSION) {
+    window.location.href = 'disclaimer.html';
+    return false;
+  }
+  
+  // Check if we need a new crisis check (5+ minutes since last check)
+  if (lastCrisisCheck) {
+    const timeSinceLastCheck = Date.now() - parseInt(lastCrisisCheck);
+    if (timeSinceLastCheck < CRISIS_SESSION_TIMEOUT) {
+      // Recent check passed - proceed to app
+      return true;
+    }
+  }
+  
+  // Need crisis check
+  showCrisisCheck();
+  return false;
+}
+
+// Show crisis check modal
+function showCrisisCheck() {
+  const modal = document.getElementById('crisisModal');
+  if (modal) {
+    modal.classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+// Hide crisis check modal
+function hideCrisisCheck() {
+  const modal = document.getElementById('crisisModal');
+  if (modal) {
+    modal.classList.remove('show');
+    document.body.style.overflow = '';
+  }
+}
+
+// Handle crisis response
+window.handleCrisisResponse = function(inCrisis) {
+  if (inCrisis) {
+    // Show crisis resources
+    const resources = document.getElementById('crisisResources');
+    if (resources) {
+      resources.style.display = 'block';
+    }
+  } else {
+    // User is safe - update last check and proceed
+    localStorage.setItem('mphaven_last_crisis_check', Date.now().toString());
+    hideCrisisCheck();
+    
+    // Initialize the app
+    initApp();
+  }
+};
+
+// Show resources only (for when user clicks Yes)
+window.showCrisisResources = function() {
+  const resources = document.getElementById('crisisResources');
+  if (resources) {
+    resources.style.display = 'block';
+  }
+};
+
+// ========== ORIGINAL APP CODE (with minor modifications) ==========
+
 // Version control - clear old data if version changed
 const APP_VERSION = '2.2';
 if (localStorage.getItem('mphaven_version') !== APP_VERSION) {
+  // Don't clear disclaimer data! Only app data
+  const disclaimerAcked = localStorage.getItem('mphaven_disclaimer_acknowledged');
+  const disclaimerVersion = localStorage.getItem('mphaven_disclaimer_version');
+  const lastCrisisCheck = localStorage.getItem('mphaven_last_crisis_check');
+  
   localStorage.clear();
+  
+  // Restore disclaimer data
+  if (disclaimerAcked) localStorage.setItem('mphaven_disclaimer_acknowledged', disclaimerAcked);
+  if (disclaimerVersion) localStorage.setItem('mphaven_disclaimer_version', disclaimerVersion);
+  if (lastCrisisCheck) localStorage.setItem('mphaven_last_crisis_check', lastCrisisCheck);
+  
   localStorage.setItem('mphaven_version', APP_VERSION);
 }
 
@@ -164,7 +280,7 @@ const courses = [
   { id: 'connection', title: 'Meaningful Relationships', description: 'Build deeper connections with others', color: '#dc2626', icon: 'M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z', category: 'Relationships' },
   { id: 'purpose', title: 'Finding What Matters', description: 'Discover what gives your life meaning', color: '#0891b2', icon: 'M15 10.5a3 3 0 11-6 0 3 3 0 016 0z M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z', category: 'Growth' },
   { id: 'stress', title: 'Managing Stress', description: 'Tools to navigate difficult moments', color: '#7c3aed', icon: 'M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z', category: 'Wellness' },
-  { id: 'crisis-resilience', title: 'Crisis Resilience', description: 'Survive intense emotional moments', color: '#0e7490', icon: '🛡️', category: 'Wellness', link: 'crisis-intro.html' },
+  { id: 'crisis-resilience', title: 'Crisis Resilience', description: 'Survive intense emotional moments', color: '#0e7490', icon: '🛡️', category: 'Wellness', link: 'crisis-resilience-course-hub.html' },
   { id: 'self-compassion', title: 'Self-Compassion', description: 'Treat yourself with kindness', color: '#ec4899', icon: 'M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418', category: 'Growth' }
 ];
 
@@ -238,7 +354,20 @@ function hideLogoutModal() {
 }
 
 function confirmLogout() {
+  // Clear app data but preserve disclaimer data
+  const disclaimerAcked = localStorage.getItem('mphaven_disclaimer_acknowledged');
+  const disclaimerVersion = localStorage.getItem('mphaven_disclaimer_version');
+  const lastCrisisCheck = localStorage.getItem('mphaven_last_crisis_check');
+  
   localStorage.clear();
+  
+  // Restore disclaimer data
+  if (disclaimerAcked) localStorage.setItem('mphaven_disclaimer_acknowledged', disclaimerAcked);
+  if (disclaimerVersion) localStorage.setItem('mphaven_disclaimer_version', disclaimerVersion);
+  if (lastCrisisCheck) localStorage.setItem('mphaven_last_crisis_check', lastCrisisCheck);
+  
+  localStorage.setItem('mphaven_version', APP_VERSION);
+  
   state.breathingActive = false;
   state.notificationsEnabled = false;
   state.hasSeenBreath = false;
@@ -590,7 +719,7 @@ function render() {
   }
 }
 
-function init() {
+function initApp() {
   loadState();
   updateWarmth();
   state.currentTab = 'home';
@@ -605,10 +734,21 @@ function init() {
   }
 }
 
+// Initialize with disclaimer check
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', init);
+  document.addEventListener('DOMContentLoaded', function() {
+    if (!checkDisclaimerStatus()) {
+      // checkDisclaimerStatus will either redirect or show crisis modal
+      return;
+    }
+    initApp();
+  });
 } else {
-  init();
+  if (!checkDisclaimerStatus()) {
+    // checkDisclaimerStatus will either redirect or show crisis modal
+    return;
+  }
+  initApp();
 }
 
 window.addEventListener('beforeunload', saveState);
