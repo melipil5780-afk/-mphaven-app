@@ -168,6 +168,13 @@
             line-height: 1.5;
         }
 
+        .crisis-question ul {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-left: 1.25rem;
+            line-height: 1.8;
+        }
+
         .crisis-options {
             display: flex;
             flex-direction: column;
@@ -548,7 +555,7 @@
                 
                 <div class="crisis-question">
                     <p>Are you currently experiencing any of the following?</p>
-                    <ul style="color: var(--text-secondary); font-size: 0.875rem; margin-left: 1.25rem; line-height: 1.8;">
+                    <ul>
                         <li>Thoughts of suicide or self-harm</li>
                         <li>Plans to hurt yourself or others</li>
                         <li>Unable to keep yourself safe right now</li>
@@ -744,18 +751,41 @@
         const dot2 = document.getElementById('dot2');
         const dot3 = document.getElementById('dot3');
         
-        // ========== CHECK IF ALREADY ACKNOWLEDGED (ONCE ONLY) ==========
+        // ========== REMOVED AUTO-REDIRECT ==========
+        // Users must interact with the page first
+        // No more automatic redirects that cause history warnings
+        
+        // ========== CHECK PREVIOUS ACKNOWLEDGMENT (BUT DON'T AUTO-REDIRECT) ==========
         const acknowledged = localStorage.getItem('mphaven_disclaimer_acknowledged');
         const version = localStorage.getItem('mphaven_disclaimer_version');
         const crisisPassed = localStorage.getItem('mphaven_crisis_check_passed');
         
-        // Auto-redirect if valid and version matches (NO TIME EXPIRATION)
+        // If previously acknowledged with same version, show a banner or pre-fill? 
+        // But DON'T auto-redirect - let them click through again if they want
         if (acknowledged === 'true' && version === DISCLAIMER_VERSION && crisisPassed === 'true') {
-            console.log('Disclaimer already acknowledged (v' + version + ') - redirecting to app');
-            window.location.href = 'app.html';
-            return;
+            // Optionally pre-select the "No" crisis option and checkboxes
+            // But don't auto-redirect - user must click Continue
+            console.log('Previously acknowledged (v' + version + ') - pre-filling form');
+            
+            // Pre-select "No" for crisis
+            setTimeout(() => {
+                const noRadio = document.getElementById('crisisNo');
+                if (noRadio) {
+                    noRadio.checked = true;
+                    selectCrisis('no', true); // true = silent mode (no scroll)
+                }
+                
+                // Pre-check all boxes
+                for (let i = 1; i <= 4; i++) {
+                    const check = document.getElementById(`check${i}`);
+                    if (check) {
+                        check.checked = true;
+                        updateAckState(`ack${i}`, `check${i}`);
+                    }
+                }
+            }, 100);
         } else if (acknowledged === 'true' && version !== DISCLAIMER_VERSION) {
-            // Version changed - need to re-acknowledge
+            // Version changed - clear old data
             console.log('Disclaimer version changed - re-acknowledgment required');
             clearDisclaimerData();
         }
@@ -764,7 +794,7 @@
         dot1.classList.add('active');
         
         // ========== CRISIS CHECK ==========
-        window.selectCrisis = function(answer) {
+        window.selectCrisis = function(answer, silent = false) {
             const yesOption = document.querySelector('.crisis-option:first-child');
             const noOption = document.querySelector('.crisis-option:last-child');
             const yesRadio = document.getElementById('crisisYes');
@@ -798,18 +828,18 @@
                 crisisCheckPassed = true;
                 
                 // Show disclaimer section
-                setTimeout(() => {
-                    disclaimerSection.style.display = 'block';
-                    acknowledgmentsSection.style.display = 'block';
-                    legalToggle.style.display = 'flex';
-                    
-                    // Update progress
-                    dot1.classList.remove('active');
-                    dot2.classList.add('active');
-                    
-                    // Scroll to disclaimer
+                disclaimerSection.style.display = 'block';
+                acknowledgmentsSection.style.display = 'block';
+                legalToggle.style.display = 'flex';
+                
+                // Update progress
+                dot1.classList.remove('active');
+                dot2.classList.add('active');
+                
+                // Only scroll if not silent (skip on auto-fill)
+                if (!silent) {
                     disclaimerSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 300);
+                }
                 
                 checkAllComplete();
             }
@@ -896,7 +926,7 @@
             
             console.log('Disclaimer acknowledged - version ' + DISCLAIMER_VERSION);
             
-            // Redirect to app
+            // Redirect to app (this is USER-INITIATED via button click - safe!)
             window.location.href = 'app.html';
         });
         
