@@ -1107,7 +1107,8 @@ html, body {
     'use strict';
     
     // CONFIGURATION
-    const COURSE_HUB_URL = 'crisis-intro.html'; // Change this to match your hub filename
+    const COURSE_HUB_URL = 'crisis-intro.html';
+    const MODULE_2_URL = 'crisis-module-2.html'; // Make sure this matches your actual Module 2 filename
     
     // State
     let currentStep = 1;
@@ -1661,11 +1662,7 @@ html, body {
                         <li>The emotional wave WILL pass if you wait and use skills</li>
                     </ul>
                     
-                    <button id="saveSummaryBtn" class="btn btn--save">
-                        <span>📋</span>
-                        <span>Save to Toolkit</span>
-                    </button>
-                    <div id="summaryFeedback" class="save-feedback"></div>
+                    <!-- NO SAVE BUTTON - these are facts, not actionable skills -->
                 </div>
                 
                 <button class="btn btn--primary" onclick="nextStep()">
@@ -1678,7 +1675,6 @@ html, body {
         `;
     }
     
-    // UPDATED STEP 8 - IMPROVED COMPLETION SCREEN
     function renderStep8() {
         setTimeout(() => {
             initPracticeBtn();
@@ -1740,7 +1736,7 @@ html, body {
                             <span>Course Hub</span>
                         </a>
                         
-                        <a href="crisis-module-2.html" class="btn btn--primary">
+                        <a href="${MODULE_2_URL}" class="btn btn--primary">
                             <span>Module 2 →</span>
                         </a>
                     </div>
@@ -1935,6 +1931,23 @@ html, body {
                     
                     userData.windowZone = zoneId;
                     feedback.innerHTML = feedbackText[zoneId];
+                    
+                    // Save to crisis plan
+                    saveToCrisisPlan('windowZone', zoneId);
+                    
+                    // Save to toolkit as self-knowledge
+                    const zoneNames = {
+                        zoneHyper: 'Hyperarousal (too activated)',
+                        zoneOptimal: 'Window of Tolerance (optimal)',
+                        zoneHypo: 'Hypoarousal (shut down)'
+                    };
+                    
+                    saveToToolkit({
+                        id: 'window-zone',
+                        category: 'My Crisis Profile',
+                        name: 'My Window of Tolerance',
+                        description: zoneNames[zoneId] || zoneId
+                    });
                 });
             }
         });
@@ -1973,30 +1986,8 @@ html, body {
     }
     
     function initSummaryCard() {
-        const saveBtn = document.getElementById('saveSummaryBtn');
-        const feedback = document.getElementById('summaryFeedback');
-        
-        if (saveBtn) {
-            saveBtn.addEventListener('click', () => {
-                saveToToolkit({
-                    id: 'crisis-brain-facts',
-                    category: 'Module 1: Crisis Science',
-                    name: 'Crisis Brain Facts',
-                    description: 'Your thinking brain goes offline • Emotions peak in 10-20 minutes • Your body can calm your mind • You can\'t logic your way out • The wave WILL pass'
-                });
-                
-                saveBtn.classList.add('saved');
-                saveBtn.innerHTML = '<span>✓</span><span>Saved!</span>';
-                feedback.textContent = '✓ Saved to your toolkit.';
-                feedback.classList.add('show');
-                
-                setTimeout(() => {
-                    saveBtn.classList.remove('saved');
-                    saveBtn.innerHTML = '<span>📋</span><span>Save to Toolkit</span>';
-                    feedback.classList.remove('show');
-                }, 3000);
-            });
-        }
+        // No save button to initialize - facts don't belong in toolkit
+        // This function intentionally left empty
     }
     
     function initPracticeBtn() {
@@ -2074,7 +2065,6 @@ html, body {
     window.previousStep = previousStep;
     window.goToStep = goToStep;
     window.showCrisisInfo = showCrisisInfo;
-    
     
     // Initialize
     loadProgress();
