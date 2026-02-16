@@ -250,7 +250,109 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg-dark);color
 </div>
 
 <script>
-(function(){function u(){try{const e=localStorage.getItem('crisis_course_progress'),t=localStorage.getItem('crisis_toolkit');let o=[];if(e){const i=JSON.parse(e);o=i.practicedModules||[]}let s=[];t&&(s=JSON.parse(t)),document.getElementById('completedModules').textContent=o.length,document.getElementById('toolkitCount').textContent=s.length;const c=(o.length/5)*100;document.getElementById('overallProgress').style.width=c+'%';for(let n=1;n<=5;n++){const a=document.getElementById('module'+n+'Badge'),r=document.getElementById('module'+n+'Progress'),l=document.getElementById('module'+n);o.includes('module'+n)?(a.style.display='inline-block',r.style.width='100%',l.classList.add('completed')):(a.style.display='none',r.style.width='0%',l.classList.remove('completed'))}const d=document.getElementById('continueBtn');if(o.length===0)d.textContent='Start Module 1',d.href='crisis-module-1.html';else if(o.length===5)d.textContent='Review Course',d.href='crisis-module-5.html';else for(let m=1;m<=5;m++)if(!o.includes('module'+m)){d.textContent='Continue Module '+m,d.href='crisis-module-'+m+'.html';break}}catch(f){}}const p=document.getElementById('distressSlider');if(p){const g=document.getElementById('distressValue'),h=document.getElementById('distressFeedback');p.addEventListener('input',function(){const y=this.value;g.textContent=y,y<=3?h.innerHTML='<span style="color:var(--text-teal)">0-3: You\'re in a good state to learn. Your thinking brain is online.</span>':y<=6?h.innerHTML='<span style="color:var(--accent-amber)">4-6: You\'re managing but feeling it. Good time to practice tools. Try Module 2 (Physical Reset).</span>':y<=8?h.innerHTML='<span style="color:#fca5a5">7-8: You\'re in crisis now. Skip to Module 2 (Physical Reset) for immediate relief. Return to learning when calmer.</span>':h.innerHTML='<span style="color:#fca5a5;font-weight:700">🚨 9-10: CRISIS LEVEL - Please call <a href="tel:988" style="color:#fca5a5;text-decoration:underline;font-weight:800">988</a> (Suicide & Crisis Lifeline) or text HOME to <a href="sms:741741" style="color:#fca5a5;text-decoration:underline;font-weight:800">741741</a> (Crisis Text Line) NOW. You need professional help, not an app.</span>'})}u();try{const b=new Date().toISOString();let v=JSON.parse(localStorage.getItem('crisis_course_progress')||'{}');v.lastAccessed=b,localStorage.setItem('crisis_course_progress',JSON.stringify(v))}catch(w){}window.addEventListener('storage',function(x){(x.key==='crisis_course_progress'||x.key==='crisis_toolkit')&&u()})})();
+// Simple, clean JavaScript that definitely works
+(function() {
+  
+  // Load saved progress
+  function loadProgress() {
+    try {
+      // Get data from localStorage
+      const saved = localStorage.getItem('crisis_course_progress');
+      const toolkit = localStorage.getItem('crisis_toolkit');
+      
+      let practiced = [];
+      if (saved) {
+        const data = JSON.parse(saved);
+        practiced = data.practicedModules || [];
+      }
+      
+      let toolkitItems = [];
+      if (toolkit) {
+        toolkitItems = JSON.parse(toolkit);
+      }
+      
+      // Update stats
+      document.getElementById('completedModules').textContent = practiced.length;
+      document.getElementById('toolkitCount').textContent = toolkitItems.length;
+      
+      // Update progress bar
+      const percent = (practiced.length / 5) * 100;
+      document.getElementById('overallProgress').style.width = percent + '%';
+      
+      // Update each module
+      for (let i = 1; i <= 5; i++) {
+        const badge = document.getElementById('module' + i + 'Badge');
+        const progress = document.getElementById('module' + i + 'Progress');
+        const card = document.getElementById('module' + i);
+        
+        if (practiced.includes('module' + i)) {
+          badge.style.display = 'inline-block';
+          progress.style.width = '100%';
+          card.classList.add('completed');
+        } else {
+          badge.style.display = 'none';
+          progress.style.width = '0%';
+          card.classList.remove('completed');
+        }
+      }
+      
+      // Update continue button
+      const continueBtn = document.getElementById('continueBtn');
+      if (practiced.length === 0) {
+        continueBtn.textContent = 'Start Module 1';
+        continueBtn.href = 'crisis-module-1.html';
+      } else if (practiced.length === 5) {
+        continueBtn.textContent = 'Review Course';
+        continueBtn.href = 'crisis-module-5.html';
+      } else {
+        for (let i = 1; i <= 5; i++) {
+          if (!practiced.includes('module' + i)) {
+            continueBtn.textContent = 'Continue Module ' + i;
+            continueBtn.href = 'crisis-module-' + i + '.html';
+            break;
+          }
+        }
+      }
+      
+    } catch (e) {
+      console.log('Progress loaded error (normal on first visit)');
+    }
+  }
+  
+  // Emotional pulse slider
+  const slider = document.getElementById('distressSlider');
+  if (slider) {
+    const value = document.getElementById('distressValue');
+    const feedback = document.getElementById('distressFeedback');
+    
+    slider.addEventListener('input', function() {
+      const val = this.value;
+      value.textContent = val;
+      
+      if (val <= 3) {
+        feedback.innerHTML = '<span style="color: var(--text-teal);">0-3: You\'re in a good state to learn. Your thinking brain is online. Great time to practice!</span>';
+      } else if (val <= 6) {
+        feedback.innerHTML = '<span style="color: var(--accent-amber);">4-6: You\'re managing, but starting to feel it. Good time to practice tools. Consider starting with Module 2 (Physical Reset).</span>';
+      } else if (val <= 8) {
+        feedback.innerHTML = '<span style="color: #fca5a5;">7-8: You\'re in crisis now. Skip to Module 2 (Physical Reset) for immediate relief. Come back to learning when you\'re calmer.</span>';
+      } else {
+        feedback.innerHTML = '<span style="color: #fca5a5; font-weight: 700;">🚨 9-10: CRISIS LEVEL - Please call 988 (Suicide & Crisis Lifeline) or text HOME to 741741 (Crisis Text Line) NOW. You need professional help, not an app.</span>';
+      }
+    });
+  }
+  
+  // Load on page load
+  loadProgress();
+  
+  // Save last accessed
+  try {
+    const now = new Date().toISOString();
+    let prog = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
+    prog.lastAccessed = now;
+    localStorage.setItem('crisis_course_progress', JSON.stringify(prog));
+  } catch (e) {}
+  
+})();
 </script>
 </body>
 </html>
