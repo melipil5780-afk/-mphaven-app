@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#0f172a">
 <title>MPHaven</title>
@@ -44,6 +45,7 @@
 --gradient-success: linear-gradient(135deg, rgba(34,197,94,0.15), rgba(21,128,61,0.08));
 --shadow-card: 0 25px 50px -12px rgba(0,0,0,0.25);
 --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+--crisis-red: #dc2626;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; -webkit-font-smoothing: antialiased; }
@@ -175,32 +177,6 @@ body { background: var(--bg-dark); touch-action: pan-y; }
 const DISCLAIMER_VERSION = '3.0';
 const CRISIS_SESSION_TIMEOUT = 5 * 60 * 1000; // 5 minutes
 
-// Check if disclaimer has been acknowledged
-function checkDisclaimerStatus() {
-  const acknowledged = localStorage.getItem('mphaven_disclaimer_acknowledged');
-  const version = localStorage.getItem('mphaven_disclaimer_version');
-  const lastCrisisCheck = localStorage.getItem('mphaven_last_crisis_check');
-  
-  // If never acknowledged or version changed, redirect to full disclaimer
-  if (acknowledged !== 'true' || version !== DISCLAIMER_VERSION) {
-    window.location.href = 'disclaimer.html';
-    return false;
-  }
-  
-  // Check if we need a new crisis check (5+ minutes since last check)
-  if (lastCrisisCheck) {
-    const timeSinceLastCheck = Date.now() - parseInt(lastCrisisCheck);
-    if (timeSinceLastCheck < CRISIS_SESSION_TIMEOUT) {
-      // Recent check passed - proceed to app
-      return true;
-    }
-  }
-  
-  // Need crisis check
-  showCrisisCheck();
-  return false;
-}
-
 // Show crisis check modal
 function showCrisisCheck() {
   const modal = document.getElementById('crisisModal');
@@ -237,15 +213,7 @@ window.handleCrisisResponse = function(inCrisis) {
   }
 };
 
-// Show resources only (for when user clicks Yes)
-window.showCrisisResources = function() {
-  const resources = document.getElementById('crisisResources');
-  if (resources) {
-    resources.style.display = 'block';
-  }
-};
-
-// ========== ORIGINAL APP CODE (with minor modifications) ==========
+// ========== ORIGINAL APP CODE ==========
 
 // Version control - clear old data if version changed
 const APP_VERSION = '2.2';
@@ -734,22 +702,37 @@ function initApp() {
   }
 }
 
-// Initialize with disclaimer check
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', function() {
-    if (!checkDisclaimerStatus()) {
-      // checkDisclaimerStatus will either redirect or show crisis modal
+// ========== INITIALIZATION - FIXED NO GLITCHES ==========
+// ========== INITIALIZATION - FIXED TO SHOW CONTENT ==========
+document.addEventListener('DOMContentLoaded', function() {
+  // ALWAYS initialize the app first so content loads
+  initApp();
+  
+  // THEN check disclaimer and crisis status
+  setTimeout(function() {
+    const acknowledged = localStorage.getItem('mphaven_disclaimer_acknowledged');
+    const version = localStorage.getItem('mphaven_disclaimer_version');
+    const lastCrisisCheck = localStorage.getItem('mphaven_last_crisis_check');
+    
+    // If never acknowledged or version changed, redirect to full disclaimer
+    if (acknowledged !== 'true' || version !== DISCLAIMER_VERSION) {
+      window.location.href = 'disclaimer.html';
       return;
     }
-    initApp();
-  });
-} else {
-  if (!checkDisclaimerStatus()) {
-    // checkDisclaimerStatus will either redirect or show crisis modal
-    return;
-  }
-  initApp();
-}
+    
+    // Check if we need a new crisis check (5+ minutes since last check)
+    if (lastCrisisCheck) {
+      const timeSinceLastCheck = Date.now() - parseInt(lastCrisisCheck);
+      if (timeSinceLastCheck < CRISIS_SESSION_TIMEOUT) {
+        // Recent check passed - all good
+        return;
+      }
+    }
+    
+    // Need crisis check - show modal (but don't block content)
+    showCrisisCheck();
+  }, 100); // Small delay to ensure app renders first
+});
 
 window.addEventListener('beforeunload', saveState);
 </script>
