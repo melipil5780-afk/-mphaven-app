@@ -688,7 +688,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
    
     <script>
-        // ========== SIMPLIFIED & GLITCH-FREE ==========
+        // ========== FIXED VERSION - PROPER AUTH STATE MANAGEMENT ==========
         
         // Prevent multiple initializations
         let isInitialized = false;
@@ -708,8 +708,6 @@
         // ========== UI HELPER FUNCTIONS ==========
         
         function showLoading(message = 'Loading...') {
-            if (isProcessingAuth) return;
-            
             const overlay = document.getElementById('loadingOverlay');
             const text = document.getElementById('loadingText');
             if (text) text.textContent = message;
@@ -730,8 +728,6 @@
                 clearTimeout(loadTimer);
                 loadTimer = null;
             }
-            
-            isProcessingAuth = false;
         }
        
         function showError(message) {
@@ -745,12 +741,31 @@
                 errorDiv.classList.remove('show');
             }, 5000);
         }
+        
+        // ========== FIX: RESET AUTH STATE ==========
+        
+        function resetAuthState() {
+            console.log('Resetting auth state...');
+            isProcessingAuth = false;
+            
+            // Re-enable all buttons
+            const googleBtn = document.getElementById('googleBtn');
+            const signupBtn = document.getElementById('signupBtn');
+            const loginBtn = document.getElementById('loginBtn');
+            
+            if (googleBtn) googleBtn.disabled = false;
+            if (signupBtn) signupBtn.disabled = false;
+            if (loginBtn) loginBtn.disabled = false;
+            
+            hideLoading();
+            console.log('Auth state reset complete');
+        }
        
-        // ========== GOOGLE SIGN-IN - FIXED (NOW REDIRECTS TO DISCLAIMER) ==========
+        // ========== GOOGLE SIGN-IN ==========
         
         async function handleGoogleSignIn() {
             if (isProcessingAuth) {
-                console.log('Already processing auth');
+                console.log('Already processing auth, ignoring click');
                 return;
             }
             
@@ -764,14 +779,13 @@
             const googleBtn = document.getElementById('googleBtn');
             if (!googleBtn) return;
             
-            // Disable button immediately
+            // Disable button and set flag
             googleBtn.disabled = true;
             isProcessingAuth = true;
            
             showLoading('Connecting to Google...');
            
             try {
-                // ===== FIXED: Redirect directly to disclaimer.html =====
                 const redirectTo = window.location.origin + '/disclaimer.html';
                 console.log('Redirect URL:', redirectTo);
                
@@ -791,9 +805,7 @@
                
             } catch (error) {
                 console.error('Google sign-in error:', error);
-                hideLoading();
-                googleBtn.disabled = false;
-                isProcessingAuth = false;
+                resetAuthState(); // RESET on error
                
                 let errorMessage = 'Unable to sign in with Google. ';
                
@@ -814,6 +826,10 @@
         function handleSignUp() {
             if (isProcessingAuth) return;
             isProcessingAuth = true;
+            
+            const signupBtn = document.getElementById('signupBtn');
+            if (signupBtn) signupBtn.disabled = true;
+            
             showLoading('Loading sign up...');
             setTimeout(() => {
                 window.location.href = 'signup.html';
@@ -823,6 +839,10 @@
         function handleLogin() {
             if (isProcessingAuth) return;
             isProcessingAuth = true;
+            
+            const loginBtn = document.getElementById('loginBtn');
+            if (loginBtn) loginBtn.disabled = true;
+            
             showLoading('Loading login...');
             setTimeout(() => {
                 window.location.href = 'login.html';
@@ -832,7 +852,7 @@
         // ========== SESSION CHECK ==========
         
         async function checkSession() {
-            if (!sbClient || isProcessingAuth) return false;
+            if (!sbClient) return false;
            
             try {
                 const { data: { session }, error } = await sbClient.auth.getSession();
@@ -913,12 +933,48 @@
             }, 100);
         }
        
+        // ========== FIX: DETECT WHEN USER RETURNS TO PAGE ==========
+        
+        // Reset auth state when page becomes visible again (back button)
+        document.addEventListener('visibilitychange', function() {
+            if (document.visibilityState === 'visible') {
+                console.log('Page became visible - checking auth state');
+                setTimeout(() => {
+                    if (isProcessingAuth) {
+                        console.log('Auth was processing, resetting state');
+                        resetAuthState();
+                    }
+                }, 500);
+            }
+        });
+        
+        // Also handle pageshow event (Safari back button)
+        window.addEventListener('pageshow', function(event) {
+            // event.persisted means the page was cached
+            if (event.persisted) {
+                console.log('Page restored from cache - resetting auth state');
+                resetAuthState();
+            }
+        });
+        
+        // Handle focus event as backup
+        window.addEventListener('focus', function() {
+            console.log('Window focused');
+            setTimeout(() => {
+                if (isProcessingAuth && !document.getElementById('loadingOverlay').classList.contains('show')) {
+                    console.log('Window focused but auth stuck, resetting');
+                    resetAuthState();
+                }
+            }, 300);
+        });
+       
         // ========== MAIN EXECUTION ==========
         
         document.addEventListener('DOMContentLoaded', async function() {
             console.log('DOM loaded');
             await initializeApp();
             
+            // Check for existing session after a brief delay
             setTimeout(() => {
                 checkSession();
             }, 1000);
@@ -928,6 +984,7 @@
         window.debugAuth = async function() {
             console.log('=== AUTH DEBUG ===');
             console.log('isIOS:', isIOS);
+            console.log('isProcessingAuth:', isProcessingAuth);
             console.log('Supabase client:', !!sbClient);
             console.log('Disclaimer:', localStorage.getItem('mphaven_disclaimer_acknowledged'));
            
@@ -939,6 +996,16 @@
                     console.error('Session check failed:', e);
                 }
             }
+            
+            // Show button states
+            const googleBtn = document.getElementById('googleBtn');
+            const signupBtn = document.getElementById('signupBtn');
+            const loginBtn = document.getElementById('loginBtn');
+            
+            console.log('Button states:');
+            console.log('- Google:', googleBtn?.disabled ? 'DISABLED' : 'enabled');
+            console.log('- Signup:', signupBtn?.disabled ? 'DISABLED' : 'enabled');
+            console.log('- Login:', loginBtn?.disabled ? 'DISABLED' : 'enabled');
         };
        
     </script>
