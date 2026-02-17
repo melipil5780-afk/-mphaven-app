@@ -112,7 +112,7 @@ html, body {
   display: none;
 }
 
-/* Header - NO crisis banner at top */
+/* Header */
 .header {
   background: linear-gradient(135deg, var(--bg-card-light), var(--bg-card-dark));
   border: 1px solid var(--border-softer);
@@ -651,6 +651,23 @@ html, body {
   text-transform: uppercase;
 }
 
+/* Save Section */
+.save-section {
+  margin-top: var(--space-xl);
+  padding-top: var(--space-lg);
+  border-top: 2px solid var(--border-softer);
+}
+
+.save-section-title {
+  color: var(--text-teal-light);
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: var(--space-md);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 /* Footer */
 .footer {
   margin-top: var(--space-xxl);
@@ -716,7 +733,6 @@ html, body {
   'use strict';
   
   // ===== UPDATE COURSE PROGRESS =====
-  // This connects Module 5 to the intro page
   let courseProgress = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
   courseProgress.currentModule = 5;
   courseProgress.lastAccessed = new Date().toISOString();
@@ -737,7 +753,7 @@ html, body {
     9: 'Course Complete!'
   };
 
-  // CORRECTED skills - only actual actionable skills, no educational content
+  // All skills for toolkit drawer
   const allSkills = [
     // Module 2 - Physical Skills
     { module: 2, name: 'Cold Water', icon: '🧊', desc: 'Dive reflex – 30-60 sec face dunk' },
@@ -761,6 +777,7 @@ html, body {
     { module: 4, name: 'Defusion', icon: '🎭', desc: '"I\'m having the thought that…" – thoughts aren\'t facts' }
   ];
 
+  // ===== STORAGE FUNCTIONS =====
   function saveProgress() {
     localStorage.setItem('crisis_module5_progress', JSON.stringify({ step: currentStep, timestamp: Date.now() }));
   }
@@ -780,6 +797,9 @@ html, body {
     toolkit = toolkit.filter(t => t.id !== item.id);
     toolkit.push({ ...item, date: new Date().toISOString() });
     localStorage.setItem('crisis_toolkit', JSON.stringify(toolkit));
+    
+    // Show feedback
+    showSaveFeedback(item.id);
   }
 
   function saveToCrisisPlan(key, value) {
@@ -787,6 +807,15 @@ html, body {
     plan[key] = value;
     plan.lastUpdated = new Date().toISOString();
     localStorage.setItem('crisis_plan', JSON.stringify(plan));
+  }
+
+  function showSaveFeedback(itemId) {
+    const feedback = document.getElementById(`${itemId}Feedback`);
+    if (feedback) {
+      feedback.textContent = '✓ Saved to toolkit!';
+      feedback.classList.add('show');
+      setTimeout(() => feedback.classList.remove('show'), 2000);
+    }
   }
 
   function scrollToTop() {
@@ -908,7 +937,7 @@ html, body {
     const inp = document.getElementById(targetInputId); if (inp) inp.classList.add('highlight');
   };
 
-  // ----- FULL STEP RENDER FUNCTIONS (1-9) -----
+  // ===== STEP 1 =====
   function renderStep1() {
     return `
       ${renderHeader()}
@@ -942,6 +971,7 @@ html, body {
     `;
   }
 
+  // ===== STEP 2 - Intensity Plan (1-6) with SAVE BUTTON =====
   function renderStep2() {
     return `
       ${renderHeader()}
@@ -980,6 +1010,15 @@ html, body {
             <button class="insert-btn" id="insertBtn_planModerate3" onclick="window.openToolkit('planModerate3')">📋</button>
           </div>
         </div>
+        
+        <!-- SAVE BUTTON for Intensity Plan -->
+        <div class="save-section">
+          <div class="save-section-title"><span>📊</span> Save Your Intensity Plan</div>
+          <button id="saveIntensityPlanBtn" class="btn-save">
+            <span>💾</span> Save Intensity Plan to Toolkit
+          </button>
+          <div id="intensityPlanFeedback" class="save-feedback"></div>
+        </div>
       </div>
       <div class="btn-group">
         <button class="btn btn-secondary" onclick="window.previousStep()">← Back</button>
@@ -989,6 +1028,7 @@ html, body {
     `;
   }
 
+  // ===== STEP 3 - Intensity Plan (7-10) with SAVE BUTTON =====
   function renderStep3() {
     return `
       ${renderHeader()}
@@ -1038,6 +1078,15 @@ html, body {
             <input type="text" id="planER" class="input-field" placeholder="Hospital / location" style="flex: 1;">
           </div>
         </div>
+        
+        <!-- SAVE BUTTON for Emergency Plan -->
+        <div class="save-section">
+          <div class="save-section-title"><span>🚨</span> Save Your Emergency Plan</div>
+          <button id="saveEmergencyPlanBtn" class="btn-save">
+            <span>💾</span> Save Emergency Plan to Toolkit
+          </button>
+          <div id="emergencyPlanFeedback" class="save-feedback"></div>
+        </div>
       </div>
       <div class="btn-group">
         <button class="btn btn-secondary" onclick="window.previousStep()">← Back</button>
@@ -1047,6 +1096,7 @@ html, body {
     `;
   }
 
+  // ===== STEP 4 - Pros & Cons with SAVE BUTTON =====
   function renderStep4() {
     return `
       ${renderHeader()}
@@ -1089,6 +1139,15 @@ html, body {
             </div>
           </div>
         </div>
+        
+        <!-- SAVE BUTTON for Pros & Cons -->
+        <div class="save-section">
+          <div class="save-section-title"><span>⚖️</span> Save Your Pros & Cons</div>
+          <button id="saveProsConsBtn" class="btn-save">
+            <span>💾</span> Save Pros & Cons to Toolkit
+          </button>
+          <div id="prosConsFeedback" class="save-feedback"></div>
+        </div>
       </div>
       <div class="btn-group">
         <button class="btn btn-secondary" onclick="window.previousStep()">← Back</button>
@@ -1098,6 +1157,7 @@ html, body {
     `;
   }
 
+  // ===== STEP 5 - Values Compass (already has save button) =====
   function renderStep5() {
     return `
       ${renderHeader()}
@@ -1137,6 +1197,7 @@ html, body {
     `;
   }
 
+  // ===== STEP 6 - Physical Crisis Kit with SAVE BUTTON =====
   function renderStep6() {
     return `
       ${renderHeader()}
@@ -1169,6 +1230,15 @@ html, body {
         <div class="input-row"><span style="color: var(--text-secondary); font-size: 0.875rem;">Other:</span><input type="text" id="kitOther1" class="input-field" placeholder="___________" style="flex: 1;"></div>
         <div class="input-row"><input type="text" id="kitOther2" class="input-field" placeholder="___________" style="flex: 1;"></div>
         <div class="input-row"><span style="color: var(--text-secondary); font-size: 0.875rem;">Where will you keep it?</span><input type="text" id="kitLocation" class="input-field" placeholder="e.g., freezer, nightstand, car" style="flex: 1;"></div>
+        
+        <!-- SAVE BUTTON for Physical Kit -->
+        <div class="save-section">
+          <div class="save-section-title"><span>🧰</span> Save Your Crisis Kit</div>
+          <button id="saveKitBtn" class="btn-save">
+            <span>💾</span> Save Crisis Kit to Toolkit
+          </button>
+          <div id="kitFeedback" class="save-feedback"></div>
+        </div>
       </div>
       <div class="btn-group">
         <button class="btn btn-secondary" onclick="window.previousStep()">← Back</button>
@@ -1178,6 +1248,7 @@ html, body {
     `;
   }
 
+  // ===== STEP 7 - Crisis Card (already has save button) =====
   function renderStep7() {
     return `
       ${renderHeader()}
@@ -1213,6 +1284,7 @@ html, body {
     `;
   }
 
+  // ===== STEP 8 - Practice Schedule with SAVE BUTTON =====
   function renderStep8() {
     return `
       ${renderHeader()}
@@ -1253,7 +1325,20 @@ html, body {
           <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; background: rgba(15,23,42,0.6); border-radius: 0.75rem;"><input type="checkbox" id="practiceLunch"> During lunch</label>
         </div>
         <div class="input-row"><span style="color: var(--text-secondary); font-size: 0.875rem;">Other:</span><input type="text" id="practiceOther" class="input-field" placeholder="___________" style="flex: 1;"></div>
-        <button id="saveFullPlanBtn" class="btn-save" style="margin-top: var(--space-xl);"><span>📋</span> Save My Complete Crisis Plan</button>
+        
+        <!-- SAVE BUTTON for Practice Plan -->
+        <div class="save-section">
+          <div class="save-section-title"><span>📅</span> Save Your Practice Plan</div>
+          <button id="savePracticePlanBtn" class="btn-save">
+            <span>💾</span> Save Practice Plan to Toolkit
+          </button>
+          <div id="practicePlanFeedback" class="save-feedback"></div>
+        </div>
+        
+        <!-- COMPLETE PLAN SAVE BUTTON -->
+        <button id="saveFullPlanBtn" class="btn-save" style="margin-top: var(--space-xl); background: var(--gradient-main); color: white; border: none;">
+          <span>📋</span> Save My Complete Crisis Plan
+        </button>
         <div id="fullPlanSaveFeedback" class="save-feedback"></div>
       </div>
       <div class="btn-group">
@@ -1264,8 +1349,8 @@ html, body {
     `;
   }
 
+  // ===== STEP 9 - Course Complete =====
   function renderStep9() {
-    // Get progress data
     const progress = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
     const isPracticed = progress.practicedModules?.includes('module5') || false;
     const toolkitCount = JSON.parse(localStorage.getItem('crisis_toolkit') || '[]').length;
@@ -1297,15 +1382,13 @@ html, body {
         </div>
       </div>
       
-      <!-- MARK AS PRACTICED BUTTON -->
       <div style="text-align: center; margin: var(--space-xl) 0;">
-        <button id="practiceBtn" class="practice-btn ${isPracticed ? 'marked' : ''}" style="background: var(--success-bg); color: var(--success-emerald); border: 1px solid rgba(74,222,128,0.3); padding: 0.75rem 2rem; border-radius: 2rem; font-size: 0.875rem; font-weight: 600; cursor: pointer;">
+        <button id="practiceBtn" class="btn-practice ${isPracticed ? 'btn-practice-secondary' : 'btn-practice-primary'}" style="padding: 0.875rem 2rem; border-radius: 2rem;">
           <span>${isPracticed ? '✓' : '○'}</span>
           <span>${isPracticed ? 'Course Completed' : 'Mark Course as Completed'}</span>
         </button>
       </div>
       
-      <!-- NAVIGATION BUTTONS -->
       <div style="display: flex; flex-direction: column; gap: 0.75rem;">
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
           <button class="btn btn-secondary" onclick="window.previousStep()">← Module 4</button>
@@ -1324,7 +1407,6 @@ html, body {
         </div>
       </div>
       
-      <!-- SKILLS SUMMARY -->
       <div class="card" style="margin-top: 1.5rem;">
         <div class="section-header">
           <span class="section-icon">🧰</span>
@@ -1349,14 +1431,6 @@ html, body {
             <p style="color: var(--text-teal); font-size: 0.75rem; margin-top: 0.25rem;">Grounding</p>
           </div>
           <div style="background: rgba(14,116,144,0.1); padding: 0.75rem; border-radius: 0.75rem; text-align: center;">
-            <span style="font-size: 1.5rem;">🧩</span>
-            <p style="color: var(--text-teal); font-size: 0.75rem; margin-top: 0.25rem;">Cognitive</p>
-          </div>
-          <div style="background: rgba(14,116,144,0.1); padding: 0.75rem; border-radius: 0.75rem; text-align: center;">
-            <span style="font-size: 1.5rem;">🦋</span>
-            <p style="color: var(--text-teal); font-size: 0.75rem; margin-top: 0.25rem;">Bilateral</p>
-          </div>
-          <div style="background: rgba(14,116,144,0.1); padding: 0.75rem; border-radius: 0.75rem; text-align: center;">
             <span style="font-size: 1.5rem;">✋</span>
             <p style="color: var(--text-teal); font-size: 0.75rem; margin-top: 0.25rem;">Acceptance</p>
           </div>
@@ -1371,23 +1445,189 @@ html, body {
     `;
   }
 
-  // ----- INIT FUNCTIONS -----
+  // ===== INIT SAVE FUNCTIONS =====
+  function initIntensityPlanSave() {
+    const btn = document.getElementById('saveIntensityPlanBtn');
+    if (!btn) return;
+    
+    btn.onclick = function() {
+      const mild = document.getElementById('planMild')?.value || '';
+      const mod1 = document.getElementById('planModerate1')?.value || '';
+      const mod2 = document.getElementById('planModerate2')?.value || '';
+      const mod3 = document.getElementById('planModerate3')?.value || '';
+      
+      const description = `Mild: ${mild} | Moderate: ${[mod1, mod2, mod3].filter(Boolean).join(', ')}`;
+      
+      saveToToolkit({
+        id: 'intensity-plan-low',
+        category: 'Module 5: Crisis Plan',
+        name: '📊 My Intensity Plan (1-6)',
+        description: description
+      });
+      
+      btn.classList.add('saved');
+      btn.innerHTML = '<span>✓</span> Saved!';
+      setTimeout(() => {
+        btn.classList.remove('saved');
+        btn.innerHTML = '<span>💾</span> Save Intensity Plan to Toolkit';
+      }, 2000);
+    };
+  }
+
+  function initEmergencyPlanSave() {
+    const btn = document.getElementById('saveEmergencyPlanBtn');
+    if (!btn) return;
+    
+    btn.onclick = function() {
+      const phys1 = document.getElementById('planPhysical1')?.value || '';
+      const phys2 = document.getElementById('planPhysical2')?.value || '';
+      const mental = document.getElementById('planMental')?.value || '';
+      const trusted = document.getElementById('planTrusted')?.value || '';
+      const therapist = document.getElementById('planTherapist')?.value || '';
+      const er = document.getElementById('planER')?.value || '';
+      
+      const description = `High crisis: ${phys1}${phys2 ? ', ' + phys2 : ''} → ${mental} | Emergency: ${trusted}${therapist ? ', ' + therapist : ''}${er ? ', ER: ' + er : ''}`;
+      
+      saveToToolkit({
+        id: 'emergency-plan',
+        category: 'Module 5: Crisis Plan',
+        name: '🚨 My Emergency Plan (7-10)',
+        description: description
+      });
+      
+      btn.classList.add('saved');
+      btn.innerHTML = '<span>✓</span> Saved!';
+      setTimeout(() => {
+        btn.classList.remove('saved');
+        btn.innerHTML = '<span>💾</span> Save Emergency Plan to Toolkit';
+      }, 2000);
+    };
+  }
+
+  function initProsConsSave() {
+    const btn = document.getElementById('saveProsConsBtn');
+    if (!btn) return;
+    
+    btn.onclick = function() {
+      const urge = document.getElementById('urgeInput')?.value || '';
+      const prosAct1 = document.getElementById('prosAct1')?.value || '';
+      const prosAct2 = document.getElementById('prosAct2')?.value || '';
+      const consAct1 = document.getElementById('consAct1')?.value || '';
+      const consAct2 = document.getElementById('consAct2')?.value || '';
+      const consAct3 = document.getElementById('consAct3')?.value || '';
+      const prosResist1 = document.getElementById('prosResist1')?.value || '';
+      const prosResist2 = document.getElementById('prosResist2')?.value || '';
+      const consResist1 = document.getElementById('consResist1')?.value || '';
+      
+      saveToToolkit({
+        id: 'pros-cons',
+        category: 'Module 5: Crisis Plan',
+        name: '⚖️ My Pros & Cons Worksheet',
+        description: `Urge: ${urge} | Pros of acting: ${prosAct1}${prosAct2 ? ', ' + prosAct2 : ''} | Cons of acting: ${[consAct1, consAct2, consAct3].filter(Boolean).join(', ')}`
+      });
+      
+      btn.classList.add('saved');
+      btn.innerHTML = '<span>✓</span> Saved!';
+      setTimeout(() => {
+        btn.classList.remove('saved');
+        btn.innerHTML = '<span>💾</span> Save Pros & Cons to Toolkit';
+      }, 2000);
+    };
+  }
+
+  function initKitSave() {
+    const btn = document.getElementById('saveKitBtn');
+    if (!btn) return;
+    
+    btn.onclick = function() {
+      const icePacks = document.getElementById('kitIcePacks')?.checked ? '✓ Ice packs' : '';
+      const sourCandy = document.getElementById('kitSourCandy')?.checked ? '✓ Sour candy' : '';
+      const stressBall = document.getElementById('kitStressBall')?.checked ? '✓ Stress ball' : '';
+      const rubberBand = document.getElementById('kitRubberBand')?.checked ? '✓ Rubber band' : '';
+      const other1 = document.getElementById('kitOther1')?.value || '';
+      const other2 = document.getElementById('kitOther2')?.value || '';
+      const location = document.getElementById('kitLocation')?.value || '';
+      
+      const items = [icePacks, sourCandy, stressBall, rubberBand, other1, other2].filter(Boolean).join(', ');
+      
+      saveToToolkit({
+        id: 'crisis-kit',
+        category: 'Module 5: Crisis Plan',
+        name: '🧰 My Physical Crisis Kit',
+        description: `Items: ${items} | Location: ${location || 'Not specified'}`
+      });
+      
+      btn.classList.add('saved');
+      btn.innerHTML = '<span>✓</span> Saved!';
+      setTimeout(() => {
+        btn.classList.remove('saved');
+        btn.innerHTML = '<span>💾</span> Save Crisis Kit to Toolkit';
+      }, 2000);
+    };
+  }
+
+  function initPracticePlanSave() {
+    const btn = document.getElementById('savePracticePlanBtn');
+    if (!btn) return;
+    
+    btn.onclick = function() {
+      const skill1 = document.getElementById('practiceSkill1')?.value || '';
+      const freq1 = document.getElementById('practiceFreq1')?.value || 'daily';
+      const skill2 = document.getElementById('practiceSkill2')?.value || '';
+      const freq2 = document.getElementById('practiceFreq2')?.value || '';
+      const skill3 = document.getElementById('practiceSkill3')?.value || '';
+      const freq3 = document.getElementById('practiceFreq3')?.value || '';
+      
+      const description = `Practice: ${skill1} (${freq1})${skill2 ? `, ${skill2} (${freq2})` : ''}${skill3 ? `, ${skill3} (${freq3})` : ''}`;
+      
+      saveToToolkit({
+        id: 'practice-plan',
+        category: 'Module 5: Crisis Plan',
+        name: '📅 My Practice Plan',
+        description: description
+      });
+      
+      btn.classList.add('saved');
+      btn.innerHTML = '<span>✓</span> Saved!';
+      setTimeout(() => {
+        btn.classList.remove('saved');
+        btn.innerHTML = '<span>💾</span> Save Practice Plan to Toolkit';
+      }, 2000);
+    };
+  }
+
   function initValuesSave() {
     const btn = document.getElementById('saveValuesBtn');
     const fb = document.getElementById('valuesSaveFeedback');
     if (!btn) return;
+    
     btn.onclick = function() {
       const val1 = document.getElementById('values1')?.value || '';
       const val2 = document.getElementById('values2')?.value || '';
       const val3 = document.getElementById('values3')?.value || '';
       const rel = document.getElementById('valuesRelationships')?.value || '';
       const best = document.getElementById('valuesBest')?.value || '';
+      
       const desc = `My values: ${val1}${val2 ? ', ' + val2 : ''}${val3 ? ', ' + val3 : ''}`;
-      saveToToolkit({ id: 'values-compass', category: 'Module 5: Crisis Plan', name: '🧭 My Values Compass', description: desc });
+      
+      saveToToolkit({
+        id: 'values-compass',
+        category: 'Module 5: Crisis Plan',
+        name: '🧭 My Values Compass',
+        description: desc
+      });
+      
       saveToCrisisPlan('values', { val1, val2, val3, rel, best });
-      btn.classList.add('saved'); btn.innerHTML = '<span>✓</span> Saved!';
-      fb.textContent = '✓ Values Compass saved'; fb.classList.add('show');
-      setTimeout(() => { btn.classList.remove('saved'); btn.innerHTML = '<span>🧭</span> Save Values Compass to Toolkit'; fb.classList.remove('show'); }, 2000);
+      
+      btn.classList.add('saved');
+      btn.innerHTML = '<span>✓</span> Saved!';
+      fb.textContent = '✓ Values Compass saved';
+      fb.classList.add('show');
+      setTimeout(() => {
+        btn.classList.remove('saved');
+        btn.innerHTML = '<span>🧭</span> Save Values Compass to Toolkit';
+        fb.classList.remove('show');
+      }, 2000);
     };
   }
 
@@ -1395,17 +1635,32 @@ html, body {
     const btn = document.getElementById('saveCrisisCardBtn');
     const fb = document.getElementById('crisisCardSaveFeedback');
     if (!btn) return;
+    
     btn.onclick = function() {
       const physical = document.getElementById('cardPhysical')?.value || '';
       const wait = document.getElementById('cardWait')?.value || '';
       const acceptance = document.getElementById('cardAcceptance')?.value || '';
       const values = document.getElementById('cardValues')?.value || '';
       const emergency = document.getElementById('cardEmergency')?.value || '';
-      saveToToolkit({ id: 'crisis-card', category: 'Module 5: Crisis Plan', name: '🆘 My Crisis Card', description: `Physical: ${physical} | Wait: ${wait} | Emergency: ${emergency}` });
+      
+      saveToToolkit({
+        id: 'crisis-card',
+        category: 'Module 5: Crisis Plan',
+        name: '🆘 My Crisis Card',
+        description: `1. Physical: ${physical} | 2. Wait: ${wait} | 3. Acceptance: ${acceptance} | 4. Values: ${values} | 5. Emergency: ${emergency}`
+      });
+      
       saveToCrisisPlan('crisisCard', { physical, wait, acceptance, values, emergency });
-      btn.classList.add('saved'); btn.innerHTML = '<span>✓</span> Saved!';
-      fb.textContent = '✓ Crisis Card saved'; fb.classList.add('show');
-      setTimeout(() => { btn.classList.remove('saved'); btn.innerHTML = '<span>🆘</span> Save Crisis Card to Toolkit'; fb.classList.remove('show'); }, 2000);
+      
+      btn.classList.add('saved');
+      btn.innerHTML = '<span>✓</span> Saved!';
+      fb.textContent = '✓ Crisis Card saved';
+      fb.classList.add('show');
+      setTimeout(() => {
+        btn.classList.remove('saved');
+        btn.innerHTML = '<span>🆘</span> Save Crisis Card to Toolkit';
+        fb.classList.remove('show');
+      }, 2000);
     };
   }
 
@@ -1413,6 +1668,7 @@ html, body {
     const btn = document.getElementById('saveFullPlanBtn');
     const fb = document.getElementById('fullPlanSaveFeedback');
     if (!btn) return;
+    
     btn.onclick = function() {
       const mild = document.getElementById('planMild')?.value || '';
       const mod1 = document.getElementById('planModerate1')?.value || '';
@@ -1425,11 +1681,28 @@ html, body {
       const therapist = document.getElementById('planTherapist')?.value || '';
       const er = document.getElementById('planER')?.value || '';
       const urge = document.getElementById('urgeInput')?.value || '';
+      const val1 = document.getElementById('values1')?.value || '';
+      const val2 = document.getElementById('values2')?.value || '';
+      const val3 = document.getElementById('values3')?.value || '';
+      const rel = document.getElementById('valuesRelationships')?.value || '';
+      const physical = document.getElementById('cardPhysical')?.value || '';
+      const wait = document.getElementById('cardWait')?.value || '';
+      const acceptance = document.getElementById('cardAcceptance')?.value || '';
+      const values = document.getElementById('cardValues')?.value || '';
+      const emergency = document.getElementById('cardEmergency')?.value || '';
       const skill1 = document.getElementById('practiceSkill1')?.value || '';
       const freq1 = document.getElementById('practiceFreq1')?.value || '';
+      
       const crisisPlan = {
-        intensityPlan: { mild, moderate: [mod1, mod2, mod3], high: { physical: [phys1, phys2], mental }, emergency: { trusted, therapist, er } },
+        intensityPlan: { 
+          mild, 
+          moderate: [mod1, mod2, mod3], 
+          high: { physical: [phys1, phys2], mental }, 
+          emergency: { trusted, therapist, er } 
+        },
         urge,
+        values: { val1, val2, val3, rel },
+        crisisCard: { physical, wait, acceptance, values, emergency },
         practicePlan: {
           skill1, freq1,
           skill2: document.getElementById('practiceSkill2')?.value || '',
@@ -1440,30 +1713,51 @@ html, body {
         lastUpdated: new Date().toISOString(),
         completed: true
       };
+      
       localStorage.setItem('crisis_plan', JSON.stringify(crisisPlan));
-      saveToToolkit({ id: 'full-crisis-plan', category: 'Module 5: Crisis Plan', name: '📋 My Complete Crisis Plan', description: `Intensity plan saved • Practice: ${skill1 || 'none'}` });
-      btn.classList.add('saved'); btn.innerHTML = '<span>✓</span> Saved!';
-      fb.textContent = '✓ Complete crisis plan saved'; fb.classList.add('show');
-      setTimeout(() => { btn.classList.remove('saved'); btn.innerHTML = '<span>📋</span> Save My Complete Crisis Plan'; fb.classList.remove('show'); }, 2000);
+      
+      saveToToolkit({
+        id: 'full-crisis-plan',
+        category: 'Module 5: Crisis Plan',
+        name: '📋 My Complete Crisis Plan',
+        description: `Complete crisis plan with intensity levels, values, crisis card, and practice schedule. Last updated: ${new Date().toLocaleDateString()}`
+      });
+      
+      btn.classList.add('saved');
+      btn.innerHTML = '<span>✓</span> Saved!';
+      fb.textContent = '✓ Complete crisis plan saved';
+      fb.classList.add('show');
+      setTimeout(() => {
+        btn.classList.remove('saved');
+        btn.innerHTML = '<span>📋</span> Save My Complete Crisis Plan';
+        fb.classList.remove('show');
+      }, 2000);
     };
   }
 
   function initComplete() {
     const btn = document.getElementById('practiceBtn');
     if (!btn) return;
+    
     let prog = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
     if (!prog.practicedModules) prog.practicedModules = [];
+    
     if (prog.practicedModules.includes('module5')) {
-      btn.classList.add('marked');
+      btn.classList.remove('btn-practice-primary');
+      btn.classList.add('btn-practice-secondary');
       btn.innerHTML = '<span>✓</span><span>Course Completed</span>';
     }
+    
     btn.onclick = function() {
       if (!prog.practicedModules.includes('module5')) {
         prog.practicedModules.push('module5');
         prog.lastPracticed = new Date().toISOString();
         localStorage.setItem('crisis_course_progress', JSON.stringify(prog));
-        btn.classList.add('marked');
+        
+        btn.classList.remove('btn-practice-primary');
+        btn.classList.add('btn-practice-secondary');
         btn.innerHTML = '<span>✓</span><span>Course Completed</span>';
+        
         const msg = document.createElement('p');
         msg.textContent = '✓ Progress saved!';
         msg.style.cssText = 'color: var(--success-emerald); text-align: center; margin-top: 1rem; font-weight: 600;';
@@ -1473,110 +1767,115 @@ html, body {
     };
   }
 
-function loadSavedPlan() {
-  const plan = JSON.parse(localStorage.getItem('crisis_plan') || '{}');
-  if (plan.intensityPlan) {
-    const p = plan.intensityPlan;
-    const mildEl = document.getElementById('planMild');
-    if (p.mild && mildEl) mildEl.value = p.mild;
+  function loadSavedPlan() {
+    const plan = JSON.parse(localStorage.getItem('crisis_plan') || '{}');
     
-    if (p.moderate) {
-      const mod1El = document.getElementById('planModerate1');
-      if (p.moderate[0] && mod1El) mod1El.value = p.moderate[0];
+    // Load intensity plan
+    if (plan.intensityPlan) {
+      const p = plan.intensityPlan;
+      const mildEl = document.getElementById('planMild');
+      if (p.mild && mildEl) mildEl.value = p.mild;
       
-      const mod2El = document.getElementById('planModerate2');
-      if (p.moderate[1] && mod2El) mod2El.value = p.moderate[1];
-      
-      const mod3El = document.getElementById('planModerate3');
-      if (p.moderate[2] && mod3El) mod3El.value = p.moderate[2];
-    }
-    
-    if (p.high) {
-      if (p.high.physical) {
-        const phys1El = document.getElementById('planPhysical1');
-        if (p.high.physical[0] && phys1El) phys1El.value = p.high.physical[0];
+      if (p.moderate) {
+        const mod1El = document.getElementById('planModerate1');
+        if (p.moderate[0] && mod1El) mod1El.value = p.moderate[0];
         
-        const phys2El = document.getElementById('planPhysical2');
-        if (p.high.physical[1] && phys2El) phys2El.value = p.high.physical[1];
+        const mod2El = document.getElementById('planModerate2');
+        if (p.moderate[1] && mod2El) mod2El.value = p.moderate[1];
+        
+        const mod3El = document.getElementById('planModerate3');
+        if (p.moderate[2] && mod3El) mod3El.value = p.moderate[2];
       }
       
-      const mentalEl = document.getElementById('planMental');
-      if (p.high.mental && mentalEl) mentalEl.value = p.high.mental;
+      if (p.high) {
+        const phys1El = document.getElementById('planPhysical1');
+        if (p.high.physical?.[0] && phys1El) phys1El.value = p.high.physical[0];
+        
+        const phys2El = document.getElementById('planPhysical2');
+        if (p.high.physical?.[1] && phys2El) phys2El.value = p.high.physical[1];
+        
+        const mentalEl = document.getElementById('planMental');
+        if (p.high.mental && mentalEl) mentalEl.value = p.high.mental;
+      }
+      
+      if (p.emergency) {
+        const trustedEl = document.getElementById('planTrusted');
+        if (p.emergency.trusted && trustedEl) trustedEl.value = p.emergency.trusted;
+        
+        const therapistEl = document.getElementById('planTherapist');
+        if (p.emergency.therapist && therapistEl) therapistEl.value = p.emergency.therapist;
+        
+        const erEl = document.getElementById('planER');
+        if (p.emergency.er && erEl) erEl.value = p.emergency.er;
+      }
     }
     
-    if (p.emergency) {
-      const trustedEl = document.getElementById('planTrusted');
-      if (p.emergency.trusted && trustedEl) trustedEl.value = p.emergency.trusted;
+    // Load values
+    if (plan.values) {
+      const v = plan.values;
+      const val1El = document.getElementById('values1');
+      if (v.val1 && val1El) val1El.value = v.val1;
       
-      const therapistEl = document.getElementById('planTherapist');
-      if (p.emergency.therapist && therapistEl) therapistEl.value = p.emergency.therapist;
+      const val2El = document.getElementById('values2');
+      if (v.val2 && val2El) val2El.value = v.val2;
       
-      const erEl = document.getElementById('planER');
-      if (p.emergency.er && erEl) erEl.value = p.emergency.er;
+      const val3El = document.getElementById('values3');
+      if (v.val3 && val3El) val3El.value = v.val3;
+      
+      const relEl = document.getElementById('valuesRelationships');
+      if (v.rel && relEl) relEl.value = v.rel;
+      
+      const bestEl = document.getElementById('valuesBest');
+      if (v.best && bestEl) bestEl.value = v.best;
+    }
+    
+    // Load crisis card
+    if (plan.crisisCard) {
+      const cc = plan.crisisCard;
+      const physicalEl = document.getElementById('cardPhysical');
+      if (cc.physical && physicalEl) physicalEl.value = cc.physical;
+      
+      const waitEl = document.getElementById('cardWait');
+      if (cc.wait && waitEl) waitEl.value = cc.wait;
+      
+      const acceptEl = document.getElementById('cardAcceptance');
+      if (cc.acceptance && acceptEl) acceptEl.value = cc.acceptance;
+      
+      const valuesEl = document.getElementById('cardValues');
+      if (cc.values && valuesEl) valuesEl.value = cc.values;
+      
+      const emergencyEl = document.getElementById('cardEmergency');
+      if (cc.emergency && emergencyEl) emergencyEl.value = cc.emergency;
+    }
+    
+    // Load practice plan
+    if (plan.practicePlan) {
+      const pp = plan.practicePlan;
+      const skill1El = document.getElementById('practiceSkill1');
+      if (pp.skill1 && skill1El) skill1El.value = pp.skill1;
+      
+      const freq1El = document.getElementById('practiceFreq1');
+      if (pp.freq1 && freq1El) freq1El.value = pp.freq1;
+      
+      const skill2El = document.getElementById('practiceSkill2');
+      if (pp.skill2 && skill2El) skill2El.value = pp.skill2;
+      
+      const freq2El = document.getElementById('practiceFreq2');
+      if (pp.freq2 && freq2El) freq2El.value = pp.freq2;
+      
+      const skill3El = document.getElementById('practiceSkill3');
+      if (pp.skill3 && skill3El) skill3El.value = pp.skill3;
+      
+      const freq3El = document.getElementById('practiceFreq3');
+      if (pp.freq3 && freq3El) freq3El.value = pp.freq3;
     }
   }
-  
-  if (plan.values) {
-    const v = plan.values;
-    const val1El = document.getElementById('values1');
-    if (v.val1 && val1El) val1El.value = v.val1;
-    
-    const val2El = document.getElementById('values2');
-    if (v.val2 && val2El) val2El.value = v.val2;
-    
-    const val3El = document.getElementById('values3');
-    if (v.val3 && val3El) val3El.value = v.val3;
-    
-    const relEl = document.getElementById('valuesRelationships');
-    if (v.rel && relEl) relEl.value = v.rel;
-    
-    const bestEl = document.getElementById('valuesBest');
-    if (v.best && bestEl) bestEl.value = v.best;
-  }
-  
-  if (plan.crisisCard) {
-    const cc = plan.crisisCard;
-    const physicalEl = document.getElementById('cardPhysical');
-    if (cc.physical && physicalEl) physicalEl.value = cc.physical;
-    
-    const waitEl = document.getElementById('cardWait');
-    if (cc.wait && waitEl) waitEl.value = cc.wait;
-    
-    const acceptEl = document.getElementById('cardAcceptance');
-    if (cc.acceptance && acceptEl) acceptEl.value = cc.acceptance;
-    
-    const valuesEl = document.getElementById('cardValues');
-    if (cc.values && valuesEl) valuesEl.value = cc.values;
-    
-    const emergencyEl = document.getElementById('cardEmergency');
-    if (cc.emergency && emergencyEl) emergencyEl.value = cc.emergency;
-  }
-  
-  if (plan.practicePlan) {
-    const pp = plan.practicePlan;
-    const skill1El = document.getElementById('practiceSkill1');
-    if (pp.skill1 && skill1El) skill1El.value = pp.skill1;
-    
-    const freq1El = document.getElementById('practiceFreq1');
-    if (pp.freq1 && freq1El) freq1El.value = pp.freq1;
-    
-    const skill2El = document.getElementById('practiceSkill2');
-    if (pp.skill2 && skill2El) skill2El.value = pp.skill2;
-    
-    const freq2El = document.getElementById('practiceFreq2');
-    if (pp.freq2 && freq2El) freq2El.value = pp.freq2;
-    
-    const skill3El = document.getElementById('practiceSkill3');
-    if (pp.skill3 && skill3El) skill3El.value = pp.skill3;
-    
-    const freq3El = document.getElementById('practiceFreq3');
-    if (pp.freq3 && freq3El) freq3El.value = pp.freq3;
-  }
-}
 
+  // ===== RENDER =====
   function render() {
     const content = document.getElementById('content');
     if (!content) return;
+    
     let html = '';
     switch (currentStep) {
       case 1: html = renderStep1(); break;
@@ -1590,12 +1889,26 @@ function loadSavedPlan() {
       case 9: html = renderStep9(); break;
       default: html = renderStep1();
     }
+    
     content.innerHTML = html;
-    if (currentStep === 5) initValuesSave();
-    if (currentStep === 7) initCrisisCardSave();
-    if (currentStep === 8) initFullPlanSave();
-    if (currentStep === 9) initComplete();
-    setTimeout(loadSavedPlan, 50);
+    
+    // Initialize save buttons based on current step
+    setTimeout(() => {
+      if (currentStep === 2) initIntensityPlanSave();
+      if (currentStep === 3) initEmergencyPlanSave();
+      if (currentStep === 4) initProsConsSave();
+      if (currentStep === 5) initValuesSave();
+      if (currentStep === 6) initKitSave();
+      if (currentStep === 7) initCrisisCardSave();
+      if (currentStep === 8) {
+        initPracticePlanSave();
+        initFullPlanSave();
+      }
+      if (currentStep === 9) initComplete();
+      
+      // Load saved data
+      loadSavedPlan();
+    }, 100);
   }
 
   // Expose functions globally
