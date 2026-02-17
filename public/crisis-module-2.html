@@ -565,6 +565,29 @@
   }
   .save-feedback.show { display: block; }
 
+  /* Completion Stats */
+  .completion-stats {
+    display: flex;
+    justify-content: space-around;
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background: rgba(15,23,42,0.6);
+    border-radius: 1rem;
+  }
+  .stat-item {
+    text-align: center;
+  }
+  .stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-teal);
+  }
+  .stat-label {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+  }
+
   /* Footer */
   .footer {
     margin-top: var(--space-xxl);
@@ -603,12 +626,6 @@
 </div>
 <script>
 (function() {
-  // Check disclaimer
-  if (!localStorage.getItem('crisis_disclaimer_acknowledged')) {
-    window.location.href = 'crisis-intro.html';
-    return;
-  }
-
   // ===== STATE =====
   let currentStep = 1;
   const totalSteps = 9;
@@ -652,7 +669,7 @@
       const saved = localStorage.getItem('crisis_module2_progress');
       if (saved) {
         const data = JSON.parse(saved);
-        if (Date.now() - data.timestamp < 86400000) {
+        if (Date.now() - data.timestamp < 86400000) { // 24 hours
           currentStep = data.step || 1;
           userData = data.userData || userData;
         }
@@ -699,6 +716,15 @@
     }
   };
 
+  window.goToStep = function(step) {
+    if (step >= 1 && step <= totalSteps) {
+      currentStep = step;
+      saveProgress();
+      render();
+      scrollToTop();
+    }
+  };
+
   // ===== RENDER HEADER/FOOTER =====
   function renderHeader() {
     return `
@@ -741,120 +767,125 @@
   // ===== STEP 1: INTRODUCTION =====
   function renderStep1() {
     return `
-      ${renderHeader()}
-      
-      <div class="card-highlight">
-        <p style="font-size: 1rem; color: var(--text-teal-light); font-style: italic; line-height: 1.6; margin: 0;">
-          “Your body has hardwired responses that can override your emotional state. These aren't distractions — they're biological circuit breakers. When your alarm system is screaming, you need to speak its language: physical sensation.”
-        </p>
-      </div>
-      
-      <div class="card">
-        <div class="section-header">
-          <span class="section-icon">💡</span>
-          <span class="section-title">Why physical reset works</span>
+      <div class="step-content">
+        ${renderHeader()}
+        
+        <div class="card-highlight">
+          <p style="font-size: 1rem; color: var(--text-teal-light); font-style: italic; line-height: 1.6; margin: 0;">
+            “Your body has hardwired responses that can override your emotional state. These aren't distractions — they're biological circuit breakers. When your alarm system is screaming, you need to speak its language: physical sensation.”
+          </p>
         </div>
         
-        <div style="display: flex; flex-direction: column; gap: var(--space-md);">
-          <div style="display: flex; gap: var(--space-sm);">
-            <span style="color: var(--text-teal); font-weight: 600; font-size: 1rem;">1.</span>
-            <span style="color: var(--text-secondary); font-size: 0.9375rem; line-height: 1.5;"><strong style="color: var(--text-teal);">Bypass thinking brain</strong> — trigger automatic reflexes</span>
+        <div class="card">
+          <div class="section-header">
+            <span class="section-icon">💡</span>
+            <span class="section-title">Why physical reset works</span>
           </div>
-          <div style="display: flex; gap: var(--space-sm);">
-            <span style="color: var(--text-teal); font-weight: 600; font-size: 1rem;">2.</span>
-            <span style="color: var(--text-secondary); font-size: 0.9375rem; line-height: 1.5;"><strong style="color: var(--text-teal);">Metabolize stress chemicals</strong> — burn adrenaline & cortisol</span>
-          </div>
-          <div style="display: flex; gap: var(--space-sm);">
-            <span style="color: var(--text-teal); font-weight: 600; font-size: 1rem;">3.</span>
-            <span style="color: var(--text-secondary); font-size: 0.9375rem; line-height: 1.5;"><strong style="color: var(--text-teal);">Give action urges a safe outlet</strong> — movement releases energy</span>
+          
+          <div style="display: flex; flex-direction: column; gap: var(--space-md);">
+            <div style="display: flex; gap: var(--space-sm);">
+              <span style="color: var(--text-teal); font-weight: 600; font-size: 1rem;">1.</span>
+              <span style="color: var(--text-secondary); font-size: 0.9375rem; line-height: 1.5;"><strong style="color: var(--text-teal);">Bypass thinking brain</strong> — trigger automatic reflexes</span>
+            </div>
+            <div style="display: flex; gap: var(--space-sm);">
+              <span style="color: var(--text-teal); font-weight: 600; font-size: 1rem;">2.</span>
+              <span style="color: var(--text-secondary); font-size: 0.9375rem; line-height: 1.5;"><strong style="color: var(--text-teal);">Metabolize stress chemicals</strong> — burn adrenaline & cortisol</span>
+            </div>
+            <div style="display: flex; gap: var(--space-sm);">
+              <span style="color: var(--text-teal); font-weight: 600; font-size: 1rem;">3.</span>
+              <span style="color: var(--text-secondary); font-size: 0.9375rem; line-height: 1.5;"><strong style="color: var(--text-teal);">Give action urges a safe outlet</strong> — movement releases energy</span>
+            </div>
           </div>
         </div>
+        
+        <button class="btn btn-primary" onclick="nextStep()">Continue →</button>
+        
+        ${renderFooter()}
       </div>
-      
-      <button class="btn btn-primary" onclick="nextStep()">Continue →</button>
-      
-      ${renderFooter()}
     `;
   }
 
-  // ===== STEP 2: COLD WATER INFO =====
+  // ===== STEP 2: COLD WATER INFO (with save button for ACTUAL SKILL) =====
   function renderStep2() {
     setTimeout(() => initColdWaterSave(), 10);
     
     return `
-      ${renderHeader()}
-      
-      <div class="card">
-        <div class="section-header">
-          <span class="section-icon">🧊</span>
-          <span class="section-title">Cold water — dive reflex</span>
-        </div>
+      <div class="step-content">
+        ${renderHeader()}
         
-        <div class="technique-stats">
-          <div class="stat">
-            <div class="stat-label">Speed</div>
-            <div class="stat-value">⚡ 30-60 sec</div>
+        <div class="card">
+          <div class="section-header">
+            <span class="section-icon">🧊</span>
+            <span class="section-title">Cold water — dive reflex</span>
           </div>
-          <div class="stat">
-            <div class="stat-label">Best for</div>
-            <div class="stat-value">🎯 Hyperarousal</div>
+          
+          <div class="technique-stats">
+            <div class="stat">
+              <div class="stat-label">Speed</div>
+              <div class="stat-value">⚡ 30-60 sec</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Best for</div>
+              <div class="stat-value">🎯 Hyperarousal</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Intensity</div>
+              <div class="stat-value">💪 High</div>
+            </div>
           </div>
-          <div class="stat">
-            <div class="stat-label">Intensity</div>
-            <div class="stat-value">💪 High</div>
+          
+          <div style="background: rgba(14,116,144,0.1); padding: var(--space-lg); border-radius: 1rem; margin: var(--space-lg) 0;">
+            <p style="color: var(--text-teal-light); font-weight: 600; margin-bottom: var(--space-sm); font-size: 0.9375rem;">❄️ How it works (seal reflex):</p>
+            <p style="margin-bottom: var(--space-xs); color: var(--text-secondary); font-size: 0.875rem;">• Cold water on face = heart rate slows automatically</p>
+            <p style="margin-bottom: var(--space-xs); color: var(--text-secondary); font-size: 0.875rem;">• Same reflex seals use to dive deep (conserves oxygen)</p>
+            <p style="color: var(--text-secondary); font-size: 0.875rem;">• Hardwired biology — not willpower</p>
+          </div>
+          
+          <div class="instruction-box">
+            <p style="color: var(--text-teal); font-weight: 600; margin-bottom: var(--space-md); font-size: 0.9375rem;">How to do it:</p>
+            
+            <p style="color: var(--text-teal-light); font-weight: 600; margin: var(--space-md) 0 var(--space-xs); font-size: 0.875rem;">🧊 Ice water face dunk</p>
+            <ul class="instruction-list">
+              <li>Fill bowl with ice water</li>
+              <li>Hold breath</li>
+              <li>Dunk face for 15-30 seconds</li>
+              <li>Come up, breathe normally</li>
+              <li>Repeat 2-3 times if needed</li>
+            </ul>
+            
+            <p style="color: var(--text-teal-light); font-weight: 600; margin: var(--space-md) 0 var(--space-xs); font-size: 0.875rem;">❄️ Ice pack on face</p>
+            <ul class="instruction-list">
+              <li>Wrap ice pack in thin towel</li>
+              <li>Hold on eyes and cheeks for 30 seconds</li>
+              <li>Breathe slowly</li>
+            </ul>
+            
+            <p style="color: var(--text-teal-light); font-weight: 600; margin: var(--space-md) 0 var(--space-xs); font-size: 0.875rem;">🚿 Cold shower</p>
+            <ul class="instruction-list">
+              <li>Turn water to cold</li>
+              <li>Let it hit face and chest</li>
+              <li>Stay for 1-2 minutes</li>
+            </ul>
+          </div>
+          
+          <div class="safety-note">
+            <strong>⚠️ Safety:</strong> Don't do this if you have heart conditions. Don't hold breath more than 30 seconds. If dizzy, stop.
           </div>
         </div>
         
-        <div style="background: rgba(14,116,144,0.1); padding: var(--space-lg); border-radius: 1rem; margin: var(--space-lg) 0;">
-          <p style="color: var(--text-teal-light); font-weight: 600; margin-bottom: var(--space-sm); font-size: 0.9375rem;">❄️ How it works (seal reflex):</p>
-          <p style="margin-bottom: var(--space-xs); color: var(--text-secondary); font-size: 0.875rem;">• Cold water on face = heart rate slows automatically</p>
-          <p style="margin-bottom: var(--space-xs); color: var(--text-secondary); font-size: 0.875rem;">• Same reflex seals use to dive deep (conserves oxygen)</p>
-          <p style="color: var(--text-secondary); font-size: 0.875rem;">• Hardwired biology — not willpower</p>
+        <!-- SAVE BUTTON FOR ACTIONABLE SKILL -->
+        <button id="saveColdWaterBtn" class="btn-save">
+          <span>🧊</span> Save Cold Water to Toolkit
+        </button>
+        <div id="coldWaterSaveFeedback" class="save-feedback"></div>
+        
+        <div class="btn-group">
+          <button class="btn btn-secondary" onclick="previousStep()">← Back</button>
+          <button class="btn btn-primary" onclick="nextStep()">Try practice →</button>
         </div>
         
-        <div class="instruction-box">
-          <p style="color: var(--text-teal); font-weight: 600; margin-bottom: var(--space-md); font-size: 0.9375rem;">How to do it:</p>
-          
-          <p style="color: var(--text-teal-light); font-weight: 600; margin: var(--space-md) 0 var(--space-xs); font-size: 0.875rem;">🧊 Ice water face dunk</p>
-          <ul class="instruction-list">
-            <li>Fill bowl with ice water</li>
-            <li>Hold breath</li>
-            <li>Dunk face for 15-30 seconds</li>
-            <li>Come up, breathe normally</li>
-            <li>Repeat 2-3 times if needed</li>
-          </ul>
-          
-          <p style="color: var(--text-teal-light); font-weight: 600; margin: var(--space-md) 0 var(--space-xs); font-size: 0.875rem;">❄️ Ice pack on face</p>
-          <ul class="instruction-list">
-            <li>Wrap ice pack in thin towel</li>
-            <li>Hold on eyes and cheeks for 30 seconds</li>
-            <li>Breathe slowly</li>
-          </ul>
-          
-          <p style="color: var(--text-teal-light); font-weight: 600; margin: var(--space-md) 0 var(--space-xs); font-size: 0.875rem;">🚿 Cold shower</p>
-          <ul class="instruction-list">
-            <li>Turn water to cold</li>
-            <li>Let it hit face and chest</li>
-            <li>Stay for 1-2 minutes</li>
-          </ul>
-        </div>
-        
-        <div class="safety-note">
-          <strong>⚠️ Safety:</strong> Don't do this if you have heart conditions. Don't hold breath more than 30 seconds. If dizzy, stop.
-        </div>
+        ${renderFooter()}
       </div>
-      
-      <button id="saveColdWaterBtn" class="btn-save">
-        <span>🧊</span> Save Cold Water to Toolkit
-      </button>
-      <div id="coldWaterSaveFeedback" class="save-feedback"></div>
-      
-      <div class="btn-group">
-        <button class="btn btn-secondary" onclick="previousStep()">← Back</button>
-        <button class="btn btn-primary" onclick="nextStep()">Try practice →</button>
-      </div>
-      
-      ${renderFooter()}
     `;
   }
 
@@ -867,8 +898,8 @@
       saveToToolkit({
         id: 'cold-water',
         category: 'Module 2',
-        name: 'Cold Water — Dive Reflex',
-        description: '30-60 seconds • Panic, rage, instant calm • Dunk face in ice water 15-30 seconds'
+        name: '❄️ Cold Water — Dive Reflex',
+        description: '30-60 seconds • For panic/rage/hyperarousal • Dunk face in ice water 15-30 sec OR hold ice pack on face'
       });
       
       btn.classList.add('saved');
@@ -889,103 +920,105 @@
     setTimeout(() => initColdWaterPractice(), 10);
     
     return `
-      ${renderHeader()}
-      
-      <div class="card-highlight" style="text-align: center;">
-        <div style="font-size: 2.5rem; margin-bottom: var(--space-sm);">🧊</div>
-        <p style="color: var(--text-teal-light); font-weight: 600; font-size: 1.1rem;">Let's try cold water together</p>
-        <p style="color: var(--text-secondary); margin-top: var(--space-xs); font-size: 0.875rem;">This is optional — skip if you're not ready</p>
-      </div>
-      
-      <div class="practice-card" id="coldWaterPractice">
-        <div class="practice-title">
-          <span>🧊</span>
-          COLD WATER PRACTICE
+      <div class="step-content">
+        ${renderHeader()}
+        
+        <div class="card-highlight" style="text-align: center;">
+          <div style="font-size: 2.5rem; margin-bottom: var(--space-sm);">🧊</div>
+          <p style="color: var(--text-teal-light); font-weight: 600; font-size: 1.1rem;">Let's try cold water together</p>
+          <p style="color: var(--text-secondary); margin-top: var(--space-xs); font-size: 0.875rem;">This is optional — skip if you're not ready</p>
         </div>
         
-        <div style="margin-bottom: var(--space-lg);">
-          <p style="color: var(--text-secondary); margin-bottom: var(--space-sm); font-size: 0.875rem;">Do you have access to:</p>
-          <div style="display: flex; gap: var(--space-sm); flex-wrap: wrap;">
-            <label class="reflection-checkbox" style="flex:1;">
-              <input type="checkbox" id="iceBowl"> Ice and bowl
-            </label>
-            <label class="reflection-checkbox" style="flex:1;">
-              <input type="checkbox" id="icePack"> Ice pack
-            </label>
-            <label class="reflection-checkbox" style="flex:1;">
-              <input type="checkbox" id="coldSink"> Cold water
-            </label>
+        <div class="practice-card" id="coldWaterPractice">
+          <div class="practice-title">
+            <span>🧊</span>
+            COLD WATER PRACTICE
           </div>
-        </div>
-        
-        <div class="practice-buttons">
-          <button id="coldWaterGuideBtn" class="btn-practice btn-practice-primary">Yes - Guide Me</button>
-          <button id="coldWaterSkipBtn" class="btn-practice btn-practice-secondary">Skip Practice</button>
-        </div>
-        
-        <div id="coldWaterGuided" style="display: none; margin-top: var(--space-lg);">
-          <!-- BEFORE SLIDER -->
-          <div class="slider-container">
-            <div class="slider-label">
-              <span>Current intensity (0-10)</span>
-              <span class="slider-value" id="coldBeforeValue">5</span>
-            </div>
-            <input type="range" id="coldBeforeSlider" class="slider" min="0" max="10" value="5" step="1">
-            <div class="slider-labels">
-              <span>0 - Calm</span>
-              <span>10 - Overwhelming</span>
+          
+          <div style="margin-bottom: var(--space-lg);">
+            <p style="color: var(--text-secondary); margin-bottom: var(--space-sm); font-size: 0.875rem;">Do you have access to:</p>
+            <div style="display: flex; gap: var(--space-sm); flex-wrap: wrap;">
+              <label class="reflection-checkbox" style="flex:1;">
+                <input type="checkbox" id="iceBowl"> Ice and bowl
+              </label>
+              <label class="reflection-checkbox" style="flex:1;">
+                <input type="checkbox" id="icePack"> Ice pack
+              </label>
+              <label class="reflection-checkbox" style="flex:1;">
+                <input type="checkbox" id="coldSink"> Cold water
+              </label>
             </div>
           </div>
           
-          <p style="color: var(--text-secondary); margin: var(--space-md) 0; text-align: center; font-size: 0.875rem;">
-            <strong>Get your cold water ready.</strong>
-          </p>
-          
-          <button id="coldWaterReadyBtn" class="btn-practice btn-practice-primary" style="margin-bottom: var(--space-md);">I'm Ready →</button>
-          
-          <div id="coldWaterTimer" style="display: none;">
-            <div class="timer-container">
-              <div class="timer-phase">Hold breath • Apply cold</div>
-              <div class="timer-display" id="coldTimerDisplay">15</div>
-              <button id="coldStartTimerBtn" class="btn-practice btn-practice-primary">Start Timer</button>
-            </div>
+          <div class="practice-buttons">
+            <button id="coldWaterGuideBtn" class="btn-practice btn-practice-primary">Yes - Guide Me</button>
+            <button id="coldWaterSkipBtn" class="btn-practice btn-practice-secondary">Skip Practice</button>
           </div>
           
-          <div id="coldWaterAfter" style="display: none; margin-top: var(--space-lg);">
-            <!-- AFTER SLIDER -->
+          <div id="coldWaterGuided" style="display: none; margin-top: var(--space-lg);">
+            <!-- BEFORE SLIDER -->
             <div class="slider-container">
               <div class="slider-label">
-                <span>Intensity NOW (0-10)</span>
-                <span class="slider-value" id="coldAfterValue">5</span>
+                <span>Current intensity (0-10)</span>
+                <span class="slider-value" id="coldBeforeValue">5</span>
               </div>
-              <input type="range" id="coldAfterSlider" class="slider" min="0" max="10" value="5" step="1">
+              <input type="range" id="coldBeforeSlider" class="slider" min="0" max="10" value="5" step="1">
               <div class="slider-labels">
                 <span>0 - Calm</span>
                 <span>10 - Overwhelming</span>
               </div>
             </div>
             
-            <!-- RESULT DISPLAY -->
-            <div id="coldResult" class="result-box">
-              Adjust the after slider to see your result
+            <p style="color: var(--text-secondary); margin: var(--space-md) 0; text-align: center; font-size: 0.875rem;">
+              <strong>Get your cold water ready.</strong>
+            </p>
+            
+            <button id="coldWaterReadyBtn" class="btn-practice btn-practice-primary" style="margin-bottom: var(--space-md);">I'm Ready →</button>
+            
+            <div id="coldWaterTimer" style="display: none;">
+              <div class="timer-container">
+                <div class="timer-phase">Hold breath • Apply cold</div>
+                <div class="timer-display" id="coldTimerDisplay">15</div>
+                <button id="coldStartTimerBtn" class="btn-practice btn-practice-primary">Start Timer</button>
+              </div>
             </div>
             
-            <!-- REFLECTION BUTTONS -->
-            <div style="display: flex; gap: var(--space-sm); justify-content: center; margin-top: var(--space-md); flex-wrap: wrap;">
-              <button class="btn-practice btn-practice-secondary feeling-btn" data-feeling="effective">Helped a lot</button>
-              <button class="btn-practice btn-practice-secondary feeling-btn" data-feeling="little">Helped a little</button>
-              <button class="btn-practice btn-practice-secondary feeling-btn" data-feeling="no">No difference</button>
+            <div id="coldWaterAfter" style="display: none; margin-top: var(--space-lg);">
+              <!-- AFTER SLIDER -->
+              <div class="slider-container">
+                <div class="slider-label">
+                  <span>Intensity NOW (0-10)</span>
+                  <span class="slider-value" id="coldAfterValue">5</span>
+                </div>
+                <input type="range" id="coldAfterSlider" class="slider" min="0" max="10" value="5" step="1">
+                <div class="slider-labels">
+                  <span>0 - Calm</span>
+                  <span>10 - Overwhelming</span>
+                </div>
+              </div>
+              
+              <!-- RESULT DISPLAY -->
+              <div id="coldResult" class="result-box">
+                Adjust the after slider to see your result
+              </div>
+              
+              <!-- REFLECTION BUTTONS -->
+              <div style="display: flex; gap: var(--space-sm); justify-content: center; margin-top: var(--space-md); flex-wrap: wrap;">
+                <button class="btn-practice btn-practice-secondary feeling-btn" data-feeling="effective">Helped a lot</button>
+                <button class="btn-practice btn-practice-secondary feeling-btn" data-feeling="little">Helped a little</button>
+                <button class="btn-practice btn-practice-secondary feeling-btn" data-feeling="no">No difference</button>
+              </div>
             </div>
           </div>
         </div>
+        
+        <div class="btn-group">
+          <button class="btn btn-secondary" onclick="previousStep()">← Back</button>
+          <button class="btn btn-primary" onclick="nextStep()">Continue →</button>
+        </div>
+        
+        ${renderFooter()}
       </div>
-      
-      <div class="btn-group">
-        <button class="btn btn-secondary" onclick="previousStep()">← Back</button>
-        <button class="btn btn-primary" onclick="nextStep()">Continue →</button>
-      </div>
-      
-      ${renderFooter()}
     `;
   }
 
@@ -1093,70 +1126,73 @@
     });
   }
 
-  // ===== STEP 4: INTENSE EXERCISE INFO =====
+  // ===== STEP 4: INTENSE EXERCISE INFO (with save button for ACTUAL SKILL) =====
   function renderStep4() {
     setTimeout(() => initExerciseSave(), 10);
     
     return `
-      ${renderHeader()}
-      
-      <div class="card">
-        <div class="section-header">
-          <span class="section-icon">💪</span>
-          <span class="section-title">Intense Exercise</span>
-        </div>
+      <div class="step-content">
+        ${renderHeader()}
         
-        <div style="color: var(--text-secondary); line-height: 1.6; font-size: 0.9375rem;">
-          <p style="margin-bottom: var(--space-md);">
-            "When you're flooded with stress hormones (adrenaline, cortisol), your body is primed for physical action. Intense exercise <strong style="color: var(--text-teal);">metabolizes these chemicals</strong> — you burn through the fuel of panic."
-          </p>
-        </div>
-        
-        <div class="technique-stats">
-          <div class="stat">
-            <div class="stat-label">Speed</div>
-            <div class="stat-value">⚡ 3-5 min</div>
+        <div class="card">
+          <div class="section-header">
+            <span class="section-icon">💪</span>
+            <span class="section-title">Intense Exercise</span>
           </div>
-          <div class="stat">
-            <div class="stat-label">Best for</div>
-            <div class="stat-value">🎯 Restless panic</div>
+          
+          <div style="color: var(--text-secondary); line-height: 1.6; font-size: 0.9375rem;">
+            <p style="margin-bottom: var(--space-md);">
+              "When you're flooded with stress hormones (adrenaline, cortisol), your body is primed for physical action. Intense exercise <strong style="color: var(--text-teal);">metabolizes these chemicals</strong> — you burn through the fuel of panic."
+            </p>
           </div>
-          <div class="stat">
-            <div class="stat-label">Intensity</div>
-            <div class="stat-value">💪 High</div>
+          
+          <div class="technique-stats">
+            <div class="stat">
+              <div class="stat-label">Speed</div>
+              <div class="stat-value">⚡ 3-5 min</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Best for</div>
+              <div class="stat-value">🎯 Restless panic</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Intensity</div>
+              <div class="stat-value">💪 High</div>
+            </div>
+          </div>
+          
+          <div style="background: rgba(14,116,144,0.1); padding: var(--space-lg); border-radius: 1rem; margin: var(--space-lg) 0;">
+            <p style="color: var(--text-teal-light); font-weight: 600; margin-bottom: var(--space-sm); font-size: 0.9375rem;">💪 Key principle:</p>
+            <p style="color: var(--text-secondary); font-size: 0.875rem;">Must be intense enough that you can't think about anything else. You should be breathing hard.</p>
+          </div>
+          
+          <div class="instruction-box">
+            <p style="color: var(--text-teal); font-weight: 600; margin-bottom: var(--space-md); font-size: 0.9375rem;">Options — choose one:</p>
+            
+            <p style="color: var(--text-teal-light); font-weight: 600; margin: var(--space-md) 0 var(--space-xs); font-size: 0.875rem;">🏃 Sprint / Run</p>
+            <p style="color: var(--text-secondary); margin-bottom: var(--space-md); font-size: 0.875rem;">Run fast 1-2 min, walk 1 min, repeat 3-5x</p>
+            
+            <p style="color: var(--text-teal-light); font-weight: 600; margin: var(--space-md) 0 var(--space-xs); font-size: 0.875rem;">🤸 Jumping Jacks</p>
+            <p style="color: var(--text-secondary); margin-bottom: var(--space-md); font-size: 0.875rem;">50-100 fast, rest 30 sec, repeat 3x</p>
+            
+            <p style="color: var(--text-teal-light); font-weight: 600; margin: var(--space-md) 0 var(--space-xs); font-size: 0.875rem;">🪜 Stair Sprints</p>
+            <p style="color: var(--text-secondary); margin-bottom: var(--space-md); font-size: 0.875rem;">Run up stairs, walk down, repeat 5-10x</p>
           </div>
         </div>
         
-        <div style="background: rgba(14,116,144,0.1); padding: var(--space-lg); border-radius: 1rem; margin: var(--space-lg) 0;">
-          <p style="color: var(--text-teal-light); font-weight: 600; margin-bottom: var(--space-sm); font-size: 0.9375rem;">💪 Key principle:</p>
-          <p style="color: var(--text-secondary); font-size: 0.875rem;">Must be intense enough that you can't think about anything else. You should be breathing hard.</p>
+        <!-- SAVE BUTTON FOR ACTIONABLE SKILL -->
+        <button id="saveExerciseBtn" class="btn-save">
+          <span>💪</span> Save Intense Exercise to Toolkit
+        </button>
+        <div id="exerciseSaveFeedback" class="save-feedback"></div>
+        
+        <div class="btn-group">
+          <button class="btn btn-secondary" onclick="previousStep()">← Back</button>
+          <button class="btn btn-primary" onclick="nextStep()">Practice →</button>
         </div>
         
-        <div class="instruction-box">
-          <p style="color: var(--text-teal); font-weight: 600; margin-bottom: var(--space-md); font-size: 0.9375rem;">Options — choose one:</p>
-          
-          <p style="color: var(--text-teal-light); font-weight: 600; margin: var(--space-md) 0 var(--space-xs); font-size: 0.875rem;">🏃 Sprint / Run</p>
-          <p style="color: var(--text-secondary); margin-bottom: var(--space-md); font-size: 0.875rem;">Run fast 1-2 min, walk 1 min, repeat 3-5x</p>
-          
-          <p style="color: var(--text-teal-light); font-weight: 600; margin: var(--space-md) 0 var(--space-xs); font-size: 0.875rem;">🤸 Jumping Jacks</p>
-          <p style="color: var(--text-secondary); margin-bottom: var(--space-md); font-size: 0.875rem;">50-100 fast, rest 30 sec, repeat 3x</p>
-          
-          <p style="color: var(--text-teal-light); font-weight: 600; margin: var(--space-md) 0 var(--space-xs); font-size: 0.875rem;">🪜 Stair Sprints</p>
-          <p style="color: var(--text-secondary); margin-bottom: var(--space-md); font-size: 0.875rem;">Run up stairs, walk down, repeat 5-10x</p>
-        </div>
+        ${renderFooter()}
       </div>
-      
-      <button id="saveExerciseBtn" class="btn-save">
-        <span>💪</span> Save Intense Exercise to Toolkit
-      </button>
-      <div id="exerciseSaveFeedback" class="save-feedback"></div>
-      
-      <div class="btn-group">
-        <button class="btn btn-secondary" onclick="previousStep()">← Back</button>
-        <button class="btn btn-primary" onclick="nextStep()">Practice →</button>
-      </div>
-      
-      ${renderFooter()}
     `;
   }
 
@@ -1169,8 +1205,8 @@
       saveToToolkit({
         id: 'intense-exercise',
         category: 'Module 2',
-        name: 'Intense Exercise',
-        description: '3-5 minutes • Restless panic, rage • Sprint, jumping jacks, stairs — breathe hard'
+        name: '💪 Intense Exercise',
+        description: '3-5 minutes • For restless panic/rage • Sprint, jumping jacks, stairs — breathe hard, metabolize adrenaline'
       });
       
       btn.classList.add('saved');
@@ -1191,91 +1227,93 @@
     setTimeout(() => initExercisePractice(), 10);
     
     return `
-      ${renderHeader()}
-      
-      <div class="practice-card" id="exercisePractice">
-        <div class="practice-title">
-          <span>💪</span>
-          EXERCISE PRACTICE
-        </div>
+      <div class="step-content">
+        ${renderHeader()}
         
-        <div style="margin-bottom: var(--space-md);">
-          <p style="color: var(--text-secondary); margin-bottom: var(--space-md); font-size: 0.875rem;">Can you do 2 minutes of intense movement?</p>
-          <div class="practice-buttons">
-            <button id="exerciseYesBtn" class="btn-practice btn-practice-primary">Yes - Let's Do It</button>
-            <button id="exerciseNoBtn" class="btn-practice btn-practice-secondary">Not Right Now</button>
+        <div class="practice-card" id="exercisePractice">
+          <div class="practice-title">
+            <span>💪</span>
+            EXERCISE PRACTICE
           </div>
-        </div>
-        
-        <div id="exerciseGuided" style="display: none;">
-          <!-- BEFORE SLIDER -->
-          <div class="slider-container">
-            <div class="slider-label">
-              <span>Current energy (0-10)</span>
-              <span class="slider-value" id="energyBeforeValue">5</span>
-            </div>
-            <input type="range" id="energyBeforeSlider" class="slider" min="0" max="10" value="5" step="1">
-            <div class="slider-labels">
-              <span>0 - Low</span>
-              <span>10 - High</span>
+          
+          <div style="margin-bottom: var(--space-md);">
+            <p style="color: var(--text-secondary); margin-bottom: var(--space-md); font-size: 0.875rem;">Can you do 2 minutes of intense movement?</p>
+            <div class="practice-buttons">
+              <button id="exerciseYesBtn" class="btn-practice btn-practice-primary">Yes - Let's Do It</button>
+              <button id="exerciseNoBtn" class="btn-practice btn-practice-secondary">Not Right Now</button>
             </div>
           </div>
           
-          <p style="color: var(--text-secondary); margin: var(--space-md) 0; font-size: 0.875rem;">Choose your exercise:</p>
-          <div style="display: flex; gap: var(--space-sm); flex-wrap: wrap; margin-bottom: var(--space-lg);">
-            <button class="btn-practice btn-practice-secondary exercise-type" id="exerciseJumpingJacks">Jumping Jacks</button>
-            <button class="btn-practice btn-practice-secondary exercise-type" id="exerciseRun">Run in Place</button>
-            <button class="btn-practice btn-practice-secondary exercise-type" id="exerciseStairs">Stairs</button>
-            <button class="btn-practice btn-practice-secondary exercise-type" id="exerciseOther">Other</button>
-          </div>
-          
-          <button id="startWorkoutBtn" class="btn-practice btn-practice-primary">Start Workout →</button>
-          
-          <div id="workoutTimer" style="display: none;">
-            <div class="timer-container">
-              <div class="timer-phase" id="workoutPhase">GO!</div>
-              <div class="timer-display" id="workoutTimerDisplay">30</div>
-              <div class="timer-round" id="workoutRound">Round 1 of 4</div>
-            </div>
-          </div>
-          
-          <div id="exerciseAfter" style="display: none; margin-top: var(--space-lg);">
-            <!-- AFTER SLIDER - ENERGY -->
+          <div id="exerciseGuided" style="display: none;">
+            <!-- BEFORE SLIDER -->
             <div class="slider-container">
               <div class="slider-label">
-                <span>Energy NOW (0-10)</span>
-                <span class="slider-value" id="energyAfterValue">5</span>
+                <span>Current energy (0-10)</span>
+                <span class="slider-value" id="energyBeforeValue">5</span>
               </div>
-              <input type="range" id="energyAfterSlider" class="slider" min="0" max="10" value="5" step="1">
-            </div>
-            
-            <!-- AFTER SLIDER - CLARITY -->
-            <div class="slider-container">
-              <div class="slider-label">
-                <span>Mental clarity (0-10)</span>
-                <span class="slider-value" id="clarityAfterValue">5</span>
-              </div>
-              <input type="range" id="clarityAfterSlider" class="slider" min="0" max="10" value="5" step="1">
+              <input type="range" id="energyBeforeSlider" class="slider" min="0" max="10" value="5" step="1">
               <div class="slider-labels">
-                <span>0 - Foggy</span>
-                <span>10 - Clear</span>
+                <span>0 - Low</span>
+                <span>10 - High</span>
               </div>
             </div>
             
-            <!-- RESULT DISPLAY -->
-            <div id="exerciseResult" class="result-box">
-              Complete the workout to see results
+            <p style="color: var(--text-secondary); margin: var(--space-md) 0; font-size: 0.875rem;">Choose your exercise:</p>
+            <div style="display: flex; gap: var(--space-sm); flex-wrap: wrap; margin-bottom: var(--space-lg);">
+              <button class="btn-practice btn-practice-secondary exercise-type" id="exerciseJumpingJacks">Jumping Jacks</button>
+              <button class="btn-practice btn-practice-secondary exercise-type" id="exerciseRun">Run in Place</button>
+              <button class="btn-practice btn-practice-secondary exercise-type" id="exerciseStairs">Stairs</button>
+              <button class="btn-practice btn-practice-secondary exercise-type" id="exerciseOther">Other</button>
+            </div>
+            
+            <button id="startWorkoutBtn" class="btn-practice btn-practice-primary">Start Workout →</button>
+            
+            <div id="workoutTimer" style="display: none;">
+              <div class="timer-container">
+                <div class="timer-phase" id="workoutPhase">GO!</div>
+                <div class="timer-display" id="workoutTimerDisplay">30</div>
+                <div class="timer-round" id="workoutRound">Round 1 of 4</div>
+              </div>
+            </div>
+            
+            <div id="exerciseAfter" style="display: none; margin-top: var(--space-lg);">
+              <!-- AFTER SLIDER - ENERGY -->
+              <div class="slider-container">
+                <div class="slider-label">
+                  <span>Energy NOW (0-10)</span>
+                  <span class="slider-value" id="energyAfterValue">5</span>
+                </div>
+                <input type="range" id="energyAfterSlider" class="slider" min="0" max="10" value="5" step="1">
+              </div>
+              
+              <!-- AFTER SLIDER - CLARITY -->
+              <div class="slider-container">
+                <div class="slider-label">
+                  <span>Mental clarity (0-10)</span>
+                  <span class="slider-value" id="clarityAfterValue">5</span>
+                </div>
+                <input type="range" id="clarityAfterSlider" class="slider" min="0" max="10" value="5" step="1">
+                <div class="slider-labels">
+                  <span>0 - Foggy</span>
+                  <span>10 - Clear</span>
+                </div>
+              </div>
+              
+              <!-- RESULT DISPLAY -->
+              <div id="exerciseResult" class="result-box">
+                Complete the workout to see results
+              </div>
             </div>
           </div>
         </div>
+        
+        <div class="btn-group">
+          <button class="btn btn-secondary" onclick="previousStep()">← Back</button>
+          <button class="btn btn-primary" onclick="nextStep()">Continue →</button>
+        </div>
+        
+        ${renderFooter()}
       </div>
-      
-      <div class="btn-group">
-        <button class="btn btn-secondary" onclick="previousStep()">← Back</button>
-        <button class="btn btn-primary" onclick="nextStep()">Continue →</button>
-      </div>
-      
-      ${renderFooter()}
     `;
   }
 
@@ -1391,112 +1429,115 @@
     }
   }
 
-  // ===== STEP 6: PACED BREATHING 4-7-8 =====
+  // ===== STEP 6: PACED BREATHING 4-7-8 (with save button for ACTUAL SKILL) =====
   function renderStep6() {
     setTimeout(() => initBreathing478(), 10);
     setTimeout(() => initBreathingSave(), 10);
     
     return `
-      ${renderHeader()}
-      
-      <div class="card">
-        <div class="section-header">
-          <span class="section-icon">🌬️</span>
-          <span class="section-title">Paced Breathing 4-7-8</span>
-        </div>
+      <div class="step-content">
+        ${renderHeader()}
         
-        <div style="color: var(--text-secondary); line-height: 1.6; font-size: 0.9375rem;">
-          <p style="margin-bottom: var(--space-md);">
-            "When you breathe in, your heart speeds up. When you breathe out, it slows down. By making your <strong style="color: var(--text-teal);">exhales longer</strong>, you activate your body's natural calming system."
-          </p>
-        </div>
-        
-        <div class="technique-stats">
-          <div class="stat">
-            <div class="stat-label">Speed</div>
-            <div class="stat-value">⚡ 2-3 min</div>
-          </div>
-          <div class="stat">
-            <div class="stat-label">Best for</div>
-            <div class="stat-value">🎯 Moderate anxiety</div>
-          </div>
-          <div class="stat">
-            <div class="stat-label">Intensity</div>
-            <div class="stat-value">💪 Low</div>
-          </div>
-        </div>
-        
-        <div style="background: rgba(14,116,144,0.1); padding: var(--space-lg); border-radius: 1rem; margin: var(--space-lg) 0;">
-          <p style="color: var(--text-teal-light); font-weight: 600; margin-bottom: var(--space-sm); font-size: 0.9375rem;">🌬️ 4-7-8 pattern:</p>
-          <p style="margin-bottom: var(--space-xs); color: var(--text-secondary); font-size: 0.875rem;">• Inhale: <strong style="color: var(--text-teal);">4 seconds</strong></p>
-          <p style="margin-bottom: var(--space-xs); color: var(--text-secondary); font-size: 0.875rem;">• Hold: <strong style="color: var(--text-teal);">7 seconds</strong></p>
-          <p style="color: var(--text-secondary); font-size: 0.875rem;">• Exhale: <strong style="color: var(--text-teal);">8 seconds</strong> (longer exhale = calm)</p>
-        </div>
-        
-        <div class="safety-note">
-          <strong>⚠️ Note:</strong> If focusing on breath makes you MORE anxious, skip this.
-        </div>
-      </div>
-      
-      <!-- Guided breathing practice -->
-      <div class="practice-card">
-        <div class="practice-title">
-          <span>🌬️</span>
-          GUIDED 4-7-8
-        </div>
-        
-        <!-- BEFORE SLIDER -->
-        <div class="slider-container">
-          <div class="slider-label">
-            <span>Tension before (0-10)</span>
-            <span class="slider-value" id="tensionBeforeValue">5</span>
-          </div>
-          <input type="range" id="tensionBeforeSlider" class="slider" min="0" max="10" value="5" step="1">
-          <div class="slider-labels">
-            <span>0 - Calm</span>
-            <span>10 - Tense</span>
-          </div>
-        </div>
-        
-        <div style="text-align: center; margin: var(--space-lg) 0;">
-          <div class="breath-circle" id="breathCircle">
-            <span class="breath-text" id="breathInstruction">Ready</span>
+        <div class="card">
+          <div class="section-header">
+            <span class="section-icon">🌬️</span>
+            <span class="section-title">Paced Breathing 4-7-8</span>
           </div>
           
-          <div style="display: flex; gap: var(--space-sm); justify-content: center;">
-            <button id="startBreathingBtn" class="btn-practice btn-practice-primary">Start</button>
-            <button id="stopBreathingBtn" class="btn-practice btn-practice-secondary" style="display: none;">Stop</button>
+          <div style="color: var(--text-secondary); line-height: 1.6; font-size: 0.9375rem;">
+            <p style="margin-bottom: var(--space-md);">
+              "When you breathe in, your heart speeds up. When you breathe out, it slows down. By making your <strong style="color: var(--text-teal);">exhales longer</strong>, you activate your body's natural calming system."
+            </p>
+          </div>
+          
+          <div class="technique-stats">
+            <div class="stat">
+              <div class="stat-label">Speed</div>
+              <div class="stat-value">⚡ 2-3 min</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Best for</div>
+              <div class="stat-value">🎯 Moderate anxiety</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Intensity</div>
+              <div class="stat-value">💪 Low</div>
+            </div>
+          </div>
+          
+          <div style="background: rgba(14,116,144,0.1); padding: var(--space-lg); border-radius: 1rem; margin: var(--space-lg) 0;">
+            <p style="color: var(--text-teal-light); font-weight: 600; margin-bottom: var(--space-sm); font-size: 0.9375rem;">🌬️ 4-7-8 pattern:</p>
+            <p style="margin-bottom: var(--space-xs); color: var(--text-secondary); font-size: 0.875rem;">• Inhale: <strong style="color: var(--text-teal);">4 seconds</strong></p>
+            <p style="margin-bottom: var(--space-xs); color: var(--text-secondary); font-size: 0.875rem;">• Hold: <strong style="color: var(--text-teal);">7 seconds</strong></p>
+            <p style="color: var(--text-secondary); font-size: 0.875rem;">• Exhale: <strong style="color: var(--text-teal);">8 seconds</strong> (longer exhale = calm)</p>
+          </div>
+          
+          <div class="safety-note">
+            <strong>⚠️ Note:</strong> If focusing on breath makes you MORE anxious, skip this.
           </div>
         </div>
         
-        <div id="breathingAfter" style="display: none;">
-          <!-- AFTER SLIDER -->
+        <!-- Guided breathing practice -->
+        <div class="practice-card">
+          <div class="practice-title">
+            <span>🌬️</span>
+            GUIDED 4-7-8
+          </div>
+          
+          <!-- BEFORE SLIDER -->
           <div class="slider-container">
             <div class="slider-label">
-              <span>Tension now (0-10)</span>
-              <span class="slider-value" id="tensionAfterValue">5</span>
+              <span>Tension before (0-10)</span>
+              <span class="slider-value" id="tensionBeforeValue">5</span>
             </div>
-            <input type="range" id="tensionAfterSlider" class="slider" min="0" max="10" value="5" step="1">
+            <input type="range" id="tensionBeforeSlider" class="slider" min="0" max="10" value="5" step="1">
+            <div class="slider-labels">
+              <span>0 - Calm</span>
+              <span>10 - Tense</span>
+            </div>
           </div>
           
-          <!-- RESULT DISPLAY -->
-          <div id="breathingResult" class="result-box">
-            Complete practice to see result
+          <div style="text-align: center; margin: var(--space-lg) 0;">
+            <div class="breath-circle" id="breathCircle">
+              <span class="breath-text" id="breathInstruction">Ready</span>
+            </div>
+            
+            <div style="display: flex; gap: var(--space-sm); justify-content: center;">
+              <button id="startBreathingBtn" class="btn-practice btn-practice-primary">Start</button>
+              <button id="stopBreathingBtn" class="btn-practice btn-practice-secondary" style="display: none;">Stop</button>
+            </div>
+          </div>
+          
+          <div id="breathingAfter" style="display: none;">
+            <!-- AFTER SLIDER -->
+            <div class="slider-container">
+              <div class="slider-label">
+                <span>Tension now (0-10)</span>
+                <span class="slider-value" id="tensionAfterValue">5</span>
+              </div>
+              <input type="range" id="tensionAfterSlider" class="slider" min="0" max="10" value="5" step="1">
+            </div>
+            
+            <!-- RESULT DISPLAY -->
+            <div id="breathingResult" class="result-box">
+              Complete practice to see result
+            </div>
           </div>
         </div>
+        
+        <!-- SAVE BUTTON FOR ACTIONABLE SKILL -->
+        <button id="saveBreathingBtn" class="btn-save">
+          <span>🌬️</span> Save Paced Breathing
+        </button>
+        <div id="breathingSaveFeedback" class="save-feedback"></div>
+        
+        <div class="btn-group">
+          <button class="btn btn-secondary" onclick="previousStep()">← Back</button>
+          <button class="btn btn-primary" onclick="nextStep()">Continue →</button>
+        </div>
+        
+        ${renderFooter()}
       </div>
-      
-      <button id="saveBreathingBtn" class="btn-save">
-        <span>🌬️</span> Save Paced Breathing
-      </button>
-      <div id="breathingSaveFeedback" class="save-feedback"></div>
-      
-      <div class="btn-group">
-        <button class="btn btn-secondary" onclick="previousStep()">← Back</button>
-        <button class="btn btn-primary" onclick="nextStep()">Continue →</button>
-      </div>
-      
-      ${renderFooter()}
     `;
   }
 
@@ -1619,8 +1660,8 @@
       saveToToolkit({
         id: 'paced-breathing',
         category: 'Module 2',
-        name: 'Paced Breathing 4-7-8',
-        description: '2-3 minutes • Inhale 4, hold 7, exhale 8'
+        name: '🌬️ Paced Breathing 4-7-8',
+        description: '2-3 minutes • For moderate anxiety • Inhale 4 sec, hold 7 sec, exhale 8 sec • Longer exhale activates calm'
       });
       
       btn.classList.add('saved');
@@ -1636,143 +1677,146 @@
     };
   }
 
-  // ===== STEP 7: PROGRESSIVE MUSCLE RELAXATION =====
+  // ===== STEP 7: PROGRESSIVE MUSCLE RELAXATION (with save button for ACTUAL SKILL) =====
   function renderStep7() {
     setTimeout(() => initPMR(), 10);
     setTimeout(() => initPMRSave(), 10);
     
     return `
-      ${renderHeader()}
-      
-      <div class="card">
-        <div class="section-header">
-          <span class="section-icon">💆</span>
-          <span class="section-title">Progressive Muscle Relaxation</span>
-        </div>
+      <div class="step-content">
+        ${renderHeader()}
         
-        <div style="color: var(--text-secondary); line-height: 1.6; font-size: 0.9375rem;">
-          <p>"You can't be physically tense and mentally relaxed at the same time. Tense then release each group."</p>
-        </div>
-        
-        <div class="technique-stats">
-          <div class="stat">
-            <div class="stat-label">Speed</div>
-            <div class="stat-value">⚡ 2-3 min</div>
-          </div>
-          <div class="stat">
-            <div class="stat-label">Best for</div>
-            <div class="stat-value">🎯 Physical tension</div>
-          </div>
-          <div class="stat">
-            <div class="stat-label">Intensity</div>
-            <div class="stat-value">💪 Low</div>
-          </div>
-        </div>
-      </div>
-      
-      <!-- SIMPLE VISUAL PMR WITH BEFORE/AFTER -->
-      <div class="practice-card">
-        <div class="practice-title" style="justify-content: center;">
-          <span>💆</span> SIMPLE PMR
-        </div>
-        
-        <!-- BEFORE SLIDER -->
-        <div class="slider-container">
-          <div class="slider-label">
-            <span>Tension before (0-10)</span>
-            <span class="slider-value" id="pmrBeforeValue">5</span>
-          </div>
-          <input type="range" id="pmrBeforeSlider" class="slider" min="0" max="10" value="5" step="1">
-          <div class="slider-labels">
-            <span>0 - Relaxed</span>
-            <span>10 - Tense</span>
-          </div>
-        </div>
-        
-        <p style="color: var(--text-secondary); text-align: center; margin-bottom: var(--space-lg); font-size: 0.875rem;">
-          Hold each tension for 5 seconds, then release. Go at your own pace.
-        </p>
-        
-        <div style="display: flex; flex-direction: column; gap: var(--space-md);">
-          <div style="background: rgba(15,23,42,0.6); border-radius: 1rem; padding: var(--space-md);">
-            <div style="display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-xs);">
-              <span style="font-size: 1.8rem;">✊</span>
-              <span style="color: var(--text-teal-light); font-weight: 600;">Hands</span>
-            </div>
-            <p style="color: var(--text-secondary); font-size: 0.8125rem; margin-left: 2.5rem;">Tense: fists → Release: soft</p>
+        <div class="card">
+          <div class="section-header">
+            <span class="section-icon">💆</span>
+            <span class="section-title">Progressive Muscle Relaxation</span>
           </div>
           
-          <div style="background: rgba(15,23,42,0.6); border-radius: 1rem; padding: var(--space-md);">
-            <div style="display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-xs);">
-              <span style="font-size: 1.8rem;">💪</span>
-              <span style="color: var(--text-teal-light); font-weight: 600;">Arms</span>
-            </div>
-            <p style="color: var(--text-secondary); font-size: 0.8125rem; margin-left: 2.5rem;">Tense: biceps → Release: drop heavy</p>
+          <div style="color: var(--text-secondary); line-height: 1.6; font-size: 0.9375rem;">
+            <p>"You can't be physically tense and mentally relaxed at the same time. Tense then release each group."</p>
           </div>
           
-          <div style="background: rgba(15,23,42,0.6); border-radius: 1rem; padding: var(--space-md);">
-            <div style="display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-xs);">
-              <span style="font-size: 1.8rem;">⬆️</span>
-              <span style="color: var(--text-teal-light); font-weight: 600;">Shoulders</span>
+          <div class="technique-stats">
+            <div class="stat">
+              <div class="stat-label">Speed</div>
+              <div class="stat-value">⚡ 2-3 min</div>
             </div>
-            <p style="color: var(--text-secondary); font-size: 0.8125rem; margin-left: 2.5rem;">Tense: up to ears → Release: drop down</p>
-          </div>
-          
-          <div style="background: rgba(15,23,42,0.6); border-radius: 1rem; padding: var(--space-md);">
-            <div style="display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-xs);">
-              <span style="font-size: 1.8rem;">😬</span>
-              <span style="color: var(--text-teal-light); font-weight: 600;">Face</span>
+            <div class="stat">
+              <div class="stat-label">Best for</div>
+              <div class="stat-value">🎯 Physical tension</div>
             </div>
-            <p style="color: var(--text-secondary); font-size: 0.8125rem; margin-left: 2.5rem;">Tense: scrunch → Release: soften jaw</p>
-          </div>
-          
-          <div style="background: rgba(15,23,42,0.6); border-radius: 1rem; padding: var(--space-md);">
-            <div style="display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-xs);">
-              <span style="font-size: 1.8rem;">🦵</span>
-              <span style="color: var(--text-teal-light); font-weight: 600;">Legs</span>
+            <div class="stat">
+              <div class="stat-label">Intensity</div>
+              <div class="stat-value">💪 Low</div>
             </div>
-            <p style="color: var(--text-secondary); font-size: 0.8125rem; margin-left: 2.5rem;">Tense: point toes → Release: heavy</p>
           </div>
         </div>
         
-        <!-- AFTER SLIDER -->
-        <div style="margin-top: var(--space-xl);">
+        <!-- SIMPLE VISUAL PMR WITH BEFORE/AFTER -->
+        <div class="practice-card">
+          <div class="practice-title" style="justify-content: center;">
+            <span>💆</span> SIMPLE PMR
+          </div>
+          
+          <!-- BEFORE SLIDER -->
           <div class="slider-container">
             <div class="slider-label">
-              <span>Tension now (0-10)</span>
-              <span class="slider-value" id="pmrAfterValue">5</span>
+              <span>Tension before (0-10)</span>
+              <span class="slider-value" id="pmrBeforeValue">5</span>
             </div>
-            <input type="range" id="pmrAfterSlider" class="slider" min="0" max="10" value="5" step="1">
+            <input type="range" id="pmrBeforeSlider" class="slider" min="0" max="10" value="5" step="1">
+            <div class="slider-labels">
+              <span>0 - Relaxed</span>
+              <span>10 - Tense</span>
+            </div>
           </div>
           
-          <!-- RESULT DISPLAY -->
-          <div id="pmrResult" class="result-box">
-            Adjust the after slider to see your result
+          <p style="color: var(--text-secondary); text-align: center; margin-bottom: var(--space-lg); font-size: 0.875rem;">
+            Hold each tension for 5 seconds, then release. Go at your own pace.
+          </p>
+          
+          <div style="display: flex; flex-direction: column; gap: var(--space-md);">
+            <div style="background: rgba(15,23,42,0.6); border-radius: 1rem; padding: var(--space-md);">
+              <div style="display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-xs);">
+                <span style="font-size: 1.8rem;">✊</span>
+                <span style="color: var(--text-teal-light); font-weight: 600;">Hands</span>
+              </div>
+              <p style="color: var(--text-secondary); font-size: 0.8125rem; margin-left: 2.5rem;">Tense: fists → Release: soft</p>
+            </div>
+            
+            <div style="background: rgba(15,23,42,0.6); border-radius: 1rem; padding: var(--space-md);">
+              <div style="display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-xs);">
+                <span style="font-size: 1.8rem;">💪</span>
+                <span style="color: var(--text-teal-light); font-weight: 600;">Arms</span>
+              </div>
+              <p style="color: var(--text-secondary); font-size: 0.8125rem; margin-left: 2.5rem;">Tense: biceps → Release: drop heavy</p>
+            </div>
+            
+            <div style="background: rgba(15,23,42,0.6); border-radius: 1rem; padding: var(--space-md);">
+              <div style="display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-xs);">
+                <span style="font-size: 1.8rem;">⬆️</span>
+                <span style="color: var(--text-teal-light); font-weight: 600;">Shoulders</span>
+              </div>
+              <p style="color: var(--text-secondary); font-size: 0.8125rem; margin-left: 2.5rem;">Tense: up to ears → Release: drop down</p>
+            </div>
+            
+            <div style="background: rgba(15,23,42,0.6); border-radius: 1rem; padding: var(--space-md);">
+              <div style="display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-xs);">
+                <span style="font-size: 1.8rem;">😬</span>
+                <span style="color: var(--text-teal-light); font-weight: 600;">Face</span>
+              </div>
+              <p style="color: var(--text-secondary); font-size: 0.8125rem; margin-left: 2.5rem;">Tense: scrunch → Release: soften jaw</p>
+            </div>
+            
+            <div style="background: rgba(15,23,42,0.6); border-radius: 1rem; padding: var(--space-md);">
+              <div style="display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-xs);">
+                <span style="font-size: 1.8rem;">🦵</span>
+                <span style="color: var(--text-teal-light); font-weight: 600;">Legs</span>
+              </div>
+              <p style="color: var(--text-secondary); font-size: 0.8125rem; margin-left: 2.5rem;">Tense: point toes → Release: heavy</p>
+            </div>
+          </div>
+          
+          <!-- AFTER SLIDER -->
+          <div style="margin-top: var(--space-xl);">
+            <div class="slider-container">
+              <div class="slider-label">
+                <span>Tension now (0-10)</span>
+                <span class="slider-value" id="pmrAfterValue">5</span>
+              </div>
+              <input type="range" id="pmrAfterSlider" class="slider" min="0" max="10" value="5" step="1">
+            </div>
+            
+            <!-- RESULT DISPLAY -->
+            <div id="pmrResult" class="result-box">
+              Adjust the after slider to see your result
+            </div>
+          </div>
+          
+          <!-- REFLECTION BUTTONS -->
+          <div style="margin-top: var(--space-md); padding-top: var(--space-md); border-top: 1px solid var(--border-softer);">
+            <p style="color: var(--text-secondary); text-align: center; margin-bottom: var(--space-sm); font-size: 0.875rem;">How do you feel?</p>
+            <div style="display: flex; gap: var(--space-sm); justify-content: center;">
+              <button class="btn-practice btn-practice-secondary pmr-reflection">More relaxed</button>
+              <button class="btn-practice btn-practice-secondary pmr-reflection">Same</button>
+              <button class="btn-practice btn-practice-secondary pmr-reflection">Not sure</button>
+            </div>
           </div>
         </div>
         
-        <!-- REFLECTION BUTTONS -->
-        <div style="margin-top: var(--space-md); padding-top: var(--space-md); border-top: 1px solid var(--border-softer);">
-          <p style="color: var(--text-secondary); text-align: center; margin-bottom: var(--space-sm); font-size: 0.875rem;">How do you feel?</p>
-          <div style="display: flex; gap: var(--space-sm); justify-content: center;">
-            <button class="btn-practice btn-practice-secondary pmr-reflection">More relaxed</button>
-            <button class="btn-practice btn-practice-secondary pmr-reflection">Same</button>
-            <button class="btn-practice btn-practice-secondary pmr-reflection">Not sure</button>
-          </div>
+        <!-- SAVE BUTTON FOR ACTIONABLE SKILL -->
+        <button id="savePMRBtn" class="btn-save">
+          <span>💆</span> Save PMR to Toolkit
+        </button>
+        <div id="pmrSaveFeedback" class="save-feedback"></div>
+        
+        <div class="btn-group">
+          <button class="btn btn-secondary" onclick="previousStep()">← Back</button>
+          <button class="btn btn-primary" onclick="nextStep()">Continue →</button>
         </div>
+        
+        ${renderFooter()}
       </div>
-      
-      <button id="savePMRBtn" class="btn-save">
-        <span>💆</span> Save PMR to Toolkit
-      </button>
-      <div id="pmrSaveFeedback" class="save-feedback"></div>
-      
-      <div class="btn-group">
-        <button class="btn btn-secondary" onclick="previousStep()">← Back</button>
-        <button class="btn btn-primary" onclick="nextStep()">Continue →</button>
-      </div>
-      
-      ${renderFooter()}
     `;
   }
 
@@ -1818,8 +1862,8 @@
       saveToToolkit({
         id: 'pmr',
         category: 'Module 2',
-        name: 'Progressive Muscle Relaxation',
-        description: '2-3 minutes • Tense & release: hands, arms, shoulders, face, legs'
+        name: '💆 Progressive Muscle Relaxation',
+        description: '2-3 minutes • For physical tension • Tense & release: hands, arms, shoulders, face, legs • Hold 5 sec, release'
       });
       
       btn.classList.add('saved');
@@ -1850,87 +1894,91 @@
     setTimeout(() => initReflection(), 10);
     
     return `
-      ${renderHeader()}
-      
-      <div class="card">
-        <div class="section-header">
-          <span class="section-icon">🔥</span>
-          <span class="section-title">Temperature Shock</span>
-        </div>
+      <div class="step-content">
+        ${renderHeader()}
         
-        <div style="color: var(--text-secondary); line-height: 1.6; font-size: 0.9375rem;">
-          <p>Extreme temperatures interrupt emotional overwhelm by taking up brain bandwidth.</p>
-        </div>
-        
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-sm); margin: var(--space-lg) 0;">
-          <div style="background: rgba(14,116,144,0.1); padding: var(--space-md); border-radius: 0.875rem;">
-            <p style="color: var(--text-teal); font-weight: 600; margin-bottom: var(--space-xs);">❄️ Cold</p>
-            <ul style="color: var(--text-secondary); font-size: 0.8125rem; list-style-position: inside;">
-              <li>Ice cubes in hands</li>
-              <li>Cold shower</li>
-              <li>Cold walk</li>
-            </ul>
+        <div class="card">
+          <div class="section-header">
+            <span class="section-icon">🔥</span>
+            <span class="section-title">Temperature Shock</span>
           </div>
-          <div style="background: rgba(217,119,6,0.1); padding: var(--space-md); border-radius: 0.875rem;">
-            <p style="color: var(--text-amber); font-weight: 600; margin-bottom: var(--space-xs);">🔥 Heat</p>
-            <ul style="color: var(--text-secondary); font-size: 0.8125rem; list-style-position: inside;">
-              <li>Hot shower</li>
-              <li>Heating pad</li>
-              <li>Warm hands</li>
-            </ul>
+          
+          <div style="color: var(--text-secondary); line-height: 1.6; font-size: 0.9375rem;">
+            <p>Extreme temperatures interrupt emotional overwhelm by taking up brain bandwidth.</p>
           </div>
-        </div>
-        
-        <div class="safety-note">
-          <strong>⚠️ Sensation, not harm.</strong> Don't cause injury.
-        </div>
-      </div>
-      
-      <button id="saveTempBtn" class="btn-save">
-        <span>🌡️</span> Save Temperature Techniques
-      </button>
-      <div id="tempSaveFeedback" class="save-feedback"></div>
-      
-      <!-- REFERENCE CARD - TOP TECHNIQUES -->
-      <div class="reference-card">
-        <div class="reference-title">
-          <span>📋</span> Your Top Tools
-        </div>
-        
-        <p style="color: white; margin-bottom: var(--space-md); font-size: 0.9375rem;">
-          Which 2-3 techniques felt most accessible?
-        </p>
-        
-        <div class="reflection-grid" id="techniqueCheckboxes">
-          <label class="reflection-checkbox"><input type="checkbox" value="Cold Water"> Cold water</label>
-          <label class="reflection-checkbox"><input type="checkbox" value="Intense Exercise"> Intense exercise</label>
-          <label class="reflection-checkbox"><input type="checkbox" value="Paced Breathing"> Paced breathing</label>
-          <label class="reflection-checkbox"><input type="checkbox" value="Muscle Relaxation"> Muscle relaxation</label>
-          <label class="reflection-checkbox"><input type="checkbox" value="Temperature Shock"> Temperature shock</label>
-        </div>
-        
-        <div style="background: rgba(217,119,6,0.1); padding: var(--space-md); border-radius: 0.875rem; margin-top: var(--space-lg);">
-          <p style="color: var(--text-amber); font-weight: 600; margin-bottom: var(--space-sm); text-align: center; font-size: 0.875rem;">
-            Practice when calm. Commit to your top 2 this week?
-          </p>
-          <div style="display: flex; gap: var(--space-sm);">
-            <button id="commitYesBtn" class="btn-practice btn-practice-primary" style="flex: 1;">Yes, Commit</button>
-            <button id="commitLaterBtn" class="btn-practice btn-practice-secondary" style="flex: 1;">Later</button>
+          
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-sm); margin: var(--space-lg) 0;">
+            <div style="background: rgba(14,116,144,0.1); padding: var(--space-md); border-radius: 0.875rem;">
+              <p style="color: var(--text-teal); font-weight: 600; margin-bottom: var(--space-xs);">❄️ Cold</p>
+              <ul style="color: var(--text-secondary); font-size: 0.8125rem; list-style-position: inside;">
+                <li>Ice cubes in hands</li>
+                <li>Cold shower</li>
+                <li>Cold walk</li>
+              </ul>
+            </div>
+            <div style="background: rgba(217,119,6,0.1); padding: var(--space-md); border-radius: 0.875rem;">
+              <p style="color: var(--text-amber); font-weight: 600; margin-bottom: var(--space-xs);">🔥 Heat</p>
+              <ul style="color: var(--text-secondary); font-size: 0.8125rem; list-style-position: inside;">
+                <li>Hot shower</li>
+                <li>Heating pad</li>
+                <li>Warm hands</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="safety-note">
+            <strong>⚠️ Sensation, not harm.</strong> Don't cause injury.
           </div>
         </div>
         
-        <button id="saveReflectionBtn" class="btn-save" style="margin-top: var(--space-lg);">
-          <span>📋</span> Save My Top Techniques
+        <!-- SAVE BUTTON FOR ACTIONABLE SKILL -->
+        <button id="saveTempBtn" class="btn-save">
+          <span>🌡️</span> Save Temperature Techniques
         </button>
-        <div id="reflectionSaveFeedback" class="save-feedback"></div>
+        <div id="tempSaveFeedback" class="save-feedback"></div>
+        
+        <!-- REFERENCE CARD - TOP TECHNIQUES -->
+        <div class="reference-card">
+          <div class="reference-title">
+            <span>📋</span> Your Top Tools
+          </div>
+          
+          <p style="color: white; margin-bottom: var(--space-md); font-size: 0.9375rem;">
+            Which 2-3 techniques felt most accessible?
+          </p>
+          
+          <div class="reflection-grid" id="techniqueCheckboxes">
+            <label class="reflection-checkbox"><input type="checkbox" value="Cold Water"> Cold water</label>
+            <label class="reflection-checkbox"><input type="checkbox" value="Intense Exercise"> Intense exercise</label>
+            <label class="reflection-checkbox"><input type="checkbox" value="Paced Breathing"> Paced breathing</label>
+            <label class="reflection-checkbox"><input type="checkbox" value="Muscle Relaxation"> Muscle relaxation</label>
+            <label class="reflection-checkbox"><input type="checkbox" value="Temperature Shock"> Temperature shock</label>
+          </div>
+          
+          <div style="background: rgba(217,119,6,0.1); padding: var(--space-md); border-radius: 0.875rem; margin-top: var(--space-lg);">
+            <p style="color: var(--text-amber); font-weight: 600; margin-bottom: var(--space-sm); text-align: center; font-size: 0.875rem;">
+              Practice when calm. Commit to your top 2 this week?
+            </p>
+            <div style="display: flex; gap: var(--space-sm);">
+              <button id="commitYesBtn" class="btn-practice btn-practice-primary" style="flex: 1;">Yes, Commit</button>
+              <button id="commitLaterBtn" class="btn-practice btn-practice-secondary" style="flex: 1;">Later</button>
+            </div>
+          </div>
+          
+          <!-- SAVE BUTTON FOR USER'S TOP TECHNIQUES -->
+          <button id="saveReflectionBtn" class="btn-save" style="margin-top: var(--space-lg);">
+            <span>📋</span> Save My Top Techniques
+          </button>
+          <div id="reflectionSaveFeedback" class="save-feedback"></div>
+        </div>
+        
+        <div class="btn-group">
+          <button class="btn btn-secondary" onclick="previousStep()">← Back</button>
+          <button class="btn btn-primary" onclick="nextStep()">Complete Module →</button>
+        </div>
+        
+        ${renderFooter()}
       </div>
-      
-      <div class="btn-group">
-        <button class="btn btn-secondary" onclick="previousStep()">← Back</button>
-        <button class="btn btn-primary" onclick="nextStep()">Complete Module →</button>
-      </div>
-      
-      ${renderFooter()}
     `;
   }
 
@@ -1943,8 +1991,8 @@
       saveToToolkit({
         id: 'temperature',
         category: 'Module 2',
-        name: 'Temperature Shock',
-        description: '1-2 minutes • Cold or heat for numbness/dissociation'
+        name: '🌡️ Temperature Shock',
+        description: '1-2 minutes • For numbness/dissociation • Cold: ice cubes in hands, cold shower • Heat: hot shower, heating pad'
       });
       
       btn.classList.add('saved');
@@ -2019,7 +2067,7 @@
         saveToToolkit({
           id: 'my-top-techniques',
           category: 'My Crisis Profile',
-          name: 'My Top Physical Reset Techniques',
+          name: '📋 My Top Physical Reset Techniques',
           description: techniques.join(', ')
         });
         
@@ -2043,32 +2091,103 @@
   function renderStep9() {
     setTimeout(() => initComplete(), 10);
     
+    // Get progress data
+    const progress = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
+    const isPracticed = progress.practicedModules?.includes('module2') || false;
+    const toolkitCount = JSON.parse(localStorage.getItem('crisis_toolkit') || '[]').length;
+    
     return `
-      ${renderHeader()}
-      
-      <div class="card-highlight" style="text-align: center;">
-        <div style="font-size: 3rem; margin-bottom: var(--space-sm);">✅</div>
-        <h2 style="color: var(--text-teal-light); font-size: 1.5rem; margin-bottom: var(--space-sm);">Module 2 Complete!</h2>
-        <p style="color: var(--text-secondary); margin-bottom: var(--space-md); font-size: 0.9375rem;">
-          You now have physical tools to reset your nervous system.
-        </p>
-        <p style="color: var(--text-teal); font-weight: 600; font-size: 1rem;">
-          Next: Module 3 — Grounding
-        </p>
+      <div class="step-content">
+        ${renderHeader()}
+        
+        <div class="card-highlight" style="text-align: center;">
+          <div style="font-size: 3rem; margin-bottom: var(--space-sm);">✅</div>
+          <h2 style="color: var(--text-teal-light); font-size: 1.5rem; margin-bottom: var(--space-sm);">Module 2 Complete!</h2>
+          <p style="color: var(--text-secondary); margin-bottom: var(--space-md); font-size: 0.9375rem;">
+            You now have physical tools to reset your nervous system.
+          </p>
+          
+          <div class="completion-stats">
+            <div class="stat-item">
+              <div class="stat-value">5</div>
+              <div class="stat-label">SKILLS LEARNED</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value">${toolkitCount}</div>
+              <div class="stat-label">TOOLKIT ITEMS</div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- MARK AS PRACTICED BUTTON -->
+        <div style="text-align: center; margin: var(--space-xl) 0;">
+          <button id="practiceBtn" class="btn-practice ${isPracticed ? 'btn-practice-secondary' : 'btn-practice-primary'}" style="padding: 0.875rem 2rem; border-radius: 2rem;">
+            <span>${isPracticed ? '✓' : '○'}</span>
+            <span>${isPracticed ? 'Module 2 Practiced' : 'Mark Module as Practiced'}</span>
+          </button>
+        </div>
+        
+        <!-- NAVIGATION BUTTONS -->
+        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+            <a href="crisis-module-1.html" class="btn btn-secondary">
+              <span>← Module 1</span>
+            </a>
+            <a href="crisis-module-3.html" class="btn btn-primary">
+              <span>Module 3 →</span>
+            </a>
+          </div>
+          
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+            <a href="crisis-intro.html" class="btn btn-secondary">
+              <span>🏠</span>
+              <span>Course Hub</span>
+            </a>
+            <button onclick="goToStep(1)" class="btn btn-secondary">
+              <span>↻</span>
+              <span>Review Module</span>
+            </button>
+          </div>
+          
+          <a href="crisis-toolkit.html" class="btn btn-save" style="background: rgba(217,119,6,0.1); margin-top: 0.5rem;">
+            <span>🧰</span>
+            <span>View My Toolkit</span>
+          </a>
+        </div>
+        
+        <!-- SKILLS SUMMARY -->
+        <div class="card" style="margin-top: 1.5rem;">
+          <div class="section-header">
+            <span class="section-icon">🧰</span>
+            <span class="section-title">Your New Skills</span>
+          </div>
+          
+          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem;">
+            <div style="background: rgba(14,116,144,0.1); padding: 0.75rem; border-radius: 0.75rem; text-align: center;">
+              <span style="font-size: 1.5rem;">🧊</span>
+              <p style="color: var(--text-teal); font-size: 0.75rem; margin-top: 0.25rem;">Cold Water</p>
+            </div>
+            <div style="background: rgba(14,116,144,0.1); padding: 0.75rem; border-radius: 0.75rem; text-align: center;">
+              <span style="font-size: 1.5rem;">💪</span>
+              <p style="color: var(--text-teal); font-size: 0.75rem; margin-top: 0.25rem;">Exercise</p>
+            </div>
+            <div style="background: rgba(14,116,144,0.1); padding: 0.75rem; border-radius: 0.75rem; text-align: center;">
+              <span style="font-size: 1.5rem;">🌬️</span>
+              <p style="color: var(--text-teal); font-size: 0.75rem; margin-top: 0.25rem;">4-7-8 Breathing</p>
+            </div>
+            <div style="background: rgba(14,116,144,0.1); padding: 0.75rem; border-radius: 0.75rem; text-align: center;">
+              <span style="font-size: 1.5rem;">💆</span>
+              <p style="color: var(--text-teal); font-size: 0.75rem; margin-top: 0.25rem;">PMR</p>
+            </div>
+            <div style="background: rgba(14,116,144,0.1); padding: 0.75rem; border-radius: 0.75rem; text-align: center; grid-column: span 2;">
+              <span style="font-size: 1.5rem;">🌡️</span>
+              <p style="color: var(--text-teal); font-size: 0.75rem; margin-top: 0.25rem;">Temperature</p>
+            </div>
+          </div>
+        </div>
+        
+        ${renderFooter()}
       </div>
-      
-      <div style="text-align: center; margin: var(--space-xl) 0;">
-        <button id="practiceBtn" style="background: var(--success-bg); color: var(--success-emerald); border: 1px solid rgba(74,222,128,0.3); padding: 0.75rem 2rem; border-radius: 2rem; font-size: 0.875rem; font-weight: 600; cursor: pointer;">
-          ✓ Mark Module as Practiced
-        </button>
-      </div>
-      
-      <div class="btn-group">
-        <button class="btn btn-secondary" onclick="previousStep()">← Back</button>
-        <a href="crisis-module-3.html" class="btn btn-primary">Module 3 →</a>
-      </div>
-      
-      ${renderFooter()}
     `;
   }
 
@@ -2077,18 +2196,30 @@
     if (!btn) return;
     
     let progress = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
+    if (!progress.practicedModules) progress.practicedModules = [];
     
-    if (progress.practicedModules && progress.practicedModules.includes('module2')) {
-      btn.innerHTML = '✓ Module 2 Practiced';
+    if (progress.practicedModules.includes('module2')) {
+      btn.classList.remove('btn-practice-primary');
+      btn.classList.add('btn-practice-secondary');
+      btn.innerHTML = '<span>✓</span><span>Module 2 Practiced</span>';
     }
     
     btn.onclick = function() {
-      if (!progress.practicedModules) progress.practicedModules = [];
       if (!progress.practicedModules.includes('module2')) {
         progress.practicedModules.push('module2');
         progress.lastPracticed = new Date().toISOString();
         localStorage.setItem('crisis_course_progress', JSON.stringify(progress));
-        btn.innerHTML = '✓ Module 2 Practiced';
+        
+        btn.classList.remove('btn-practice-primary');
+        btn.classList.add('btn-practice-secondary');
+        btn.innerHTML = '<span>✓</span><span>Module 2 Practiced</span>';
+        
+        // Show feedback
+        const feedback = document.createElement('div');
+        feedback.style.cssText = 'color: var(--success-emerald); text-align: center; margin-top: 0.5rem; font-size: 0.9rem;';
+        feedback.textContent = '✓ Progress saved!';
+        btn.parentNode.appendChild(feedback);
+        setTimeout(() => feedback.remove(), 3000);
       }
     };
   }
