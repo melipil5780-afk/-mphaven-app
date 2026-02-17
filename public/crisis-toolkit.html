@@ -644,12 +644,8 @@ html, body {
 (function() {
     'use strict';
     
-    // ===== CHECK DISCLAIMER =====
-    const acknowledged = localStorage.getItem('crisis_disclaimer_acknowledged');
-    if (!acknowledged) {
-        window.location.href = 'crisis-intro.html';
-        return;
-    }
+    // ===== NO DISCLAIMER CHECK - REMOVED =====
+    // The toolkit loads directly without any redirects
 
     // ===== LOAD AND RENDER TOOLKIT =====
     function loadToolkit() {
@@ -752,7 +748,7 @@ html, body {
             return;
         }
         
-        // Group by category - with special handling for Crisis Plan items
+        // Group by category
         const categories = {
             '🆘 My Crisis Plan': [],
             '💪 Physical Skills': [],
@@ -778,10 +774,11 @@ html, body {
             // Intensity Plan
             if (crisisPlan.intensityPlan) {
                 const ip = crisisPlan.intensityPlan;
+                const desc = `Mild: ${ip.mild || '—'} • Moderate: ${ip.moderate?.filter(Boolean).join(', ') || '—'} • High: ${ip.high?.physical?.filter(Boolean).join(', ') || '—'}`;
                 categories['🆘 My Crisis Plan'].push({
                     id: 'intensity-plan',
                     name: '📊 My Intensity Plan',
-                    description: `Mild: ${ip.mild || '—'} • Moderate: ${ip.moderate?.filter(Boolean).join(', ') || '—'} • High: ${ip.high?.physical?.filter(Boolean).join(', ') || '—'}`,
+                    description: desc,
                     category: 'Crisis Plan',
                     date: crisisPlan.lastUpdated
                 });
@@ -790,10 +787,11 @@ html, body {
             // Practice Plan
             if (crisisPlan.practicePlan) {
                 const pp = crisisPlan.practicePlan;
+                const desc = `Practice: ${pp.skill1 || '—'} (${pp.freq1 || 'daily'})${pp.skill2 ? `, ${pp.skill2} (${pp.freq2})` : ''}`;
                 categories['🆘 My Crisis Plan'].push({
                     id: 'practice-plan',
                     name: '📅 My Practice Plan',
-                    description: `Practice: ${pp.skill1 || '—'} (${pp.freq1 || 'daily'})${pp.skill2 ? `, ${pp.skill2} (${pp.freq2})` : ''}`,
+                    description: desc,
                     category: 'Crisis Plan',
                     date: crisisPlan.lastUpdated
                 });
@@ -803,29 +801,20 @@ html, body {
         // Add toolkit items to appropriate categories
         toolkit.forEach(skill => {
             const cat = skill.category || 'Other';
+            const name = skill.name?.toLowerCase() || '';
             
-            if (cat.includes('Physical') || cat.includes('Module 2')) {
+            if (cat.includes('Physical') || cat.includes('Module 2') || name.includes('cold') || name.includes('exercise') || name.includes('breath') || name.includes('pmr') || name.includes('temperature')) {
                 categories['💪 Physical Skills'].push(skill);
-            } else if (cat.includes('Mental') || cat.includes('Module 3')) {
+            } else if (cat.includes('Mental') || cat.includes('Module 3') || name.includes('ground') || name.includes('cognitive') || name.includes('sensation') || name.includes('bilateral') || name.includes('distraction')) {
                 categories['🧠 Mental Techniques'].push(skill);
-            } else if (cat.includes('Acceptance') || cat.includes('Making Peace') || cat.includes('Module 4')) {
+            } else if (cat.includes('Acceptance') || cat.includes('Making Peace') || cat.includes('Module 4') || name.includes('accept') || name.includes('compassion') || name.includes('defusion') || name.includes('willing') || name.includes('smile')) {
                 categories['🕊️ Acceptance Skills'].push(skill);
-            } else if (cat.includes('Profile') || cat.includes('Module 1')) {
+            } else if (cat.includes('Profile') || cat.includes('Module 1') || name.includes('urge') || name.includes('window')) {
                 categories['📋 My Profile'].push(skill);
             } else if (cat.includes('Crisis Plan') || cat.includes('Module 5')) {
                 categories['🆘 My Crisis Plan'].push(skill);
             } else {
-                // Put in most relevant category based on name
-                const name = skill.name?.toLowerCase() || '';
-                if (name.includes('cold') || name.includes('exercise') || name.includes('breath') || name.includes('pmr') || name.includes('temperature')) {
-                    categories['💪 Physical Skills'].push(skill);
-                } else if (name.includes('ground') || name.includes('cognitive') || name.includes('sensation') || name.includes('bilateral') || name.includes('distraction')) {
-                    categories['🧠 Mental Techniques'].push(skill);
-                } else if (name.includes('accept') || name.includes('compassion') || name.includes('defusion') || name.includes('willing') || name.includes('smile')) {
-                    categories['🕊️ Acceptance Skills'].push(skill);
-                } else {
-                    categories['📋 My Profile'].push(skill);
-                }
+                categories['📋 My Profile'].push(skill);
             }
         });
         
@@ -898,7 +887,7 @@ html, body {
                     <div class="skill-detail-item"><span class="skill-detail-label">1.</span> ${v.val1 || '—'}</div>
                     <div class="skill-detail-item"><span class="skill-detail-label">2.</span> ${v.val2 || '—'}</div>
                     <div class="skill-detail-item"><span class="skill-detail-label">3.</span> ${v.val3 || '—'}</div>
-                    <div class="skill-detail-item"><span class="skill-detail-label">Relationships:</span> ${v.rel || '—'}</div>
+                    <div class="skill-detail-item"><span class="skill-detail-label">Rel:</span> ${v.rel || '—'}</div>
                 </div>
             `;
         }
@@ -935,9 +924,9 @@ html, body {
             window.location.href = 'crisis-module-3.html';
         } else if (skillId.includes('accept') || skillId.includes('compassion') || skillId.includes('defusion') || skillId.includes('willing') || skillId.includes('smile')) {
             window.location.href = 'crisis-module-4.html';
-        } else if (skillId.includes('values') || skillId.includes('crisis-card') || skillId.includes('intensity') || skillId.includes('practice')) {
+        } else if (skillId.includes('values') || skillId.includes('crisis-card') || skillId.includes('intensity') || skillId.includes('practice') || skillId.includes('pros-cons') || skillId.includes('kit')) {
             window.location.href = 'crisis-module-5.html';
-        } else if (skillId.includes('urges')) {
+        } else if (skillId.includes('urges') || skillId.includes('window')) {
             window.location.href = 'crisis-module-1.html';
         } else {
             window.location.href = 'crisis-intro.html';
