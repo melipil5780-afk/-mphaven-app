@@ -112,40 +112,7 @@ html, body {
   display: none;
 }
 
-.crisis-banner {
-  background: var(--crisis-bg);
-  border: 1px solid var(--crisis-red);
-  border-radius: 0.75rem;
-  padding: var(--space-sm) var(--space-md);
-  margin-bottom: var(--space-lg);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: var(--space-sm);
-}
-
-.crisis-text {
-  color: #fca5a5;
-  font-size: 0.8125rem;
-  font-weight: 600;
-}
-
-.crisis-actions {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.crisis-link {
-  color: white;
-  background: var(--crisis-red);
-  text-decoration: none;
-  padding: 0.4rem 0.875rem;
-  border-radius: 2rem;
-  font-size: 0.75rem;
-  font-weight: 700;
-}
-
+/* Header - NO crisis banner at top */
 .header {
   background: linear-gradient(135deg, var(--bg-card-light), var(--bg-card-dark));
   border: 1px solid var(--border-softer);
@@ -658,6 +625,33 @@ html, body {
   margin-bottom: var(--space-lg);
 }
 
+/* Completion Stats */
+.completion-stats {
+  display: flex;
+  justify-content: space-around;
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background: rgba(15,23,42,0.6);
+  border-radius: 1rem;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-teal);
+}
+
+.stat-label {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+
+/* Footer */
 .footer {
   margin-top: var(--space-xxl);
   padding-top: var(--space-lg);
@@ -719,10 +713,14 @@ html, body {
 
 <script>
 (function() {
-  // Auto‑set disclaimer flag so the page works standalone
-  if (!localStorage.getItem('crisis_disclaimer_acknowledged')) {
-    localStorage.setItem('crisis_disclaimer_acknowledged', 'true');
-  }
+  'use strict';
+  
+  // ===== UPDATE COURSE PROGRESS =====
+  // This connects Module 5 to the intro page
+  let courseProgress = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
+  courseProgress.currentModule = 5;
+  courseProgress.lastAccessed = new Date().toISOString();
+  localStorage.setItem('crisis_course_progress', JSON.stringify(courseProgress));
 
   let currentStep = 1;
   const totalSteps = 9;
@@ -739,26 +737,23 @@ html, body {
     9: 'Course Complete!'
   };
 
-  // Corrected skills – only what's actually taught in modules 1-4
-   const allSkills = [
-    // Module 1
-    { module: 1, name: 'Crisis Brain Facts', icon: '🧠', desc: 'Thinking brain offline • Emotions peak 10-20 min • Wave passes' },
-    
-    // Module 2
+  // CORRECTED skills - only actual actionable skills, no educational content
+  const allSkills = [
+    // Module 2 - Physical Skills
     { module: 2, name: 'Cold Water', icon: '🧊', desc: 'Dive reflex – 30-60 sec face dunk' },
     { module: 2, name: 'Intense Exercise', icon: '💪', desc: '3-5 min sprints, jumping jacks, stairs' },
     { module: 2, name: 'Paced Breathing', icon: '🌬️', desc: '4-7-8 or box breathing' },
     { module: 2, name: 'PMR', icon: '💆', desc: 'Tense/release muscle groups' },
     { module: 2, name: 'Temperature Shock', icon: '🌡️', desc: 'Ice cubes or hot shower' },
 
-    // Module 3
+    // Module 3 - Mental Techniques
     { module: 3, name: 'Grounding (5-4-3-2-1)', icon: '👁️', desc: 'Name 5 things you see, 4 touch, 3 hear, 2 smell, 1 taste' },
     { module: 3, name: 'Cognitive Load', icon: '🧩', desc: 'Count backwards by 7, word games, memory tasks' },
     { module: 3, name: 'Intense Sensations', icon: '🌶️', desc: 'Lemon, ice, peppermint, loud sounds' },
     { module: 3, name: 'Bilateral Stimulation', icon: '🦋', desc: 'Butterfly hug, eye movements, walking rhythm' },
     { module: 3, name: 'Strategic Distraction', icon: '🎮', desc: 'High‑engagement activities to ride out the peak' },
 
-    // Module 4
+    // Module 4 - Acceptance Skills
     { module: 4, name: 'Radical Acceptance', icon: '✋', desc: '"It is what it is" – stop fighting reality' },
     { module: 4, name: 'Willing Hands', icon: '🙏', desc: 'Open palms, relaxed shoulders – physical acceptance' },
     { module: 4, name: 'Half‑Smile', icon: '😌', desc: 'Subtle lift of mouth corners, soften jaw' },
@@ -805,16 +800,17 @@ html, body {
     if (currentStep > 1) { currentStep--; saveProgress(); render(); scrollToTop(); }
     else window.location.href = 'crisis-module-4.html';
   };
+  window.goToStep = function(step) {
+    if (step >= 1 && step <= totalSteps) {
+      currentStep = step;
+      saveProgress();
+      render();
+      scrollToTop();
+    }
+  };
 
   function renderHeader() {
     return `
-      <div class="crisis-banner">
-        <span class="crisis-text">🚨 In crisis? 24/7 help available</span>
-        <div class="crisis-actions">
-          <a href="tel:988" class="crisis-link">Call 988</a>
-          <a href="sms:988" class="crisis-link">Text 988</a>
-        </div>
-      </div>
       <div class="header">
         <div class="header-top">
           <button class="back-btn" onclick="window.previousStep()">←</button>
@@ -867,10 +863,10 @@ html, body {
         </div>
         <div id="allSkillsContent" style="display: none;">
           <div class="skills-grid">
-            ${[1,2,3,4].map(moduleNum => {
+            ${[2,3,4].map(moduleNum => {
               const moduleSkills = allSkills.filter(s => s.module === moduleNum);
               if (!moduleSkills.length) return '';
-              const moduleTitle = moduleNum === 1 ? '🧠 MODULE 1: Crisis Brain' : moduleNum === 2 ? '💪 MODULE 2: Physical Reset' : moduleNum === 3 ? '🌍 MODULE 3: Mental Techniques' : '🧠 MODULE 4: Acceptance';
+              const moduleTitle = moduleNum === 2 ? '💪 MODULE 2: Physical Reset' : moduleNum === 3 ? '🧠 MODULE 3: Mental Techniques' : '🕊️ MODULE 4: Acceptance';
               return `
                 <div class="module-header">${moduleTitle}</div>
                 ${moduleSkills.map(skill => `
@@ -937,7 +933,7 @@ html, body {
           </div>
           <div style="display: flex; gap: var(--space-sm);">
             <span style="color: var(--text-teal); font-weight: 600; font-size: 1rem;">3.</span>
-            <span style="color: var(--text-secondary); font-size: 0.9375rem; line-height: 1.5;">You'll build it using <strong style="color: var(--text-teal);">skills you've already practiced</strong> in Modules 1-4</span>
+            <span style="color: var(--text-secondary); font-size: 0.9375rem; line-height: 1.5;">You'll build it using <strong style="color: var(--text-teal);">skills you've already practiced</strong> in Modules 2-4</span>
           </div>
         </div>
       </div>
@@ -1269,29 +1265,108 @@ html, body {
   }
 
   function renderStep9() {
+    // Get progress data
+    const progress = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
+    const isPracticed = progress.practicedModules?.includes('module5') || false;
+    const toolkitCount = JSON.parse(localStorage.getItem('crisis_toolkit') || '[]').length;
+    
     return `
       ${renderHeader()}
       <div class="completion-box">
         <div class="completion-icon">🌊</div>
-        <div class="completion-title">You've completed the course</div>
+        <div class="completion-title">Course Complete!</div>
         <div class="completion-text">
-          You now have survival tools for intense emotional moments.<br>
+          You now have a complete crisis plan with tools from all modules.<br>
           <strong style="color: var(--text-teal-light);">Practice when calm. Use in crisis. Seek help when needed.</strong>
         </div>
-        <div style="display: flex; gap: 0.75rem; justify-content: center; margin-top: 0.5rem;">
+        
+        <div class="completion-stats">
+          <div class="stat-item">
+            <div class="stat-value">5</div>
+            <div class="stat-label">MODULES</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">${toolkitCount}</div>
+            <div class="stat-label">TOOLKIT ITEMS</div>
+          </div>
+        </div>
+        
+        <div style="display: flex; gap: 0.75rem; justify-content: center; margin-top: 1rem;">
           <a href="crisis-toolkit.html" class="btn btn-primary" style="flex: 1; text-decoration: none;">View My Toolkit</a>
           <a href="crisis-intro.html" class="btn btn-secondary" style="flex: 1; text-decoration: none;">Course Hub</a>
         </div>
       </div>
+      
+      <!-- MARK AS PRACTICED BUTTON -->
       <div style="text-align: center; margin: var(--space-xl) 0;">
-        <button id="practiceBtn" style="background: var(--success-bg); color: var(--success-emerald); border: 1px solid rgba(74,222,128,0.3); padding: 0.75rem 2rem; border-radius: 2rem; font-size: 0.875rem; font-weight: 600; cursor: pointer;">
-          ✓ Mark Module as Completed
+        <button id="practiceBtn" class="practice-btn ${isPracticed ? 'marked' : ''}" style="background: var(--success-bg); color: var(--success-emerald); border: 1px solid rgba(74,222,128,0.3); padding: 0.75rem 2rem; border-radius: 2rem; font-size: 0.875rem; font-weight: 600; cursor: pointer;">
+          <span>${isPracticed ? '✓' : '○'}</span>
+          <span>${isPracticed ? 'Course Completed' : 'Mark Course as Completed'}</span>
         </button>
       </div>
-      <div class="btn-group">
-        <button class="btn btn-secondary" onclick="window.previousStep()">← Back</button>
-        <a href="crisis-intro.html" class="btn btn-primary">Course Hub →</a>
+      
+      <!-- NAVIGATION BUTTONS -->
+      <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+          <button class="btn btn-secondary" onclick="window.previousStep()">← Module 4</button>
+          <a href="crisis-intro.html" class="btn btn-primary">Course Hub →</a>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+          <button onclick="goToStep(1)" class="btn btn-secondary">
+            <span>↻</span>
+            <span>Review Course</span>
+          </button>
+          <a href="crisis-toolkit.html" class="btn btn-secondary">
+            <span>🧰</span>
+            <span>Toolkit</span>
+          </a>
+        </div>
       </div>
+      
+      <!-- SKILLS SUMMARY -->
+      <div class="card" style="margin-top: 1.5rem;">
+        <div class="section-header">
+          <span class="section-icon">🧰</span>
+          <span class="section-title-text">Your Complete Toolkit</span>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem;">
+          <div style="background: rgba(14,116,144,0.1); padding: 0.75rem; border-radius: 0.75rem; text-align: center;">
+            <span style="font-size: 1.5rem;">🧊</span>
+            <p style="color: var(--text-teal); font-size: 0.75rem; margin-top: 0.25rem;">Cold Water</p>
+          </div>
+          <div style="background: rgba(14,116,144,0.1); padding: 0.75rem; border-radius: 0.75rem; text-align: center;">
+            <span style="font-size: 1.5rem;">💪</span>
+            <p style="color: var(--text-teal); font-size: 0.75rem; margin-top: 0.25rem;">Exercise</p>
+          </div>
+          <div style="background: rgba(14,116,144,0.1); padding: 0.75rem; border-radius: 0.75rem; text-align: center;">
+            <span style="font-size: 1.5rem;">🌬️</span>
+            <p style="color: var(--text-teal); font-size: 0.75rem; margin-top: 0.25rem;">Breathing</p>
+          </div>
+          <div style="background: rgba(14,116,144,0.1); padding: 0.75rem; border-radius: 0.75rem; text-align: center;">
+            <span style="font-size: 1.5rem;">👁️</span>
+            <p style="color: var(--text-teal); font-size: 0.75rem; margin-top: 0.25rem;">Grounding</p>
+          </div>
+          <div style="background: rgba(14,116,144,0.1); padding: 0.75rem; border-radius: 0.75rem; text-align: center;">
+            <span style="font-size: 1.5rem;">🧩</span>
+            <p style="color: var(--text-teal); font-size: 0.75rem; margin-top: 0.25rem;">Cognitive</p>
+          </div>
+          <div style="background: rgba(14,116,144,0.1); padding: 0.75rem; border-radius: 0.75rem; text-align: center;">
+            <span style="font-size: 1.5rem;">🦋</span>
+            <p style="color: var(--text-teal); font-size: 0.75rem; margin-top: 0.25rem;">Bilateral</p>
+          </div>
+          <div style="background: rgba(14,116,144,0.1); padding: 0.75rem; border-radius: 0.75rem; text-align: center;">
+            <span style="font-size: 1.5rem;">✋</span>
+            <p style="color: var(--text-teal); font-size: 0.75rem; margin-top: 0.25rem;">Acceptance</p>
+          </div>
+          <div style="background: rgba(14,116,144,0.1); padding: 0.75rem; border-radius: 0.75rem; text-align: center;">
+            <span style="font-size: 1.5rem;">💝</span>
+            <p style="color: var(--text-teal); font-size: 0.75rem; margin-top: 0.25rem;">Compassion</p>
+          </div>
+        </div>
+      </div>
+      
       ${renderFooter()}
     `;
   }
@@ -1308,7 +1383,7 @@ html, body {
       const rel = document.getElementById('valuesRelationships')?.value || '';
       const best = document.getElementById('valuesBest')?.value || '';
       const desc = `My values: ${val1}${val2 ? ', ' + val2 : ''}${val3 ? ', ' + val3 : ''}`;
-      saveToToolkit({ id: 'values-compass', category: 'Module 5: Crisis Plan', name: 'My Values Compass', description: desc });
+      saveToToolkit({ id: 'values-compass', category: 'Module 5: Crisis Plan', name: '🧭 My Values Compass', description: desc });
       saveToCrisisPlan('values', { val1, val2, val3, rel, best });
       btn.classList.add('saved'); btn.innerHTML = '<span>✓</span> Saved!';
       fb.textContent = '✓ Values Compass saved'; fb.classList.add('show');
@@ -1326,7 +1401,7 @@ html, body {
       const acceptance = document.getElementById('cardAcceptance')?.value || '';
       const values = document.getElementById('cardValues')?.value || '';
       const emergency = document.getElementById('cardEmergency')?.value || '';
-      saveToToolkit({ id: 'crisis-card', category: 'Module 5: Crisis Plan', name: 'My Crisis Card', description: `Physical: ${physical} | Wait: ${wait} | Emergency: ${emergency}` });
+      saveToToolkit({ id: 'crisis-card', category: 'Module 5: Crisis Plan', name: '🆘 My Crisis Card', description: `Physical: ${physical} | Wait: ${wait} | Emergency: ${emergency}` });
       saveToCrisisPlan('crisisCard', { physical, wait, acceptance, values, emergency });
       btn.classList.add('saved'); btn.innerHTML = '<span>✓</span> Saved!';
       fb.textContent = '✓ Crisis Card saved'; fb.classList.add('show');
@@ -1366,7 +1441,7 @@ html, body {
         completed: true
       };
       localStorage.setItem('crisis_plan', JSON.stringify(crisisPlan));
-      saveToToolkit({ id: 'full-crisis-plan', category: 'Module 5: Crisis Plan', name: 'My Complete Crisis Plan', description: `Intensity plan saved • Practice: ${skill1 || 'none'}` });
+      saveToToolkit({ id: 'full-crisis-plan', category: 'Module 5: Crisis Plan', name: '📋 My Complete Crisis Plan', description: `Intensity plan saved • Practice: ${skill1 || 'none'}` });
       btn.classList.add('saved'); btn.innerHTML = '<span>✓</span> Saved!';
       fb.textContent = '✓ Complete crisis plan saved'; fb.classList.add('show');
       setTimeout(() => { btn.classList.remove('saved'); btn.innerHTML = '<span>📋</span> Save My Complete Crisis Plan'; fb.classList.remove('show'); }, 2000);
@@ -1378,13 +1453,17 @@ html, body {
     if (!btn) return;
     let prog = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
     if (!prog.practicedModules) prog.practicedModules = [];
-    if (prog.practicedModules.includes('module5')) btn.innerHTML = '✓ Module 5 Completed';
+    if (prog.practicedModules.includes('module5')) {
+      btn.classList.add('marked');
+      btn.innerHTML = '<span>✓</span><span>Course Completed</span>';
+    }
     btn.onclick = function() {
       if (!prog.practicedModules.includes('module5')) {
         prog.practicedModules.push('module5');
         prog.lastPracticed = new Date().toISOString();
         localStorage.setItem('crisis_course_progress', JSON.stringify(prog));
-        btn.innerHTML = '✓ Module 5 Completed';
+        btn.classList.add('marked');
+        btn.innerHTML = '<span>✓</span><span>Course Completed</span>';
         const msg = document.createElement('p');
         msg.textContent = '✓ Progress saved!';
         msg.style.cssText = 'color: var(--success-emerald); text-align: center; margin-top: 1rem; font-weight: 600;';
@@ -1518,6 +1597,11 @@ function loadSavedPlan() {
     if (currentStep === 9) initComplete();
     setTimeout(loadSavedPlan, 50);
   }
+
+  // Expose functions globally
+  window.nextStep = nextStep;
+  window.previousStep = previousStep;
+  window.goToStep = goToStep;
 
   loadProgress();
   render();
