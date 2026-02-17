@@ -118,49 +118,6 @@ html, body {
     flex-direction: column;
 }
 
-/* Crisis Banner */
-.crisis-banner {
-    background: var(--crisis-bg);
-    border: 1px solid var(--crisis-red);
-    border-radius: 0.875rem;
-    padding: 1rem 1.25rem;
-    margin-bottom: 1.25rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-}
-
-.crisis-banner__text {
-    color: #fca5a5;
-    font-size: 0.875rem;
-    font-weight: 600;
-    flex: 1;
-    min-width: 180px;
-}
-
-.crisis-banner__actions {
-    display: flex;
-    gap: 0.625rem;
-}
-
-.crisis-banner__link {
-    color: white;
-    background: var(--crisis-red);
-    text-decoration: none;
-    padding: 0.5rem 1rem;
-    border-radius: 2rem;
-    font-size: 0.8125rem;
-    font-weight: 700;
-    transition: all 0.2s;
-}
-
-.crisis-banner__link:active {
-    background: #b91c1c;
-    transform: scale(0.97);
-}
-
 /* Header */
 .header {
     background: linear-gradient(135deg, var(--bg-card-light), var(--bg-card-dark));
@@ -701,6 +658,32 @@ html, body {
     background: rgba(34, 197, 94, 0.25);
 }
 
+/* Completion Stats */
+.completion-stats {
+    display: flex;
+    justify-content: space-around;
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background: rgba(15,23,42,0.6);
+    border-radius: 1rem;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-teal);
+}
+
+.stat-label {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+}
+
 /* Footer */
 .footer {
     margin-top: auto;
@@ -793,12 +776,12 @@ html, body {
 (function() {
     'use strict';
     
-    // Check disclaimer acknowledgment
-    const acknowledged = localStorage.getItem('crisis_disclaimer_acknowledged');
-    if (!acknowledged) {
-        window.location.href = 'crisis-intro.html';
-        return;
-    }
+    // ===== UPDATE COURSE PROGRESS =====
+    // This connects Module 4 to the intro page
+    let courseProgress = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
+    courseProgress.currentModule = 4;
+    courseProgress.lastAccessed = new Date().toISOString();
+    localStorage.setItem('crisis_course_progress', JSON.stringify(courseProgress));
 
     // State
     let currentStep = 1;
@@ -854,7 +837,6 @@ html, body {
             }
         } catch (e) {
             console.error('Load failed:', e);
-            return false;
         }
         return false;
     }
@@ -875,12 +857,6 @@ html, body {
         }
     }
     
-    // Update progress
-    let progress = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
-    progress.currentModule = 4;
-    progress.lastAccessed = new Date().toISOString();
-    localStorage.setItem('crisis_course_progress', JSON.stringify(progress));
-    
     // Navigation with scroll to top
     function scrollToTop() {
         const mainContent = document.getElementById('mainContent');
@@ -897,7 +873,7 @@ html, body {
         currentStep = step;
         saveProgress();
         render();
-        scrollToTop(); // Scroll to top when changing steps
+        scrollToTop();
     }
     
     function nextStep() {
@@ -915,18 +891,8 @@ html, body {
     }
     
     // Render functions
-    function renderHeader(showCrisis = false) {
+    function renderHeader() {
         return `
-            ${showCrisis ? `
-            <div class="crisis-banner">
-                <span class="crisis-banner__text">🚨 In crisis? Help is available 24/7</span>
-                <div class="crisis-banner__actions">
-                    <a href="tel:988" class="crisis-banner__link">Call 988</a>
-                    <a href="sms:988" class="crisis-banner__link">Text 988</a>
-                </div>
-            </div>
-            ` : ''}
-            
             <div class="header">
                 <div class="header__top">
                     <button class="back-btn" onclick="previousStep()">←</button>
@@ -958,7 +924,7 @@ html, body {
     function renderStep1() {
         return `
             <div class="step-content">
-                ${renderHeader(true)}
+                ${renderHeader()}
                 
                 <div class="card">
                     <div class="card__icon">🕊️</div>
@@ -1036,7 +1002,7 @@ html, body {
                         </ul>
                     </div>
                     
-                    <!-- Acceptance Phrases (from original) -->
+                    <!-- Acceptance Phrases -->
                     <div class="quote-box">
                         <p style="font-weight: 700; margin-bottom: 1rem;">The Acceptance Phrases:</p>
                         <p style="margin-bottom: 0.75rem;">• "It is what it is."</p>
@@ -1046,7 +1012,7 @@ html, body {
                         <p style="margin-bottom: 0.75rem;">• "What happened, happened. What happens next is up to me."</p>
                     </div>
                     
-                    <!-- EXPERIENTIAL PRACTICE (from original) -->
+                    <!-- EXPERIENTIAL PRACTICE -->
                     <div class="practice-card">
                         <div class="practice-title">
                             <span>💭</span>
@@ -1086,7 +1052,8 @@ html, body {
                     </div>
                 </div>
                 
-                <button id="saveAcceptanceBtn" class="btn--save">
+                <!-- SAVE BUTTON FOR ACTIONABLE SKILL -->
+                <button id="saveAcceptanceBtn" class="btn-save">
                     <span>✋</span> Save Acceptance Tools to Toolkit
                 </button>
                 <div id="acceptanceSaveFeedback" class="save-feedback"></div>
@@ -1143,7 +1110,7 @@ html, body {
                         </div>
                     </div>
                     
-                    <!-- Willing Hands Practice (from original) -->
+                    <!-- Willing Hands Practice -->
                     <div class="practice-card">
                         <div class="practice-title">
                             <span>🙏</span>
@@ -1234,7 +1201,7 @@ html, body {
                         <p style="color: var(--text-secondary);">4. Hold for 30 seconds while breathing normally</p>
                     </div>
                     
-                    <!-- Half-Smile Practice (from original) -->
+                    <!-- Half-Smile Practice -->
                     <div class="practice-card">
                         <div class="practice-title">
                             <span>😌</span>
@@ -1311,7 +1278,7 @@ html, body {
                         </div>
                     </div>
                     
-                    <!-- Three Components (from original) -->
+                    <!-- Three Components -->
                     <div style="background: rgba(14,116,144,0.1); padding: 1.5rem; border-radius: 0.75rem; margin: 1.25rem 0;">
                         <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 1rem;">The Three Components (Kristin Neff):</p>
                         
@@ -1325,14 +1292,14 @@ html, body {
                         <p style="color: var(--text-secondary); font-size: 0.875rem;">"I'm having a hard time" instead of "I AM a failure"</p>
                     </div>
                     
-                    <!-- The Science (from original) -->
+                    <!-- The Science -->
                     <div style="background: rgba(14,116,144,0.1); padding: 1rem; border-radius: 0.75rem; margin: 1rem 0;">
                         <p style="color: var(--text-secondary); font-size: 0.875rem;">
                             <strong style="color: var(--text-teal);">The Science:</strong> Self-compassion activates the caregiving system in your brain (oxytocin release), while self-criticism activates the threat system. Self-compassion is not self-indulgence — it's a more effective form of self-regulation.
                         </p>
                     </div>
                     
-                    <!-- Critical Friend vs Kind Coach (from original) -->
+                    <!-- Critical Friend vs Kind Coach -->
                     <div style="margin-top: 1.5rem;">
                         <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 1rem;">The Critical Friend vs. The Kind Coach:</p>
                         
@@ -1348,7 +1315,8 @@ html, body {
                     </div>
                 </div>
                 
-                <button id="saveCompassionBtn" class="btn--save">
+                <!-- SAVE BUTTON FOR ACTIONABLE SKILL -->
+                <button id="saveCompassionBtn" class="btn-save">
                     <span>💝</span> Save Self-Compassion to Toolkit
                 </button>
                 <div id="compassionSaveFeedback" class="save-feedback"></div>
@@ -1384,7 +1352,7 @@ html, body {
                         <span class="section-title-text">Self-Compassion Break</span>
                     </div>
                     
-                    <!-- Self-Compassion Phrases (from original) -->
+                    <!-- Self-Compassion Phrases -->
                     <div class="quote-box" style="margin-top: 0;">
                         <p style="font-weight: 700; margin-bottom: 0.75rem;">Self-Compassion Phrases:</p>
                         <p style="margin-bottom: 0.5rem;">• "Of course this is hard. Anyone would struggle with this."</p>
@@ -1393,7 +1361,7 @@ html, body {
                         <p style="margin-bottom: 0.5rem;">• "What would I say to a friend in this situation?"</p>
                     </div>
                     
-                    <!-- Guided Self-Compassion Break (from original) -->
+                    <!-- Guided Self-Compassion Break -->
                     <div class="practice-card">
                         <div class="practice-title">
                             <span>💝</span>
@@ -1496,7 +1464,7 @@ html, body {
                         </div>
                     </div>
                     
-                    <!-- Defusion Techniques (from original) -->
+                    <!-- Defusion Techniques -->
                     <div class="instruction-box">
                         <p style="color: var(--text-teal); font-weight: 700; margin-bottom: 1rem;">5 Defusion Techniques:</p>
                         
@@ -1516,7 +1484,7 @@ html, body {
                         <p style="color: var(--text-secondary); font-size: 0.875rem;">"Ah, there's my 'I'm not good enough' story again."</p>
                     </div>
                     
-                    <!-- Experiential Practice (from original) -->
+                    <!-- Experiential Practice -->
                     <div class="practice-card">
                         <div class="practice-title">
                             <span>🎭</span>
@@ -1566,7 +1534,7 @@ html, body {
                         </div>
                     </div>
                     
-                    <!-- Key Insight (from original) -->
+                    <!-- Key Insight -->
                     <div class="quote-box" style="margin-top: 1.5rem;">
                         <p style="font-weight: 700; margin-bottom: 0.75rem;">Key Insight:</p>
                         <p>
@@ -1575,7 +1543,8 @@ html, body {
                     </div>
                 </div>
                 
-                <button id="saveDefusionBtn" class="btn--save">
+                <!-- SAVE BUTTON FOR ACTIONABLE SKILL -->
+                <button id="saveDefusionBtn" class="btn-save">
                     <span>🎭</span> Save Defusion Techniques to Toolkit
                 </button>
                 <div id="defusionSaveFeedback" class="save-feedback"></div>
@@ -1601,106 +1570,99 @@ html, body {
             initComplete();
         }, 100);
         
+        // Get progress data
+        const progress = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
+        const isPracticed = progress.practicedModules?.includes('module4') || false;
+        const toolkitCount = JSON.parse(localStorage.getItem('crisis_toolkit') || '[]').length;
+        
         return `
             <div class="step-content">
                 ${renderHeader()}
                 
-                <div class="reference-card">
-                    <div class="reference-title">
-                        <span>🕊️</span>
-                        ACCEPTANCE TOOLS — Quick Reference
-                    </div>
+                <div class="card card--highlight" style="text-align: center;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">✅</div>
+                    <h2 style="color: var(--text-teal-light); font-size: 1.5rem; margin-bottom: 1rem;">Module 4 Complete!</h2>
+                    <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+                        You've learned how to make peace with reality and stop fighting what you can't change.
+                    </p>
                     
-                    <div class="reference-grid">
-                        <div class="reference-item">
-                            <span class="reference-icon">✋</span>
-                            <div class="reference-content">
-                                <div class="reference-name">Radical Acceptance</div>
-                                <div class="reference-use">"It is what it is" — Stop fighting reality</div>
-                            </div>
+                    <div class="completion-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">5</div>
+                            <div class="stat-label">SKILLS LEARNED</div>
                         </div>
-                        <div class="reference-item">
-                            <span class="reference-icon">🙏</span>
-                            <div class="reference-content">
-                                <div class="reference-name">Willing Hands</div>
-                                <div class="reference-use">Open palms, relaxed shoulders — physical acceptance</div>
-                            </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${toolkitCount}</div>
+                            <div class="stat-label">TOOLKIT ITEMS</div>
                         </div>
-                        <div class="reference-item">
-                            <span class="reference-icon">😌</span>
-                            <div class="reference-content">
-                                <div class="reference-name">Half-Smile</div>
-                                <div class="reference-use">Subtle lift of mouth corners, soften jaw</div>
-                            </div>
-                        </div>
-                        <div class="reference-item">
-                            <span class="reference-icon">💝</span>
-                            <div class="reference-content">
-                                <div class="reference-name">Self-Compassion</div>
-                                <div class="reference-use">Treat yourself like a friend — "Of course this is hard"</div>
-                            </div>
-                        </div>
-                        <div class="reference-item">
-                            <span class="reference-icon">🎭</span>
-                            <div class="reference-content">
-                                <div class="reference-name">Defusion</div>
-                                <div class="reference-use">"I'm having the thought that…" — Thoughts aren't facts</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div style="margin-top: 1.5rem; padding: 1.5rem; background: rgba(14,116,144,0.15); border-radius: 0.75rem;">
-                        <p style="color: var(--text-amber); font-style: italic; text-align: center; font-size: 0.9375rem;">
-                            "Acceptance doesn't make pain disappear. It makes suffering decrease. Pain + Fighting = Suffering. Pain + Acceptance = Just pain. And just pain is more bearable."
-                        </p>
-                    </div>
-                    
-                    <div style="margin-top: 1.5rem;">
-                        <p style="color: var(--text-primary); font-weight: 700; margin-bottom: 1rem;">
-                            "Which techniques felt most helpful?"
-                        </p>
-                        
-                        <div class="reflection-grid">
-                            <label class="reflection-checkbox">
-                                <input type="checkbox" value="Radical Acceptance"> Radical Acceptance
-                            </label>
-                            <label class="reflection-checkbox">
-                                <input type="checkbox" value="Willing Hands"> Willing Hands
-                            </label>
-                            <label class="reflection-checkbox">
-                                <input type="checkbox" value="Half-Smile"> Half-Smile
-                            </label>
-                            <label class="reflection-checkbox">
-                                <input type="checkbox" value="Self-Compassion"> Self-Compassion
-                            </label>
-                            <label class="reflection-checkbox">
-                                <input type="checkbox" value="Defusion"> Defusion
-                            </label>
-                        </div>
-                        
-                        <button id="saveReflectionBtn" class="btn--save">
-                            <span>📋</span> Save My Top Tools
-                        </button>
-                        <div id="reflectionSaveFeedback" class="save-feedback"></div>
                     </div>
                 </div>
                 
+                <!-- MARK AS PRACTICED BUTTON -->
                 <div class="practice-section">
-                    <button id="practiceBtn" class="practice-btn">
-                        <span>✓</span>
-                        <span>Mark Module as Practiced</span>
+                    <button id="practiceBtn" class="practice-btn ${isPracticed ? 'marked' : ''}">
+                        <span>${isPracticed ? '✓' : '○'}</span>
+                        <span>${isPracticed ? 'Module 4 Practiced' : 'Mark Module as Practiced'}</span>
                     </button>
                 </div>
                 
-                <div class="btn-group">
-                    <button class="btn btn--secondary" onclick="previousStep()">
-                        <span>←</span>
-                        <span>Back</span>
-                    </button>
-                    <a href="crisis-module-5.html" class="btn btn--primary">
-                        <span>Module 5</span>
-                        <span>→</span>
+                <!-- NAVIGATION BUTTONS -->
+                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                        <a href="crisis-module-3.html" class="btn btn--secondary">
+                            <span>← Module 3</span>
+                        </a>
+                        <a href="crisis-module-5.html" class="btn btn--primary">
+                            <span>Module 5 →</span>
+                        </a>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                        <a href="crisis-intro.html" class="btn btn--secondary">
+                            <span>🏠</span>
+                            <span>Course Hub</span>
+                        </a>
+                        <button onclick="goToStep(1)" class="btn btn--secondary">
+                            <span>↻</span>
+                            <span>Review Module</span>
+                        </button>
+                    </div>
+                    
+                    <a href="crisis-toolkit.html" class="btn-save" style="background: rgba(217,119,6,0.1); text-decoration: none; margin-top: 0.5rem;">
+                        <span>🧰</span>
+                        <span>View My Toolkit</span>
                     </a>
+                </div>
+                
+                <!-- SKILLS SUMMARY -->
+                <div class="card" style="margin-top: 1.5rem;">
+                    <div class="section-header">
+                        <span class="section-icon">🕊️</span>
+                        <span class="section-title-text">Your New Skills</span>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem;">
+                        <div style="background: rgba(14,116,144,0.1); padding: 0.75rem; border-radius: 0.75rem; text-align: center;">
+                            <span style="font-size: 1.5rem;">✋</span>
+                            <p style="color: var(--text-teal); font-size: 0.75rem; margin-top: 0.25rem;">Acceptance</p>
+                        </div>
+                        <div style="background: rgba(14,116,144,0.1); padding: 0.75rem; border-radius: 0.75rem; text-align: center;">
+                            <span style="font-size: 1.5rem;">🙏</span>
+                            <p style="color: var(--text-teal); font-size: 0.75rem; margin-top: 0.25rem;">Willing Hands</p>
+                        </div>
+                        <div style="background: rgba(14,116,144,0.1); padding: 0.75rem; border-radius: 0.75rem; text-align: center;">
+                            <span style="font-size: 1.5rem;">😌</span>
+                            <p style="color: var(--text-teal); font-size: 0.75rem; margin-top: 0.25rem;">Half-Smile</p>
+                        </div>
+                        <div style="background: rgba(14,116,144,0.1); padding: 0.75rem; border-radius: 0.75rem; text-align: center;">
+                            <span style="font-size: 1.5rem;">💝</span>
+                            <p style="color: var(--text-teal); font-size: 0.75rem; margin-top: 0.25rem;">Self-Compassion</p>
+                        </div>
+                        <div style="background: rgba(14,116,144,0.1); padding: 0.75rem; border-radius: 0.75rem; text-align: center; grid-column: span 2;">
+                            <span style="font-size: 1.5rem;">🎭</span>
+                            <p style="color: var(--text-teal); font-size: 0.75rem; margin-top: 0.25rem;">Defusion</p>
+                        </div>
+                    </div>
                 </div>
                 
                 ${renderFooter()}
@@ -1790,7 +1752,7 @@ html, body {
                 saveToToolkit({
                     id: 'acceptance-tools',
                     category: 'Module 4: Making Peace',
-                    name: 'Radical Acceptance',
+                    name: '✋ Radical Acceptance',
                     description: 'Pain × Rejection = Suffering • "It is what it is" • Stop fighting reality'
                 });
                 
@@ -1876,7 +1838,7 @@ html, body {
                 saveToToolkit({
                     id: 'self-compassion',
                     category: 'Module 4: Making Peace',
-                    name: 'Self-Compassion',
+                    name: '💝 Self-Compassion',
                     description: 'Treat yourself like a friend • Self-kindness, common humanity, mindfulness • "Of course this is hard"'
                 });
                 
@@ -2014,7 +1976,7 @@ html, body {
                 saveToToolkit({
                     id: 'defusion',
                     category: 'Module 4: Making Peace',
-                    name: 'Defusion Techniques',
+                    name: '🎭 Defusion Techniques',
                     description: 'Thoughts aren\'t facts • "I\'m having the thought that…" • "Thanks, brain!" • Silly voices'
                 });
                 
@@ -2044,6 +2006,11 @@ html, body {
                 } else {
                     label.classList.remove('checked');
                 }
+                
+                // Update userData
+                userData.selectedTechniques = Array.from(checkboxes)
+                    .filter(cb => cb.checked)
+                    .map(cb => cb.value);
             });
         });
         
@@ -2065,7 +2032,7 @@ html, body {
                 saveToToolkit({
                     id: 'my-acceptance-tools',
                     category: 'My Crisis Profile',
-                    name: 'My Top Acceptance Tools',
+                    name: '📋 My Top Acceptance Tools',
                     description: selected.join(', ')
                 });
                 
@@ -2086,17 +2053,15 @@ html, body {
         const practiceBtn = document.getElementById('practiceBtn');
         
         let progress = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
-        if (progress.practicedModules && progress.practicedModules.includes('module4')) {
+        if (!progress.practicedModules) progress.practicedModules = [];
+        
+        if (progress.practicedModules.includes('module4')) {
             practiceBtn.classList.add('marked');
             practiceBtn.innerHTML = '<span>✓</span><span>Module 4 Practiced</span>';
         }
         
         if (practiceBtn) {
             practiceBtn.addEventListener('click', function() {
-                if (!progress.practicedModules) {
-                    progress.practicedModules = [];
-                }
-                
                 if (!progress.practicedModules.includes('module4')) {
                     progress.practicedModules.push('module4');
                     progress.lastPracticed = new Date().toISOString();
@@ -2104,6 +2069,13 @@ html, body {
                     
                     practiceBtn.classList.add('marked');
                     practiceBtn.innerHTML = '<span>✓</span><span>Module 4 Practiced</span>';
+                    
+                    // Show feedback
+                    const feedback = document.createElement('div');
+                    feedback.style.cssText = 'color: var(--success-emerald); text-align: center; margin-top: 0.5rem; font-size: 0.9rem;';
+                    feedback.textContent = '✓ Progress saved!';
+                    practiceBtn.parentNode.appendChild(feedback);
+                    setTimeout(() => feedback.remove(), 3000);
                 }
             });
         }
@@ -2127,6 +2099,19 @@ html, body {
         }
         
         content.innerHTML = html;
+        
+        // Initialize interactive elements based on current step
+        setTimeout(() => {
+            switch(currentStep) {
+                case 2: initAcceptance(); break;
+                case 3: initWillingHands(); break;
+                case 4: initHalfSmile(); break;
+                case 5: initCompassion(); break;
+                case 6: initCompassionBreak(); break;
+                case 7: initDefusion(); break;
+                case 8: initComplete(); break;
+            }
+        }, 100);
     }
     
     // Expose functions globally
