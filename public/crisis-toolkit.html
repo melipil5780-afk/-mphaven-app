@@ -113,6 +113,7 @@ html, body {
     padding-bottom: calc(2rem + env(safe-area-inset-bottom)); 
 }
 
+/* Crisis Banner - Only here at the top of toolkit */
 .crisis-banner {
     background: var(--crisis-bg);
     border: 1px solid var(--crisis-red);
@@ -207,21 +208,74 @@ html, body {
     letter-spacing: 0.02em;
 }
 
+/* Crisis Card - Special Highlight */
+.crisis-card-preview {
+    background: linear-gradient(135deg, rgba(14,116,144,0.2), rgba(217,119,6,0.15));
+    border: 2px solid var(--accent-amber);
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.crisis-card-preview:before {
+    content: "🆘";
+    position: absolute;
+    top: 0.5rem;
+    right: 1rem;
+    font-size: 3rem;
+    opacity: 0.1;
+}
+
+.crisis-card-title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--text-amber);
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.crisis-card-item {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    color: var(--text-secondary);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+}
+
+.crisis-card-number {
+    color: var(--text-amber);
+    font-weight: 700;
+    min-width: 1.5rem;
+}
+
+.crisis-card-label {
+    color: var(--text-primary);
+    font-weight: 600;
+    min-width: 5rem;
+}
+
+/* Category Sections */
 .category-section {
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
 }
 
 .category-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 0.75rem;
+    margin-bottom: 1rem;
     padding-bottom: 0.5rem;
     border-bottom: 1px solid var(--border-softer);
 }
 
 .category-title {
-    font-size: 1.125rem;
+    font-size: 1.2rem;
     font-weight: 700;
     color: var(--text-teal-light);
     display: flex;
@@ -238,12 +292,13 @@ html, body {
     font-weight: 600;
 }
 
+/* Skill Cards */
 .skill-card {
     background: linear-gradient(135deg, var(--bg-card-light), var(--bg-card-dark));
     border: 1px solid var(--border-softer);
     border-radius: 1rem;
     padding: 1.25rem;
-    margin-bottom: 0.75rem;
+    margin-bottom: 1rem;
     transition: all 0.2s;
 }
 
@@ -251,17 +306,25 @@ html, body {
     border-color: var(--primary-teal);
 }
 
+.skill-card.crisis-plan-item {
+    border-left: 4px solid var(--accent-amber);
+    background: linear-gradient(135deg, rgba(14,116,144,0.15), rgba(217,119,6,0.1));
+}
+
 .skill-header {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
 }
 
 .skill-name {
     font-weight: 700;
     color: var(--text-primary);
     font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .skill-category-badge {
@@ -272,13 +335,35 @@ html, body {
     font-size: 0.6875rem;
     font-weight: 600;
     border: 1px solid rgba(14,116,144,0.25);
+    white-space: nowrap;
 }
 
 .skill-description {
     color: var(--text-secondary);
-    font-size: 0.8125rem;
-    line-height: 1.5;
-    margin-bottom: 0.75rem;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.skill-detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    background: rgba(15,23,42,0.4);
+    border-radius: 0.75rem;
+}
+
+.skill-detail-item {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+}
+
+.skill-detail-label {
+    color: var(--text-teal);
+    font-weight: 600;
+    margin-right: 0.25rem;
 }
 
 .skill-meta {
@@ -287,6 +372,7 @@ html, body {
     align-items: center;
     font-size: 0.6875rem;
     color: var(--text-muted);
+    margin-bottom: 0.75rem;
 }
 
 .skill-actions {
@@ -308,6 +394,7 @@ html, body {
     display: inline-flex;
     align-items: center;
     gap: 0.375rem;
+    text-decoration: none;
 }
 
 .btn-small:hover {
@@ -325,72 +412,10 @@ html, body {
     background: rgba(220,38,38,0.1);
 }
 
-.empty-state {
-    text-align: center;
-    padding: 3rem 1.5rem;
-    background: var(--bg-card-light);
-    border: 1px solid var(--border-softer);
-    border-radius: 1.5rem;
-}
-
-.empty-icon {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-    opacity: 0.5;
-}
-
-.empty-title {
-    font-size: 1.125rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 0.5rem;
-}
-
-.empty-text {
-    color: var(--text-muted);
-    font-size: 0.875rem;
-    margin-bottom: 1.5rem;
-}
-
-.crisis-card-preview {
-    background: linear-gradient(135deg, rgba(14,116,144,0.2), rgba(217,119,6,0.1));
-    border: 2px solid var(--accent-amber);
-    border-radius: 1rem;
-    padding: 1.5rem;
-    margin: 1.5rem 0;
-    position: relative;
-    overflow: hidden;
-}
-
-.crisis-card-preview:before {
-    content: "🆘";
-    position: absolute;
-    top: 0.5rem;
-    right: 1rem;
-    font-size: 2rem;
-    opacity: 0.1;
-}
-
-.crisis-card-title {
-    font-size: 1.25rem;
-    font-weight: 800;
-    color: var(--text-amber);
-    margin-bottom: 1rem;
-}
-
-.crisis-card-item {
-    display: flex;
-    align-items: baseline;
-    gap: 0.5rem;
-    margin-bottom: 0.75rem;
-    color: var(--text-secondary);
-    font-size: 0.875rem;
-}
-
-.crisis-card-number {
-    color: var(--text-amber);
-    font-weight: 700;
-    min-width: 1.5rem;
+.btn-small.primary {
+    background: var(--gradient-main);
+    color: white;
+    border: none;
 }
 
 .btn {
@@ -423,22 +448,95 @@ html, body {
     width: 100%;
 }
 
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    background: var(--bg-card-light);
+    border: 1px solid var(--border-softer);
+    border-radius: 1.5rem;
+}
+
+.empty-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.empty-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.empty-text {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+/* Action Buttons */
+.action-group {
+    display: flex;
+    gap: 0.75rem;
+    margin: 1.5rem 0;
+    flex-wrap: wrap;
+}
+
+.action-btn {
+    flex: 1;
+    min-width: 120px;
+}
+
+/* Footer */
 .footer {
     text-align: center;
-    color: var(--text-dim);
-    font-size: 0.6875rem;
+    color: var(--text-muted);
+    font-size: 0.75rem;
     margin-top: 2rem;
     padding-top: 1rem;
     border-top: 1px solid var(--border-subtle);
 }
 
+.footer-warning {
+    color: #fca5a5;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+/* Toast Notification */
+.toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--success-bg);
+    color: var(--success-emerald);
+    padding: 0.75rem 1.5rem;
+    border-radius: 2rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border: 1px solid var(--success-emerald);
+    z-index: 1000;
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from { transform: translate(-50%, 100%); opacity: 0; }
+    to { transform: translate(-50%, 0); opacity: 1; }
+}
+
+/* Print Styles */
 @media print {
-    .crisis-banner, .nav-header, .btn, .footer, .skill-actions {
+    .crisis-banner, .nav-header, .skill-actions, .action-group, .btn, .footer {
         display: none !important;
     }
     body { background: white; }
-    .app-wrapper { background: white; }
-    .skill-card { break-inside: avoid; }
+    .app-wrapper { background: white; max-width: 100%; }
+    .skill-card { break-inside: avoid; border: 1px solid #ccc; }
+    .crisis-card-preview { border: 2px solid #000; }
 }
 </style>
 </head>
@@ -450,7 +548,7 @@ html, body {
     <div class="main-content">
       <div class="content-wrapper">
 
-        <!-- CRISIS BANNER -->
+        <!-- CRISIS BANNER - Only here at the top of toolkit -->
         <div class="crisis-banner">
           <span>🚨 In crisis? Help is available 24/7</span>
           <span style="display: flex; gap: 0.5rem;">
@@ -473,17 +571,17 @@ html, body {
         </div>
 
         <h1 class="toolkit-title">My Crisis Toolkit</h1>
-        <p class="toolkit-subtitle">Your saved skills • Ready when you need them</p>
+        <p class="toolkit-subtitle">Your complete crisis plan • All your tools in one place</p>
 
         <!-- STATS - DYNAMICALLY UPDATED -->
         <div class="stats-grid" id="statsContainer">
           <div class="stat-card">
             <div class="stat-number" id="totalSkills">0</div>
-            <div class="stat-label">Saved Skills</div>
+            <div class="stat-label">Total Tools</div>
           </div>
           <div class="stat-card">
             <div class="stat-number" id="practicedModules">0</div>
-            <div class="stat-label">Modules Practiced</div>
+            <div class="stat-label">Modules Done</div>
           </div>
           <div class="stat-card">
             <div class="stat-number" id="crisisPlanStatus">—</div>
@@ -491,37 +589,47 @@ html, body {
           </div>
         </div>
 
-        <!-- CRISIS CARD - QUICK REFERENCE -->
-        <div id="crisisCardContainer" style="display: none;">
-          <!-- Populated by JavaScript -->
-        </div>
+        <!-- CRISIS CARD - Always shown if exists -->
+        <div id="crisisCardContainer"></div>
 
         <!-- TOOLKIT CONTENT -->
         <div id="toolkitContent">
           <!-- Populated by JavaScript -->
         </div>
 
-        <!-- ACTIONS -->
-        <div style="display: flex; gap: 0.75rem; margin: 1.5rem 0;">
-          <button id="printToolkitBtn" class="btn btn-secondary" style="flex: 1;">
-            <span>🖨️</span> Print
+        <!-- ACTION BUTTONS -->
+        <div class="action-group">
+          <button id="exportToolkitBtn" class="btn btn-secondary action-btn">
+            <span>📥</span> Export
           </button>
-          <button id="clearToolkitBtn" class="btn btn-secondary" style="flex: 1; color: #fca5a5; border-color: rgba(220,38,38,0.3);">
-            <span>🗑️</span> Clear All
+          <button id="importToolkitBtn" class="btn btn-secondary action-btn">
+            <span>📤</span> Import
+          </button>
+          <button id="printToolkitBtn" class="btn btn-secondary action-btn">
+            <span>🖨️</span> Print
           </button>
         </div>
 
+        <div style="display: flex; gap: 0.75rem; margin: 0.5rem 0 1.5rem;">
+          <button id="clearToolkitBtn" class="btn btn-secondary" style="flex: 1; color: #fca5a5; border-color: rgba(220,38,38,0.3);">
+            <span>🗑️</span> Clear All
+          </button>
+          <a href="crisis-module-5.html" class="btn btn-primary" style="flex: 1; text-decoration: none;">
+            <span>➕</span> Add More
+          </a>
+        </div>
+
         <!-- BACK TO COURSE -->
-        <a href="crisis-module-5.html" class="btn btn-primary btn-block" style="text-decoration: none; margin-bottom: 1rem;">
-          ← Back to Crisis Plan
+        <a href="crisis-intro.html" class="btn btn-secondary btn-block" style="text-decoration: none; margin-bottom: 1rem;">
+          ← Back to Course Hub
         </a>
 
         <!-- FOOTER -->
         <div class="footer">
-          <p style="color: #fca5a5; font-weight: 600; margin-bottom: 0.5rem;">⚠️ EDUCATIONAL ONLY — NOT THERAPY</p>
+          <p class="footer-warning">⚠️ EDUCATIONAL ONLY — NOT THERAPY</p>
           <p>988 Suicide & Crisis Lifeline: Call or text 988</p>
-          <p style="margin-top: 0.5rem;">Crisis Text Line: Text HOME to 741741</p>
-          <p style="margin-top: 1rem;">These are YOUR tools. Practice them when calm. Use them in crisis.</p>
+          <p>Crisis Text Line: Text HOME to 741741</p>
+          <p style="margin-top: 1rem; color: var(--text-teal);">Your tools. Practice when calm. Use in crisis.</p>
         </div>
 
       </div>
@@ -529,265 +637,428 @@ html, body {
   </div>
 </div>
 
+<!-- Hidden file input for import -->
+<input type="file" id="importFile" accept=".json" style="display: none;">
+
 <script>
 (function() {
-  // ===== CHECK DISCLAIMER ACKNOWLEDGMENT =====
-  const acknowledged = localStorage.getItem('crisis_disclaimer_acknowledged');
-  if (!acknowledged) {
-    window.location.href = 'crisis-intro.html';
-    return;
-  }
-
-  // ===== LOAD AND RENDER TOOLKIT =====
-  function loadToolkit() {
-    const toolkit = JSON.parse(localStorage.getItem('crisis_toolkit') || '[]');
-    const crisisPlan = JSON.parse(localStorage.getItem('crisis_plan') || '{}');
-    const progress = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
+    'use strict';
     
-    // Update stats
-    document.getElementById('totalSkills').textContent = toolkit.length;
-    document.getElementById('practicedModules').textContent = progress.practicedModules?.length || 0;
-    document.getElementById('crisisPlanStatus').textContent = crisisPlan.completed ? '✓ Ready' : '—';
-    
-    // Render Crisis Card if exists
-    renderCrisisCard(crisisPlan);
-    
-    // Render toolkit items
-    renderToolkitItems(toolkit);
-  }
-
-  // ===== RENDER CRISIS CARD =====
-  function renderCrisisCard(crisisPlan) {
-    const container = document.getElementById('crisisCardContainer');
-    
-    if (crisisPlan.crisisCard) {
-      const card = crisisPlan.crisisCard;
-      container.style.display = 'block';
-      container.innerHTML = `
-        <div class="crisis-card-preview">
-          <div class="crisis-card-title">🆘 MY CRISIS CARD</div>
-          
-          <div class="crisis-card-item">
-            <span class="crisis-card-number">1.</span>
-            <span style="color: var(--text-primary);">PHYSICAL RESET:</span>
-            <span style="color: var(--text-secondary);">${card.physical || '—'}</span>
-          </div>
-          
-          <div class="crisis-card-item">
-            <span class="crisis-card-number">2.</span>
-            <span style="color: var(--text-primary);">WAIT 20 MIN:</span>
-            <span style="color: var(--text-secondary);">${card.wait || '—'}</span>
-          </div>
-          
-          <div class="crisis-card-item">
-            <span class="crisis-card-number">3.</span>
-            <span style="color: var(--text-primary);">ACCEPTANCE:</span>
-            <span style="color: var(--text-secondary);">${card.acceptance || '—'}</span>
-          </div>
-          
-          <div class="crisis-card-item">
-            <span class="crisis-card-number">4.</span>
-            <span style="color: var(--text-primary);">VALUES:</span>
-            <span style="color: var(--text-secondary);">${card.values || '—'}</span>
-          </div>
-          
-          <div class="crisis-card-item">
-            <span class="crisis-card-number">5.</span>
-            <span style="color: var(--text-primary);">EMERGENCY:</span>
-            <span style="color: var(--text-secondary);">${card.emergency || 'Call 988'}</span>
-          </div>
-          
-          <div style="margin-top: 1rem; text-align: center; color: var(--text-amber); font-style: italic; font-weight: 600;">
-            REMEMBER: The wave WILL pass.
-          </div>
-        </div>
-      `;
-    } else {
-      container.style.display = 'none';
+    // ===== CHECK DISCLAIMER =====
+    const acknowledged = localStorage.getItem('crisis_disclaimer_acknowledged');
+    if (!acknowledged) {
+        window.location.href = 'crisis-intro.html';
+        return;
     }
-  }
 
-  // ===== RENDER TOOLKIT ITEMS =====
-  function renderToolkitItems(toolkit) {
-    const container = document.getElementById('toolkitContent');
-    
-    if (toolkit.length === 0) {
-      container.innerHTML = `
-        <div class="empty-state">
-          <div class="empty-icon">🧰</div>
-          <div class="empty-title">Your toolkit is empty</div>
-          <div class="empty-text">
-            Complete the Crisis Resilience course and save skills to build your personalized crisis toolkit.
-          </div>
-          <a href="crisis-intro.html" class="btn btn-primary" style="text-decoration: none; display: inline-block;">
-            Start Course →
-          </a>
-        </div>
-      `;
-      return;
-    }
-    
-    // Group by category
-    const categories = {};
-    toolkit.forEach(skill => {
-      const cat = skill.category || 'Other';
-      if (!categories[cat]) categories[cat] = [];
-      categories[cat].push(skill);
-    });
-    
-    let html = '';
-    
-    // Sort categories
-    const categoryOrder = [
-      'My Crisis Profile',
-      'Module 5: Crisis Plan',
-      'Module 4: Making Peace',
-      'Module 3: Mental Techniques',
-      'Module 2: Physical Reset',
-      'Module 1: Crisis Science',
-      'Other'
-    ];
-    
-    const sortedCategories = Object.keys(categories).sort((a, b) => {
-      const indexA = categoryOrder.indexOf(a);
-      const indexB = categoryOrder.indexOf(b);
-      if (indexA === -1) return 1;
-      if (indexB === -1) return -1;
-      return indexA - indexB;
-    });
-    
-    sortedCategories.forEach(category => {
-      const skills = categories[category];
-      
-      html += `
-        <div class="category-section">
-          <div class="category-header">
-            <div class="category-title">
-              <span>${getCategoryIcon(category)}</span>
-              ${category}
-            </div>
-            <span class="category-count">${skills.length}</span>
-          </div>
-      `;
-      
-      skills.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
-      
-      skills.forEach(skill => {
-        const date = skill.date ? new Date(skill.date).toLocaleDateString() : '';
+    // ===== LOAD AND RENDER TOOLKIT =====
+    function loadToolkit() {
+        const toolkit = JSON.parse(localStorage.getItem('crisis_toolkit') || '[]');
+        const crisisPlan = JSON.parse(localStorage.getItem('crisis_plan') || '{}');
+        const progress = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
         
-        html += `
-          <div class="skill-card" data-id="${skill.id}">
-            <div class="skill-header">
-              <div class="skill-name">${skill.name || 'Skill'}</div>
-              <span class="skill-category-badge">${getCategoryBadge(category)}</span>
-            </div>
-            <div class="skill-description">
-              ${skill.description?.replace(/\n/g, '<br>') || 'No description'}
-            </div>
-            <div class="skill-meta">
-              <span>📅 ${date || 'Recently'}</span>
-            </div>
-            <div class="skill-actions">
-              <button class="btn-small" onclick="practiceSkill('${skill.id}')">
-                <span>⚡</span> Practice
-              </button>
-              <button class="btn-small danger" onclick="removeSkill('${skill.id}')">
-                <span>🗑️</span> Remove
-              </button>
-            </div>
-          </div>
-        `;
-      });
-      
-      html += `</div>`;
-    });
-    
-    container.innerHTML = html;
-  }
-
-  // ===== HELPER FUNCTIONS =====
-  function getCategoryIcon(category) {
-    const icons = {
-      'My Crisis Profile': '👤',
-      'Module 5: Crisis Plan': '🆘',
-      'Module 4: Making Peace': '🕊️',
-      'Module 3: Mental Techniques': '🧠',
-      'Module 2: Physical Reset': '💪',
-      'Module 1: Crisis Science': '🧪',
-      'Other': '📌'
-    };
-    return icons[category] || '📌';
-  }
-
-  function getCategoryBadge(category) {
-    const badges = {
-      'My Crisis Profile': 'MY PLAN',
-      'Module 5: Crisis Plan': 'CRISIS PLAN',
-      'Module 4: Making Peace': 'ACCEPTANCE',
-      'Module 3: Mental Techniques': 'MENTAL',
-      'Module 2: Physical Reset': 'PHYSICAL',
-      'Module 1: Crisis Science': 'SCIENCE',
-      'Other': 'SKILL'
-    };
-    return badges[category] || 'SKILL';
-  }
-
-  // ===== PRACTICE SKILL =====
-  window.practiceSkill = function(skillId) {
-    // Find which module this skill belongs to
-    if (skillId.includes('cold') || skillId.includes('exercise') || skillId.includes('breathing') || skillId.includes('pmr') || skillId.includes('temperature')) {
-      window.location.href = 'crisis-module-2.html';
-    } else if (skillId.includes('grounding') || skillId.includes('cognitive') || skillId.includes('sensations') || skillId.includes('bilateral') || skillId.includes('distraction')) {
-      window.location.href = 'crisis-module-3.html';
-    } else if (skillId.includes('acceptance') || skillId.includes('compassion') || skillId.includes('defusion')) {
-      window.location.href = 'crisis-module-4.html';
-    } else if (skillId.includes('values') || skillId.includes('crisis-card') || skillId.includes('full-crisis')) {
-      window.location.href = 'crisis-module-5.html';
-    } else if (skillId.includes('urges') || skillId.includes('brain-facts')) {
-      window.location.href = 'crisis-module-1.html';
-    } else {
-      window.location.href = 'crisis-intro.html';
+        // Update stats
+        document.getElementById('totalSkills').textContent = toolkit.length;
+        document.getElementById('practicedModules').textContent = progress.practicedModules?.length || 0;
+        document.getElementById('crisisPlanStatus').textContent = crisisPlan.completed ? '✓ Ready' : '—';
+        
+        // Render Crisis Card (always show if exists)
+        renderCrisisCard(crisisPlan);
+        
+        // Render toolkit items
+        renderToolkitItems(toolkit, crisisPlan);
     }
-  };
 
-  // ===== REMOVE SKILL =====
-  window.removeSkill = function(skillId) {
-    if (!confirm('Remove this skill from your toolkit?')) return;
-    
-    let toolkit = JSON.parse(localStorage.getItem('crisis_toolkit') || '[]');
-    toolkit = toolkit.filter(item => item.id !== skillId);
-    localStorage.setItem('crisis_toolkit', JSON.stringify(toolkit));
-    
-    // Re-render
-    loadToolkit();
-  };
+    // ===== RENDER CRISIS CARD =====
+    function renderCrisisCard(crisisPlan) {
+        const container = document.getElementById('crisisCardContainer');
+        
+        if (crisisPlan.crisisCard) {
+            const card = crisisPlan.crisisCard;
+            
+            // Get values from intensity plan if available
+            const phys1 = crisisPlan.intensityPlan?.high?.physical?.[0] || card.physical || 'Cold water, intense exercise';
+            const mental = crisisPlan.intensityPlan?.high?.mental || card.wait || 'Grounding, cognitive load';
+            const acceptance = card.acceptance || '"It is what it is"';
+            const values = card.values || 'Will this align with who I want to be?';
+            const emergency = card.emergency || 'Call 988';
+            
+            container.innerHTML = `
+                <div class="crisis-card-preview">
+                    <div class="crisis-card-title">
+                        <span>🆘</span> MY CRISIS CARD
+                    </div>
+                    
+                    <div class="crisis-card-item">
+                        <span class="crisis-card-number">1.</span>
+                        <span class="crisis-card-label">PHYSICAL:</span>
+                        <span>${phys1}</span>
+                    </div>
+                    
+                    <div class="crisis-card-item">
+                        <span class="crisis-card-number">2.</span>
+                        <span class="crisis-card-label">WAIT 20 MIN:</span>
+                        <span>${mental}</span>
+                    </div>
+                    
+                    <div class="crisis-card-item">
+                        <span class="crisis-card-number">3.</span>
+                        <span class="crisis-card-label">ACCEPT:</span>
+                        <span>${acceptance}</span>
+                    </div>
+                    
+                    <div class="crisis-card-item">
+                        <span class="crisis-card-number">4.</span>
+                        <span class="crisis-card-label">VALUES:</span>
+                        <span>${values}</span>
+                    </div>
+                    
+                    <div class="crisis-card-item">
+                        <span class="crisis-card-number">5.</span>
+                        <span class="crisis-card-label">EMERGENCY:</span>
+                        <span>${emergency}</span>
+                    </div>
+                    
+                    <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(217,119,6,0.3); text-align: center;">
+                        <p style="color: var(--text-amber); font-weight: 600; font-style: italic;">
+                            The wave WILL pass. You have the tools.
+                        </p>
+                    </div>
+                </div>
+            `;
+            container.style.display = 'block';
+        } else {
+            container.style.display = 'none';
+        }
+    }
 
-  // ===== CLEAR ALL SKILLS =====
-  document.getElementById('clearToolkitBtn')?.addEventListener('click', function() {
-    if (!confirm('Are you sure? This will remove ALL skills from your toolkit.')) return;
-    if (!confirm('This cannot be undone. Clear everything?')) return;
-    
-    localStorage.removeItem('crisis_toolkit');
-    loadToolkit();
-  });
+    // ===== RENDER TOOLKIT ITEMS =====
+    function renderToolkitItems(toolkit, crisisPlan) {
+        const container = document.getElementById('toolkitContent');
+        
+        if (toolkit.length === 0 && !crisisPlan.completed) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-icon">🧰</div>
+                    <div class="empty-title">Your toolkit is empty</div>
+                    <div class="empty-text">
+                        Complete the Crisis Resilience course and save skills to build your personalized crisis toolkit.
+                    </div>
+                    <a href="crisis-intro.html" class="btn btn-primary" style="text-decoration: none; display: inline-block;">
+                        Start Course →
+                    </a>
+                </div>
+            `;
+            return;
+        }
+        
+        // Group by category - with special handling for Crisis Plan items
+        const categories = {
+            '🆘 My Crisis Plan': [],
+            '💪 Physical Skills': [],
+            '🧠 Mental Techniques': [],
+            '🕊️ Acceptance Skills': [],
+            '📋 My Profile': []
+        };
+        
+        // Add Crisis Plan items from crisisPlan object
+        if (crisisPlan.completed) {
+            // Values Compass
+            if (crisisPlan.values) {
+                categories['🆘 My Crisis Plan'].push({
+                    id: 'values-compass',
+                    name: '🧭 My Values Compass',
+                    description: 'Your personal values to guide decisions in crisis',
+                    details: crisisPlan.values,
+                    category: 'Crisis Plan',
+                    date: crisisPlan.lastUpdated
+                });
+            }
+            
+            // Intensity Plan
+            if (crisisPlan.intensityPlan) {
+                const ip = crisisPlan.intensityPlan;
+                categories['🆘 My Crisis Plan'].push({
+                    id: 'intensity-plan',
+                    name: '📊 My Intensity Plan',
+                    description: `Mild: ${ip.mild || '—'} • Moderate: ${ip.moderate?.filter(Boolean).join(', ') || '—'} • High: ${ip.high?.physical?.filter(Boolean).join(', ') || '—'}`,
+                    category: 'Crisis Plan',
+                    date: crisisPlan.lastUpdated
+                });
+            }
+            
+            // Practice Plan
+            if (crisisPlan.practicePlan) {
+                const pp = crisisPlan.practicePlan;
+                categories['🆘 My Crisis Plan'].push({
+                    id: 'practice-plan',
+                    name: '📅 My Practice Plan',
+                    description: `Practice: ${pp.skill1 || '—'} (${pp.freq1 || 'daily'})${pp.skill2 ? `, ${pp.skill2} (${pp.freq2})` : ''}`,
+                    category: 'Crisis Plan',
+                    date: crisisPlan.lastUpdated
+                });
+            }
+        }
+        
+        // Add toolkit items to appropriate categories
+        toolkit.forEach(skill => {
+            const cat = skill.category || 'Other';
+            
+            if (cat.includes('Physical') || cat.includes('Module 2')) {
+                categories['💪 Physical Skills'].push(skill);
+            } else if (cat.includes('Mental') || cat.includes('Module 3')) {
+                categories['🧠 Mental Techniques'].push(skill);
+            } else if (cat.includes('Acceptance') || cat.includes('Making Peace') || cat.includes('Module 4')) {
+                categories['🕊️ Acceptance Skills'].push(skill);
+            } else if (cat.includes('Profile') || cat.includes('Module 1')) {
+                categories['📋 My Profile'].push(skill);
+            } else if (cat.includes('Crisis Plan') || cat.includes('Module 5')) {
+                categories['🆘 My Crisis Plan'].push(skill);
+            } else {
+                // Put in most relevant category based on name
+                const name = skill.name?.toLowerCase() || '';
+                if (name.includes('cold') || name.includes('exercise') || name.includes('breath') || name.includes('pmr') || name.includes('temperature')) {
+                    categories['💪 Physical Skills'].push(skill);
+                } else if (name.includes('ground') || name.includes('cognitive') || name.includes('sensation') || name.includes('bilateral') || name.includes('distraction')) {
+                    categories['🧠 Mental Techniques'].push(skill);
+                } else if (name.includes('accept') || name.includes('compassion') || name.includes('defusion') || name.includes('willing') || name.includes('smile')) {
+                    categories['🕊️ Acceptance Skills'].push(skill);
+                } else {
+                    categories['📋 My Profile'].push(skill);
+                }
+            }
+        });
+        
+        let html = '';
+        
+        // Render each category that has items
+        for (let [categoryTitle, skills] of Object.entries(categories)) {
+            if (skills.length === 0) continue;
+            
+            // Sort by date (newest first)
+            skills.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+            
+            html += `
+                <div class="category-section">
+                    <div class="category-header">
+                        <div class="category-title">
+                            <span>${categoryTitle.split(' ')[0]}</span>
+                            ${categoryTitle}
+                        </div>
+                        <span class="category-count">${skills.length}</span>
+                    </div>
+            `;
+            
+            skills.forEach(skill => {
+                const date = skill.date ? new Date(skill.date).toLocaleDateString() : 'Recently';
+                const isCrisisPlan = categoryTitle.includes('Crisis Plan');
+                
+                html += `
+                    <div class="skill-card ${isCrisisPlan ? 'crisis-plan-item' : ''}" data-id="${skill.id}">
+                        <div class="skill-header">
+                            <div class="skill-name">
+                                ${skill.name || 'Skill'}
+                                ${isCrisisPlan ? '<span style="color: var(--text-amber);">⭐</span>' : ''}
+                            </div>
+                            <span class="skill-category-badge">${getCategoryBadge(categoryTitle)}</span>
+                        </div>
+                        <div class="skill-description">
+                            ${skill.description?.replace(/\n/g, '<br>') || 'No description'}
+                        </div>
+                        
+                        ${renderSkillDetails(skill)}
+                        
+                        <div class="skill-meta">
+                            <span>📅 ${date}</span>
+                        </div>
+                        <div class="skill-actions">
+                            <button class="btn-small primary" onclick="practiceSkill('${skill.id}')">
+                                <span>⚡</span> Practice
+                            </button>
+                            <button class="btn-small danger" onclick="removeSkill('${skill.id}')">
+                                <span>🗑️</span> Remove
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += `</div>`;
+        }
+        
+        container.innerHTML = html;
+    }
 
-  // ===== PRINT TOOLKIT =====
-  document.getElementById('printToolkitBtn')?.addEventListener('click', function() {
-    window.print();
-  });
+    // ===== RENDER SKILL DETAILS =====
+    function renderSkillDetails(skill) {
+        if (skill.id === 'values-compass' && skill.details) {
+            const v = skill.details;
+            return `
+                <div class="skill-detail-grid">
+                    <div class="skill-detail-item"><span class="skill-detail-label">1.</span> ${v.val1 || '—'}</div>
+                    <div class="skill-detail-item"><span class="skill-detail-label">2.</span> ${v.val2 || '—'}</div>
+                    <div class="skill-detail-item"><span class="skill-detail-label">3.</span> ${v.val3 || '—'}</div>
+                    <div class="skill-detail-item"><span class="skill-detail-label">Relationships:</span> ${v.rel || '—'}</div>
+                </div>
+            `;
+        }
+        if (skill.id === 'crisis-card' && skill.details) {
+            return `
+                <div class="skill-detail-grid">
+                    <div class="skill-detail-item"><span class="skill-detail-label">1.</span> Physical</div>
+                    <div class="skill-detail-item"><span class="skill-detail-label">2.</span> Wait 20 min</div>
+                    <div class="skill-detail-item"><span class="skill-detail-label">3.</span> Acceptance</div>
+                    <div class="skill-detail-item"><span class="skill-detail-label">4.</span> Values</div>
+                </div>
+            `;
+        }
+        return '';
+    }
 
-  // ===== MARK COURSE AS ACCESSED =====
-  function init() {
-    // Update progress
-    let progress = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
-    progress.lastAccessed = new Date().toISOString();
-    localStorage.setItem('crisis_course_progress', JSON.stringify(progress));
-    
-    // Load data
-    loadToolkit();
-  }
+    // ===== HELPER FUNCTIONS =====
+    function getCategoryBadge(category) {
+        const badges = {
+            '🆘 My Crisis Plan': 'CRISIS PLAN',
+            '💪 Physical Skills': 'PHYSICAL',
+            '🧠 Mental Techniques': 'MENTAL',
+            '🕊️ Acceptance Skills': 'ACCEPTANCE',
+            '📋 My Profile': 'MY PROFILE'
+        };
+        return badges[category] || 'SKILL';
+    }
 
-  init();
+    // ===== PRACTICE SKILL =====
+    window.practiceSkill = function(skillId) {
+        if (skillId.includes('cold') || skillId.includes('exercise') || skillId.includes('breath') || skillId.includes('pmr') || skillId.includes('temperature')) {
+            window.location.href = 'crisis-module-2.html';
+        } else if (skillId.includes('ground') || skillId.includes('cognitive') || skillId.includes('sensation') || skillId.includes('bilateral') || skillId.includes('distraction')) {
+            window.location.href = 'crisis-module-3.html';
+        } else if (skillId.includes('accept') || skillId.includes('compassion') || skillId.includes('defusion') || skillId.includes('willing') || skillId.includes('smile')) {
+            window.location.href = 'crisis-module-4.html';
+        } else if (skillId.includes('values') || skillId.includes('crisis-card') || skillId.includes('intensity') || skillId.includes('practice')) {
+            window.location.href = 'crisis-module-5.html';
+        } else if (skillId.includes('urges')) {
+            window.location.href = 'crisis-module-1.html';
+        } else {
+            window.location.href = 'crisis-intro.html';
+        }
+    };
+
+    // ===== REMOVE SKILL =====
+    window.removeSkill = function(skillId) {
+        if (!confirm('Remove this skill from your toolkit?')) return;
+        
+        let toolkit = JSON.parse(localStorage.getItem('crisis_toolkit') || '[]');
+        toolkit = toolkit.filter(item => item.id !== skillId);
+        localStorage.setItem('crisis_toolkit', JSON.stringify(toolkit));
+        
+        showToast('✓ Skill removed');
+        loadToolkit();
+    };
+
+    // ===== EXPORT TOOLKIT =====
+    document.getElementById('exportToolkitBtn')?.addEventListener('click', function() {
+        const toolkit = JSON.parse(localStorage.getItem('crisis_toolkit') || '[]');
+        const crisisPlan = JSON.parse(localStorage.getItem('crisis_plan') || '{}');
+        const progress = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
+        
+        const exportData = {
+            toolkit,
+            crisisPlan,
+            progress,
+            exportedAt: new Date().toISOString(),
+            version: '1.0'
+        };
+        
+        const dataStr = JSON.stringify(exportData, null, 2);
+        const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+        
+        const exportFileDefaultName = `crisis-toolkit-${new Date().toISOString().slice(0,10)}.json`;
+        
+        const linkElement = document.createElement('a');
+        linkElement.setAttribute('href', dataUri);
+        linkElement.setAttribute('download', exportFileDefaultName);
+        linkElement.click();
+        
+        showToast('✓ Toolkit exported');
+    });
+
+    // ===== IMPORT TOOLKIT =====
+    document.getElementById('importToolkitBtn')?.addEventListener('click', function() {
+        document.getElementById('importFile').click();
+    });
+
+    document.getElementById('importFile')?.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const imported = JSON.parse(e.target.result);
+                
+                if (imported.toolkit) {
+                    localStorage.setItem('crisis_toolkit', JSON.stringify(imported.toolkit));
+                }
+                if (imported.crisisPlan) {
+                    localStorage.setItem('crisis_plan', JSON.stringify(imported.crisisPlan));
+                }
+                if (imported.progress) {
+                    localStorage.setItem('crisis_course_progress', JSON.stringify(imported.progress));
+                }
+                
+                showToast('✓ Toolkit imported successfully');
+                loadToolkit();
+            } catch (err) {
+                alert('Invalid file format. Please export a toolkit file first.');
+            }
+        };
+        reader.readAsText(file);
+        
+        // Clear input
+        e.target.value = '';
+    });
+
+    // ===== CLEAR ALL =====
+    document.getElementById('clearToolkitBtn')?.addEventListener('click', function() {
+        if (!confirm('Are you sure? This will remove ALL skills from your toolkit.')) return;
+        if (!confirm('This cannot be undone. Clear everything?')) return;
+        
+        localStorage.removeItem('crisis_toolkit');
+        // Keep crisis plan and progress, just clear toolkit
+        loadToolkit();
+        showToast('✓ All skills cleared');
+    });
+
+    // ===== PRINT TOOLKIT =====
+    document.getElementById('printToolkitBtn')?.addEventListener('click', function() {
+        window.print();
+    });
+
+    // ===== SHOW TOAST NOTIFICATION =====
+    function showToast(message) {
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.textContent = message;
+        document.body.appendChild(toast);
+        
+        setTimeout(() => {
+            toast.remove();
+        }, 3000);
+    }
+
+    // ===== INITIALIZE =====
+    function init() {
+        // Update progress
+        let progress = JSON.parse(localStorage.getItem('crisis_course_progress') || '{}');
+        progress.lastAccessed = new Date().toISOString();
+        localStorage.setItem('crisis_course_progress', JSON.stringify(progress));
+        
+        // Load data
+        loadToolkit();
+    }
+
+    init();
 })();
 </script>
 </body>
