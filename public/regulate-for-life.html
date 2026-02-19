@@ -1,0 +1,1446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#080f1a">
+<title>Regulate for Life</title>
+<link rel="manifest" href="#" id="pwa-manifest">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230b1422'/><text y='.9em' font-size='72' x='50%' dominant-baseline='middle' text-anchor='middle'>🌿</text></svg>">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Regulate for Life">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080f1a;--shell:#0b1422;
+  --bdr:rgba(255,255,255,0.06);--bdr2:rgba(255,255,255,0.09);
+  --teal:#0d8a6e;--ts:rgb(52,211,153);--tbg:rgba(13,138,110,0.14);
+  --amber:#c47a1a;--ta:rgb(245,176,65);--abg:rgba(196,122,26,0.14);
+  --ok:rgb(74,222,128);--obg:rgba(34,197,94,0.1);
+  --p1:rgb(238,244,251);--p2:rgb(190,206,224);--p3:rgb(130,152,178);--p4:rgb(80,102,128);
+  --g1:linear-gradient(135deg,#c47a1a,#0d8a6e);
+  --g2:linear-gradient(135deg,#0d8a6e,#c47a1a);
+  --serif:'Cormorant Garamond',Georgia,serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+html,body{width:100%;height:100%;overflow:hidden;font-family:'DM Sans',-apple-system,sans-serif;background:var(--bg);color:var(--p1);-webkit-font-smoothing:antialiased;}
+.wrap{width:100%;height:100vh;height:100dvh;display:flex;}
+.shell{width:100%;max-width:28rem;height:100%;margin:0 auto;background:var(--shell);display:flex;flex-direction:column;position:relative;overflow:hidden;border-left:1px solid var(--bdr);border-right:1px solid var(--bdr);}
+.orb{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:0;}
+.o1{top:-20%;left:-10%;width:24rem;height:24rem;background:rgba(196,122,26,0.045);}
+.o2{bottom:-15%;right:-15%;width:22rem;height:22rem;background:rgba(13,138,110,0.045);}
+.pbar{height:2px;background:rgba(255,255,255,0.04);flex-shrink:0;z-index:10;}
+.pfill{height:100%;transition:width 0.5s cubic-bezier(.4,0,.2,1),background 0.4s ease;}
+.screen{display:none;flex-direction:column;height:100%;overflow:hidden;}
+.screen.on{display:flex;}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.fin{animation:rise 0.32s cubic-bezier(.4,0,.2,1);}
+.scroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none;min-height:0;position:relative;z-index:1;}
+.scroll::-webkit-scrollbar{display:none;}
+.pad{padding:0 1.15rem 3rem;display:flex;flex-direction:column;}
+.hdr{display:flex;align-items:center;gap:0.75rem;padding:1rem 1.15rem 0.75rem;flex-shrink:0;position:relative;z-index:2;}
+.back{width:2.2rem;height:2.2rem;border-radius:50%;background:rgba(255,255,255,0.05);border:1px solid var(--bdr2);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.1rem;color:var(--p3);transition:all 0.2s;flex-shrink:0;}
+.back:active{background:rgba(255,255,255,0.1);}
+.htag{font-size:0.6rem;color:var(--p4);letter-spacing:0.14em;text-transform:uppercase;font-weight:500;}
+.hpill{margin-left:auto;font-size:0.58rem;font-weight:600;padding:0.18rem 0.6rem;border-radius:100px;background:rgba(255,255,255,0.05);color:var(--p3);}
+/* Typography */
+.hed{font-family:var(--serif);font-size:clamp(1.6rem,6vw,2.1rem);line-height:1.15;color:var(--p1);margin-bottom:1rem;font-weight:400;}
+.hed em{font-style:italic;}
+.sub{font-size:0.875rem;line-height:1.8;color:var(--p2);margin-bottom:0.9rem;font-weight:300;}
+.sub strong{color:var(--p1);font-weight:500;}
+.pull{font-family:var(--serif);font-style:italic;font-size:1.1rem;line-height:1.65;padding:1.1rem 1.25rem;border-left:2px solid;border-radius:0 0.875rem 0.875rem 0;margin:0.9rem 0;}
+.label{font-size:0.58rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;margin-bottom:0.55rem;}
+.hint{font-size:0.72rem;color:var(--p4);line-height:1.55;font-style:italic;margin-top:0.4rem;font-weight:300;}
+.sp{min-height:0.75rem;flex:1;}
+/* Buttons */
+.bwrap{padding:0.9rem 1.15rem max(1rem,env(safe-area-inset-bottom));flex-shrink:0;display:flex;flex-direction:column;gap:0.45rem;position:relative;z-index:2;background:var(--shell);border-top:1px solid rgba(255,255,255,0.04);}
+.btn{width:100%;padding:1rem;border:none;border-radius:1rem;font-size:0.875rem;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif;letter-spacing:0.01em;}
+.btn:active{transform:scale(0.98);opacity:0.88;}
+.btn:disabled{opacity:0.22;cursor:not-allowed;transform:none;}
+.btn-a{background:var(--g1);color:#fff;}
+.btn-t{background:var(--g2);color:#fff;}
+.btn-n{background:rgba(255,255,255,0.055);border:1px solid var(--bdr2);color:var(--p3);font-size:0.82rem;}
+/* Tap choices */
+.choice{background:rgba(255,255,255,0.03);border:1.5px solid var(--bdr2);border-radius:1rem;padding:1rem 1.1rem;margin-bottom:0.4rem;cursor:pointer;transition:all 0.2s;}
+.choice:active{transform:scale(0.985);}
+.choice.sel-a{border-color:var(--amber);border-width:2px;background:rgba(196,122,26,0.07);}
+.choice.sel-t{border-color:var(--teal);border-width:2px;background:rgba(13,138,110,0.07);}
+.ch-name{font-size:0.875rem;font-weight:600;margin-bottom:0.18rem;color:var(--p1);}
+.ch-desc{font-size:0.73rem;color:var(--p3);line-height:1.45;font-weight:300;}
+/* Body zone grid */
+.bgrid{display:grid;grid-template-columns:1fr 1fr;gap:0.4rem;margin:0.5rem 0;}
+.bzone{background:rgba(255,255,255,0.03);border:1.5px solid var(--bdr2);border-radius:1rem;padding:0.875rem 0.5rem;text-align:center;cursor:pointer;transition:all 0.2s;}
+.bzone:active{transform:scale(0.97);}
+.bzone.z-a{border-color:var(--amber);border-width:2px;background:rgba(196,122,26,0.09);}
+.bzone.z-t{border-color:var(--teal);border-width:2px;background:rgba(13,138,110,0.09);}
+.bico{font-size:1.4rem;margin-bottom:0.22rem;}
+.blbl{font-size:0.68rem;font-weight:500;color:var(--p2);}
+/* Reveal */
+.rev{border-radius:1rem;padding:1.05rem 1.1rem;margin-top:0.55rem;display:none;border-left:3px solid;}
+.rev.on{display:block;animation:rise 0.22s ease-out;}
+.rev-tag{font-size:0.57rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.35rem;}
+.rev-text{font-size:0.82rem;line-height:1.72;font-weight:300;}
+/* Textarea */
+textarea{width:100%;background:rgba(255,255,255,0.03);border:1.5px solid var(--bdr2);border-radius:1rem;padding:0.9rem 1rem;font-size:0.875rem;font-family:'DM Sans',sans-serif;color:var(--p1);resize:none;outline:none;line-height:1.7;min-height:88px;font-weight:300;}
+textarea::placeholder{color:var(--p4);font-weight:300;font-size:0.82rem;}
+textarea.ta-a{border-color:rgba(196,122,26,0.2);}textarea.ta-a:focus{border-color:var(--amber);}
+textarea.ta-t{border-color:rgba(13,138,110,0.2);}textarea.ta-t:focus{border-color:var(--teal);}
+textarea.ta-serif{font-family:var(--serif);font-style:italic;font-size:0.95rem;min-height:80px;}
+/* Sentiment tap row */
+.staps{display:flex;gap:0.35rem;margin:0.5rem 0;}
+.stap{flex:1;padding:0.7rem 0.25rem;border-radius:0.875rem;border:1.5px solid var(--bdr2);background:rgba(255,255,255,0.03);text-align:center;cursor:pointer;transition:all 0.2s;font-size:0.65rem;color:var(--p3);}
+.stap:active{transform:scale(0.97);}
+.stap.son-a{border-color:var(--amber);border-width:2px;background:rgba(196,122,26,0.09);color:var(--ta);}
+.stap.son-t{border-color:var(--teal);border-width:2px;background:rgba(13,138,110,0.09);color:var(--ts);}
+.stap-ico{font-size:1.2rem;margin-bottom:0.12rem;}
+.stap-lbl{font-size:0.58rem;font-weight:500;}
+/* Info box */
+.ibox{background:rgba(255,255,255,0.025);border:1px solid var(--bdr2);border-radius:1rem;padding:1.05rem 1.1rem;margin:0.7rem 0;}
+.ibox-lbl{font-size:0.58rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.4rem;}
+.ibox p{font-size:0.82rem;line-height:1.72;color:var(--p2);font-weight:300;}
+.ibox p strong{color:var(--p1);font-weight:500;}
+/* Note */
+.note{background:rgba(255,255,255,0.02);border:1px solid var(--bdr2);border-left:2px solid var(--amber);border-radius:0 0.875rem 0.875rem 0;padding:0.9rem 1.1rem;margin:0.75rem 0;}
+.note-t{font-size:0.58rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ta);margin-bottom:0.3rem;}
+.note-b{font-size:0.78rem;line-height:1.65;color:var(--p3);font-weight:300;font-style:italic;}
+/* Tabs */
+.tabs{display:flex;border-bottom:1px solid var(--bdr);flex-shrink:0;z-index:2;background:var(--shell);}
+.tab{flex:1;padding:0.7rem 0;text-align:center;font-size:0.65rem;font-weight:500;color:var(--p4);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;letter-spacing:0.02em;}
+.tab.ta-on{color:var(--ta);border-bottom-color:var(--amber);}
+.tab.tt-on{color:var(--ts);border-bottom-color:var(--teal);}
+.tsec{display:none;}.tsec.on{display:block;}
+/* Module list */
+.mrow{display:flex;gap:0.7rem;padding:0 1.15rem 0.55rem;cursor:pointer;}
+.mrow:active .mcard{transform:scale(0.99);}
+.mtrack{display:flex;flex-direction:column;align-items:center;width:14px;flex-shrink:0;padding-top:1rem;}
+.mdot{width:8px;height:8px;border-radius:50%;flex-shrink:0;border:2px solid transparent;}
+.mline{flex:1;width:1px;background:var(--bdr);margin-top:0.3rem;}
+.mcard{flex:1;background:rgba(255,255,255,0.03);border:1px solid var(--bdr2);border-radius:1rem;padding:0.875rem;transition:all 0.2s;}
+.mstage{font-size:0.55rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.18rem;}
+.mtitle{font-size:0.875rem;font-weight:600;color:var(--p1);margin-bottom:0.12rem;}
+.msub{font-size:0.68rem;color:var(--p4);line-height:1.4;font-weight:300;}
+.mbadge{display:inline-block;margin-top:0.4rem;font-size:0.55rem;font-weight:600;padding:0.16rem 0.5rem;border-radius:100px;text-transform:uppercase;letter-spacing:0.08em;}
+/* Entries */
+.ecard{background:rgba(255,255,255,0.03);border:1px solid var(--bdr2);border-radius:1rem;padding:0.875rem;margin-bottom:0.4rem;}
+.emod{font-size:0.58rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.2rem;}
+.etext{font-size:0.78rem;color:var(--p2);line-height:1.5;margin-bottom:0.15rem;font-weight:300;}
+.etime{font-size:0.58rem;color:var(--p4);}
+/* Progress grid */
+.wgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin:0.35rem 0 0.8rem;}
+.wday{aspect-ratio:1;border-radius:3px;background:rgba(255,255,255,0.04);}
+.wday.da{background:rgba(196,122,26,0.5);}
+.wday.dt{background:rgba(13,138,110,0.5);}
+.wday.today{outline:1.5px solid rgba(255,255,255,0.2);}
+/* Home cards */
+.home-hero{padding:2rem 1.15rem 1.25rem;position:relative;z-index:1;}
+.home-title{font-family:var(--serif);font-size:2.6rem;line-height:1.05;color:var(--p1);margin-bottom:0.3rem;}
+.home-sub{font-size:0.82rem;line-height:1.8;color:var(--p3);margin-bottom:1.4rem;font-weight:300;}
+.pcards{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-bottom:0.6rem;}
+.pcard{border-radius:1.1rem;padding:1.15rem;cursor:pointer;transition:all 0.2s;border:1px solid transparent;}
+.pcard:active{transform:scale(0.985);}
+.pcard-tag{font-size:0.55rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;margin-bottom:0.3rem;}
+.pcard-title{font-family:var(--serif);font-size:1.15rem;line-height:1.15;margin-bottom:0.25rem;}
+.pcard-sub{font-size:0.65rem;line-height:1.45;opacity:0.6;font-weight:300;}
+.resume-bar{display:none;align-items:center;gap:0.75rem;border-radius:1rem;padding:0.875rem 1rem;margin:0.5rem 1.15rem 0;cursor:pointer;border:1px solid transparent;}
+.resume-bar.show{display:flex;}.resume-bar:active{transform:scale(0.99);}
+/* Sensation scale */
+.scale{display:flex;flex-direction:column;gap:0.35rem;margin:0.5rem 0;}
+.scale-row{display:flex;gap:0.35rem;}
+.snum{flex:1;padding:0.75rem 0.3rem;border-radius:0.75rem;border:1.5px solid var(--bdr2);background:rgba(255,255,255,0.03);text-align:center;cursor:pointer;transition:all 0.2s;}
+.snum:active{transform:scale(0.96);}
+.snum.son-a{border-color:var(--amber);border-width:2px;background:rgba(196,122,26,0.12);color:var(--ta);font-weight:700;}
+.snum.son-t{border-color:var(--teal);border-width:2px;background:rgba(13,138,110,0.12);color:var(--ts);font-weight:700;}
+.snum-n{font-size:1rem;font-weight:600;}
+.snum-l{font-size:0.55rem;color:var(--p4);margin-top:0.08rem;font-weight:400;}
+/* Body map */
+.body-map{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.4rem;margin:0.5rem 0;}
+.bm-zone{background:rgba(255,255,255,0.03);border:1.5px solid var(--bdr2);border-radius:1rem;padding:0.85rem 0.4rem;text-align:center;cursor:pointer;transition:all 0.2s;}
+.bm-zone:active{transform:scale(0.97);}
+.bm-zone.bm-a{border-color:var(--amber);border-width:2px;background:rgba(196,122,26,0.09);}
+.bm-zone.bm-t{border-color:var(--teal);border-width:2px;background:rgba(13,138,110,0.09);}
+@media(min-width:768px){.shell{border-radius:2rem;margin:1rem auto;box-shadow:0 32px 80px rgba(0,0,0,0.7);height:calc(100dvh - 2rem);max-height:920px;}}
+</style>
+</head>
+<body>
+<div class="wrap"><div class="shell">
+<div class="orb o1"></div><div class="orb o2"></div>
+<div class="pbar"><div class="pfill" id="pf" style="width:0%"></div></div>
+
+<!-- HOME -->
+<div class="screen on" id="s-home">
+  <div class="scroll"><div class="home-hero">
+    <div class="home-title">Regulate<br><em style="font-style:italic;color:var(--ts)">for Life</em></div>
+    <div class="home-sub">Not surviving difficult moments — actually changing how you relate to your emotions. The slower, more personal kind of work.</div>
+    <div class="pcards">
+      <div class="pcard" style="background:linear-gradient(135deg,rgba(196,122,26,0.15),rgba(13,138,110,0.07));border-color:rgba(196,122,26,0.2);" onclick="go('p1h')">
+        <div class="pcard-tag" style="color:var(--ta)">Part 1</div>
+        <div class="pcard-title">Core<br>Skills</div>
+        <div class="pcard-sub">7 modules · The foundation</div>
+      </div>
+      <div class="pcard" style="background:linear-gradient(135deg,rgba(13,138,110,0.15),rgba(196,122,26,0.07));border-color:rgba(13,138,110,0.2);" onclick="go('p2h')">
+        <div class="pcard-tag" style="color:var(--ts)">Part 2</div>
+        <div class="pcard-title">Going<br>Deeper</div>
+        <div class="pcard-sub">5 modules · The longer work</div>
+      </div>
+    </div>
+    <div class="resume-bar" id="resume-bar" onclick="doResume()" style="background:rgba(196,122,26,0.07);border-color:rgba(196,122,26,0.15)">
+      <div style="width:1.8rem;height:1.8rem;border-radius:50%;background:rgba(196,122,26,0.18);display:flex;align-items:center;justify-content:center;font-size:0.75rem;flex-shrink:0">▶</div>
+      <div style="flex:1"><div style="font-size:0.55rem;color:var(--p4);text-transform:uppercase;letter-spacing:0.1em;font-weight:500;margin-bottom:0.12rem">Resume</div><div style="font-size:0.82rem;font-weight:600" id="resume-label">—</div></div>
+      <div style="color:var(--ta);font-size:1.1rem">›</div>
+    </div>
+    <div class="note" style="margin-top:1.25rem">
+      <div class="note-t">Before you begin</div>
+      <div class="note-b">This is for long-term change — not crisis management. For short-term coping, see Regulate Now.</div>
+    </div>
+    <div class="sp"></div>
+  </div></div>
+</div>
+
+<!-- PART 1 HOME -->
+<div class="screen" id="p1h">
+  <div class="hdr"><div class="back" onclick="go('s-home')">‹</div><div class="htag" style="color:var(--ta)">Part 1 · Core Skills</div></div>
+  <div class="tabs">
+    <div class="tab ta-on" id="p1t-m" onclick="swTab('p1','m')">Modules</div>
+    <div class="tab" id="p1t-e" onclick="swTab('p1','e')">Entries</div>
+    <div class="tab" id="p1t-p" onclick="swTab('p1','p')">Progress</div>
+  </div>
+  <div class="scroll" id="p1scroll">
+    <div class="tsec on" id="p1sm"><div id="p1mlist" style="padding:0.75rem 0 2rem"></div></div>
+    <div class="tsec" id="p1se"><div id="p1elist" style="padding:0.75rem 1.15rem 2rem"></div></div>
+    <div class="tsec" id="p1sp"><div id="p1prog" style="padding:0.75rem 1.15rem 2rem"></div></div>
+  </div>
+</div>
+
+<!-- PART 2 HOME -->
+<div class="screen" id="p2h">
+  <div class="hdr"><div class="back" onclick="go('s-home')">‹</div><div class="htag" style="color:var(--ts)">Part 2 · Going Deeper</div></div>
+  <div class="tabs">
+    <div class="tab tt-on" id="p2t-m" onclick="swTab('p2','m')">Modules</div>
+    <div class="tab" id="p2t-e" onclick="swTab('p2','e')">Entries</div>
+    <div class="tab" id="p2t-p" onclick="swTab('p2','p')">Progress</div>
+  </div>
+  <div class="scroll" id="p2scroll">
+    <div class="tsec on" id="p2sm"><div id="p2mlist" style="padding:0.75rem 0 2rem"></div></div>
+    <div class="tsec" id="p2se"><div id="p2elist" style="padding:0.75rem 1.15rem 2rem"></div></div>
+    <div class="tsec" id="p2sp"><div id="p2prog" style="padding:0.75rem 1.15rem 2rem"></div></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+  M1: TWO KINDS OF REGULATION
+═══════════════════════════════════ -->
+<div class="screen" id="m1-a">
+  <div class="hdr"><div class="back" onclick="go('p1h')">‹</div><div class="htag" style="color:var(--ta)">Module 1</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed">There are two kinds<br>of regulation.<br><em style="color:var(--ta)">This is the<br>harder one.</em></div>
+    <div class="sub">Getting through a crisis — calming down when overwhelmed. That is short-term regulation. The companion course covers that.</div>
+    <div class="sub">This course is about the second kind: actually <strong>changing how you relate to emotions over time</strong>. Building the internal structures that make stability your default — not your goal.</div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-a" onclick="go('m1-b')">I am ready to begin →</button></div>
+</div>
+
+<div class="screen" id="m1-b">
+  <div class="hdr"><div class="back" onclick="go('m1-a')">‹</div><div class="htag" style="color:var(--ta)">Module 1</div><div class="hpill">1 of 3</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed"><em style="color:var(--ta)">The emotion that<br>keeps showing up.</em></div>
+    <div class="sub" style="font-size:0.8rem">Not what you think you should feel. What actually keeps appearing — and costs you something.</div>
+    <div class="choice" onclick="pickM1(this,'anger')"><div class="ch-name">Anger or irritation</div><div class="ch-desc">Flares up quickly. Harder to come down from than it should be.</div></div>
+    <div class="choice" onclick="pickM1(this,'anxiety')"><div class="ch-name">Anxiety or dread</div><div class="ch-desc">A background hum that will not quiet. Always anticipating something.</div></div>
+    <div class="choice" onclick="pickM1(this,'shutdown')"><div class="ch-name">Shutdown or numbness</div><div class="ch-desc">Going flat. Disconnecting. Hard to feel much at all.</div></div>
+    <div class="choice" onclick="pickM1(this,'sadness')"><div class="ch-name">Sadness or heaviness</div><div class="ch-desc">A weight that sits underneath most days.</div></div>
+    <div class="choice" onclick="pickM1(this,'shame')"><div class="ch-name">Shame or not-enoughness</div><div class="ch-desc">The quiet voice that finds fault. Hard to turn off.</div></div>
+    <div class="rev" id="m1b-rev"></div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-a" id="m1b-next" onclick="go('m1-c')" disabled>Continue →</button></div>
+</div>
+
+<div class="screen" id="m1-c">
+  <div class="hdr"><div class="back" onclick="go('m1-b')">‹</div><div class="htag" style="color:var(--ta)">Module 1</div><div class="hpill">2 of 3</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed"><em style="color:var(--ta)">The emotion you<br>wish came more easily.</em></div>
+    <div class="sub" style="font-size:0.8rem">The one that feels distant or hard to access. Joy, peace, warmth, ease — what is it for you?</div>
+    <div class="choice" onclick="pickM1c(this,'joy')"><div class="ch-name">Joy or lightness</div><div class="ch-desc">The ability to feel genuinely happy — not just okay.</div></div>
+    <div class="choice" onclick="pickM1c(this,'peace')"><div class="ch-name">Peace or calm</div><div class="ch-desc">Settling without having to do anything. Stillness that feels safe.</div></div>
+    <div class="choice" onclick="pickM1c(this,'warmth')"><div class="ch-name">Warmth or connection</div><div class="ch-desc">Feeling genuinely close to people. Letting them in.</div></div>
+    <div class="choice" onclick="pickM1c(this,'pride')"><div class="ch-name">Pride or satisfaction</div><div class="ch-desc">Feeling good about what I do or who I am.</div></div>
+    <div class="choice" onclick="pickM1c(this,'unsure')"><div class="ch-name">Not sure yet</div><div class="ch-desc">Something feels absent but I cannot name it clearly yet.</div></div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-a" id="m1c-next" onclick="go('m1-d')" disabled>Continue →</button></div>
+</div>
+
+<div class="screen" id="m1-d">
+  <div class="hdr"><div class="back" onclick="go('m1-c')">‹</div><div class="htag" style="color:var(--ta)">Module 1</div><div class="hpill">3 of 3</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed"><em style="color:var(--ta)">In your own words —<br>what sets it off?</em></div>
+    <div class="sub" style="font-size:0.8rem">Write about the emotion that shows up too much. When does it tend to appear? What usually triggers it?</div>
+    <div class="label" style="color:var(--ta)">The emotion that costs me most</div>
+    <textarea class="ta-a ta-serif" id="m1-write" placeholder="It tends to show up when... / What usually triggers it is... / Where I feel it in my body is..." oninput="chkBtn('m1-write','m1d-save')"></textarea>
+    <div class="hint">Write honestly — not what you think you should say. This becomes your starting point for the course.</div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-a" id="m1d-save" onclick="go('m1-z')" disabled>Save and finish →</button></div>
+</div>
+
+<div class="screen" id="m1-z">
+  <div class="hdr"><div class="back" onclick="go('p1h')">‹</div><div class="htag" style="color:var(--ta)">Module 1 · Complete</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.5rem">
+    <div class="hed">You have a compass.<br><em style="color:var(--ta)">The course builds<br>from here.</em></div>
+    <div class="pull" style="border-color:var(--amber);color:var(--p1);background:rgba(196,122,26,0.06)">"Most of us have been regulating emotionally our whole lives — without ever being taught how. Some of what we learned works. Some of it quietly causes more problems than it solves."</div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap">
+    <button class="btn btn-a" onclick="go('m2-a')">Next: Module 2 →</button>
+    <button class="btn btn-n" onclick="go('p1h')">Back to modules</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+  M2: FOUR LAYERS
+═══════════════════════════════════ -->
+<div class="screen" id="m2-a">
+  <div class="hdr"><div class="back" onclick="go('p1h')">‹</div><div class="htag" style="color:var(--ta)">Module 2</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed">Emotions have<br>a structure.<br><em style="color:var(--ta)">Four layers,<br>every time.</em></div>
+    <div class="sub">A body sensation comes first — before the mind names anything. Then an impulse to act. Then a story about what is happening. Then, underneath all of that, a need that is rarely spoken.</div>
+    <div class="sub">You are about to walk a real moment through all four layers. <strong>Think of something that made you feel strongly this week.</strong> Something real — not a crisis, just a moment. Hold it in mind.</div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-a" onclick="go('m2-b')">I have a moment in mind →</button></div>
+</div>
+
+<div class="screen" id="m2-b">
+  <div class="hdr"><div class="back" onclick="go('m2-a')">‹</div><div class="htag" style="color:var(--ta)">Module 2 · Layer 1: Body</div><div class="hpill">1 of 4</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed"><em style="color:var(--ta)">Before your mind<br>made sense of it —<br>where did you feel it?</em></div>
+    <div class="sub" style="font-size:0.8rem">Close your eyes for a moment. Bring back the situation. Scan your body — where did the first sensation land?</div>
+    <div class="body-map" id="m2-bodymap">
+      <div class="bm-zone" onclick="togBM(this,'m2-bodymap','bm-a','m2b-next')"><div class="bico">🫤</div><div class="blbl">Throat</div></div>
+      <div class="bm-zone" onclick="togBM(this,'m2-bodymap','bm-a','m2b-next')"><div class="bico">💔</div><div class="blbl">Chest</div></div>
+      <div class="bm-zone" onclick="togBM(this,'m2-bodymap','bm-a','m2b-next')"><div class="bico">😤</div><div class="blbl">Jaw</div></div>
+      <div class="bm-zone" onclick="togBM(this,'m2-bodymap','bm-a','m2b-next')"><div class="bico">🌀</div><div class="blbl">Gut</div></div>
+      <div class="bm-zone" onclick="togBM(this,'m2-bodymap','bm-a','m2b-next')"><div class="bico">🔥</div><div class="blbl">Heat</div></div>
+      <div class="bm-zone" onclick="togBM(this,'m2-bodymap','bm-a','m2b-next')"><div class="bico">🪨</div><div class="blbl">Went flat</div></div>
+      <div class="bm-zone" onclick="togBM(this,'m2-bodymap','bm-a','m2b-next')"><div class="bico">😤</div><div class="blbl">Shoulders</div></div>
+      <div class="bm-zone" onclick="togBM(this,'m2-bodymap','bm-a','m2b-next')"><div class="bico">🥴</div><div class="blbl">Head</div></div>
+      <div class="bm-zone" onclick="togBM(this,'m2-bodymap','bm-a','m2b-next')"><div class="bico">🦵</div><div class="blbl">Legs</div></div>
+    </div>
+    <div class="hint">You can select more than one. The body often holds it in multiple places.</div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-a" id="m2b-next" onclick="go('m2-c')" disabled>Layer 2: Impulse →</button></div>
+</div>
+
+<div class="screen" id="m2-c">
+  <div class="hdr"><div class="back" onclick="go('m2-b')">‹</div><div class="htag" style="color:var(--ta)">Module 2 · Layer 2: Impulse</div><div class="hpill">2 of 4</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed"><em style="color:var(--ta)">What did the<br>emotion want<br>you to do?</em></div>
+    <div class="sub" style="font-size:0.8rem">Every emotion comes with an action tendency — something it pushes you toward. What was yours in that moment?</div>
+    <div class="choice" onclick="pickOne('#m2-c .choice','sel-a',this,'m2c-next')"><div class="ch-name">Pull away — go quiet, disappear, shut down</div><div class="ch-desc">Distance felt safer. The urge was to become less visible.</div></div>
+    <div class="choice" onclick="pickOne('#m2-c .choice','sel-a',this,'m2c-next')"><div class="ch-name">Move toward — fix it, reconnect, resolve</div><div class="ch-desc">The urge to close the gap. Make it okay again.</div></div>
+    <div class="choice" onclick="pickOne('#m2-c .choice','sel-a',this,'m2c-next')"><div class="ch-name">Push back — defend, confront, speak</div><div class="ch-desc">Something needed to be said or challenged.</div></div>
+    <div class="choice" onclick="pickOne('#m2-c .choice','sel-a',this,'m2c-next')"><div class="ch-name">Freeze — no clear direction</div><div class="ch-desc">Stuck between options. Body did not know which way was safer.</div></div>
+    <div class="choice" onclick="pickOne('#m2-c .choice','sel-a',this,'m2c-next')"><div class="ch-name">Self-soothe — reach for something numbing</div><div class="ch-desc">Food, phone, distraction. Anything to lower the volume.</div></div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-a" id="m2c-next" onclick="go('m2-d')" disabled>Layer 3: Story →</button></div>
+</div>
+
+<div class="screen" id="m2-d">
+  <div class="hdr"><div class="back" onclick="go('m2-c')">‹</div><div class="htag" style="color:var(--ta)">Module 2 · Layer 3: Story</div><div class="hpill">3 of 4</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed"><em style="color:var(--ta)">What were you<br>telling yourself?</em></div>
+    <div class="sub" style="font-size:0.8rem">The meaning you made of what happened. Often automatic. Often older than this moment.</div>
+    <div class="label" style="color:var(--ta)">The automatic story running in the background</div>
+    <textarea class="ta-a ta-serif" id="m2-story" placeholder="What I told myself it meant... / What I assumed about them... / What it said about me..." oninput="chkBtn('m2-story','m2d-next')"></textarea>
+    <div class="hint">Do not edit. Write the actual thought — not what you wish you had thought. The unedited version is more useful.</div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-a" id="m2d-next" onclick="go('m2-e')" disabled>Layer 4: Need →</button></div>
+</div>
+
+<div class="screen" id="m2-e">
+  <div class="hdr"><div class="back" onclick="go('m2-d')">‹</div><div class="htag" style="color:var(--ta)">Module 2 · Layer 4: Need</div><div class="hpill">4 of 4</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed"><em style="color:var(--ta)">Underneath all<br>of that — what did<br>you actually need?</em></div>
+    <div class="sub" style="font-size:0.8rem">This is the layer that most rarely gets named — even to ourselves.</div>
+    <div class="choice" onclick="pickOne('#m2-e .choice','sel-a',this,'m2e-save')"><div class="ch-name">To be seen or heard</div><div class="ch-desc">Someone to actually notice what I was carrying.</div></div>
+    <div class="choice" onclick="pickOne('#m2-e .choice','sel-a',this,'m2e-save')"><div class="ch-name">To feel safe</div><div class="ch-desc">That something threatening would stop — or that I was not alone in it.</div></div>
+    <div class="choice" onclick="pickOne('#m2-e .choice','sel-a',this,'m2e-save')"><div class="ch-name">To be respected or valued</div><div class="ch-desc">To know I matter. That what I think or feel counts.</div></div>
+    <div class="choice" onclick="pickOne('#m2-e .choice','sel-a',this,'m2e-save')"><div class="ch-name">Connection — to feel less alone</div><div class="ch-desc">Real contact with someone. The distance to close.</div></div>
+    <div class="choice" onclick="pickOne('#m2-e .choice','sel-a',this,'m2e-save')"><div class="ch-name">Space — permission to not be okay</div><div class="ch-desc">A pause. A breath. Room to just feel it without having to manage.</div></div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-a" id="m2e-save" onclick="go('m2-z')" disabled>Save and finish →</button></div>
+</div>
+
+<div class="screen" id="m2-z">
+  <div class="hdr"><div class="back" onclick="go('p1h')">‹</div><div class="htag" style="color:var(--ta)">Module 2 · Complete</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.5rem">
+    <div class="hed">Layer 4 is the one<br>that most rarely<br><em style="color:var(--ta)">gets into the room.</em></div>
+    <div class="sub">When you can name the real need — even just to yourself — something shifts. You are not stuck fighting the surface anymore. You know what the emotion is actually about.</div>
+    <div class="ibox" style="border-color:rgba(196,122,26,0.2)">
+      <div class="ibox-lbl" style="color:var(--ta)">Practice this week</div>
+      <p>When something activates you, pause and run through the four layers: <strong>body → impulse → story → need</strong>. Write a few lines in the Entries tab after. Even once is enough to start building the habit.</p>
+    </div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap">
+    <button class="btn btn-a" onclick="go('m3-a')">Next: Module 3 →</button>
+    <button class="btn btn-n" onclick="go('p1h')">Back to modules</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+  M3: CHANGING THE STORY
+═══════════════════════════════════ -->
+<div class="screen" id="m3-a">
+  <div class="hdr"><div class="back" onclick="go('p1h')">‹</div><div class="htag" style="color:var(--ta)">Module 3</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed">The same situation.<br>A different lens.<br><em style="color:var(--ta)">A different feeling.</em></div>
+    <div class="sub">When we are inside a difficult emotion we see through a narrow lens — and everything confirms what we already feel. Learning to widen that lens is a skill that builds over time.</div>
+    <div class="sub">This is not positive thinking. It is the trained practice of looking more clearly. And it has real limits — it works best for reactions to current situations. For older patterns, Module 8 goes there.</div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-a" onclick="go('m3-b')">Try it now →</button></div>
+</div>
+
+<div class="screen" id="m3-b">
+  <div class="hdr"><div class="back" onclick="go('m3-a')">‹</div><div class="htag" style="color:var(--ta)">Module 3 · Step 1</div><div class="hpill">1 of 4</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed"><em style="color:var(--ta)">What happened —<br>and what did you<br>tell yourself?</em></div>
+    <div class="label" style="color:var(--ta)">The situation</div>
+    <textarea class="ta-a" id="m3-sit" placeholder="What happened..." rows="2" style="min-height:60px" oninput="chkBtn('m3-sit','m3b-next')"></textarea>
+    <div style="height:0.65rem"></div>
+    <div class="label" style="color:var(--ta)">The automatic story</div>
+    <textarea class="ta-a ta-serif" id="m3-story" placeholder="What I told myself it meant..." oninput="chkBtn('m3-sit','m3b-next')"></textarea>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-a" id="m3b-next" onclick="go('m3-c')" disabled>Step 2 →</button></div>
+</div>
+
+<div class="screen" id="m3-c">
+  <div class="hdr"><div class="back" onclick="go('m3-b')">‹</div><div class="htag" style="color:var(--ta)">Module 3 · Step 2</div><div class="hpill">2 of 4</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed"><em style="color:var(--ta)">How certain does<br>that story feel?</em></div>
+    <div class="sub" style="font-size:0.8rem">Notice — does it feel like fact, or interpretation?</div>
+    <div class="choice" onclick="pickRev('#m3-c .choice','sel-a',this,'m3c-next','m3c-rev','var(--ta)','The most defended stories are often the most worth questioning. The certainty itself is a signal.')"><div class="ch-name">Like fact — clearly what happened</div><div class="ch-desc">The story feels undeniable. Hard to see another way.</div></div>
+    <div class="choice" onclick="pickRev('#m3-c .choice','sel-a',this,'m3c-next','m3c-rev','var(--ta)','Being able to hold it as interpretation rather than fact is already useful distance. That gap is where the work lives.')"><div class="ch-name">Like a likely interpretation — but I can see it might not be</div><div class="ch-desc">My best guess. There could be other explanations.</div></div>
+    <div class="choice" onclick="pickRev('#m3-c .choice','sel-a',this,'m3c-next','m3c-rev','var(--ta)','Noticing the gap between how intense the emotion feels and how uncertain the story is — that is the heart of this practice.')"><div class="ch-name">Uncertain — the emotion felt certain, but the story might be off</div></div>
+    <div class="rev" id="m3c-rev" style="border-color:var(--amber);background:rgba(196,122,26,0.06)"><div class="rev-tag" style="color:var(--ta)">What this means</div><div class="rev-text" id="m3c-rev-t"></div></div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-a" id="m3c-next" onclick="go('m3-d')" disabled>Step 3 →</button></div>
+</div>
+
+<div class="screen" id="m3-d">
+  <div class="hdr"><div class="back" onclick="go('m3-c')">‹</div><div class="htag" style="color:var(--ta)">Module 3 · Step 3</div><div class="hpill">3 of 4</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed"><em style="color:var(--ta)">Two other ways<br>to see the same<br>situation.</em></div>
+    <div class="sub" style="font-size:0.8rem">Genuinely plausible — not forced or fake-positive. What would someone who knows and cares about you say?</div>
+    <div class="label" style="color:var(--ta)">Another way to see it</div>
+    <textarea class="ta-a ta-serif" id="m3-alt1" placeholder="Another way this could be interpreted is..." oninput="chkBtn('m3-alt1','m3d-next')"></textarea>
+    <div style="height:0.65rem"></div>
+    <div class="label" style="color:var(--ta)">One more</div>
+    <textarea class="ta-a ta-serif" id="m3-alt2" placeholder="Or it could be that..." style="min-height:68px"></textarea>
+    <div class="hint">You are not trying to feel better. You are trying to see more clearly.</div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-a" id="m3d-next" onclick="go('m3-e')" disabled>Step 4 →</button></div>
+</div>
+
+<div class="screen" id="m3-e">
+  <div class="hdr"><div class="back" onclick="go('m3-d')">‹</div><div class="htag" style="color:var(--ta)">Module 3 · Step 4</div><div class="hpill">4 of 4</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed"><em style="color:var(--ta)">Holding all three —<br>what shifts?</em></div>
+    <div class="sub" style="font-size:0.8rem">Not what should shift. What actually happens when you genuinely consider that the original story might not be the only one.</div>
+    <div class="label" style="color:var(--ta)">What I notice</div>
+    <textarea class="ta-a ta-serif" id="m3-shift" placeholder="When I hold all three perspectives, the feeling... / Something that loosens or stays tight is... / Even 'nothing shifts' is worth writing." oninput="chkBtn('m3-shift','m3e-save')"></textarea>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-a" id="m3e-save" onclick="go('m3-z')" disabled>Save and finish →</button></div>
+</div>
+
+<div class="screen" id="m3-z">
+  <div class="hdr"><div class="back" onclick="go('p1h')">‹</div><div class="htag" style="color:var(--ta)">Module 3 · Complete</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.5rem">
+    <div class="hed">One real moment.<br>Four steps.<br><em style="color:var(--ta)">Do this once a week.</em></div>
+    <div class="sub">Over time you will notice your recurring stories — the lenses you default to. Use the Entries tab to keep going. Come back to this practice whenever a reaction felt bigger than the situation deserved.</div>
+    <div class="note"><div class="note-t">Honest about limits</div><div class="note-b">For emotions rooted in deep personal history, thought-work alone often only scratches the surface. Module 8 goes into that territory.</div></div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap">
+    <button class="btn btn-a" onclick="go('m4-a')">Next: Module 4 →</button>
+    <button class="btn btn-n" onclick="go('p1h')">Back to modules</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+  M4: PROBLEM SOLVING
+═══════════════════════════════════ -->
+<div class="screen" id="m4-a">
+  <div class="hdr"><div class="back" onclick="go('p1h')">‹</div><div class="htag" style="color:var(--ta)">Module 4</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed">Sometimes the most<br>effective regulation<br><em style="color:var(--ta)">is just solving<br>the problem.</em></div>
+    <div class="sub">Not every difficult emotion is a distortion to reframe. Sometimes life is genuinely hard and the emotion is pointing at an unsolved problem. In those cases the most powerful thing is to address it.</div>
+    <div class="ibox" style="border-color:rgba(196,122,26,0.2)">
+      <div class="ibox-lbl" style="color:var(--ta)">Three kinds of situations</div>
+      <p><strong>Solvable:</strong> Something specific you can actually change.<br><strong>Needs acceptance:</strong> Real and painful — but not changeable right now.<br><strong>Needs meaning:</strong> Requires sense-making, not fixing. Module 10 covers this.</p>
+    </div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-a" onclick="go('m4-b')">Which kind is yours? →</button></div>
+</div>
+
+<div class="screen" id="m4-b">
+  <div class="hdr"><div class="back" onclick="go('m4-a')">‹</div><div class="htag" style="color:var(--ta)">Module 4</div><div class="hpill">1 of 4</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed"><em style="color:var(--ta)">A situation causing<br>ongoing difficulty.<br>Which kind is it?</em></div>
+    <div class="choice" onclick="pickRev('#m4-b .choice','sel-a',this,'m4b-next','m4b-rev','var(--ta)','Good. The next screens walk you through a structured approach. Name it specifically — not vaguely.')"><div class="ch-name" style="color:var(--ok)">Something I can actually do something about</div><div class="ch-desc">There is a specific, real action that could change this.</div></div>
+    <div class="choice" onclick="pickRev('#m4-b .choice','sel-a',this,'m4b-next','m4b-rev','var(--ta)','Acceptance is not passive. It is an active choice to stop spending energy on what cannot change — and redirect it toward how you respond.')"><div class="ch-name">Real and painful — but not changeable right now</div><div class="ch-desc">The situation is what it is. What is needed is a different relationship to it.</div></div>
+    <div class="choice" onclick="pickRev('#m4-b .choice','sel-a',this,'m4b-next','m4b-rev','var(--ta)','Meaning-making is covered in Module 10. For now, knowing you are in this territory is useful — it needs a different kind of attention.')"><div class="ch-name" style="color:var(--ts)">It needs to make sense — not be fixed</div><div class="ch-desc">Something that requires understanding or meaning, not action.</div></div>
+    <div class="rev" id="m4b-rev" style="border-color:var(--amber);background:rgba(196,122,26,0.06)"><div class="rev-tag" style="color:var(--ta)">What this means</div><div class="rev-text" id="m4b-rev-t"></div></div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-a" id="m4b-next" onclick="go('m4-c')" disabled>Continue →</button></div>
+</div>
+
+<div class="screen" id="m4-c">
+  <div class="hdr"><div class="back" onclick="go('m4-b')">‹</div><div class="htag" style="color:var(--ta)">Module 4</div><div class="hpill">2 of 4</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed"><em style="color:var(--ta)">Name the problem<br>specifically.</em></div>
+    <div class="sub" style="font-size:0.8rem">Not "everything is hard." The concrete, specific problem — as clearly as you can state it.</div>
+    <div class="label" style="color:var(--ta)">The problem, specifically</div>
+    <textarea class="ta-a" id="m4-prob" placeholder="The specific problem is..." oninput="chkBtn('m4-prob','m4c-next')"></textarea>
+    <div class="hint">If you find yourself writing vaguely — push one step further. What exactly is the problem?</div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-a" id="m4c-next" onclick="go('m4-d')" disabled>List every option →</button></div>
+</div>
+
+<div class="screen" id="m4-d">
+  <div class="hdr"><div class="back" onclick="go('m4-c')">‹</div><div class="htag" style="color:var(--ta)">Module 4</div><div class="hpill">3 of 4</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed"><em style="color:var(--ta)">Every possible<br>response — sensible<br>or not.</em></div>
+    <div class="sub" style="font-size:0.8rem">Brainstorm without filtering. Obvious options, wild ones, things you would never actually do. Get them all out.</div>
+    <div class="label" style="color:var(--ta)">All options</div>
+    <textarea class="ta-a" id="m4-opts" placeholder="I could... / I could also... / Even if unlikely, I could..." style="min-height:110px" oninput="chkBtn('m4-opts','m4d-next')"></textarea>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-a" id="m4d-next" onclick="go('m4-e')" disabled>One step →</button></div>
+</div>
+
+<div class="screen" id="m4-e">
+  <div class="hdr"><div class="back" onclick="go('m4-d')">‹</div><div class="htag" style="color:var(--ta)">Module 4</div><div class="hpill">4 of 4</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed"><em style="color:var(--ta)">One small step<br>this week.<br>Just one.</em></div>
+    <div class="sub" style="font-size:0.8rem">Not the full solution. The one specific, doable thing you will actually do.</div>
+    <div class="label" style="color:var(--ta)">The one step</div>
+    <textarea class="ta-a ta-serif" id="m4-step" placeholder="This week I will specifically..." oninput="chkBtn('m4-step','m4e-save')"></textarea>
+    <div class="note" style="margin-top:0.75rem"><div class="note-t">If you feel stuck</div><div class="note-b">Stuckness is information. Something emotional may be in the way of clear thinking. Gently explore that before pushing harder on the problem itself.</div></div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-a" id="m4e-save" onclick="go('m4-z')" disabled>Commit and complete →</button></div>
+</div>
+
+<div class="screen" id="m4-z">
+  <div class="hdr"><div class="back" onclick="go('p1h')">‹</div><div class="htag" style="color:var(--ta)">Module 4 · Complete</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.5rem">
+    <div class="hed">Solving real problems<br><em style="color:var(--ta)">is itself regulation.</em></div>
+    <div class="sub">Many chronic emotional states are sustained by unsolved real-world problems — not distorted thinking. You just took a step.</div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap">
+    <button class="btn btn-a" onclick="go('m5-a')">Next: Module 5 →</button>
+    <button class="btn btn-n" onclick="go('p1h')">Back to modules</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+  M5: FOUNDATION
+═══════════════════════════════════ -->
+<div class="screen" id="m5-a">
+  <div class="hdr"><div class="back" onclick="go('p1h')">‹</div><div class="htag" style="color:var(--ta)">Module 5</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed">Sleep and movement<br><em style="color:var(--ta)">are not optional.<br>They are the ground.</em></div>
+    <div class="sub">Research is clear: chronic sleep deprivation significantly increases emotional reactivity. Regular movement has measurable effects on mood, anxiety, and the capacity to tolerate difficult feelings.</div>
+    <div class="pull" style="border-color:var(--amber);color:var(--p1);background:rgba(196,122,26,0.06)">"There is no point building sophisticated emotion regulation skills on a body that is chronically exhausted."</div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-a" onclick="go('m5-b')">Be honest about yours →</button></div>
+</div>
+
+<div class="screen" id="m5-b">
+  <div class="hdr"><div class="back" onclick="go('m5-a')">‹</div><div class="htag" style="color:var(--ta)">Module 5</div><div class="hpill">1 of 2</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed"><em style="color:var(--ta)">Which foundation<br>needs the most<br>attention right now?</em></div>
+    <div class="choice" onclick="pickRev('#m5-b .choice','sel-a',this,'m5b-next','m5b-rev','var(--ta)','Sleep is the highest-leverage area. Even one consistent change — a regular bedtime, no screens for 30 minutes before sleep — has measurable effects on emotional reactivity within days.')"><div class="ch-name">Sleep — not getting enough consistently</div></div>
+    <div class="choice" onclick="pickRev('#m5-b .choice','sel-a',this,'m5b-next','m5b-rev','var(--ta)','Movement does not need to be intense. A daily walk counts. The neurological effects compound over weeks. Start smaller than you think you need to.')"><div class="ch-name">Movement — not moving regularly</div></div>
+    <div class="choice" onclick="pickRev('#m5-b .choice','sel-a',this,'m5b-next','m5b-rev','var(--ta)','Being honest about this is the first step. You already know what it is. What is one very small, genuinely doable step?')"><div class="ch-name">Something else — substances, eating, stress load</div></div>
+    <div class="choice" onclick="pickRev('#m5-b .choice','sel-a',this,'m5b-next','m5b-rev','var(--ta)','Good. The foundation is there. Everything else in this course builds on it and will work better because of it.')"><div class="ch-name">My foundations are solid enough</div></div>
+    <div class="rev" id="m5b-rev" style="border-color:var(--amber);background:rgba(196,122,26,0.06)"><div class="rev-tag" style="color:var(--ta)">What this means</div><div class="rev-text" id="m5b-rev-t"></div></div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-a" id="m5b-next" onclick="go('m5-c')" disabled>One step →</button></div>
+</div>
+
+<div class="screen" id="m5-c">
+  <div class="hdr"><div class="back" onclick="go('m5-b')">‹</div><div class="htag" style="color:var(--ta)">Module 5</div><div class="hpill">2 of 2</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed"><em style="color:var(--ta)">Not a transformation.<br>One small, honest step.</em></div>
+    <div class="label" style="color:var(--ta)">This week I will specifically</div>
+    <textarea class="ta-a ta-serif" id="m5-step" placeholder="Specifically, this week I will..." oninput="chkBtn('m5-step','m5c-save')"></textarea>
+    <div class="hint">Specific and realistic. Check in with yourself in two weeks and notice what has shifted.</div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-a" id="m5c-save" onclick="go('m5-z')" disabled>Commit →</button></div>
+</div>
+
+<div class="screen" id="m5-z">
+  <div class="hdr"><div class="back" onclick="go('p1h')">‹</div><div class="htag" style="color:var(--ta)">Module 5 · Complete</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.5rem">
+    <div class="hed"><em style="color:var(--ta)">One small step<br>in the direction<br>of your own body.</em></div>
+    <div class="sub">That is enough. Return to this module in two weeks and write what you notice.</div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap">
+    <button class="btn btn-a" onclick="go('m6-a')">Next: Module 6 →</button>
+    <button class="btn btn-n" onclick="go('p1h')">Back to modules</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+  M6: POSITIVE EMOTION
+═══════════════════════════════════ -->
+<div class="screen" id="m6-a">
+  <div class="hdr"><div class="back" onclick="go('p1h')">‹</div><div class="htag" style="color:var(--ta)">Module 6</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed">Cultivating positive<br>emotion is not naive.<br><em style="color:var(--ta)">It is biological<br>regulation.</em></div>
+    <div class="sub">Research shows regularly experiencing positive emotions — joy, gratitude, awe, absorption — broadens thinking and builds psychological resilience over time. People who cultivate positive emotion recover from difficulty faster.</div>
+    <div class="sub">This is not about covering over pain. It is about building a genuine resource base — so when life is hard, you have more to draw on.</div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-a" onclick="go('m6-b')">Find what works for you →</button></div>
+</div>
+
+<div class="screen" id="m6-b">
+  <div class="hdr"><div class="back" onclick="go('m6-a')">‹</div><div class="htag" style="color:var(--ta)">Module 6</div><div class="hpill">1 of 2</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed"><em style="color:var(--ta)">Which of these feels<br>most possible<br>right now?</em></div>
+    <div class="choice" onclick="pickRev('#m6-b .choice','sel-a',this,'m6b-next','m6b-rev','var(--ta)','Three good things is the most evidence-backed practice here. Do it every day for three weeks. The &quot;why it happened&quot; sentence is the key — it trains attention toward agency, not just luck.')"><div class="ch-name">Three good things — every day, three weeks</div><div class="ch-desc">Write three things that went well each day, and why they happened.</div></div>
+    <div class="choice" onclick="pickRev('#m6-b .choice','sel-a',this,'m6b-next','m6b-rev','var(--ta)','Savoring is rare. Most people rush through positive experiences or worry about losing them. Deliberately slowing down and arriving in a good moment changes the emotional texture of a day.')"><div class="ch-name">Savoring — one positive moment a day, fully</div><div class="ch-desc">When something good happens: slow down, name it, let it land.</div></div>
+    <div class="choice" onclick="pickRev('#m6-b .choice','sel-a',this,'m6b-next','m6b-rev','var(--ta)','Flow is one of the most powerful natural regulators. One hour of deep absorption tends to shift a whole week.')"><div class="ch-name">Flow — one hour this week for what fully absorbs you</div><div class="ch-desc">The activity where time disappears. One hour, nothing else.</div></div>
+    <div class="rev" id="m6b-rev" style="border-color:var(--amber);background:rgba(196,122,26,0.06)"><div class="rev-tag" style="color:var(--ta)">What this means</div><div class="rev-text" id="m6b-rev-t"></div></div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-a" id="m6b-next" onclick="go('m6-c')" disabled>Make it concrete →</button></div>
+</div>
+
+<div class="screen" id="m6-c">
+  <div class="hdr"><div class="back" onclick="go('m6-b')">‹</div><div class="htag" style="color:var(--ta)">Module 6</div><div class="hpill">2 of 2</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed"><em style="color:var(--ta)">Make it specific.<br>When, where, how.</em></div>
+    <div class="sub" style="font-size:0.8rem">Practices only build if they are concrete. When exactly will you do this?</div>
+    <div class="label" style="color:var(--ta)">My commitment</div>
+    <textarea class="ta-a ta-serif" id="m6-commit" placeholder="I will specifically... / When: / How I will remember: ..." oninput="chkBtn('m6-commit','m6c-save')"></textarea>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-a" id="m6c-save" onclick="go('m6-z')" disabled>Complete →</button></div>
+</div>
+
+<div class="screen" id="m6-z">
+  <div class="hdr"><div class="back" onclick="go('p1h')">‹</div><div class="htag" style="color:var(--ta)">Module 6 · Complete</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.5rem">
+    <div class="hed">Three weeks<br>of practice.<br><em style="color:var(--ta)">That is all it<br>takes to notice change.</em></div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap">
+    <button class="btn btn-a" onclick="go('m7-a')">Next: Module 7 →</button>
+    <button class="btn btn-n" onclick="go('p1h')">Back to modules</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+  M7: RELATIONSHIPS
+═══════════════════════════════════ -->
+<div class="screen" id="m7-a">
+  <div class="hdr"><div class="back" onclick="go('p1h')">‹</div><div class="htag" style="color:var(--ta)">Module 7</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed">We are wired<br>to co-regulate.<br><em style="color:var(--ta)">We cannot do<br>this alone.</em></div>
+    <div class="sub">Safe, warm relationships are among the strongest regulators available to us. We settle our nervous systems in the presence of others who are themselves settled.</div>
+    <div class="sub">Part of building a regulated life means looking honestly at your relationships. Not just whether you have people around you — but whether those relationships actually support emotional honesty and safety.</div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-a" onclick="go('m7-b')">Map your relationships →</button></div>
+</div>
+
+<div class="screen" id="m7-b">
+  <div class="hdr"><div class="back" onclick="go('m7-a')">‹</div><div class="htag" style="color:var(--ta)">Module 7</div><div class="hpill">1 of 3</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed"><em style="color:var(--ta)">After time with<br>the people in<br>your life — how do you generally feel?</em></div>
+    <div class="choice" onclick="pickRev('#m7-b .choice','sel-a',this,'m7b-next','m7b-rev','var(--ta)','Having relationships that ground you is one of the strongest protective factors for long-term emotional wellbeing. The question is whether you are actually making use of them.')"><div class="ch-name">More settled — more like myself</div><div class="ch-desc">The relationships in my life tend to ground me.</div></div>
+    <div class="choice" onclick="pickRev('#m7-b .choice','sel-a',this,'m7b-next','m7b-rev','var(--ta)','Noticing which relationships settle and which drain is useful data. Can you increase time with the settling ones?')"><div class="ch-name">Mixed — some settle me, some drain me</div><div class="ch-desc">Real variation. Some genuinely supportive, some not.</div></div>
+    <div class="choice" onclick="pickRev('#m7-b .choice','sel-a',this,'m7b-next','m7b-rev','var(--ta)','Often the most draining relationships are the ones we have least choice about. The work is developing awareness of what happens to your nervous system in them — and protecting what you can.')"><div class="ch-name">More drained or more guarded</div><div class="ch-desc">After most time with people, I feel depleted or on edge.</div></div>
+    <div class="choice" onclick="pickRev('#m7-b .choice','sel-a',this,'m7b-next','m7b-rev','var(--ta)','Managing alone is a learned position — something made it feel safer. Building connection means small, repeated steps toward honesty with people who have shown they can handle it.')"><div class="ch-name">Mostly alone — few close connections</div><div class="ch-desc">My emotional life is largely private.</div></div>
+    <div class="rev" id="m7b-rev" style="border-color:var(--amber);background:rgba(196,122,26,0.06)"><div class="rev-tag" style="color:var(--ta)">What this means</div><div class="rev-text" id="m7b-rev-t"></div></div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-a" id="m7b-next" onclick="go('m7-c')" disabled>Continue →</button></div>
+</div>
+
+<div class="screen" id="m7-c">
+  <div class="hdr"><div class="back" onclick="go('m7-b')">‹</div><div class="htag" style="color:var(--ta)">Module 7</div><div class="hpill">2 of 3</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed"><em style="color:var(--ta)">Is there someone<br>you can be genuinely<br>honest with?</em></div>
+    <div class="choice" onclick="pickRev('#m7-c .choice','sel-a',this,'m7c-next','m7c-rev','var(--ta)','Having that person is significant. The next step is actually using it — being honest rather than managing even with someone who could handle the real thing.')"><div class="ch-name">Yes — there is someone</div></div>
+    <div class="choice" onclick="pickRev('#m7-c .choice','sel-a',this,'m7c-next','m7c-rev','var(--ta)','Something gets in the way — usually something about what will happen if you are truly seen. That barrier is worth noticing. What is the fear underneath it?')"><div class="ch-name">Maybe — but I do not use them that way</div></div>
+    <div class="choice" onclick="pickRev('#m7-c .choice','sel-a',this,'m7c-next','m7c-rev','var(--ta)','Managing alone has felt safest. Building toward connection means very small, repeated honest moments — not a sudden transformation. One step with one person is enough to start.')"><div class="ch-name">Not really — it is mostly managed alone</div></div>
+    <div class="rev" id="m7c-rev" style="border-color:var(--amber);background:rgba(196,122,26,0.06)"><div class="rev-tag" style="color:var(--ta)">What this means</div><div class="rev-text" id="m7c-rev-t"></div></div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-a" id="m7c-next" onclick="go('m7-d')" disabled>One step →</button></div>
+</div>
+
+<div class="screen" id="m7-d">
+  <div class="hdr"><div class="back" onclick="go('m7-c')">‹</div><div class="htag" style="color:var(--ta)">Module 7</div><div class="hpill">3 of 3</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed"><em style="color:var(--ta)">One small step<br>toward more honest<br>connection.</em></div>
+    <div class="sub" style="font-size:0.8rem">With someone you already know. Not a transformation — one genuine move toward less managed, more real.</div>
+    <div class="label" style="color:var(--ta)">The step I will take</div>
+    <textarea class="ta-a ta-serif" id="m7-step" placeholder="This week, with [person], I will... / I will reach out to... / I will be more honest about..." oninput="chkBtn('m7-step','m7d-save')"></textarea>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-a" id="m7d-save" onclick="go('p1-z')" disabled>Complete Part 1 →</button></div>
+</div>
+
+<!-- PART 1 COMPLETE -->
+<div class="screen" id="p1-z">
+  <div class="hdr"><div class="back" onclick="go('p1h')">‹</div><div class="htag" style="color:var(--ta)">Part 1 Complete</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.5rem">
+    <div class="hed">You built the<br>foundations of a<br><em style="color:var(--ta)">regulated life.</em></div>
+    <div class="ibox" style="border-color:rgba(196,122,26,0.2)">
+      <div class="ibox-lbl" style="color:var(--ta)">What you built</div>
+      <p><strong style="color:var(--ta)">M1</strong> Your emotional compass<br><strong style="color:var(--ta)">M2</strong> The four layers of any emotion<br><strong style="color:var(--ta)">M3</strong> The lens check — changing the story<br><strong style="color:var(--ta)">M4</strong> Solving what can actually be solved<br><strong style="color:var(--ta)">M5</strong> The physical foundation<br><strong style="color:var(--ta)">M6</strong> Building positive emotion<br><strong style="color:var(--ta)">M7</strong> Relationships as regulation</p>
+    </div>
+    <div class="note" style="border-color:var(--amber)">
+      <div class="note-t">Save your workbook now</div>
+      <div class="note-b">Your written answers are held while you are in the app. Print your workbook before continuing — the print dialog will open over the app and you stay here the whole time.</div>
+    </div>
+    <div class="ibox" style="border-color:rgba(13,138,110,0.2)">
+      <div class="ibox-lbl" style="color:var(--ts)">Part 2 is different</div>
+      <p>Slower, more personal, and asks you to look at patterns that may have been with you for a long time. Take your time before beginning.</p>
+    </div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap">
+    <button class="btn btn-a" onclick="dlWorkbook(1)">Print my Part 1 workbook ↗</button>
+    <button class="btn btn-t" onclick="go('p2h')">Begin Part 2 →</button>
+    <button class="btn btn-n" onclick="go('s-home')">Back to home</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+  M8: OLD PATTERNS
+═══════════════════════════════════ -->
+<div class="screen" id="m8-a">
+  <div class="hdr"><div class="back" onclick="go('p2h')">‹</div><div class="htag" style="color:var(--ts)">Module 8 · Part 2 Begins</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed">Some reactions feel<br>bigger than<br><em style="color:var(--ts)">the moment.<br>That is a clue.</em></div>
+    <div class="sub">Some emotional reactions are disproportionate, persistent, or strangely familiar — because they were formed in earlier experiences and became a lens through which we see the present.</div>
+    <div class="ibox" style="border-color:rgba(13,138,110,0.2)">
+      <div class="ibox-lbl" style="color:var(--ts)">The key question</div>
+      <p>Between trigger and response there is a moment. In that moment you can ask: <strong style="color:var(--p1)">"Is this now — or is some of this old?"</strong> You do not need a definitive answer. The question itself creates space. And space is where choice lives.</p>
+    </div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-t" onclick="go('m8-b')">Find a pattern →</button></div>
+</div>
+
+<div class="screen" id="m8-b">
+  <div class="hdr"><div class="back" onclick="go('m8-a')">‹</div><div class="htag" style="color:var(--ts)">Module 8</div><div class="hpill">1 of 3</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed"><em style="color:var(--ts)">A reaction that shows<br>up repeatedly — even<br>when situations differ.</em></div>
+    <div class="choice" onclick="pickRevT('#m8-b .choice',this,'m8b-next','m8b-rev','Fear of abandonment activates fast and hard — because connection once felt genuinely uncertain or fragile. The pattern that formed to manage that was intelligent at the time.')"><div class="ch-name">Fear of being left or abandoned</div><div class="ch-desc">When someone goes quiet or pulls back — something visceral activates fast.</div></div>
+    <div class="choice" onclick="pickRevT('#m8-b .choice',this,'m8b-next','m8b-rev','Sensitivity to rejection often formed when approval was conditional — when being enough depended on performance. It learned to stay alert to any signal of inadequacy.')"><div class="ch-name">Fear of rejection or not being enough</div><div class="ch-desc">Criticism lands very hard. Approval matters more than I want it to.</div></div>
+    <div class="choice" onclick="pickRevT('#m8-b .choice',this,'m8b-next','m8b-rev','Sensitivity to unpredictability forms when unpredictability was genuinely threatening. The nervous system learned to stay ready — because uncertainty once meant danger.')"><div class="ch-name">Loss of control or unpredictability</div><div class="ch-desc">When things or people are unpredictable, something tightens sharply.</div></div>
+    <div class="choice" onclick="pickRevT('#m8-b .choice',this,'m8b-next','m8b-rev','The fear of being found out or wrong often means somewhere along the way, being imperfect had real consequences. The pattern formed to hide and protect.')"><div class="ch-name">Being seen as bad, wrong, or a failure</div><div class="ch-desc">Being found out. Hard to defend or hard to stop collapsing.</div></div>
+    <div class="choice" onclick="pickRevT('#m8-b .choice',this,'m8b-next','m8b-rev','Protective patterns around intimacy almost always formed when closeness carried risk — when being seen led to something painful. The protection was intelligent then.')"><div class="ch-name">Closeness or vulnerability</div><div class="ch-desc">Intimacy activates something protective. Hard to fully let people in.</div></div>
+    <div class="rev" id="m8b-rev" style="border-color:var(--teal);background:rgba(13,138,110,0.06)"><div class="rev-tag" style="color:var(--ts)">What this means</div><div class="rev-text" id="m8b-rev-t"></div></div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-t" id="m8b-next" onclick="go('m8-c')" disabled>Trace it →</button></div>
+</div>
+
+<div class="screen" id="m8-c">
+  <div class="hdr"><div class="back" onclick="go('m8-b')">‹</div><div class="htag" style="color:var(--ts)">Module 8</div><div class="hpill">2 of 3</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed"><em style="color:var(--ts)">What does this pattern<br>believe about you?<br>About others?</em></div>
+    <div class="sub" style="font-size:0.8rem">Deep patterns carry a belief — something they learned to be true about the world. Name it without editing.</div>
+    <div class="label" style="color:var(--ts)">What this pattern believes</div>
+    <textarea class="ta-t ta-serif" id="m8-belief" placeholder="This pattern seems to believe that I am... / that people are... / that it is not safe to..." oninput="chkBtn('m8-belief','m8c-next')"></textarea>
+    <div class="hint">Write without judgment. You are mapping, not fixing.</div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-t" id="m8c-next" onclick="go('m8-d')" disabled>Where it might come from →</button></div>
+</div>
+
+<div class="screen" id="m8-d">
+  <div class="hdr"><div class="back" onclick="go('m8-c')">‹</div><div class="htag" style="color:var(--ts)">Module 8</div><div class="hpill">3 of 3</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed"><em style="color:var(--ts)">Where might this<br>have come from?</em></div>
+    <div class="sub" style="font-size:0.8rem">Not to find a definitive answer. Just to begin to look. Sometimes the connection is clear. Sometimes it is not yet.</div>
+    <div class="label" style="color:var(--ts)">The history — what I can see</div>
+    <textarea class="ta-t ta-serif" id="m8-origin" placeholder="This might connect to... / I felt this earlier when... / I genuinely do not know yet..." oninput="chkBtn('m8-origin','m8d-save')"></textarea>
+    <div class="hint">"I do not know yet" is completely honest and worth writing.</div>
+    <div class="ibox" style="border-color:rgba(13,138,110,0.18);margin-top:0.75rem">
+      <div class="ibox-lbl" style="color:var(--ts)">The pause practice — this week</div>
+      <p>When you notice this pattern activating — pause for ten seconds before responding. Ask silently: <strong style="color:var(--p1)">"Is this the past or the present?"</strong> No answer needed. Just the question. Afterward, write a few lines about what you noticed.</p>
+    </div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-t" id="m8d-save" onclick="go('m8-z')" disabled>Save and finish →</button></div>
+</div>
+
+<div class="screen" id="m8-z">
+  <div class="hdr"><div class="back" onclick="go('p2h')">‹</div><div class="htag" style="color:var(--ts)">Module 8 · Complete</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.5rem">
+    <div class="hed">Seeing the pattern<br>does not erase it.<br><em style="color:var(--ts)">But it changes<br>what you can choose.</em></div>
+    <div class="pull" style="border-color:var(--teal);color:var(--p1);background:rgba(13,138,110,0.06)">"The pattern was not a flaw. It was the most intelligent response available at the time it was formed."</div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap">
+    <button class="btn btn-t" onclick="go('m9-a')">Next: Module 9 →</button>
+    <button class="btn btn-n" onclick="go('p2h')">Back to modules</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+  M9: TURNING TOWARD
+═══════════════════════════════════ -->
+<div class="screen" id="m9-a">
+  <div class="hdr"><div class="back" onclick="go('p2h')">‹</div><div class="htag" style="color:var(--ts)">Module 9</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed">There is a limit to<br>what thinking about<br><em style="color:var(--ts)">emotions can change.</em></div>
+    <div class="sub">At some point, lasting change requires actually experiencing emotions differently — not analysing them from a distance, but learning to be present with them without being overwhelmed by them.</div>
+    <div class="sub">This is not thinking about the emotion. It is being with it. <strong>This kind of work goes much further in the presence of other people.</strong> What follows is an introductory practice.</div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-t" onclick="go('m9-b')">Choose an emotion to turn toward →</button></div>
+</div>
+
+<div class="screen" id="m9-b">
+  <div class="hdr"><div class="back" onclick="go('m9-a')">‹</div><div class="htag" style="color:var(--ts)">Module 9</div><div class="hpill">1 of 3</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed"><em style="color:var(--ts)">An emotion you<br>have been avoiding<br>or pushing away.</em></div>
+    <div class="sub" style="font-size:0.8rem">Not the hardest one — somewhere in the middle. Something present but unaddressed.</div>
+    <div class="choice" onclick="pickRevT('#m9-b .choice',this,'m9b-next','m9b-rev','Grief and loss are among the most avoided emotions — partly because they feel like they will never end if you let them in. They tend to ease precisely when they are actually allowed to land.')"><div class="ch-name">Something like grief or loss</div><div class="ch-desc">Something missing. Something that ended. Something sad not fully felt.</div></div>
+    <div class="choice" onclick="pickRevT('#m9-b .choice',this,'m9b-next','m9b-rev','Fear that runs as background anxiety often has not been fully faced — just managed. Turning toward it means noticing what it is actually about, not just managing its symptoms.')"><div class="ch-name">Something like fear or dread</div><div class="ch-desc">Anticipation of something. A worry that runs underneath.</div></div>
+    <div class="choice" onclick="pickRevT('#m9-b .choice',this,'m9b-next','m9b-rev','Shame thrives in hiding. Turning toward it — even alone, even briefly — tends to reduce its hold. The act of looking at it directly without flinching changes something.')"><div class="ch-name">Something like shame</div><div class="ch-desc">The feeling of being wrong or not enough. Hard to let surface fully.</div></div>
+    <div class="choice" onclick="pickRevT('#m9-b .choice',this,'m9b-next','m9b-rev','Loneliness often gets covered by activity, anger, or numbing. Turning toward it means letting it be felt — which is the first step toward doing something real about it.')"><div class="ch-name">Loneliness or disconnection</div><div class="ch-desc">The ache of feeling separate. Not close enough to anyone.</div></div>
+    <div class="rev" id="m9b-rev" style="border-color:var(--teal);background:rgba(13,138,110,0.06)"><div class="rev-tag" style="color:var(--ts)">What this means</div><div class="rev-text" id="m9b-rev-t"></div></div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-t" id="m9b-next" onclick="go('m9-c')" disabled>The practice →</button></div>
+</div>
+
+<div class="screen" id="m9-c">
+  <div class="hdr"><div class="back" onclick="go('m9-b')">‹</div><div class="htag" style="color:var(--ts)">Module 9 · The Practice</div><div class="hpill">2 of 3</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed"><em style="color:var(--ts)">Slow down.<br>Find it in your body.<br>Get curious.</em></div>
+    <div class="ibox" style="border-color:rgba(13,138,110,0.2)">
+      <div class="ibox-lbl" style="color:var(--ts)">Take your time — do not rush this</div>
+      <p>Rather than thinking about the emotion — feel where it lives physically. What shape does it have? What texture?<br><br>Now try something counterintuitive: instead of wanting it to leave, get <strong style="color:var(--p1)">curious</strong> about it. What is it trying to tell you? What does it need?<br><br>Stay with it for two or three minutes. Let it be there without trying to fix it or make it go away.</p>
+    </div>
+    <div class="sub" style="font-size:0.8rem;margin-top:0.5rem">Take as long as you need before pressing continue.</div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-t" onclick="go('m9-d')">I stayed with it →</button></div>
+</div>
+
+<div class="screen" id="m9-d">
+  <div class="hdr"><div class="back" onclick="go('m9-c')">‹</div><div class="htag" style="color:var(--ts)">Module 9</div><div class="hpill">3 of 3</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed"><em style="color:var(--ts)">What happened<br>when you turned<br>toward it?</em></div>
+    <div class="sub" style="font-size:0.8rem">Even resistance is useful data. Write what you actually noticed.</div>
+    <div class="bgrid" id="m9-taps">
+      <div class="bzone" onclick="togBM(this,'m9-taps','bm-t','m9d-save')"><div class="bico">😮‍💨</div><div class="blbl">Something loosened</div></div>
+      <div class="bzone" onclick="togBM(this,'m9-taps','bm-t','m9d-save')"><div class="bico">🌊</div><div class="blbl">It intensified</div></div>
+      <div class="bzone" onclick="togBM(this,'m9-taps','bm-t','m9d-save')"><div class="bico">💧</div><div class="blbl">Something sad came</div></div>
+      <div class="bzone" onclick="togBM(this,'m9-taps','bm-t','m9d-save')"><div class="bico">🛡️</div><div class="blbl">I resisted it</div></div>
+      <div class="bzone" onclick="togBM(this,'m9-taps','bm-t','m9d-save')"><div class="bico">—</div><div class="blbl">Not much happened</div></div>
+      <div class="bzone" onclick="togBM(this,'m9-taps','bm-t','m9d-save')"><div class="bico">💙</div><div class="blbl">Heard what it needed</div></div>
+    </div>
+    <div style="height:0.65rem"></div>
+    <div class="label" style="color:var(--ts)">In your own words</div>
+    <textarea class="ta-t ta-serif" id="m9-words" placeholder="What I noticed when I turned toward it..." oninput="chkBtn('m9-words','m9d-save')"></textarea>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-t" id="m9d-save" onclick="go('m9-z')" disabled>Save and finish →</button></div>
+</div>
+
+<div class="screen" id="m9-z">
+  <div class="hdr"><div class="back" onclick="go('p2h')">‹</div><div class="htag" style="color:var(--ts)">Module 9 · Complete</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.5rem">
+    <div class="hed">You turned toward<br>something you would<br><em style="color:var(--ts)">usually turn away from.</em></div>
+    <div class="pull" style="border-color:var(--teal);color:var(--p1);background:rgba(13,138,110,0.06)">"Turning toward — with curiosity, without trying to fix — is one of the most powerful moves available."</div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap">
+    <button class="btn btn-t" onclick="go('m10-a')">Next: Module 10 →</button>
+    <button class="btn btn-n" onclick="go('p2h')">Back to modules</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+  M10: MEANING
+═══════════════════════════════════ -->
+<div class="screen" id="m10-a">
+  <div class="hdr"><div class="back" onclick="go('p2h')">‹</div><div class="htag" style="color:var(--ts)">Module 10</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed">Pain with meaning<br>is a fundamentally<br><em style="color:var(--ts)">different experience.</em></div>
+    <div class="sub">When we can locate meaning in suffering — not false reassurance, but genuine sense-making — something shifts in how we experience it. People who find purpose or coherence in difficult experiences tolerate and integrate them far better.</div>
+    <div class="sub">Meaning does not remove pain. But it changes our relationship to it.</div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-t" onclick="go('m10-b')">Clarify what matters →</button></div>
+</div>
+
+<div class="screen" id="m10-b">
+  <div class="hdr"><div class="back" onclick="go('m10-a')">‹</div><div class="htag" style="color:var(--ts)">Module 10</div><div class="hpill">1 of 3</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed"><em style="color:var(--ts)">Finish this sentence<br>ten times without<br>overthinking it.</em></div>
+    <div class="sub" style="font-size:0.8rem">Write quickly. What comes first is usually truest.</div>
+    <div class="label" style="color:var(--ts)">What matters most to me is...</div>
+    <textarea class="ta-t" id="m10-val" placeholder="What matters most to me is..." style="min-height:140px" oninput="chkBtn('m10-val','m10b-next')"></textarea>
+    <div class="hint">Ten times. Go quickly. Do not edit what comes.</div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-t" id="m10b-next" onclick="go('m10-c')" disabled>Continue →</button></div>
+</div>
+
+<div class="screen" id="m10-c">
+  <div class="hdr"><div class="back" onclick="go('m10-b')">‹</div><div class="htag" style="color:var(--ts)">Module 10</div><div class="hpill">2 of 3</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed"><em style="color:var(--ts)">Does your daily life<br>reflect what actually<br>matters to you?</em></div>
+    <div class="choice" onclick="pickRevT('#m10-c .choice',this,'m10c-next','m10c-rev','Alignment between values and daily life is one of the strongest predictors of sustained emotional wellbeing. Noticing what is aligned helps you protect and deepen it.')"><div class="ch-name">Largely yes</div><div class="ch-desc">Reasonable alignment between what matters and how I live.</div></div>
+    <div class="choice" onclick="pickRevT('#m10-c .choice',this,'m10c-next','m10c-rev','The gap in the areas that are off has a real cost — a low-level friction that compounds over time. Naming it is the first step toward closing it.')"><div class="ch-name">In some areas yes, in others there is a clear gap</div></div>
+    <div class="choice" onclick="pickRevT('#m10-c .choice',this,'m10c-next','m10c-rev','A significant gap between what matters and how you are actually living tends to create a particular kind of emptiness. It is not a judgment — it is information about where energy needs to go.')"><div class="ch-name">Not really — there is a significant gap</div><div class="ch-desc">How I am living does not reflect what I wrote above.</div></div>
+    <div class="rev" id="m10c-rev" style="border-color:var(--teal);background:rgba(13,138,110,0.06)"><div class="rev-tag" style="color:var(--ts)">What this means</div><div class="rev-text" id="m10c-rev-t"></div></div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-t" id="m10c-next" onclick="go('m10-d')" disabled>Meaning in difficulty →</button></div>
+</div>
+
+<div class="screen" id="m10-d">
+  <div class="hdr"><div class="back" onclick="go('m10-c')">‹</div><div class="htag" style="color:var(--ts)">Module 10</div><div class="hpill">3 of 3</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed"><em style="color:var(--ts)">Something difficult<br>you have been through.<br>Has anything grown?</em></div>
+    <div class="sub" style="font-size:0.8rem">Honest inquiry — not toxic positivity. Has anything changed in you, or become clearer, because of this experience?</div>
+    <div class="label" style="color:var(--ts)">The experience</div>
+    <textarea class="ta-t" id="m10-exp" placeholder="Something difficult I have been through..." rows="2" style="min-height:60px" oninput="chkBtn('m10-exp','m10d-save')"></textarea>
+    <div style="height:0.65rem"></div>
+    <div class="label" style="color:var(--ts)">What, if anything, has grown or become clearer</div>
+    <textarea class="ta-t ta-serif" id="m10-grow" placeholder="Because of this, I now... / What I understand that I did not before is... / I genuinely cannot find any meaning in it yet..." style="min-height:80px"></textarea>
+    <div class="hint">If meaning feels impossible for this — write that. It is equally honest and equally useful.</div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-t" id="m10d-save" onclick="go('m10-z')" disabled>Save and finish →</button></div>
+</div>
+
+<div class="screen" id="m10-z">
+  <div class="hdr"><div class="back" onclick="go('p2h')">‹</div><div class="htag" style="color:var(--ts)">Module 10 · Complete</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.5rem">
+    <div class="hed">Meaning is not found.<br><em style="color:var(--ts)">It is built — slowly,<br>through honest inquiry.</em></div>
+    <div class="pull" style="border-color:var(--teal);color:var(--p1);background:rgba(13,138,110,0.06)">"Pain endured for something that matters is a fundamentally different experience from pain that feels pointless."</div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap">
+    <button class="btn btn-t" onclick="go('m11-a')">Next: Module 11 →</button>
+    <button class="btn btn-n" onclick="go('p2h')">Back to modules</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+  M11: LIFE WORTH LIVING
+═══════════════════════════════════ -->
+<div class="screen" id="m11-a">
+  <div class="hdr"><div class="back" onclick="go('p2h')">‹</div><div class="htag" style="color:var(--ts)">Module 11</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed">Not just managing<br>what is hard.<br><em style="color:var(--ts)">Actively building<br>what is worth it.</em></div>
+    <div class="sub">Long-term emotion regulation is not only about reducing suffering. It is equally about actively building a life that generates wellbeing — aligned with what matters, rich with connection and purpose.</div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-t" onclick="go('m11-b')">Write your compass →</button></div>
+</div>
+
+<div class="screen" id="m11-b">
+  <div class="hdr"><div class="back" onclick="go('m11-a')">‹</div><div class="htag" style="color:var(--ts)">Module 11</div><div class="hpill">1 of 3</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed"><em style="color:var(--ts)">Five years from now,<br>things went well —<br>not perfectly. What does your life look like?</em></div>
+    <div class="label" style="color:var(--ts)">The life worth living</div>
+    <textarea class="ta-t ta-serif" id="m11-life" placeholder="In five years, if things have gone well... / I am... / I spend my time... / What has changed is... / Who is around me..." style="min-height:130px" oninput="chkBtn('m11-life','m11b-next')"></textarea>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-t" id="m11b-next" onclick="go('m11-c')" disabled>What is moving you there →</button></div>
+</div>
+
+<div class="screen" id="m11-c">
+  <div class="hdr"><div class="back" onclick="go('m11-b')">‹</div><div class="htag" style="color:var(--ts)">Module 11</div><div class="hpill">2 of 3</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed"><em style="color:var(--ts)">What is already<br>moving toward it?<br>What is pulling away?</em></div>
+    <div class="label" style="color:var(--ts)">Already moving in that direction</div>
+    <textarea class="ta-t" id="m11-toward" placeholder="Something in my life right now that is already heading there..." oninput="chkBtn('m11-toward','m11c-next')"></textarea>
+    <div style="height:0.65rem"></div>
+    <div class="label" style="color:var(--ts)">Quietly pulling away from it</div>
+    <textarea class="ta-t ta-serif" id="m11-away" placeholder="A habit, pattern, or way of spending my time that is pulling in the other direction..." style="min-height:72px"></textarea>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-t" id="m11c-next" onclick="go('m11-d')" disabled>Coping ahead →</button></div>
+</div>
+
+<div class="screen" id="m11-d">
+  <div class="hdr"><div class="back" onclick="go('m11-c')">‹</div><div class="htag" style="color:var(--ts)">Module 11</div><div class="hpill">3 of 3</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed"><em style="color:var(--ts)">A difficult situation<br>coming up. Prepare<br>before it arrives.</em></div>
+    <div class="sub" style="font-size:0.8rem">Mental rehearsal — imagining yourself moving through it with steadiness — has a measurable effect on how you actually respond when the moment comes.</div>
+    <div class="label" style="color:var(--ts)">The situation coming up</div>
+    <textarea class="ta-t" id="m11-sit" placeholder="Something coming up that I expect will be emotionally hard..." rows="2" style="min-height:60px" oninput="chkBtn('m11-sit','m11d-save')"></textarea>
+    <div style="height:0.65rem"></div>
+    <div class="label" style="color:var(--ts)">How I will move through it</div>
+    <textarea class="ta-t ta-serif" id="m11-cope" placeholder="When this happens, I will... / The skill I will draw on is... / What I will say to myself is..." style="min-height:80px"></textarea>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-t" id="m11d-save" onclick="go('m11-z')" disabled>Save and finish →</button></div>
+</div>
+
+<div class="screen" id="m11-z">
+  <div class="hdr"><div class="back" onclick="go('p2h')">‹</div><div class="htag" style="color:var(--ts)">Module 11 · Complete</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.5rem">
+    <div class="hed">This is your compass.<br><em style="color:var(--ts)">Return to it<br>when you are lost.</em></div>
+    <div class="sub">Not a plan. Not a pressure. A direction. When life is hard, this is what you are orienting toward.</div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap">
+    <button class="btn btn-t" onclick="go('m12-a')">Next: Module 12 →</button>
+    <button class="btn btn-n" onclick="go('p2h')">Back to modules</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+  M12: BLUEPRINT
+═══════════════════════════════════ -->
+<div class="screen" id="m12-a">
+  <div class="hdr"><div class="back" onclick="go('p2h')">‹</div><div class="htag" style="color:var(--ts)">Module 12</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed">Not learning<br>anything new.<br><em style="color:var(--ts)">Making it yours.</em></div>
+    <div class="sub">Six questions. Integration — turning what you have learned into a personal, livable approach you can actually sustain. Write honestly.</div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-t" onclick="go('m12-b')">Begin →</button></div>
+</div>
+
+<div class="screen" id="m12-b">
+  <div class="hdr"><div class="back" onclick="go('m12-a')">‹</div><div class="htag" style="color:var(--ts)">Module 12</div><div class="hpill">1 of 6</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed"><em style="color:var(--ts)">Which skills felt<br>most resonant?</em></div>
+    <div class="label" style="color:var(--ts)">Two or three that actually landed</div>
+    <textarea class="ta-t" id="m12-s1" placeholder="The skills or practices that felt most useful were..." oninput="chkBtn('m12-s1','m12b-next')"></textarea>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-t" id="m12b-next" onclick="go('m12-c')" disabled>Question 2 →</button></div>
+</div>
+
+<div class="screen" id="m12-c">
+  <div class="hdr"><div class="back" onclick="go('m12-b')">‹</div><div class="htag" style="color:var(--ts)">Module 12</div><div class="hpill">2 of 6</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed"><em style="color:var(--ts)">Your main emotional<br>patterns — what are they?</em></div>
+    <div class="label" style="color:var(--ts)">The ones that show up most and cost you most</div>
+    <textarea class="ta-t" id="m12-s2" placeholder="My main emotional patterns are... / They tend to cost me..." oninput="chkBtn('m12-s2','m12c-next')"></textarea>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-t" id="m12c-next" onclick="go('m12-d')" disabled>Question 3 →</button></div>
+</div>
+
+<div class="screen" id="m12-d">
+  <div class="hdr"><div class="back" onclick="go('m12-c')">‹</div><div class="htag" style="color:var(--ts)">Module 12</div><div class="hpill">3 of 6</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed"><em style="color:var(--ts)">What will you keep<br>doing consistently?</em></div>
+    <div class="sub" style="font-size:0.8rem">Be specific and realistic — not aspirational. What will you actually do.</div>
+    <div class="label" style="color:var(--ts)">Consistent practices</div>
+    <textarea class="ta-t" id="m12-s3" placeholder="I will consistently... / When and how: ..." oninput="chkBtn('m12-s3','m12d-next')"></textarea>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-t" id="m12d-next" onclick="go('m12-e')" disabled>Question 4 →</button></div>
+</div>
+
+<div class="screen" id="m12-e">
+  <div class="hdr"><div class="back" onclick="go('m12-d')">‹</div><div class="htag" style="color:var(--ts)">Module 12</div><div class="hpill">4 of 6</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed"><em style="color:var(--ts)">What derails you?<br>What will you do<br>when it happens?</em></div>
+    <div class="label" style="color:var(--ts)">What derails me and my plan for it</div>
+    <textarea class="ta-t" id="m12-s4" placeholder="What typically derails me is... / When that happens I will..." oninput="chkBtn('m12-s4','m12e-next')"></textarea>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-t" id="m12e-next" onclick="go('m12-f')" disabled>Question 5 →</button></div>
+</div>
+
+<div class="screen" id="m12-f">
+  <div class="hdr"><div class="back" onclick="go('m12-e')">‹</div><div class="htag" style="color:var(--ts)">Module 12</div><div class="hpill">5 of 6</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed"><em style="color:var(--ts)">Who supports your<br>emotional wellbeing?<br>How will you nurture that?</em></div>
+    <div class="label" style="color:var(--ts)">The people and how I will tend to those connections</div>
+    <textarea class="ta-t" id="m12-s5" placeholder="The people who support me are... / I will tend to those connections by..." oninput="chkBtn('m12-s5','m12f-next')"></textarea>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-t" id="m12f-next" onclick="go('m12-g')" disabled>Question 6 →</button></div>
+</div>
+
+<div class="screen" id="m12-g">
+  <div class="hdr"><div class="back" onclick="go('m12-f')">‹</div><div class="htag" style="color:var(--ts)">Module 12</div><div class="hpill">6 of 6</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.25rem">
+    <div class="hed"><em style="color:var(--ts)">What do you understand<br>about yourself now that<br>you did not before?</em></div>
+    <div class="label" style="color:var(--ts)">The thing that shifted</div>
+    <textarea class="ta-t ta-serif" id="m12-s6" placeholder="What I understand now that I did not before is..." oninput="chkBtn('m12-s6','m12g-save')"></textarea>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap"><button class="btn btn-t" id="m12g-save" onclick="go('final')" disabled>Complete the course →</button></div>
+</div>
+
+<!-- FINAL -->
+<div class="screen" id="final">
+  <div class="hdr"><div class="back" onclick="go('p2h')">‹</div><div class="htag" style="color:var(--ts)">Complete</div></div>
+  <div class="scroll fin"><div class="pad" style="padding-top:1.5rem">
+    <div class="hed">You did all of it.<br>Both parts.<br><em style="color:var(--ts)">All twelve modules.</em></div>
+    <div class="ibox" style="border-color:rgba(196,122,26,0.2)"><div class="ibox-lbl" style="color:var(--ta)">Part 1 — Core Skills</div><p>Emotional map · Four layers · Changing the story · Problem-solving · Physical foundation · Positive emotion · Relationships</p></div>
+    <div class="ibox" style="border-color:rgba(13,138,110,0.2)"><div class="ibox-lbl" style="color:var(--ts)">Part 2 — Going Deeper</div><p>Old patterns · Meeting emotions · Meaning and values · A life worth living · Your personal blueprint</p></div>
+    <div class="note"><div class="note-t">When things get hard</div><div class="note-b">Return to the basics first: foundation, lens check, values. Then go deeper. The work never ends. Neither does the growth.</div></div>
+    <div class="pull" style="border-color:var(--teal);color:var(--p1);background:rgba(13,138,110,0.06)">"Emotional maturity is not a destination. It is what you do with the next moment."</div>
+    <div class="sp"></div>
+  </div></div>
+  <div class="bwrap">
+    <button class="btn btn-t" onclick="dlWorkbook(2)">Print my Part 2 workbook ↗</button>
+    <button class="btn btn-n" onclick="go('s-home')">Back to home</button>
+  </div>
+</div>
+
+</div></div>
+<script>
+// All answers held in memory only - no localStorage
+const W={}; // worksheet answers, keyed by field id
+let S={lp1:null,lp2:null,d1:[],d2:[]};
+const sv=()=>{};
+const ld=()=>{};
+
+const P1M=[
+  {n:1,dest:'m1-a',title:'Two Kinds of Regulation',sub:'Where we start — and why this one takes longer'},
+  {n:2,dest:'m2-a',title:'What Emotions Actually Are',sub:'The four-layer structure: body, impulse, story, need'},
+  {n:3,dest:'m3-a',title:'Changing the Story',sub:'The lens check — four steps on one real moment'},
+  {n:4,dest:'m4-a',title:'When the Problem Is Real',sub:'Solving what can be solved as a regulation tool'},
+  {n:5,dest:'m5-a',title:'Your Foundation',sub:'Sleep, movement, and the physical ground'},
+  {n:6,dest:'m6-a',title:'Building Positive Emotion',sub:'Three good things, savoring, and flow'},
+  {n:7,dest:'m7-a',title:'Relationships and Regulation',sub:'We cannot do this alone'},
+];
+const P2M=[
+  {n:8,dest:'m8-a',title:'Old Patterns',sub:'Recognising when the past is activating the present'},
+  {n:9,dest:'m9-a',title:'Meeting Your Emotions',sub:'Turning toward what you have been avoiding'},
+  {n:10,dest:'m10-a',title:'Meaning as Regulation',sub:'Values, suffering, and genuine sense-making'},
+  {n:11,dest:'m11-a',title:'A Life Worth Living',sub:'The compass and coping ahead'},
+  {n:12,dest:'m12-a',title:'Your Blueprint',sub:'Personal, livable, sustainable'},
+];
+
+const PROG={
+  's-home':0,'p1h':0,'p2h':0,'final':100,
+  'm1-a':2,'m1-b':8,'m1-c':12,'m1-d':16,'m1-z':20,
+  'm2-a':21,'m2-b':26,'m2-c':30,'m2-d':35,'m2-e':39,'m2-z':43,
+  'm3-a':44,'m3-b':48,'m3-c':52,'m3-d':56,'m3-e':60,'m3-z':63,
+  'm4-a':64,'m4-b':67,'m4-c':70,'m4-d':74,'m4-e':77,'m4-z':80,
+  'm5-a':81,'m5-b':84,'m5-c':87,'m5-z':89,
+  'm6-a':90,'m6-b':93,'m6-c':95,'m6-z':97,
+  'm7-a':97,'m7-b':98,'m7-c':99,'m7-d':99,'p1-z':100,
+  'm8-a':2,'m8-b':12,'m8-c':22,'m8-d':30,'m8-z':36,
+  'm9-a':37,'m9-b':46,'m9-c':52,'m9-d':58,'m9-z':64,
+  'm10-a':65,'m10-b':70,'m10-c':75,'m10-d':80,'m10-z':84,
+  'm11-a':85,'m11-b':88,'m11-c':91,'m11-d':94,'m11-z':96,
+  'm12-a':97,'m12-b':97,'m12-c':98,'m12-d':98,'m12-e':99,'m12-f':99,'m12-g':100
+};
+
+function go(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
+  const t=document.getElementById(id);if(!t)return;
+  t.classList.add('on');
+  const sc=t.querySelector('.scroll');if(sc)sc.scrollTop=0;
+  const pv=PROG[id]??0;
+  const isP2=id.startsWith('m8')||id.startsWith('m9')||id.startsWith('m10')||id.startsWith('m11')||id.startsWith('m12')||id==='p2h'||id==='final';
+  const pf=document.getElementById('pf');
+  pf.style.background=isP2?'var(--g2)':'var(--g1)';
+  pf.style.width=pv+'%';
+  const mn=parseInt(id.match(/m(\d+)/)?.[1]);
+  if(mn>=1&&mn<=7)S.lp1=id;
+  else if(mn>=8)S.lp2=id;
+  // Mark module done when reaching its completion screen
+  if(id.endsWith('-z')&&mn){if(mn<=7){if(!S.d1.includes(mn))S.d1.push(mn);}else{if(!S.d2.includes(mn))S.d2.push(mn);}}
+  sv();
+  if(id==='p1h'){renderMods('p1');renderEntries('p1');renderProg('p1');}
+  if(id==='p2h'){renderMods('p2');renderEntries('p2');renderProg('p2');}
+  if(id==='s-home'){
+    const last=S.lp2||S.lp1;
+    const rb=document.getElementById('resume-bar'),rl=document.getElementById('resume-label');
+    if(last){const all=[...P1M,...P2M];const m=all.find(x=>last.startsWith('m'+x.n));rb.classList.add('show');rl.textContent=m?m.title:'Continue';}
+    else rb.classList.remove('show');
+  }
+}
+function doResume(){const last=S.lp2||S.lp1;if(last)go(last);}
+
+function swTab(p,t){
+  ['m','e','p'].forEach(x=>{document.getElementById(p+'t-'+x)?.classList.remove('ta-on','tt-on');document.getElementById(p+'s'+x)?.classList.remove('on');});
+  const tabEl=document.getElementById(p+'t-'+t);
+  tabEl?.classList.add(p==='p1'?'ta-on':'tt-on');
+  document.getElementById(p+'s'+t)?.classList.add('on');
+  if(t==='e')renderEntries(p);if(t==='p')renderProg(p);
+  document.getElementById(p+'scroll').scrollTop=0;
+}
+
+function renderMods(p){
+  const mods=p==='p1'?P1M:P2M,done=p==='p1'?S.d1:S.d2,last=p==='p1'?S.lp1:S.lp2;
+  const col=p==='p1'?'var(--ta)':'var(--ts)',da=p==='p1'?'var(--amber)':'var(--teal)';
+  const el=document.getElementById(p+'mlist');if(!el)return;
+  el.innerHTML=mods.map((m,i)=>{
+    const done_m=done.includes(m.n),cur=last?.startsWith('m'+m.n);
+    return `<div class="mrow" onclick="go('${m.dest}')">
+      <div class="mtrack"><div class="mdot" style="background:${done_m?'var(--ok)':cur?da:'transparent'};border-color:${done_m?'var(--ok)':cur?da:(p==='p1'?'rgba(196,122,26,0.3)':'rgba(13,138,110,0.3)')}"></div>${i<mods.length-1?'<div class="mline"></div>':''}</div>
+      <div class="mcard"><div class="mstage" style="color:${col}">Module ${m.n}</div><div class="mtitle">${m.title}</div><div class="msub">${m.sub}</div>
+      <span class="mbadge" style="background:${done_m?'var(--obg)':cur?'rgba(255,255,255,0.05)':'rgba(255,255,255,0.03)'};color:${done_m?'var(--ok)':cur?col:'var(--p4)'}">${done_m?'✓ Complete':cur?'Resume':'Begin'}</span></div>
+    </div>`;
+  }).join('');
+}
+
+function renderEntries(p){
+  const el=document.getElementById(p+'elist');if(!el)return;
+  const col=p==='p1'?'var(--ta)':'var(--ts)';
+  const done=p==='p1'?S.d1:S.d2;
+  const mods=p==='p1'?P1M:P2M;
+  if(!done.length){el.innerHTML=`<div style="text-align:center;padding:3rem 0.5rem"><div style="font-family:var(--serif);font-size:1.1rem;color:var(--p3);margin-bottom:0.4rem">Your answers live here</div><div style="font-size:0.78rem;color:var(--p4);line-height:1.7;font-weight:300">Complete modules to see your responses.</div></div>`;return;}
+  const rows=mods.filter(m=>done.includes(m.n)).map(m=>{
+    const fields=FIELDS[m.n]||[];
+    const ans=fields.map(f=>{const el2=document.getElementById(f.id);return el2&&el2.value.trim()?`<div style="margin-top:0.4rem"><div style="font-size:0.6rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:${col};margin-bottom:0.15rem">${f.q}</div><div style="font-size:0.78rem;color:var(--p2);line-height:1.55;font-weight:300">${el2.value.trim()}</div></div>`:''}).join('');
+    return `<div class="ecard"><div class="emod" style="color:${col}">Module ${m.n} · ${m.title}</div>${ans||'<div style="font-size:0.78rem;color:var(--p4);font-style:italic">Selections only — no written responses</div>'}</div>`;
+  }).join('');
+  el.innerHTML=rows;
+}
+
+function renderProg(p){
+  const mods=p==='p1'?P1M:P2M,done=p==='p1'?S.d1:S.d2;
+  const el=document.getElementById(p+'prog');if(!el)return;
+  const pct=Math.round(done.length/mods.length*100);
+  const col=p==='p1'?'var(--ta)':'var(--ts)',grad=p==='p1'?'var(--g1)':'var(--g2)';
+  el.innerHTML=`<div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.1rem">
+    <div style="font-family:var(--serif);font-size:2.2rem;color:${col}">${pct}%</div>
+    <div style="flex:1;height:4px;background:rgba(255,255,255,0.05);border-radius:2px;overflow:hidden"><div style="height:100%;width:${pct}%;background:${grad};border-radius:2px;transition:width 0.7s ease"></div></div>
+    <div style="font-size:0.78rem;color:var(--p4)">${done.length}/${mods.length}</div>
+  </div>
+  <div class="ibox" style="border-color:${p==='p1'?'rgba(196,122,26,0.18)':'rgba(13,138,110,0.18)'}"><div class="ibox-lbl" style="color:${col}">Your answers</div><p>Your written responses are held while you are in the course. Download your workbook at the end of each part to keep them.</p></div>`;
+}
+
+
+
+// Interaction helpers
+function chkBtn(tid,bid){
+  const te=document.getElementById(tid),be=document.getElementById(bid);
+  if(te&&be)be.disabled=te.value.trim().length<3;
+}
+function pickOne(sel,cls,el,nxtId){
+  document.querySelectorAll(sel).forEach(e=>e.classList.remove('sel-a','sel-t'));
+  el.classList.add(cls);
+  if(nxtId)document.getElementById(nxtId).disabled=false;
+}
+function pickRev(sel,cls,el,nxtId,revId,col,text){
+  pickOne(sel,cls,el,nxtId);
+  const rv=document.getElementById(revId);
+  if(rv){const rt=document.getElementById(revId+'-t');if(rt)rt.textContent=text;rv.classList.add('on');}
+}
+function pickRevT(sel,el,nxtId,revId,text){
+  pickRev(sel,'sel-t',el,nxtId,revId,'var(--ts)',text);
+}
+function togBM(el,gridId,cls,btnId){
+  el.classList.toggle(cls);
+  const any=document.querySelectorAll('#'+gridId+' .'+cls).length>0;
+  if(btnId)document.getElementById(btnId).disabled=!any;
+}
+// M1 specific
+function pickM1(el,v){
+  document.querySelectorAll('#m1-b .choice').forEach(e=>e.classList.remove('sel-a'));
+  el.classList.add('sel-a');
+  const t={anger:'Anger is almost always protecting something underneath — fear, hurt, or an unmet need. The course will help you find what that is.',anxiety:'Anxiety works overtime to keep you safe — scanning for threat, preparing for the worst. It often means something important feels uncertain. The course will work with what it is protecting.',shutdown:'Going flat is the nervous system protecting itself when things felt too much. Something learned that feeling less was safer than feeling fully. The course will gently move toward that.',sadness:'A weight underneath most days often means something that has not been fully processed — a loss, a gap, a longing. The course will help you understand what it is about.',shame:'Shame is one of the most protected and most powerful emotions. It often formed early and runs deep. The course will approach it carefully and honestly.'}[v];
+  const rv=document.getElementById('m1b-rev');rv.innerHTML=`<div class="rev-tag" style="color:var(--ta)">What this means</div><div class="rev-text">${t}</div>`;rv.style.cssText='display:block;border-color:var(--amber);background:rgba(196,122,26,0.06);animation:rise 0.22s ease-out;';
+  document.getElementById('m1b-next').disabled=false;
+}
+function pickM1c(el,v){
+  document.querySelectorAll('#m1-c .choice').forEach(e=>e.classList.remove('sel-a'));
+  el.classList.add('sel-a');
+  document.getElementById('m1c-next').disabled=false;
+}
+
+function ago(ts){const s=Math.floor((Date.now()-ts)/1000);if(s<60)return'Just now';if(s<3600)return Math.floor(s/60)+'m ago';if(s<86400)return Math.floor(s/3600)+'h ago';return Math.floor(s/86400)+'d ago';}
+
+
+// Field definitions — question label + field id for every written input
+const FIELDS={
+  1:[{q:'The emotion that shows up too much — what sets it off?',id:'m1-write'}],
+  2:[{q:'The automatic story running in the background',id:'m2-story'}],
+  3:[{q:'The situation',id:'m3-sit'},{q:'The automatic story',id:'m3-story'},{q:'Another perspective',id:'m3-alt1'},{q:'One more perspective',id:'m3-alt2'},{q:'What I notice when holding all three',id:'m3-shift'}],
+  4:[{q:'The problem, specifically',id:'m4-prob'},{q:'All options brainstormed',id:'m4-opts'},{q:'The one step I will take this week',id:'m4-step'}],
+  5:[{q:'This week I will specifically',id:'m5-step'}],
+  6:[{q:'My commitment — when, where, how',id:'m6-commit'}],
+  7:[{q:'The step I will take toward honest connection',id:'m7-step'}],
+  8:[{q:'What this pattern believes about me and others',id:'m8-belief'},{q:'Where it might come from',id:'m8-origin'}],
+  9:[{q:'What I noticed when I turned toward it',id:'m9-words'}],
+  10:[{q:'What matters most to me (10x)',id:'m10-val'},{q:'The difficult experience',id:'m10-exp'},{q:'What has grown or become clearer',id:'m10-grow'}],
+  11:[{q:'The life worth living in five years',id:'m11-life'},{q:'Already moving toward it',id:'m11-toward'},{q:'Quietly pulling away from it',id:'m11-away'},{q:'The difficult situation coming up',id:'m11-sit'},{q:'How I will move through it',id:'m11-cope'}],
+  12:[{q:'Skills that felt most resonant',id:'m12-s1'},{q:'My main emotional patterns',id:'m12-s2'},{q:'Consistent practices I will keep',id:'m12-s3'},{q:'What derails me and my plan for it',id:'m12-s4'},{q:'Who supports me and how I will tend to those connections',id:'m12-s5'},{q:'What I understand now that I did not before',id:'m12-s6'}],
+};
+
+function dlWorkbook(part){
+  const mods=part===1?P1M:P2M;
+  const label=part===1?'Part 1 — Core Skills':'Part 2 — Going Deeper';
+  const date=new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+
+  const moduleHTML=mods.map((m,idx)=>{
+    const fields=FIELDS[m.n]||[];
+    const rows=fields.map(f=>{
+      const el=document.getElementById(f.id);
+      const val=el?el.value.trim():'';
+      const safeVal=val.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+      return `<div class="q-block">
+        <div class="q-label">${f.q}</div>
+        <div class="a-text${val?'':' empty-ans'}">${safeVal||'Not completed'}</div>
+      </div>`;
+    }).join('');
+    const pb=idx>0&&idx%2===0?' page-break':'';
+    return `<div class="module-section${pb}">
+      <div class="module-header">
+        <span class="module-num">Module ${m.n}</span>
+        <div class="module-title">${m.title}</div>
+      </div>
+      ${rows||'<p class="no-fields">This module used selections only — no written responses.</p>'}
+    </div>`;
+  }).join('');
+
+  const html=`<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Regulate for Life — ${label}</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;background:#faf9f7;color:#1a1a1a;padding:3rem 2.5rem;max-width:720px;margin:0 auto;-webkit-font-smoothing:antialiased;}
+  .cover{margin-bottom:4rem;padding-bottom:2.5rem;border-bottom:2px solid #d4c9b8;page-break-after:always;}
+  .cover-rule{width:2.5rem;height:2px;background:#c47a1a;margin-bottom:1.5rem;}
+  .cover-eyebrow{font-size:0.6rem;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:#9a8a72;margin-bottom:0.75rem;}
+  .cover-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:3rem;line-height:1.05;color:#1a1a1a;margin-bottom:0.4rem;font-weight:400;}
+  .cover-title em{font-style:italic;color:#6b5f50;}
+  .cover-part{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:1.3rem;color:#6b5f50;margin-bottom:1rem;}
+  .cover-meta{font-size:0.72rem;color:#9a8a72;line-height:1.8;}
+  .cover-note{margin-top:1.5rem;padding:1rem 1.25rem;border:1px solid #e0d5c5;border-left:3px solid #c47a1a;border-radius:0 0.5rem 0.5rem 0;font-size:0.8rem;color:#6b5f50;line-height:1.65;font-style:italic;}
+  .module-section{padding:2.5rem 0;border-bottom:1px solid #e8e0d4;page-break-inside:avoid;}
+  .module-section:last-child{border-bottom:none;}
+  .module-section.page-break{page-break-before:always;padding-top:0;}
+  .module-header{margin-bottom:1.5rem;}
+  .module-num{display:block;font-size:0.57rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#9a8a72;margin-bottom:0.3rem;}
+  .module-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.5rem;color:#1a1a1a;font-weight:400;line-height:1.2;}
+  .q-block{margin-bottom:1.4rem;page-break-inside:avoid;}
+  .q-label{font-size:0.58rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#c47a1a;margin-bottom:0.45rem;}
+  .a-text{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:1.05rem;line-height:1.75;color:#2a2216;background:#fdf7ee;border-left:2.5px solid #c47a1a;padding:0.85rem 1.1rem;border-radius:0 0.4rem 0.4rem 0;}
+  .a-text.empty-ans{font-family:'DM Sans',sans-serif;font-style:normal;font-size:0.78rem;color:#c4b89a;background:#faf7f2;border-left-color:#e0d5c5;}
+  .no-fields{font-size:0.8rem;color:#b0a48a;font-style:italic;}
+  .doc-footer{margin-top:3rem;padding-top:1.25rem;border-top:1px solid #e0d5c5;display:flex;justify-content:space-between;font-size:0.62rem;color:#b0a090;}
+  @media print{
+    @page{size:A4 portrait;margin:2.2cm 2.5cm;}
+    body{background:white!important;padding:0;font-size:10.5pt;color:#000;max-width:none;}
+    .cover{page-break-after:always;}
+    .module-section{page-break-inside:avoid;}
+    .module-section.page-break{page-break-before:always;}
+    .q-block{page-break-inside:avoid;}
+    .a-text{background:#fff9f2!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  }
+</style>
+</head>
+<body>
+<div class="cover">
+  <div class="cover-rule"></div>
+  <div class="cover-eyebrow">Regulate for Life</div>
+  <div class="cover-title">Regulate<br><em>for Life</em></div>
+  <div class="cover-part">${label} · Personal Workbook</div>
+  <div class="cover-meta">Completed on ${date}<br>This document contains your personal written responses from the course.</div>
+  <div class="cover-note">Your answers are your own. This workbook is for your personal use — to return to, reflect on, and carry forward.</div>
+</div>
+${moduleHTML}
+<div class="doc-footer"><span>Regulate for Life · ${label}</span><span>Generated ${date}</span></div>
+</body></html>`;
+
+  // Print via hidden iframe — user never leaves the app
+  let iframe=document.getElementById('print-frame');
+  if(!iframe){iframe=document.createElement('iframe');iframe.id='print-frame';iframe.style.cssText='position:fixed;top:-9999px;left:-9999px;width:210mm;height:297mm;border:none;opacity:0;pointer-events:none;';document.body.appendChild(iframe);}
+  iframe.srcdoc=html;
+  iframe.onload=function(){
+    // Small delay to allow Google Fonts to load inside iframe
+    setTimeout(()=>{iframe.contentWindow.focus();iframe.contentWindow.print();},900);
+  };
+}
+
+document.addEventListener('touchstart',e=>{if(e.touches.length>1)e.preventDefault();},{passive:false});
+ld();go('s-home');
+
+// ── PWA: inject manifest blob ──
+(function(){
+  const manifest={
+    name:'Regulate for Life',
+    short_name:'Regulate',
+    description:'Long-term emotion regulation — a self-guided course',
+    start_url:'.',
+    display:'standalone',
+    background_color:'#080f1a',
+    theme_color:'#080f1a',
+    orientation:'portrait',
+    icons:[{
+      src:"data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='114' fill='%230b1422'/><text y='0.9em' font-size='320' x='50%' dominant-baseline='middle' text-anchor='middle'>🌿</text></svg>",
+      sizes:'512x512',
+      type:'image/svg+xml',
+      purpose:'any maskable'
+    }]
+  };
+  const blob=new Blob([JSON.stringify(manifest)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  document.getElementById('pwa-manifest').href=url;
+})();
+
+// ── PWA: register service worker inline ──
+if('serviceWorker' in navigator){
+  const swCode=`
+    const CACHE='rfl-v1';
+    const ASSETS=[location.href];
+    self.addEventListener('install',e=>{
+      e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting()));
+    });
+    self.addEventListener('activate',e=>{
+      e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));
+    });
+    self.addEventListener('fetch',e=>{
+      e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).then(res=>{
+        const clone=res.clone();
+        caches.open(CACHE).then(c=>c.put(e.request,clone));
+        return res;
+      })));
+    });
+  `;
+  const swBlob=new Blob([swCode],{type:'application/javascript'});
+  const swUrl=URL.createObjectURL(swBlob);
+  navigator.serviceWorker.register(swUrl).catch(()=>{});
+}
+</script>
+</body>
+</html>
