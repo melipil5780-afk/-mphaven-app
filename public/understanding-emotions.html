@@ -1,0 +1,2117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#0f172a">
+    <title>Working With Emotions</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <style>
+        /* ============================================
+           MPHaven Design System – Unified Core Styles
+           ============================================ */
+        :root {
+            /* --------------------------------------------
+               Backgrounds & Neutrals
+            -------------------------------------------- */
+            --bg-dark:          #0f172a;              /* Slate 900 – main app background */
+            --bg-card:          rgba(15, 23, 42, 0.98); /* Frosted card base */
+            --bg-card-light:    rgba(30, 41, 59, 0.65); /* Card gradient start */
+            --bg-card-dark:     rgba(15, 23, 42, 0.45); /* Card gradient end */
+            --border-subtle:    rgba(30, 41, 59, 0.5);  /* Borders, dividers */
+            --border-softer:    rgba(51, 65, 85, 0.4);  /* Softer card borders */
+
+            /* --------------------------------------------
+               Primary – Teal (softer, deep comfort)
+            -------------------------------------------- */
+            --primary-teal:     #0e7490;              /* Teal 700 – main brand */
+            --primary-teal-dark:#0c627a;              /* Hover / active */
+            --teal-glow:        rgba(14, 116, 144, 0.25); /* Focus rings, subtle glow */
+
+            /* --------------------------------------------
+               Accent – Amber (warm, motivational)
+            -------------------------------------------- */
+            --accent-amber:     #d97706;              /* Amber 600 – CTAs, progress */
+            --accent-amber-dark:#b45309;              /* Hover / active */
+            --amber-glow:       rgba(217, 119, 6, 0.25); /* Subtle amber accents */
+
+            /* --------------------------------------------
+               Teal / Cyan text & accents
+            -------------------------------------------- */
+            --text-teal-light:  rgb(165, 243, 252);   /* Soft cyan – insight badges, links */
+            --text-teal:        rgb(94, 234, 212);    /* Mid teal – emphasis */
+            --text-teal-dark:   rgb(14, 116, 144);    /* Deep teal – rare usage */
+
+            /* --------------------------------------------
+               Amber / Warm text shades
+            -------------------------------------------- */
+            --text-amber-light: rgb(253, 230, 138);   /* Soft warm yellow */
+            --text-amber:       rgb(251, 191, 36);    /* Mid amber – motivational text */
+            --text-amber-dark:  rgb(217, 119, 6);     /* Deep amber */
+
+            /* --------------------------------------------
+               Feedback States
+            -------------------------------------------- */
+            --success-emerald:  rgb(74, 222, 128);    /* Completion, correct answers */
+            --success-bg:       rgba(34, 197, 94, 0.12);
+
+            --warning-amber:    #f59e0b;               /* Warning messages */
+            --warning-bg:       rgba(245, 158, 11, 0.12);
+
+            --error-red:        #dc2626;               /* Errors, crisis */
+            --error-bg:         rgba(220, 38, 38, 0.12);
+
+            --info-blue:        #3b82f6;               /* Informational */
+            --info-bg:          rgba(59, 130, 246, 0.12);
+
+            /* --------------------------------------------
+               Neutral Text (graduated scale)
+            -------------------------------------------- */
+            --text-primary:     rgb(241, 245, 249);   /* Main white-ish text */
+            --text-secondary:   rgb(203, 213, 225);   /* Slate 300 – supporting */
+            --text-muted:       rgb(148, 163, 184);   /* Slate 400 – labels, hints */
+            --text-dim:         rgb(100, 116, 139);   /* Slate 500 – inactive */
+
+            /* --------------------------------------------
+               Blur / Glow Orbs (used on home & lessons)
+            -------------------------------------------- */
+            --blur-teal:        rgba(14, 116, 144, 0.08);
+            --blur-amber:       rgba(217, 119, 6, 0.08);
+            --blur-radius:      140px;
+            --blur-overlay-opacity: 0.35;              /* Applied to .bg-blur-1, .bg-blur-2 */
+
+            /* --------------------------------------------
+               Gradients
+            -------------------------------------------- */
+            --gradient-main:    linear-gradient(135deg, #0e7490, #d97706);
+            --gradient-teal-heavy: linear-gradient(to right, #0e7490 70%, #d97706);
+            --gradient-subtle:  linear-gradient(135deg, rgba(14,116,144,0.15), rgba(217,119,6,0.10));
+            --gradient-success: linear-gradient(135deg, rgba(34,197,94,0.15), rgba(21,128,61,0.08));
+            --gradient-warning: linear-gradient(135deg, rgba(245,158,11,0.15), rgba(217,119,6,0.08));
+            --gradient-error:   linear-gradient(135deg, rgba(220,38,38,0.15), rgba(185,28,28,0.08));
+
+            /* --------------------------------------------
+               Shadows & Depth
+            -------------------------------------------- */
+            --shadow-card:      0 25px 50px -12px rgba(0,0,0,0.25);
+            --shadow-xl:        0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+
+            /* --------------------------------------------
+               Spacing Scale (use these for margins/padding)
+            -------------------------------------------- */
+            --space-1: 0.25rem;   /*  4px */
+            --space-2: 0.5rem;    /*  8px */
+            --space-3: 0.75rem;   /* 12px */
+            --space-4: 1rem;      /* 16px */
+            --space-5: 1.25rem;   /* 20px */
+            --space-6: 1.5rem;    /* 24px */
+            --space-8: 2rem;      /* 32px */
+            --space-10: 2.5rem;   /* 40px */
+            --space-12: 3rem;     /* 48px */
+
+            /* --------------------------------------------
+               Typography Scale
+            -------------------------------------------- */
+            --text-xs:  0.75rem;   /* 12px */
+            --text-sm:  0.875rem;  /* 14px */
+            --text-base: 1rem;     /* 16px */
+            --text-lg:  1.125rem;  /* 18px */
+            --text-xl:  1.25rem;   /* 20px */
+            --text-2xl: 1.5rem;    /* 24px */
+            --text-3xl: 1.875rem;  /* 30px */
+            --text-4xl: 2.25rem;   /* 36px */
+
+            /* --------------------------------------------
+               Z‑Index Scale
+            -------------------------------------------- */
+            --z-dropdown:       1000;
+            --z-sticky:         1020;
+            --z-fixed:          1030;
+            --z-modal-backdrop: 1040;
+            --z-modal:          1050;
+            --z-popover:        1060;
+            --z-toast:          1070;
+
+            /* --------------------------------------------
+               Transitions
+            -------------------------------------------- */
+            --transition-fast:   150ms;
+            --transition-base:   250ms;
+            --transition-slow:   350ms;
+            --ease-in-out:       cubic-bezier(0.4, 0, 0.2, 1);
+            --ease-out:          cubic-bezier(0, 0, 0.2, 1);
+            --ease-in:           cubic-bezier(0.4, 0, 1, 1);
+        }
+
+        /* ============================================
+           Base Reset & Typography
+           ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-text-size-adjust: 100%;
+            touch-action: manipulation;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Container & App Wrapper */
+        .container {
+            width: 100%;
+            height: 100vh;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .app-wrapper {
+            width: 100%;
+            max-width: 28rem;
+            height: 100%;
+            margin: 0 auto;
+            background: var(--bg-card);
+            backdrop-filter: blur(40px);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            border-left: 1px solid var(--border-subtle);
+            border-right: 1px solid var(--border-subtle);
+        }
+
+        /* Safe area insets */
+        @supports (padding: max(0px)) {
+            .app-wrapper {
+                padding-top: env(safe-area-inset-top);
+                padding-bottom: env(safe-area-inset-bottom);
+                padding-left: env(safe-area-inset-left);
+                padding-right: env(safe-area-inset-right);
+            }
+        }
+
+        /* Background blur orbs */
+        .bg-blur-1, .bg-blur-2 {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(var(--blur-radius));
+            pointer-events: none;
+            z-index: 0;
+            opacity: var(--blur-overlay-opacity);
+        }
+
+        .bg-blur-1 {
+            top: -5%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 24rem;
+            height: 24rem;
+            background: var(--blur-teal);
+        }
+
+        .bg-blur-2 {
+            bottom: -5%;
+            right: -5%;
+            width: 20rem;
+            height: 20rem;
+            background: var(--blur-amber);
+        }
+
+        /* Main scrollable content */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+            z-index: 1;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        .main-content::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Content wrapper */
+        .content-wrapper {
+            padding: max(1rem, env(safe-area-inset-top)) 1rem 2rem 1rem;
+            min-height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ============================================
+           Reusable Component Classes
+           ============================================ */
+
+        /* Cards */
+        .card {
+            background: linear-gradient(135deg, var(--bg-card-light), var(--bg-card-dark));
+            border: 1px solid var(--border-softer);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            transition: transform var(--transition-fast) var(--ease-out),
+                        border-color var(--transition-fast) var(--ease-out),
+                        background var(--transition-fast) var(--ease-out);
+            box-shadow: var(--shadow-card);
+            cursor: pointer;
+        }
+
+        .card:active {
+            transform: scale(0.97);
+        }
+
+        /* Buttons */
+        .btn {
+            color: #fff;
+            font-weight: 600;
+            border: none;
+            padding: 1rem;
+            border-radius: 1rem;
+            cursor: pointer;
+            width: 100%;
+            font-size: var(--text-base);
+            transition: all var(--transition-fast) var(--ease-out);
+            min-height: 44px;
+            text-align: center;
+            background: var(--gradient-main);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+            opacity: 0.9;
+        }
+
+        .btn-secondary {
+            background: var(--primary-teal);
+        }
+
+        .btn-tertiary {
+            background: var(--accent-amber);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            border: 1px solid var(--border-softer);
+            color: var(--text-muted);
+        }
+
+        /* Progress dots */
+        .progress-dots {
+            display: flex;
+            gap: var(--space-1);
+        }
+
+        .progress-dot {
+            flex: 1;
+            height: 0.5rem;
+            background: var(--text-dim);
+            border-radius: 9999px;
+        }
+
+        .progress-dot.active {
+            background: var(--gradient-main);
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: var(--space-1) var(--space-2);
+            border-radius: 9999px;
+            font-size: var(--text-xs);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+
+        .badge-success {
+            background: var(--success-bg);
+            color: var(--success-emerald);
+            border: 1px solid var(--success-emerald);
+        }
+
+        .badge-recommended {
+            background: var(--gradient-subtle);
+            color: var(--text-teal-light);
+            border: 1px solid var(--teal-glow);
+        }
+
+        .badge-practiced {
+            background: var(--info-bg);
+            color: var(--info-blue);
+            border: 1px solid var(--info-blue);
+        }
+
+        /* Toast notifications */
+        .toast {
+            position: fixed;
+            bottom: calc(6rem + env(safe-area-inset-bottom));
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: rgba(30, 41, 59, 0.95);
+            border: 1px solid var(--teal-glow);
+            border-radius: 0.75rem;
+            padding: 0.875rem 1.25rem;
+            color: #fff;
+            font-weight: 600;
+            z-index: var(--z-toast);
+            opacity: 0;
+            transition: all var(--transition-base) var(--ease-out);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            max-width: calc(100vw - 2rem);
+            text-align: center;
+            font-size: var(--text-sm);
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn var(--transition-slow) var(--ease-out) forwards;
+        }
+
+        /* ============================================
+           Additional custom styles from original app
+           ============================================ */
+
+        /* Keep all original component styles, but now using design system tokens where possible */
+        .pbar {
+            height: 2px; background: rgba(255,255,255,0.05);
+            flex-shrink: 0; position: relative; z-index: 2;
+        }
+        .pfill {
+            height: 100%; border-radius: 1px;
+            background: var(--gradient-main);
+            transition: width 0.5s ease;
+        }
+
+        .screen-header {
+            display: flex; align-items: center; gap: 0.75rem;
+            margin-bottom: 1.25rem; padding-top: 0.5rem;
+        }
+        .back-btn {
+            width: 2.25rem; height: 2.25rem; border-radius: 50%;
+            background: rgba(30,41,59,0.6);
+            border: 1px solid var(--border-softer);
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; font-size: 1.1rem; color: var(--text-muted);
+            transition: all 0.2s; flex-shrink: 0;
+        }
+        .back-btn:active { background: rgba(14,116,144,0.2); border-color: var(--primary-teal); }
+        .screen-label {
+            font-size: 0.7rem; color: var(--text-dim);
+            letter-spacing: 0.15em; text-transform: uppercase; font-weight: 600;
+        }
+
+        .stage-pill {
+            display: inline-flex; align-items: center; gap: 0.35rem;
+            padding: 0.25rem 0.65rem; border-radius: 100px;
+            font-size: 0.6rem; font-weight: 700;
+            letter-spacing: 0.12em; text-transform: uppercase;
+            margin-bottom: 0.85rem; border: 1px solid transparent;
+        }
+        .hed {
+            font-family: 'Lora', serif;
+            font-size: clamp(1.5rem, 6vw, 1.85rem);
+            line-height: 1.2; color: var(--text-primary);
+            margin-bottom: 0.85rem; font-weight: 400;
+        }
+        .hed em { font-style: italic; color: var(--text-teal); }
+        .body-text {
+            font-size: var(--text-sm); line-height: 1.75;
+            color: var(--text-secondary); margin-bottom: 0.85rem;
+        }
+        .body-text strong { color: var(--text-primary); font-weight: 600; }
+        .pquote {
+            font-family: 'Lora', serif; font-style: italic;
+            font-size: 0.9375rem; line-height: 1.65;
+            color: var(--text-primary); padding: 1rem 1.1rem;
+            border-left: 2px solid; border-radius: 0 0.75rem 0.75rem 0;
+            margin: 0.85rem 0;
+        }
+
+        .card {
+            background: linear-gradient(135deg, var(--bg-card-light), var(--bg-card-dark));
+            border: 1px solid var(--border-softer);
+            border-radius: 0.875rem; padding: 1rem 1.1rem;
+            margin-bottom: 0.6rem; cursor: pointer;
+            transition: all 0.2s; width: 100%; text-align: left;
+        }
+        .card:active { transform: scale(0.98); }
+        .card.sel {
+            border-color: var(--primary-teal);
+            background: linear-gradient(135deg, var(--teal-bg), var(--teal-bg2));
+        }
+        .card-title {
+            font-size: 0.875rem; font-weight: 600;
+            color: var(--text-primary); margin-bottom: 0.2rem;
+            line-height: 1.3;
+        }
+        .card-italic {
+            font-family: 'Lora', serif; font-style: italic;
+            font-size: 0.9375rem; color: var(--text-primary);
+            line-height: 1.5; margin-bottom: 0.3rem;
+        }
+        .card-sub { font-size: 0.75rem; color: var(--text-muted); line-height: 1.4; }
+
+        .ibox {
+            background: rgba(30,41,59,0.4);
+            border: 1px solid var(--border-softer);
+            border-radius: 0.875rem; padding: 1rem 1.1rem; margin: 0.75rem 0;
+        }
+        .ibox-label {
+            font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em;
+            text-transform: uppercase; margin-bottom: 0.5rem;
+        }
+        .ibox p { font-size: var(--text-sm); line-height: 1.65; color: var(--text-secondary); }
+        .ibox p strong { color: var(--text-primary); font-weight: 600; }
+
+        /* New modifier for amber warning box */
+        .ibox-warning {
+            border-color: rgba(217, 119, 6, 0.25);
+            background: rgba(217, 119, 6, 0.08);
+        }
+
+        .accordion {
+            background: linear-gradient(135deg, var(--bg-card-light), var(--bg-card-dark));
+            border: 1px solid var(--border-softer);
+            border-radius: 0.875rem; margin-bottom: 0.5rem;
+            cursor: pointer; overflow: hidden; transition: all 0.2s;
+        }
+        .accordion:active { transform: scale(0.99); }
+        .acc-head {
+            padding: 0.875rem 1rem; display: flex;
+            align-items: center; gap: 0.6rem;
+        }
+        .acc-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+        .acc-name { font-size: 0.875rem; font-weight: 600; color: var(--text-primary); flex: 1; }
+        .acc-tag {
+            font-size: 0.625rem; font-weight: 700; letter-spacing: 0.08em;
+            text-transform: uppercase; padding: 0.2rem 0.5rem; border-radius: 0.3rem;
+        }
+        .acc-body {
+            padding: 0 1rem 0.875rem; font-size: var(--text-sm);
+            color: var(--text-secondary); line-height: 1.6; display: none;
+        }
+        .acc-body.open { display: block; }
+        .acc-action { margin-top: 0.5rem; font-size: 0.75rem; font-weight: 600; }
+
+        .chips { display: flex; flex-wrap: wrap; gap: 0.45rem; margin: 0.75rem 0; }
+        .chip {
+            padding: 0.4rem 0.85rem;
+            background: rgba(30,41,59,0.5);
+            border: 1px solid var(--border-softer);
+            border-radius: 100px; font-size: 0.8rem;
+            color: var(--text-muted); cursor: pointer; transition: all 0.2s;
+        }
+        .chip:active { transform: scale(0.96); }
+        .chip.sel { color: var(--text-teal-light); border-color: var(--primary-teal); background: var(--teal-bg); }
+
+        .btn {
+            width: 100%; padding: 1rem; border: none; border-radius: 0.875rem;
+            font-size: 0.9rem; font-weight: 700; cursor: pointer;
+            transition: all 0.2s; font-family: 'Inter', sans-serif;
+            margin-top: auto; letter-spacing: 0.01em;
+        }
+        .btn:active { transform: scale(0.98); opacity: 0.9; }
+        .btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
+        .btn-primary { background: var(--gradient-main); color: #fff; }
+        .btn-ghost {
+            width: 100%; padding: 0.875rem;
+            background: rgba(30,41,59,0.5); border: 1px solid var(--border-softer);
+            border-radius: 0.875rem; color: var(--text-muted);
+            font-size: 0.875rem; cursor: pointer; font-family: 'Inter', sans-serif;
+            transition: all 0.2s; margin-top: 0.6rem;
+        }
+        .btn-ghost:active { transform: scale(0.98); background: rgba(30,41,59,0.7); }
+
+        .bmap-wrap {
+            background: rgba(30,41,59,0.35);
+            border: 1px solid var(--border-softer);
+            border-radius: 1rem; padding: 1.25rem;
+            margin: 0.75rem 0; display: flex;
+            flex-direction: column; align-items: center; gap: 1rem;
+        }
+        .bfig { position: relative; width: 68px; height: 140px; }
+        .bsvg { width: 100%; height: 100%; }
+        .bspot {
+            position: absolute; width: 22px; height: 22px; border-radius: 50%;
+            border: 1.5px solid rgba(14,116,144,0.3);
+            cursor: pointer; transition: all 0.2s;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .bspot.lit { border-color: var(--primary-teal); background: var(--teal-bg); }
+        .bspot.lit::after {
+            content: ''; width: 7px; height: 7px; border-radius: 50%;
+            background: var(--text-teal); box-shadow: 0 0 8px var(--primary-teal);
+        }
+        .bs-head { top: 0; left: 50%; transform: translateX(-50%); }
+        .bs-throat { top: 24px; left: 50%; transform: translateX(-50%); }
+        .bs-chest { top: 50px; left: 50%; transform: translateX(-50%); }
+        .bs-belly { top: 78px; left: 50%; transform: translateX(-50%); }
+        .bs-gut { top: 100px; left: 50%; transform: translateX(-50%); }
+        .btexts { display: flex; flex-wrap: wrap; gap: 0.35rem; justify-content: center; }
+        .btx {
+            padding: 0.3rem 0.65rem; background: rgba(30,41,59,0.5);
+            border: 1px solid var(--border-softer); border-radius: 100px;
+            font-size: 0.75rem; color: var(--text-dim); cursor: pointer; transition: all 0.2s;
+        }
+        .btx.sel { border-color: var(--primary-teal); color: var(--text-teal-light); background: var(--teal-bg); }
+
+        .sg-card {
+            background: rgba(30,41,59,0.35); border: 1px solid var(--border-softer);
+            border-radius: 0.875rem; padding: 1.1rem; margin: 0.75rem 0;
+            font-family: 'Lora', serif; font-style: italic;
+            font-size: 0.9375rem; color: var(--text-primary); line-height: 1.65;
+        }
+        .sg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin: 0.5rem 0; }
+        .sg-btn {
+            padding: 0.75rem 0.6rem; border-radius: 0.75rem;
+            border: 1px solid transparent; cursor: pointer;
+            font-size: 0.75rem; font-weight: 700; text-align: center;
+            transition: all 0.2s; font-family: 'Inter', sans-serif; line-height: 1.3;
+        }
+        .sg-btn:active { transform: scale(0.96); }
+        .sg-btn span { font-weight: 400; opacity: 0.7; display: block; margin-top: 0.2rem; font-size: 0.7rem; }
+        .sg-reveal {
+            background: rgba(30,41,59,0.5); border: 1px solid var(--border-softer);
+            border-radius: 0.75rem; padding: 0.875rem 1rem; margin-top: 0.6rem; display: none;
+        }
+        .sg-reveal-tag { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.4rem; }
+        .sg-reveal-text { font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.55; }
+        .sg-dots { display: flex; gap: 0.35rem; justify-content: center; margin: 0.6rem 0; }
+        .sg-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(30,41,59,0.7); transition: background 0.3s; }
+
+        .wot-wrap {
+            background: rgba(30,41,59,0.3); border: 1px solid var(--border-softer);
+            border-radius: 0.875rem; overflow: hidden; margin: 0.75rem 0;
+        }
+        .wot-zone {
+            padding: 0.75rem 1rem; display: flex; align-items: center;
+            gap: 0.75rem; cursor: pointer; transition: all 0.2s;
+        }
+        .wot-zone:not(:last-child) { border-bottom: 1px solid var(--border-subtle); }
+        .wot-zone:active { filter: brightness(1.1); }
+        .wot-zone.sel { outline: 1.5px solid var(--primary-teal); outline-offset: -1.5px; }
+        .wot-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+        .wot-name { font-size: 0.8125rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.15rem; }
+        .wot-desc { font-size: 0.75rem; color: var(--text-secondary); line-height: 1.4; }
+        .wot-tag { font-size: 0.65rem; color: var(--text-teal); font-weight: 700; letter-spacing: 0.06em; }
+
+        .breath-outer {
+            display: flex; flex-direction: column; align-items: center;
+            gap: 1rem; padding: 1.5rem 0;
+        }
+        .breath-ring {
+            width: 100px; height: 100px; border-radius: 50%;
+            border: 1.5px solid rgba(14,116,144,0.3);
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: all 4s ease;
+        }
+        .breath-ring.inhale { width: 120px; height: 120px; border-color: var(--primary-teal); background: var(--teal-bg2); }
+        .breath-ring.hold { border-color: var(--accent-amber); background: var(--amber-bg2); }
+        .breath-inner {
+            width: 54px; height: 54px; border-radius: 50%;
+            background: rgba(14,116,144,0.08);
+            display: flex; align-items: center; justify-content: center;
+            transition: all 4s ease;
+        }
+        .breath-ring.inhale .breath-inner { width: 68px; height: 68px; background: var(--teal-bg); }
+        .breath-txt { font-size: 0.75rem; color: var(--text-teal); letter-spacing: 0.05em; text-align: center; line-height: 1.5; }
+        .breath-phase { font-size: 0.75rem; color: var(--text-muted); letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; }
+
+        .chair-bubble {
+            padding: 0.875rem 1rem; border-radius: 0.875rem;
+            font-size: 0.875rem; line-height: 1.55;
+        }
+        .ch-critic {
+            background: rgba(217,119,6,0.08); border: 1px solid rgba(217,119,6,0.2);
+            color: var(--text-amber-light); border-radius: 0.875rem 0.875rem 0.25rem 0.875rem;
+        }
+        .ch-self {
+            background: var(--teal-bg); border: 1px solid rgba(14,116,144,0.2);
+            color: var(--text-teal-light); border-radius: 0.875rem 0.875rem 0.875rem 0.25rem;
+            margin-left: 1rem;
+        }
+        .ch-label {
+            font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase;
+            font-weight: 700; opacity: 0.5; margin-bottom: 0.4rem;
+        }
+
+        .need-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin: 0.75rem 0; }
+        .need-cell {
+            background: rgba(30,41,59,0.4); border: 1px solid var(--border-softer);
+            border-radius: 0.75rem; padding: 0.875rem 0.75rem;
+            cursor: pointer; transition: all 0.2s; text-align: center;
+        }
+        .need-cell:active { transform: scale(0.97); }
+        .need-cell.sel { border-color: var(--primary-teal); background: var(--teal-bg); }
+        .need-ico { font-size: 1.35rem; margin-bottom: 0.35rem; }
+        .need-name { font-size: 0.8rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.15rem; }
+        .need-sub { font-size: 0.675rem; color: var(--text-muted); }
+
+        .fused-thought {
+            background: rgba(217,119,6,0.07); border: 1px solid rgba(217,119,6,0.18);
+            border-radius: 0.875rem; padding: 1.1rem; margin: 0.75rem 0;
+            font-family: 'Lora', serif; font-style: italic;
+            font-size: 1rem; color: var(--text-primary);
+            text-align: center; line-height: 1.55; cursor: pointer; transition: all 0.35s;
+        }
+        .fused-thought.defused {
+            background: var(--teal-bg); border-color: rgba(14,116,144,0.25);
+            font-size: 0.9rem; color: var(--text-secondary);
+        }
+
+        .arr-step {
+            display: flex; gap: 0.85rem; padding: 0.9rem 0;
+            border-bottom: 1px solid var(--border-subtle);
+            cursor: pointer; transition: all 0.2s;
+        }
+        .arr-step:last-child { border-bottom: none; }
+        .arr-n { font-size: 0.7rem; color: var(--text-dim); width: 18px; flex-shrink: 0; margin-top: 2px; font-weight: 700; }
+        .arr-t { font-size: 0.875rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.2rem; }
+        .arr-s { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5; }
+        .arr-step.done .arr-t { color: var(--text-teal); }
+        .arr-step.done .arr-n { color: var(--text-teal); }
+
+        .value-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.45rem; margin: 0.75rem 0; }
+        .val-cell {
+            background: rgba(30,41,59,0.4); border: 1px solid var(--border-softer);
+            border-radius: 0.75rem; padding: 0.75rem 0.5rem;
+            text-align: center; cursor: pointer; transition: all 0.2s;
+        }
+        .val-cell:active { transform: scale(0.96); }
+        .val-cell.sel { border-color: var(--primary-teal); background: var(--teal-bg); }
+        .val-ico { font-size: 1.25rem; margin-bottom: 0.3rem; }
+        .val-nm { font-size: 0.7rem; font-weight: 600; color: var(--text-primary); }
+        .val-sub { font-size: 0.6rem; color: var(--text-dim); margin-top: 0.1rem; }
+
+        .journey-item {
+            display: flex; gap: 0.85rem; padding-bottom: 1rem; cursor: pointer;
+        }
+        .journey-item:active .jcard { transform: scale(0.99); }
+        .j-left { display: flex; flex-direction: column; align-items: center; width: 22px; flex-shrink: 0; }
+        .j-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 1rem; }
+        .j-line { flex: 1; width: 1px; background: var(--border-subtle); margin-top: 0.35rem; }
+        .jcard {
+            flex: 1; background: linear-gradient(135deg, var(--bg-card-light), var(--bg-card-dark));
+            border: 1px solid var(--border-softer); border-radius: 0.875rem;
+            padding: 0.875rem 1rem; transition: all 0.2s;
+        }
+        .j-stage { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.25rem; font-weight: 700; }
+        .j-title { font-size: 0.9375rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.2rem; }
+        .j-sub { font-size: 0.75rem; color: var(--text-dim); line-height: 1.4; }
+        .j-badge {
+            display: inline-block; margin-top: 0.5rem;
+            font-size: 0.6rem; padding: 0.2rem 0.6rem;
+            border-radius: 100px; font-weight: 700; letter-spacing: 0.05em;
+        }
+
+        .stat-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin: 0.75rem 0; }
+        .stat-box {
+            background: rgba(30,41,59,0.4); border: 1px solid var(--border-softer);
+            border-radius: 0.875rem; padding: 1rem; text-align: center;
+        }
+        .stat-n { font-family: 'Lora', serif; font-size: 1.75rem; color: var(--text-teal); }
+        .stat-l { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.25rem; line-height: 1.3; }
+
+        .meaning-card {
+            background: var(--gradient-subtle); border: 1px solid rgba(14,116,144,0.2);
+            border-radius: 0.875rem; padding: 1.1rem; margin: 0.75rem 0;
+        }
+        .mc-lbl { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-amber); margin-bottom: 0.5rem; }
+        .mc-q { font-family: 'Lora', serif; font-size: 0.9375rem; line-height: 1.65; color: var(--text-primary); font-style: italic; }
+
+        .phil-strip {
+            background: rgba(30,41,59,0.35); border: 1px solid var(--border-softer);
+            border-radius: 0.875rem; padding: 1rem; margin-bottom: 1rem;
+        }
+        .phil-q { font-size: var(--text-sm); color: var(--text-muted); margin-bottom: 0.6rem; }
+
+        .sp { flex: 1; min-height: 1rem; }
+
+        .screen { display: none; flex-direction: column; }
+        .screen.active { display: flex; }
+
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { animation: fadeUp 0.3s ease-out; }
+        @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(14,116,144,0)} 50%{box-shadow:0 0 18px 5px rgba(14,116,144,0.18)} }
+        .glow-pulse { animation: pulse 2.5s ease infinite; }
+
+        .resume-banner {
+            display: none; align-items: center; gap: 0.75rem;
+            background: linear-gradient(135deg, rgba(14,116,144,0.18), rgba(217,119,6,0.1));
+            border: 1px solid rgba(14,116,144,0.25);
+            border-radius: 0.875rem; padding: 0.875rem 1rem;
+            margin-bottom: 1rem; cursor: pointer; transition: all 0.2s;
+        }
+        .resume-banner.visible { display: flex; }
+        .resume-banner:active { transform: scale(0.99); }
+        .resume-icon {
+            width: 2.25rem; height: 2.25rem; border-radius: 50%;
+            background: var(--teal-bg); border: 1px solid rgba(14,116,144,0.3);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem; flex-shrink: 0;
+        }
+        .resume-label { font-size: 0.65rem; color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; margin-bottom: 0.2rem; }
+        .resume-title { font-size: 0.875rem; font-weight: 600; color: var(--text-primary); }
+        .resume-arrow { margin-left: auto; color: var(--text-teal); font-size: 1.1rem; flex-shrink: 0; }
+
+        .stage-steps {
+            display: flex; align-items: center; gap: 0.3rem;
+            margin-left: auto; flex-shrink: 0;
+        }
+        .sstep {
+            width: 6px; height: 6px; border-radius: 50%;
+            background: rgba(255,255,255,0.08); transition: all 0.3s;
+        }
+        .sstep.done { background: rgba(14,116,144,0.5); }
+        .sstep.curr { background: var(--primary-teal); width: 14px; border-radius: 3px; }
+
+        @media (min-width: 768px) {
+            .app-wrapper {
+                border-radius: 2rem; margin: 1rem auto;
+                box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+                height: calc(100dvh - 2rem); max-height: 844px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<div class="app-wrapper">
+    <div class="bg-blur-1"></div>
+    <div class="bg-blur-2"></div>
+
+    <div class="pbar"><div class="pfill" id="pfill" style="width:0%"></div></div>
+
+    <div class="main-content">
+    <div class="content-wrapper fade-in" id="app">
+
+    <!-- ══════════════════════════════
+         HOME
+    ══════════════════════════════ -->
+    <div class="screen active" id="s-home">
+        <div style="padding-bottom:0.5rem;">
+            <div style="font-size:0.7rem;color:var(--text-dim);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.4rem;font-weight:700;">Your Practice</div>
+            <div style="font-family:'Lora',serif;font-size:1.75rem;color:var(--text-primary);margin-bottom:0.4rem;line-height:1.2;">Working With<br>Emotions</div>
+            <div style="font-size:0.875rem;color:var(--text-muted);line-height:1.65;margin-bottom:1.1rem;">A real, experiential journey — not just reading about feelings, but actually working with them.</div>
+        </div>
+
+        <div id="resume-banner" class="resume-banner" onclick="resumeJourney()">
+            <div class="resume-icon">▶</div>
+            <div>
+                <div class="resume-label">Continue where you left off</div>
+                <div class="resume-title" id="resume-title">Loading...</div>
+            </div>
+            <div class="resume-arrow">›</div>
+        </div>
+
+        <div class="phil-strip">
+            <div class="phil-q">How are you arriving today?</div>
+            <div class="chips">
+                <div class="chip" onclick="this.classList.toggle('sel')">Overwhelmed</div>
+                <div class="chip sel" onclick="this.classList.toggle('sel')">Curious</div>
+                <div class="chip" onclick="this.classList.toggle('sel')">Numb</div>
+                <div class="chip" onclick="this.classList.toggle('sel')">Tender</div>
+                <div class="chip" onclick="this.classList.toggle('sel')">Okay</div>
+            </div>
+        </div>
+
+        <div style="background:rgba(14,116,144,0.07);border:1px solid rgba(14,116,144,0.15);border-radius:0.875rem;padding:0.875rem 1rem;margin-bottom:1rem;font-size:0.8125rem;color:var(--text-secondary);line-height:1.6;">
+            <span style="color:var(--text-teal);font-weight:700;">The foundation:</span> Emotions aren't problems to fix. They're a built-in guidance system. The goal isn't to control them — it's to understand them well enough to know which ones to trust, and how to let one shift another.
+        </div>
+
+        <div style="font-size:0.65rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-dim);margin-bottom:0.6rem;">Six Stages — Do Them In Order</div>
+
+        <div id="journey-list"></div>
+    </div>
+
+    <!-- ══════════════════════════════
+         STAGE 1 · GROUND
+    ══════════════════════════════ -->
+    <div class="screen" id="s-ground-flash">
+        <div class="screen-header">
+            <div class="back-btn" onclick="goTo('s-home')">‹</div>
+            <div class="screen-label" style="color:var(--text-teal);">Stage 1 · Ground</div>
+        </div>
+        <div class="stage-pill" style="background:var(--teal-bg);border-color:rgba(14,116,144,.2);color:var(--text-teal);">⬤ Before we begin</div>
+        <div class="hed">No thinking.<br><em>Just notice.</em></div>
+        <div class="body-text">Three faces will flash for half a second each. Your only job: notice what your body does — before your thinking mind catches up.</div>
+        <div class="body-text">There's no right answer. You're starting to hear something you already know.</div>
+        <div class="pquote" style="border-color:var(--primary-teal);background:var(--teal-bg2);">"The body speaks before language. You're about to hear it."</div>
+        <div class="sp"></div>
+        <button class="btn btn-primary glow-pulse" onclick="startFlash()">Begin</button>
+    </div>
+
+    <div class="screen" id="s-flash-run">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.25rem;">
+            <div id="ff" style="width:100px;height:100px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:52px;opacity:0;transition:opacity .1s;"></div>
+            <div id="fp" style="font-size:0.8rem;color:var(--text-dim);text-align:center;opacity:0;transition:opacity .4s;">One moment...</div>
+        </div>
+    </div>
+
+    <div class="screen" id="s-flash-choose">
+        <div class="screen-header">
+            <div class="back-btn" onclick="goTo('s-ground-flash')">‹</div>
+            <div class="screen-label" style="color:var(--text-teal);">Stage 1 · Ground</div>
+        </div>
+        <div class="stage-pill" style="background:var(--teal-bg);border-color:rgba(14,116,144,.2);color:var(--text-teal);">⬤ What did your body notice?</div>
+        <div class="hed">Which one made<br><em>something shift?</em></div>
+        <div class="body-text">Don't think. Tap the one your body chose.</div>
+        <div class="card" onclick="selectFaceOpt(this)"><div style="display:flex;gap:0.75rem;align-items:flex-start;"><span style="font-size:1.35rem;">😠</span><div><div class="card-title">The angry face</div><div class="card-sub">Something tightened, braced, or rose in you</div></div></div></div>
+        <div class="card" onclick="selectFaceOpt(this)"><div style="display:flex;gap:0.75rem;align-items:flex-start;"><span style="font-size:1.35rem;">😐</span><div><div class="card-title">The neutral face</div><div class="card-sub">Not much — or a vague watchfulness</div></div></div></div>
+        <div class="card" onclick="selectFaceOpt(this)"><div style="display:flex;gap:0.75rem;align-items:flex-start;"><span style="font-size:1.35rem;">😔</span><div><div class="card-title">The sad face</div><div class="card-sub">Something sank, softened, or hollowed</div></div></div></div>
+        <div class="card" onclick="selectFaceOpt(this)"><div style="display:flex;gap:0.75rem;align-items:flex-start;"><span style="font-size:1.35rem;">🫥</span><div><div class="card-title">I didn't notice anything</div><div class="card-sub">Nothing registered — that's also information</div></div></div></div>
+    </div>
+
+    <div class="screen" id="s-flash-insight">
+        <div class="screen-header">
+            <div class="back-btn" onclick="goTo('s-flash-choose')">‹</div>
+            <div class="screen-label" style="color:var(--text-teal);">Stage 1 · Ground</div>
+        </div>
+        <div class="stage-pill" style="background:var(--teal-bg);border-color:rgba(14,116,144,.2);color:var(--text-teal);">⬤ What just happened</div>
+        <div class="hed">Your body knew<br><em>before you did.</em></div>
+        <div class="body-text">That reaction happened in under 200 milliseconds. Long before language. Long before thought. Your nervous system ran a full assessment and responded.</div>
+        <div class="stat-pair">
+            <div class="stat-box"><div class="stat-n">200ms</div><div class="stat-l">Before conscious thought</div></div>
+            <div class="stat-box"><div class="stat-n">5</div><div class="stat-l">Things firing at once</div></div>
+        </div>
+        <div class="ibox">
+            <div class="ibox-label" style="color:var(--text-teal);">What this means</div>
+            <p>Your nervous system has learned patterns from everything you've experienced. When something resembles a past pattern, it fires automatically — before you choose to think about it. This isn't a flaw. It's survival engineering.</p>
+        </div>
+        <div class="pquote" style="border-color:var(--primary-teal);background:var(--teal-bg2);">"The work is learning to read it — not eliminate it."</div>
+        <div class="sp"></div>
+        <button class="btn btn-primary" onclick="goTo('s-ground-body')">Next: Your body speaks →</button>
+    </div>
+
+    <div class="screen" id="s-ground-body">
+        <div class="screen-header">
+            <div class="back-btn" onclick="goTo('s-flash-insight')">‹</div>
+            <div class="screen-label" style="color:var(--text-teal);">Stage 1 · Ground</div>
+        </div>
+        <div class="stage-pill" style="background:var(--teal-bg);border-color:rgba(14,116,144,.2);color:var(--text-teal);">⬤ The body speaks first</div>
+        <div class="hed">Feelings live in<br><em>the body.</em></div>
+        <div class="body-text">Before you know what you're feeling, your body is already speaking. Think of something that's been bothering you. Now — where do you feel it?</div>
+        <div class="bmap-wrap">
+            <div class="bfig">
+                <svg class="bsvg" viewBox="0 0 74 152" fill="none">
+                    <ellipse cx="37" cy="14" rx="12" ry="13" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                    <rect x="22" y="28" width="30" height="47" rx="7" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                    <rect x="10" y="30" width="11" height="33" rx="5.5" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+                    <rect x="53" y="30" width="11" height="33" rx="5.5" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+                    <rect x="23" y="77" width="12" height="49" rx="6" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                    <rect x="38" y="77" width="12" height="49" rx="6" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                </svg>
+                <div class="bspot bs-head" onclick="litB(this,'Head / Mind')"></div>
+                <div class="bspot bs-throat" onclick="litB(this,'Throat')"></div>
+                <div class="bspot bs-chest" onclick="litB(this,'Chest')"></div>
+                <div class="bspot bs-belly" onclick="litB(this,'Belly')"></div>
+                <div class="bspot bs-gut" onclick="litB(this,'Low gut')"></div>
+            </div>
+            <div id="bspot-label" style="font-size:0.75rem;color:var(--text-dim);font-style:italic;">Tap where you feel it</div>
+            <div class="btexts">
+                <div class="btx" onclick="this.classList.toggle('sel')">Tight</div>
+                <div class="btx" onclick="this.classList.toggle('sel')">Heavy</div>
+                <div class="btx" onclick="this.classList.toggle('sel')">Hollow</div>
+                <div class="btx" onclick="this.classList.toggle('sel')">Burning</div>
+                <div class="btx" onclick="this.classList.toggle('sel')">Frozen</div>
+                <div class="btx" onclick="this.classList.toggle('sel')">Sinking</div>
+                <div class="btx" onclick="this.classList.toggle('sel')">Braced</div>
+                <div class="btx" onclick="this.classList.toggle('sel')">Buzzing</div>
+                <div class="btx" onclick="this.classList.toggle('sel')">Numb</div>
+                <div class="btx" onclick="this.classList.toggle('sel')">Fluttery</div>
+            </div>
+        </div>
+        <div class="sp"></div>
+        <button class="btn btn-primary" onclick="goTo('s-ground-5parts')">Next: The five parts →</button>
+    </div>
+
+    <div class="screen" id="s-ground-5parts">
+        <div class="screen-header">
+            <div class="back-btn" onclick="goTo('s-ground-body')">‹</div>
+            <div class="screen-label" style="color:var(--text-teal);">Stage 1 · Five Parts</div>
+        </div>
+        <div class="stage-pill" style="background:var(--teal-bg);border-color:rgba(14,116,144,.2);color:var(--text-teal);">⬤ Every emotion has five parts</div>
+        <div class="hed">One feeling.<br><em>Five things at once.</em></div>
+        <div class="body-text">Tap each to open it:</div>
+        <div class="accordion open" onclick="toggleAcc(this)">
+            <div class="acc-head"><div class="acc-dot" style="background:var(--primary-teal)"></div><div class="acc-name">1 · What happened</div><div class="acc-tag" style="background:var(--teal-bg);color:var(--text-teal);">The trigger</div></div>
+            <div class="acc-body open">The bare event — what a camera would record. No story, no interpretation. Something happened.</div>
+        </div>
+        <div class="accordion" onclick="toggleAcc(this)">
+            <div class="acc-head"><div class="acc-dot" style="background:var(--accent-amber)"></div><div class="acc-name">2 · What it means</div><div class="acc-tag" style="background:var(--amber-bg);color:var(--text-amber);">Instant reading</div></div>
+            <div class="acc-body">Your brain's automatic interpretation — before you chose to think about it. <em>"I'm not safe." "They don't care." "I did something wrong."</em></div>
+        </div>
+        <div class="accordion" onclick="toggleAcc(this)">
+            <div class="acc-head"><div class="acc-dot" style="background:#0891b2"></div><div class="acc-name">3 · Where it lives</div><div class="acc-tag" style="background:rgba(8,145,178,0.12);color:var(--text-teal-light);">Body sensation</div></div>
+            <div class="acc-body">The physical location and quality. Tight chest. Hollow stomach. Burning face. The body is always the first speaker.</div>
+        </div>
+        <div class="accordion" onclick="toggleAcc(this)">
+            <div class="acc-head"><div class="acc-dot" style="background:var(--success)"></div><div class="acc-name">4 · What it needs</div><div class="acc-tag" style="background:var(--success-bg);color:var(--success);">The real message</div></div>
+            <div class="acc-body">The unmet need underneath. Emotions are <strong>information about needs</strong>. This is the most important part — and the one most people never get to.</div>
+        </div>
+        <div class="accordion" onclick="toggleAcc(this)">
+            <div class="acc-head"><div class="acc-dot" style="background:#b45309"></div><div class="acc-name">5 · What it wants to do</div><div class="acc-tag" style="background:var(--amber-bg);color:var(--text-amber-light);">Action urge</div></div>
+            <div class="acc-body">What the emotion is preparing your body to do. Flee. Fight. Freeze. Withdraw. The urge is not the action — you choose what to do with it.</div>
+        </div>
+        <div class="sp"></div>
+        <button class="btn btn-primary" onclick="goTo('s-ground-complete')">Continue</button>
+    </div>
+
+    <div class="screen" id="s-ground-complete">
+        <div class="screen-header">
+            <div class="back-btn" onclick="goTo('s-ground-5parts')">‹</div>
+            <div class="screen-label" style="color:var(--text-teal);">Stage 1 · Complete</div>
+        </div>
+        <div style="height:2rem"></div>
+        <div class="stage-pill" style="background:var(--success-bg);border-color:rgba(34,197,94,.2);color:var(--success);">✓ Stage 1 Complete</div>
+        <div class="hed">You now know what<br><em>a feeling actually is.</em></div>
+        <div class="body-text">Not a vague inner weather — a structured event with five parts happening simultaneously.</div>
+        <div class="pquote" style="border-color:var(--primary-teal);background:var(--teal-bg2);">"You can't work with something you can't see. You can now see it."</div>
+        <div class="sp"></div>
+        <button class="btn btn-primary" onclick="goTo('s-map-intro')">Stage 2: The Map →</button>
+        <button class="btn-ghost" onclick="goTo('s-home')">Back to journey</button>
+    </div>
+
+    <!-- ══════════════════════════════
+         STAGE 2 · MAP
+    ══════════════════════════════ -->
+    <div class="screen" id="s-map-intro">
+        <div class="screen-header">
+            <div class="back-btn" onclick="goTo('s-home')">‹</div>
+            <div class="screen-label" style="color:var(--text-amber);">Stage 2 · Map</div>
+        </div>
+        <div class="stage-pill" style="background:var(--amber-bg);border-color:rgba(217,119,6,.2);color:var(--text-amber);">The most important skill</div>
+        <div class="hed">The same feeling<br>can be four<br><em>completely different<br>things.</em></div>
+        <div class="body-text">Sadness, for example, can be four different types — requiring four completely different responses. Treating them all the same is why people stay stuck.</div>
+        <div class="ibox">
+            <div class="ibox-label" style="color:var(--text-amber);">The Four Types</div>
+            <p><strong>Real signal</strong> — It fits what's happening. Trust it.<br><strong>Cover feeling</strong> — It's protecting something more vulnerable.<br><strong>Old wound</strong> — From the past, running in the present.<br><strong>Performance</strong> — Being used to influence someone.</p>
+        </div>
+        <div class="sp"></div>
+        <button class="btn btn-primary" onclick="goTo('s-map-types')">See the four types →</button>
+    </div>
+
+    <div class="screen" id="s-map-types">
+        <div class="screen-header">
+            <div class="back-btn" onclick="goTo('s-map-intro')">‹</div>
+            <div class="screen-label" style="color:var(--text-amber);">Stage 2 · Four Types</div>
+        </div>
+        <div class="hed">Four kinds<br><em>of feeling.</em></div>
+        <div class="body-text">Tap each to fully open it. Read all four before you practice:</div>
+        <div class="accordion open" onclick="toggleAcc(this)" style="border-color:rgba(74,222,128,.2)">
+            <div class="acc-head"><div class="acc-dot" style="background:var(--success)"></div><div class="acc-name">Real Signal</div><div class="acc-tag" style="background:var(--success-bg);color:var(--success);">Trust it</div></div>
+            <div class="acc-body open">A direct, appropriate response to what's actually happening right now. It fits reality.<br><br>Grief when you lose something real. Fear when there's genuine danger. Anger when a real boundary is crossed.<br><br><div class="acc-action" style="color:var(--success);">Allow it, express it, follow where it points.</div></div>
+        </div>
+        <div class="accordion" onclick="toggleAcc(this)" style="border-color:rgba(217,119,6,.2)">
+            <div class="acc-head"><div class="acc-dot" style="background:var(--accent-amber)"></div><div class="acc-name">Cover Feeling</div><div class="acc-tag" style="background:var(--amber-bg);color:var(--text-amber-light);">Look beneath it</div></div>
+            <div class="acc-body">A feeling about a feeling. It covers something more vulnerable underneath.<br><br>Anger covering hurt. Numbness covering grief. Anxiety covering shame. Common: getting angry when you're actually scared.<br><br><div class="acc-action" style="color:var(--text-amber-light);">Acknowledge it, then ask what it's protecting.</div></div>
+        </div>
+        <div class="accordion" onclick="toggleAcc(this)" style="border-color:rgba(14,116,144,.2)">
+            <div class="acc-head"><div class="acc-dot" style="background:var(--primary-teal)"></div><div class="acc-name">Old Wound</div><div class="acc-tag" style="background:var(--teal-bg);color:var(--text-teal);">Transform it</div></div>
+            <div class="acc-body">A real, deep feeling — but from the <strong>past</strong>, running in the present. Deep shame. Terror of being abandoned that floods when someone is five minutes late. The feeling is real. The world it was built for no longer exists.<br><br><div class="acc-action" style="color:var(--text-teal);">Don't express it outward, don't suppress it — bring a healthier feeling in to transform it.</div></div>
+        </div>
+        <div class="accordion" onclick="toggleAcc(this)" style="border-color:rgba(148,163,184,.15)">
+            <div class="acc-head"><div class="acc-dot" style="background:var(--text-muted)"></div><div class="acc-name">Performance</div><div class="acc-tag" style="background:rgba(148,163,184,0.12);color:var(--text-muted);">Notice honestly</div></div>
+            <div class="acc-body">A feeling being used — consciously or not — to influence someone else. Crying to stop an argument. Showing anger to intimidate. Often a learned pattern from childhood.<br><br><div class="acc-action" style="color:var(--text-muted);">Notice it honestly without harsh self-judgment, then find what you actually need.</div></div>
+        </div>
+        <div class="sp"></div>
+        <button class="btn btn-primary" onclick="goTo('s-map-sort');initSorter()">Practice sorting them →</button>
+    </div>
+
+    <div class="screen" id="s-map-sort">
+        <div class="screen-header">
+            <div class="back-btn" onclick="goTo('s-map-types')">‹</div>
+            <div class="screen-label" style="color:var(--text-amber);">Stage 2 · Sorter</div>
+        </div>
+        <div class="stage-pill" style="background:var(--amber-bg);border-color:rgba(217,119,6,.2);color:var(--text-amber);">The practice</div>
+        <div class="hed">Sort each scenario.<br><em>This is the work.</em></div>
+        <div class="body-text">Real situations. Identify which type of feeling it is. The explanation matters more than getting it right.</div>
+        <div class="sg-dots" id="sg-dots">
+            <div class="sg-dot"></div><div class="sg-dot"></div><div class="sg-dot"></div><div class="sg-dot"></div><div class="sg-dot"></div>
+        </div>
+        <div class="sg-card" id="sg-card"></div>
+        <div class="sg-grid" id="sg-grid">
+            <div class="sg-btn" style="background:var(--success-bg);border-color:rgba(74,222,128,0.3);color:var(--success);" onclick="sortIt('adaptive')">Real Signal<span>Fits now</span></div>
+            <div class="sg-btn" style="background:var(--amber-bg);border-color:rgba(217,119,6,0.3);color:var(--text-amber-light);" onclick="sortIt('secondary')">Cover Feeling<span>Hides something</span></div>
+            <div class="sg-btn" style="background:var(--teal-bg);border-color:rgba(14,116,144,0.3);color:var(--text-teal);" onclick="sortIt('maladaptive')">Old Wound<span>From the past</span></div>
+            <div class="sg-btn" style="background:rgba(148,163,184,0.1);border-color:rgba(148,163,184,0.25);color:var(--text-muted);" onclick="sortIt('instrumental')">Performance<span>Influencing others</span></div>
+        </div>
+        <div class="sg-reveal" id="sg-reveal">
+            <div class="sg-reveal-tag" id="sg-rtag"></div>
+            <div class="sg-reveal-text" id="sg-rtext"></div>
+        </div>
+        <div class="sp"></div>
+        <div id="sg-counter" style="text-align:center;font-size:0.7rem;color:var(--text-dim);font-weight:600;letter-spacing:0.05em;">Scenario 1 of 5</div>
+        <div style="height:0.5rem"></div>
+        <button class="btn btn-primary" style="display:none;" id="sg-next" onclick="nextSort()">Next →</button>
+    </div>
+
+    <div class="screen" id="s-map-complete">
+        <div class="screen-header">
+            <div class="back-btn" onclick="goTo('s-map-sort')">‹</div>
+            <div class="screen-label" style="color:var(--text-amber);">Stage 2 · Complete</div>
+        </div>
+        <div style="height:2rem"></div>
+        <div class="stage-pill" style="background:var(--success-bg);border-color:rgba(34,197,94,.2);color:var(--success);">✓ Stage 2 Complete</div>
+        <div class="hed">You have the<br><em>most important skill.</em></div>
+        <div class="body-text">Knowing which type of feeling you're dealing with tells you what to do next — and what not to do.</div>
+        <div class="ibox">
+            <div class="ibox-label" style="color:var(--text-amber);">The four responses</div>
+            <p><strong>Real Signal →</strong> Trust it, express it, act from it<br><strong>Cover Feeling →</strong> Look beneath it<br><strong>Old Wound →</strong> Transform it with a healthier feeling<br><strong>Performance →</strong> Notice honestly, find the real need</p>
+        </div>
+        <div class="sp"></div>
+        <button class="btn btn-primary" onclick="goTo('s-arrive-intro')">Stage 3: Learning to Arrive →</button>
+        <button class="btn-ghost" onclick="goTo('s-home')">Back to journey</button>
+    </div>
+
+    <!-- ══════════════════════════════
+         STAGE 3 · ARRIVE
+    ══════════════════════════════ -->
+    <div class="screen" id="s-arrive-intro">
+        <div class="screen-header">
+            <div class="back-btn" onclick="goTo('s-home')">‹</div>
+            <div class="screen-label" style="color:var(--text-teal-light);">Stage 3 · Arrive</div>
+        </div>
+        <div class="stage-pill" style="background:rgba(8,145,178,0.12);border-color:rgba(8,145,178,.2);color:var(--text-teal-light);">Learning to be with it</div>
+        <div class="hed">Most people either<br><em>flee or flood.</em></div>
+        <div class="body-text">When a difficult feeling comes, the two most common responses are: push it away, or get completely overtaken by it. Neither one is actually working with the feeling.</div>
+        <div class="body-text">Arriving means landing in the feeling — with enough presence to stay, and enough stability not to drown. This is learnable.</div>
+        <div class="pquote" style="border-color:#0891b2;background:rgba(8,145,178,0.06);">"You can't transform what you can't tolerate. Arriving is what makes everything else possible."</div>
+        <div class="sp"></div>
+        <button class="btn btn-primary" onclick="goTo('s-arrive-wot')">Find your window →</button>
+    </div>
+
+    <div class="screen" id="s-arrive-wot">
+        <div class="screen-header">
+            <div class="back-btn" onclick="goTo('s-arrive-intro')">‹</div>
+            <div class="screen-label" style="color:var(--text-teal-light);">Stage 3 · Your Window</div>
+        </div>
+        <div class="stage-pill" style="background:rgba(8,145,178,0.12);border-color:rgba(8,145,178,.2);color:var(--text-teal-light);">The window of tolerance</div>
+        <div class="hed">Where are you<br><em>right now?</em></div>
+        <div class="body-text">Everyone has a zone where the nervous system can stay present without flooding or shutting down. Tap the one that fits your current state:</div>
+        <div class="wot-wrap">
+            <div class="wot-zone" onclick="selectWOT(this,'hyper')" style="background:rgba(217,119,6,0.06);">
+                <div class="wot-dot" style="background:var(--accent-amber)"></div>
+                <div><div class="wot-name">Flooded / Overwhelmed</div><div class="wot-desc">Racing thoughts, can't think clearly. The feeling is in control.</div></div>
+            </div>
+            <div class="wot-zone" onclick="selectWOT(this,'window')" style="background:rgba(14,116,144,0.06);">
+                <div class="wot-dot" style="background:var(--primary-teal)"></div>
+                <div style="flex:1"><div class="wot-name">Present — able to feel</div><div class="wot-desc">You can feel without being controlled by it. Where real work happens.</div></div>
+                <div class="wot-tag">← Optimal</div>
+            </div>
+            <div class="wot-zone" onclick="selectWOT(this,'hypo')">
+                <div class="wot-dot" style="background:var(--text-dim)"></div>
+                <div><div class="wot-name">Numb / Shut down</div><div class="wot-desc">Checked out, dissociated. The feeling is suppressed, not absent.</div></div>
+            </div>
+        </div>
+        <div class="ibox" id="wot-advice" style="display:none;">
+            <div class="ibox-label" id="wot-tag" style="color:var(--text-teal);">For where you are</div>
+            <p id="wot-text"></p>
+        </div>
+        <div class="sp"></div>
+        <button class="btn btn-primary" id="wot-btn" onclick="goTo('s-arrive-breath')" disabled>Next: The breath →</button>
+    </div>
+
+    <div class="screen" id="s-arrive-breath">
+        <div class="screen-header">
+            <div class="back-btn" onclick="goTo('s-arrive-wot')">‹</div>
+            <div class="screen-label" style="color:var(--text-teal-light);">Stage 3 · Arrive</div>
+        </div>
+        <div class="stage-pill" style="background:rgba(8,145,178,0.12);border-color:rgba(8,145,178,.2);color:var(--text-teal-light);">Coming back to the body</div>
+        <div class="hed">The breath is your<br><em>fastest way back.</em></div>
+        <div class="body-text">This isn't about calming down — it's about arriving. The breath is the only part of your automatic nervous system you can control voluntarily.</div>
+        <div class="breath-outer">
+            <div class="breath-ring" id="br-ring" onclick="runBreath()">
+                <div class="breath-inner" id="br-inner">
+                    <span style="font-size:0.75rem;color:var(--text-teal);">Tap</span>
+                </div>
+            </div>
+            <div class="breath-phase" id="br-phase">4 · 7 · 8 Breath</div>
+            <div class="breath-txt" id="br-txt">Tap the circle to begin.<br>Inhale 4 · Hold 7 · Exhale 8</div>
+        </div>
+        <div class="ibox">
+            <div class="ibox-label" style="color:var(--text-teal);">Why suppression makes it worse</div>
+            <p>Pushing a feeling away doesn't make it disappear — it increases its power. Arriving is more efficient than avoiding.</p>
+        </div>
+        <div class="sp"></div>
+        <button class="btn btn-primary" onclick="goTo('s-arrive-steps')">Next: How to arrive →</button>
+    </div>
+
+    <div class="screen" id="s-arrive-steps">
+        <div class="screen-header">
+            <div class="back-btn" onclick="goTo('s-arrive-breath')">‹</div>
+            <div class="screen-label" style="color:var(--text-teal-light);">Stage 3 · Practice</div>
+        </div>
+        <div class="stage-pill" style="background:rgba(8,145,178,0.12);border-color:rgba(8,145,178,.2);color:var(--text-teal-light);">A sequence to use</div>
+        <div class="hed">How to arrive<br><em>with a feeling.</em></div>
+        <div class="body-text">Use this when something difficult comes. Tap each step to mark it done.</div>
+        <div id="arr-steps">
+            <div class="arr-step" onclick="doneStep(this)"><div class="arr-n">01</div><div><div class="arr-t">Name the state without a story</div><div class="arr-s">"There is a feeling here." Not the narrative — just the fact of the feeling.</div></div></div>
+            <div class="arr-step" onclick="doneStep(this)"><div class="arr-n">02</div><div><div class="arr-t">Locate it in the body</div><div class="arr-s">Where is it? Heavy, tight, hollow? Get a specific physical location.</div></div></div>
+            <div class="arr-step" onclick="doneStep(this)"><div class="arr-n">03</div><div><div class="arr-t">Breathe toward it</div><div class="arr-s">Not away from it — toward it. Direct your breath into where you feel it.</div></div></div>
+            <div class="arr-step" onclick="doneStep(this)"><div class="arr-n">04</div><div><div class="arr-t">Witness without merging</div><div class="arr-s">"I notice I am feeling X" — not "I am X." You are the observer, not the feeling.</div></div></div>
+            <div class="arr-step" onclick="doneStep(this)"><div class="arr-n">05</div><div><div class="arr-t">Ask what it needs</div><div class="arr-s">Not what it wants to do — what is the need underneath?</div></div></div>
+        </div>
+        <div class="sp"></div>
+        <button class="btn btn-primary" onclick="goTo('s-arrive-complete')">Continue</button>
+    </div>
+
+    <div class="screen" id="s-arrive-complete">
+        <div class="screen-header">
+            <div class="back-btn" onclick="goTo('s-arrive-steps')">‹</div>
+            <div class="screen-label" style="color:var(--text-teal-light);">Stage 3 · Complete</div>
+        </div>
+        <div style="height:2rem"></div>
+        <div class="stage-pill" style="background:var(--success-bg);border-color:rgba(34,197,94,.2);color:var(--success);">✓ Stage 3 Complete</div>
+        <div class="hed">You can now<br><em>be with it.</em></div>
+        <div class="pquote" style="border-color:#0891b2;background:rgba(8,145,178,0.06);">"Staying present with what's difficult, without flooding or fleeing, is an act of courage — and something anyone can learn."</div>
+        <div class="sp"></div>
+        <button class="btn btn-primary" onclick="goTo('s-need-intro')">Stage 4: Find the Need →</button>
+        <button class="btn-ghost" onclick="goTo('s-home')">Back to journey</button>
+    </div>
+
+    <!-- ══════════════════════════════
+         STAGE 4 · NEED
+    ══════════════════════════════ -->
+    <div class="screen" id="s-need-intro">
+        <div class="screen-header">
+            <div class="back-btn" onclick="goTo('s-home')">‹</div>
+            <div class="screen-label" style="color:var(--success);">Stage 4 · Need</div>
+        </div>
+        <div class="stage-pill" style="background:var(--success-bg);border-color:rgba(34,197,94,.2);color:var(--success);">What it's pointing to</div>
+        <div class="hed">Every feeling is<br><em>a need in disguise.</em></div>
+        <div class="body-text">Feelings are not random. They're messages — biological signals pointing toward something that matters and isn't being met.</div>
+        <div class="ibox">
+            <div class="ibox-label" style="color:var(--success);">What feelings are pointing to</div>
+            <p><strong>Grief / sadness</strong> → need for connection, comfort<br><strong>Fear / anxiety</strong> → need for safety, certainty<br><strong>Anger</strong> → need for respect, fairness, autonomy<br><strong>Shame</strong> → need for belonging, worth<br><strong>Loneliness</strong> → need to matter, to be seen</p>
+        </div>
+        <div class="sp"></div>
+        <button class="btn btn-primary" onclick="goTo('s-need-practice')">Find your need →</button>
+    </div>
+
+    <div class="screen" id="s-need-practice">
+        <div class="screen-header">
+            <div class="back-btn" onclick="goTo('s-need-intro')">‹</div>
+            <div class="screen-label" style="color:var(--success);">Stage 4 · Need Finder</div>
+        </div>
+        <div class="stage-pill" style="background:var(--success-bg);border-color:rgba(34,197,94,.2);color:var(--success);">The need finder</div>
+        <div class="hed">Think of a recent<br><em>difficult feeling.</em></div>
+        <div class="body-text">Underneath the feeling, underneath the story — what did it actually need?</div>
+        <div class="need-grid" id="need-grid">
+            <div class="need-cell" onclick="selNeed(this)"><div class="need-ico">🫂</div><div class="need-name">To matter</div><div class="need-sub">Grief · Loneliness</div></div>
+            <div class="need-cell" onclick="selNeed(this)"><div class="need-ico">🛡️</div><div class="need-name">To feel safe</div><div class="need-sub">Fear · Anxiety</div></div>
+            <div class="need-cell" onclick="selNeed(this)"><div class="need-ico">👁️</div><div class="need-name">To be seen</div><div class="need-sub">Shame · Invisibility</div></div>
+            <div class="need-cell" onclick="selNeed(this)"><div class="need-ico">⚖️</div><div class="need-name">Fairness</div><div class="need-sub">Anger · Injustice</div></div>
+            <div class="need-cell" onclick="selNeed(this)"><div class="need-ico">🤲</div><div class="need-name">Belonging</div><div class="need-sub">Shame · Exclusion</div></div>
+            <div class="need-cell" onclick="selNeed(this)"><div class="need-ico">🌿</div><div class="need-name">Autonomy</div><div class="need-sub">Anger · Resentment</div></div>
+            <div class="need-cell" onclick="selNeed(this)"><div class="need-ico">🫶</div><div class="need-name">To be loved</div><div class="need-sub">Deep — any feeling</div></div>
+            <div class="need-cell" onclick="selNeed(this)"><div class="need-ico">🪜</div><div class="need-name">To repair</div><div class="need-sub">Guilt · Remorse</div></div>
+        </div>
+        <div class="sp"></div>
+        <button class="btn btn-primary" id="need-btn" onclick="goTo('s-need-insight')" disabled>See what this unlocks →</button>
+    </div>
+
+    <div class="screen" id="s-need-insight">
+        <div class="screen-header">
+            <div class="back-btn" onclick="goTo('s-need-practice')">‹</div>
+            <div class="screen-label" style="color:var(--success);">Stage 4 · Insight</div>
+        </div>
+        <div class="stage-pill" style="background:var(--success-bg);border-color:rgba(34,197,94,.2);color:var(--success);">Finding the need changes everything</div>
+        <div class="hed">The feeling was<br><em>trying to help.</em></div>
+        <div class="body-text">When you can see the need underneath a feeling, it stops being something to survive and becomes something to understand.</div>
+        <div class="pquote" style="border-color:var(--success);background:var(--success-bg);">"The feeling was right about the need. It may have been wrong about the situation — but it was right about what matters."</div>
+        <div class="ibox">
+            <div class="ibox-label" style="color:var(--success);">The question to carry</div>
+            <p>In any difficult moment, before asking <em>"How do I stop feeling this?"</em> — ask: <strong>"What does this feeling need?"</strong></p>
+        </div>
+        <div class="sp"></div>
+        <button class="btn btn-primary" onclick="goTo('s-transform-intro')">Stage 5: Transforming it →</button>
+        <button class="btn-ghost" onclick="goTo('s-home')">Back to journey</button>
+    </div>
+
+    <!-- ══════════════════════════════
+         STAGE 5 · TRANSFORM
+    ══════════════════════════════ -->
+    <div class="screen" id="s-transform-intro">
+        <div class="screen-header">
+            <div class="back-btn" onclick="goTo('s-home')">‹</div>
+            <div class="screen-label" style="color:var(--text-amber-light);">Stage 5 · Transform</div>
+        </div>
+        <div class="stage-pill" style="background:rgba(180,83,9,0.12);border-color:rgba(180,83,9,.2);color:var(--text-amber-light);">The central insight</div>
+        <div class="hed">A feeling is changed<br><em>by a feeling.</em></div>
+        <div class="body-text">Logic doesn't change deep emotion. Willpower doesn't change it. What actually transforms a deep, painful feeling is <em>a different feeling</em> — a healthier one, brought fully into awareness.</div>
+        <div class="ibox">
+            <div class="ibox-label" style="color:var(--text-amber-light);">What heals what</div>
+            <p><strong>For deep shame →</strong> self-compassion, self-respect<br><strong>For grief that's collapsed →</strong> warmth, connection<br><strong>For old fear →</strong> grounded safety, capability<br><strong>For frozen anger →</strong> the hurt underneath</p>
+        </div>
+        <div class="sp"></div>
+        <button class="btn btn-primary" onclick="goTo('s-tc-intro')">Begin: The inner dialogue →</button>
+    </div>
+
+    <!-- ===== STAGE 5 · INNER DIALOGUE INTRO (with new info box) ===== -->
+    <div class="screen" id="s-tc-intro">
+        <div class="screen-header">
+            <div class="back-btn" onclick="goTo('s-transform-intro')">‹</div>
+            <div class="screen-label" style="color:var(--text-amber-light);">Stage 5 · Inner Dialogue</div>
+        </div>
+        <div class="stage-pill" style="background:rgba(180,83,9,0.12);border-color:rgba(180,83,9,.2);color:var(--text-amber-light);">A dialogue in rounds</div>
+        <div class="hed">Two voices.<br><em>A real conversation.</em></div>
+        <div class="body-text">Most of us have an inner critic — a voice that attacks another part of us. The most powerful thing is to make that split explicit and let the two parts actually speak to each other.</div>
+        <div class="body-text">The critic speaks first. The experiencing part responds. Eventually — if you stay with it — something shifts.</div>
+
+        <!-- ✨ NEW INFO BOX – aligned with design system ✨ -->
+        <div class="ibox ibox-warning" style="margin: var(--space-6) 0;">
+            <div class="ibox-label" style="color: var(--accent-amber);">Before you begin</div>
+            <p style="font-size: var(--text-sm); line-height: 1.65; color: var(--text-secondary);">
+                This dialogue is a practice, not a one-time fix.<br><br>
+                For most people the inner critic only softens gradually — often after repeating this kind of conversation several times and after building more safety and kindness toward yourself in other ways.<br><br>
+                If you don't feel a clear shift today, that does <strong style="color: var(--text-primary);">not</strong> mean you did it wrong, the practice failed, or something is wrong with you. Deep, longstanding patterns simply take time, patience, and repeated small moments of understanding.<br><br>
+                <strong style="color: var(--text-primary);">What matters most is that you showed up and let both voices speak.</strong> That single act is already real progress.
+            </p>
+        </div>
+
+        <div class="ibox" style="border-color:rgba(180,83,9,.15);">
+            <div class="ibox-label" style="color:var(--text-amber-light);">How the shift happens</div>
+            <p>The critic starts with general attacks, then gets more specific. The part being attacked moves from collapse → naming what it needs → self-protection. The resolution comes when the critic genuinely sees the pain it's causing and softens.</p>
+        </div>
+        <div class="sp"></div>
+        <button class="btn btn-primary" onclick="goTo('s-tc-1')">Begin →</button>
+    </div>
+
+    <div class="screen" id="s-tc-1">
+        <div class="screen-header">
+            <div class="back-btn" onclick="goTo('s-tc-intro')">‹</div>
+            <div class="screen-label" style="color:var(--text-amber-light);">Round 1 · Critic</div>
+            <div class="stage-steps"><div class="sstep curr"></div><div class="sstep"></div><div class="sstep"></div><div class="sstep"></div><div class="sstep"></div><div class="sstep"></div><div class="sstep"></div></div>
+        </div>
+        <div class="stage-pill" style="background:rgba(180,83,9,0.12);border-color:rgba(180,83,9,.2);color:var(--text-amber-light);">🪑 The critic speaks</div>
+        <div class="hed">Which voice<br><em>sounds familiar?</em></div>
+        <div class="body-text">Tap the voice that is most recognizable in your life. Not the mildest. The real one.</div>
+        <div class="card" onclick="selTC1(this)" style="border-color:rgba(217,119,6,.15)"><div class="card-italic">"You are such a disappointment. You know exactly what you should be doing — and you never do it. What is wrong with you?"</div><div class="card-sub" style="margin-top:0.4rem;">Contempt — condemns globally</div></div>
+        <div class="card" onclick="selTC1(this)" style="border-color:rgba(217,119,6,.15)"><div class="card-italic">"You can't handle things other people manage without thinking about it. Stop being so weak."</div><div class="card-sub" style="margin-top:0.4rem;">Comparison — uses others as proof</div></div>
+        <div class="card" onclick="selTC1(this)" style="border-color:rgba(217,119,6,.15)"><div class="card-italic">"You are too much. Too sensitive, too needy. You drain everyone around you."</div><div class="card-sub" style="margin-top:0.4rem;">Excess — your existence is the problem</div></div>
+        <div class="card" onclick="selTC1(this)" style="border-color:rgba(217,119,6,.15)"><div class="card-italic">"Look at what you've made of yourself. This is not who you were supposed to be."</div><div class="card-sub" style="margin-top:0.4rem;">Verdict — has already decided</div></div>
+        <div class="sp"></div>
+        <button class="btn btn-primary" id="tc1-btn" onclick="goTo('s-tc-2')" disabled>Move to the receiving part →</button>
+    </div>
+
+    <div class="screen" id="s-tc-2">
+        <div class="screen-header">
+            <div class="back-btn" onclick="goTo('s-tc-1')">‹</div>
+            <div class="screen-label" style="color:var(--text-amber-light);">Round 1 · Receiving</div>
+            <div class="stage-steps"><div class="sstep done"></div><div class="sstep curr"></div><div class="sstep"></div><div class="sstep"></div><div class="sstep"></div><div class="sstep"></div><div class="sstep"></div></div>
+        </div>
+        <div class="stage-pill" style="background:rgba(180,83,9,0.12);border-color:rgba(180,83,9,.2);color:var(--text-amber-light);">🪑 What it's like to receive that</div>
+        <div class="hed">When those words land —<br><em>what does your<br>body do?</em></div>
+        <div class="bmap-wrap" style="margin:0.75rem 0;">
+            <div class="bfig">
+                <svg class="bsvg" viewBox="0 0 74 152" fill="none">
+                    <ellipse cx="37" cy="14" rx="12" ry="13" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                    <rect x="22" y="28" width="30" height="47" rx="7" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                    <rect x="10" y="30" width="11" height="33" rx="5.5" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+                    <rect x="53" y="30" width="11" height="33" rx="5.5" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+                    <rect x="23" y="77" width="12" height="49" rx="6" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                    <rect x="38" y="77" width="12" height="49" rx="6" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                </svg>
+                <div class="bspot bs-head" onclick="litB(this,'Head')"></div>
+                <div class="bspot bs-throat" onclick="litB(this,'Throat')"></div>
+                <div class="bspot bs-chest" onclick="litB(this,'Chest')"></div>
+                <div class="bspot bs-belly" onclick="litB(this,'Belly')"></div>
+                <div class="bspot bs-gut" onclick="litB(this,'Gut')"></div>
+            </div>
+            <div style="font-size:0.75rem;color:var(--text-dim);font-style:italic;">Tap where the words land</div>
+            <div class="btexts" id="tc2-tex">
+                <div class="btx" onclick="selTC2tex(this)">Collapses</div>
+                <div class="btx" onclick="selTC2tex(this)">Shrinks</div>
+                <div class="btx" onclick="selTC2tex(this)">Goes numb</div>
+                <div class="btx" onclick="selTC2tex(this)">Tightens</div>
+                <div class="btx" onclick="selTC2tex(this)">Sinks</div>
+                <div class="btx" onclick="selTC2tex(this)">Braces</div>
+                <div class="btx" onclick="selTC2tex(this)">Goes silent</div>
+            </div>
+        </div>
+        <div class="body-text" style="font-size:0.8rem;color:var(--text-muted);">What does this part say back?</div>
+        <div class="card" onclick="selTC2resp(this)" style="border-color:rgba(217,119,6,.1)"><div class="card-italic">"I know. I know you're right. I just can't find anything to hold onto."</div><div class="card-sub" style="margin-top:0.35rem;">Collapsed — the critic holds total power</div></div>
+        <div class="card" onclick="selTC2resp(this)" style="border-color:rgba(217,119,6,.1)"><div class="card-italic">"I feel smaller every time you do this. I don't know who's left."</div><div class="card-sub" style="margin-top:0.35rem;">Eroding — dissolving under sustained attack</div></div>
+        <div class="card" onclick="selTC2resp(this)" style="border-color:rgba(217,119,6,.1)"><div class="card-italic">"I'm trying. I'm so tired of trying and it never being enough."</div><div class="card-sub" style="margin-top:0.35rem;">Exhausted — effort without recognition</div></div>
+        <div class="sp"></div>
+        <button class="btn btn-primary" id="tc2-btn" onclick="goTo('s-tc-3')" disabled>The critic pushes harder →</button>
+    </div>
+
+    <div class="screen" id="s-tc-3">
+        <div class="screen-header">
+            <div class="back-btn" onclick="goTo('s-tc-2')">‹</div>
+            <div class="screen-label" style="color:var(--text-amber-light);">Round 2 · Critic Escalates</div>
+            <div class="stage-steps"><div class="sstep done"></div><div class="sstep done"></div><div class="sstep curr"></div><div class="sstep"></div><div class="sstep"></div><div class="sstep"></div><div class="sstep"></div></div>
+        </div>
+        <div class="stage-pill" style="background:rgba(180,83,9,0.12);border-color:rgba(180,83,9,.2);color:var(--text-amber-light);">🪑 The critic gets specific</div>
+        <div class="hed">Now it names<br><em>specific things.</em></div>
+        <div class="body-text">When the general attack doesn't work, the critic gets more specific. This feels worse — but it means the real accusations are surfacing.</div>
+        <div class="card" onclick="selTC3(this)" style="border-color:rgba(217,119,6,.15)"><div class="card-italic">"It's not just once. It's a pattern — year after year, the same avoidance, the same excuses. That's on you."</div><div class="card-sub" style="margin-top:0.35rem;">The pattern attack</div></div>
+        <div class="card" onclick="selTC3(this)" style="border-color:rgba(217,119,6,.15)"><div class="card-italic">"Think about what you did last week. You knew what the right thing was. You didn't do it. Stop making excuses."</div><div class="card-sub" style="margin-top:0.35rem;">The behavioral attack</div></div>
+        <div class="card" onclick="selTC3(this)" style="border-color:rgba(217,119,6,.15)"><div class="card-italic">"You have been letting the people who love you down for years. They deserve better."</div><div class="card-sub" style="margin-top:0.35rem;">The relational attack</div></div>
+        <div class="sp"></div>
+        <button class="btn btn-primary" id="tc3-btn" onclick="goTo('s-tc-4')" disabled>Something shifts →</button>
+    </div>
+
+    <div class="screen" id="s-tc-4">
+        <div class="screen-header">
+            <div class="back-btn" onclick="goTo('s-tc-3')">‹</div>
+            <div class="screen-label" style="color:var(--text-amber-light);">Round 2 · Something Shifts</div>
+            <div class="stage-steps"><div class="sstep done"></div><div class="sstep done"></div><div class="sstep done"></div><div class="sstep curr"></div><div class="sstep"></div><div class="sstep"></div><div class="sstep"></div></div>
+        </div>
+        <div class="stage-pill" style="background:rgba(180,83,9,0.12);border-color:rgba(180,83,9,.2);color:var(--text-amber-light);">🪑 Self-protection begins</div>
+        <div class="hed">Something is<br><em>starting to move.</em></div>
+        <div class="body-text">Under the force of the second attack, something shifts. Still hurt — but something else is rising alongside the collapse. Which comes through?</div>
+        <div class="card" onclick="selTC4(this)" style="border-color:rgba(14,116,144,.15)"><div class="card-italic">"Stop. Just — stop. I need you to stop doing this to me. It's destroying me, not helping me."</div><div class="card-sub" style="margin-top:0.35rem;color:var(--text-teal);">Self-protection — the right not to be attacked</div></div>
+        <div class="card" onclick="selTC4(this)" style="border-color:rgba(14,116,144,.15)"><div class="card-italic">"You don't see what I'm dealing with. You point out failures — but never see what it costs me to get through each day."</div><div class="card-sub" style="margin-top:0.35rem;color:var(--text-teal);">Self-protection — demanding to be witnessed</div></div>
+        <div class="card" onclick="selTC4(this)" style="border-color:rgba(14,116,144,.15)"><div class="card-italic">"I deserve better than this from myself. I still deserve basic kindness. I wouldn't talk to anyone else this way."</div><div class="card-sub" style="margin-top:0.35rem;color:var(--text-teal);">Self-protection — the right to basic dignity</div></div>
+        <div class="sp"></div>
+        <button class="btn btn-primary" id="tc4-btn" onclick="goTo('s-tc-5')" disabled>Name what you need →</button>
+    </div>
+
+    <div class="screen" id="s-tc-5">
+        <div class="screen-header">
+            <div class="back-btn" onclick="goTo('s-tc-4')">‹</div>
+            <div class="screen-label" style="color:var(--text-amber-light);">The Core Need</div>
+            <div class="stage-steps"><div class="sstep done"></div><div class="sstep done"></div><div class="sstep done"></div><div class="sstep done"></div><div class="sstep curr"></div><div class="sstep"></div><div class="sstep"></div></div>
+        </div>
+        <div class="stage-pill" style="background:rgba(180,83,9,0.12);border-color:rgba(180,83,9,.2);color:var(--text-amber-light);">🪑 Directly to the critic</div>
+        <div class="hed">What do you<br><em>most need to say?</em></div>
+        <div class="body-text">This is the turn. The experiencing part moves from defending against the critic to making a direct claim about what it needs.</div>
+        <div class="card" onclick="selTC5(this,'stop')" style="border-color:rgba(14,116,144,.1)"><div class="card-italic">"I need you to stop attacking me. You're not helping me become better — you're preventing me from functioning."</div><div class="card-sub" style="margin-top:0.35rem;">The protection need</div></div>
+        <div class="card" onclick="selTC5(this,'seen')" style="border-color:rgba(14,116,144,.1)"><div class="card-italic">"I need you to see what I've been carrying. Not the failures — the weight of it. See me in this, not above it."</div><div class="card-sub" style="margin-top:0.35rem;">The visibility need</div></div>
+        <div class="card" onclick="selTC5(this,'support')" style="border-color:rgba(14,116,144,.1)"><div class="card-italic">"I need support, not a verdict. Put your arms around me instead of pointing your finger."</div><div class="card-sub" style="margin-top:0.35rem;">The support need</div></div>
+        <div class="card" onclick="selTC5(this,'enough')" style="border-color:rgba(14,116,144,.1)"><div class="card-italic">"I need you to tell me I am enough to deserve love. Not when I succeed. Now. Just as I am."</div><div class="card-sub" style="margin-top:0.35rem;">The worth need</div></div>
+        <div class="sp"></div>
+        <button class="btn btn-primary" id="tc5-btn" onclick="goTo('s-tc-6')" disabled>See what rises →</button>
+    </div>
+
+    <div class="screen" id="s-tc-6">
+        <div class="screen-header">
+            <div class="back-btn" onclick="goTo('s-tc-5')">‹</div>
+            <div class="screen-label" style="color:var(--text-amber-light);">From the Need</div>
+            <div class="stage-steps"><div class="sstep done"></div><div class="sstep done"></div><div class="sstep done"></div><div class="sstep done"></div><div class="sstep done"></div><div class="sstep curr"></div><div class="sstep"></div></div>
+        </div>
+        <div class="stage-pill" style="background:rgba(180,83,9,0.12);border-color:rgba(180,83,9,.2);color:var(--text-amber-light);">A healthy feeling rises</div>
+        <div class="hed">From the need,<br><em>something rises.</em></div>
+        <div class="body-text">When the need is named, one of two healthy feelings typically emerges. Trust the body over the mind. Which is present?</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;margin:0.85rem 0;">
+            <div class="card" onclick="selTC6(this,'anger')" style="border-color:rgba(217,119,6,.2);flex-direction:column;text-align:center;padding:1.25rem 0.75rem;">
+                <div style="font-size:1.75rem;margin-bottom:0.6rem;">🔥</div>
+                <div class="card-title">Assertive anger</div>
+                <div class="card-sub" style="margin-top:0.4rem;font-size:0.75rem;">"That is enough. I have the right to exist without this."</div>
+                <div style="margin-top:0.6rem;font-size:0.6rem;color:var(--text-amber);text-transform:uppercase;letter-spacing:0.08em;font-weight:700;">A standing up</div>
+            </div>
+            <div class="card" onclick="selTC6(this,'grief')" style="border-color:rgba(14,116,144,.2);flex-direction:column;text-align:center;padding:1.25rem 0.75rem;">
+                <div style="font-size:1.75rem;margin-bottom:0.6rem;">💧</div>
+                <div class="card-title">Grief / sadness</div>
+                <div class="card-sub" style="margin-top:0.4rem;font-size:0.75rem;">"I'm so tired. I needed someone to say I was doing my best."</div>
+                <div style="margin-top:0.6rem;font-size:0.6rem;color:var(--text-teal);text-transform:uppercase;letter-spacing:0.08em;font-weight:700;">A reaching for comfort</div>
+            </div>
+        </div>
+        <div class="ibox" style="border-color:rgba(180,83,9,.15);">
+            <div class="ibox-label" style="color:var(--text-amber-light);">Both heal — in different ways</div>
+            <p>Assertive anger restores agency. Grief restores connection. Both are movements away from collapsed shame toward something alive.</p>
+        </div>
+        <div class="sp"></div>
+        <button class="btn btn-primary" id="tc6-btn" onclick="goTo('s-tc-7')" disabled>Back to the critic →</button>
+    </div>
+
+    <div class="screen" id="s-tc-7">
+        <div class="screen-header">
+            <div class="back-btn" onclick="goTo('s-tc-6')">‹</div>
+            <div class="screen-label" style="color:var(--text-amber-light);">The Softening</div>
+            <div class="stage-steps"><div class="sstep done"></div><div class="sstep done"></div><div class="sstep done"></div><div class="sstep done"></div><div class="sstep done"></div><div class="sstep done"></div><div class="sstep curr"></div></div>
+        </div>
+        <div class="stage-pill" style="background:rgba(180,83,9,0.12);border-color:rgba(180,83,9,.2);color:var(--text-amber-light);">🪑 The critic genuinely sees</div>
+        <div class="hed">The critic<br><em>sees the pain.</em></div>
+        <div class="body-text">Back in the critic's seat. The experiencing part named what it needed. Something healthy rose. The critic, if it stays with that, cannot remain exactly as it was.</div>
+        <div class="chairs" style="margin:0.75rem 0;">
+            <div class="chair-bubble ch-critic" style="margin-bottom:0.6rem;">
+                <div class="ch-label">The experiencing part said:</div>
+                <em id="tc7-need-echo" style="opacity:0.85;"></em>
+            </div>
+        </div>
+        <div class="body-text" style="font-size:0.8rem;color:var(--text-muted);">Which response comes through?</div>
+        <div class="card" onclick="selTC7(this,'circumstances')" style="border-color:rgba(14,116,144,.15)"><div class="card-italic" style="color:var(--text-teal-light);">"I can see now what you were dealing with. No wonder you struggled. I didn't let myself see that before."</div><div class="card-sub" style="margin-top:0.35rem;color:var(--text-teal);">Understanding</div></div>
+        <div class="card" onclick="selTC7(this,'origin')" style="border-color:rgba(14,116,144,.15)"><div class="card-italic" style="color:var(--text-teal-light);">"I think I've been saying to you what was said to me. I learned this voice from somewhere. I kept it going without questioning it."</div><div class="card-sub" style="margin-top:0.35rem;color:var(--text-teal);">Recognition</div></div>
+        <div class="card" onclick="selTC7(this,'trying')" style="border-color:rgba(14,116,144,.15)"><div class="card-italic" style="color:var(--text-teal-light);">"You were trying. I know that. I was just adding to what you were already carrying."</div><div class="card-sub" style="margin-top:0.35rem;color:var(--text-teal);">Acknowledgment</div></div>
+        <div class="card" onclick="selTC7(this,'stop')" style="border-color:rgba(14,116,144,.15)"><div class="card-italic" style="color:var(--text-teal-light);">"You don't have to be perfect. I want to be someone you can bring things to — not someone you hide from."</div><div class="card-sub" style="margin-top:0.35rem;color:var(--text-teal);">Repair</div></div>
+        <div class="chairs" id="tc7-softened" style="display:none;margin-top:0.75rem;">
+            <div class="chair-bubble ch-self">
+                <div class="ch-label">The critic — softened:</div>
+                <span id="tc7-softened-text"></span>
+            </div>
+        </div>
+        <div class="sp"></div>
+        <button class="btn btn-primary" id="tc7-btn" style="display:none;" onclick="goTo('s-tc-complete')">What just happened →</button>
+    </div>
+
+    <div class="screen" id="s-tc-complete">
+        <div class="screen-header">
+            <div class="back-btn" onclick="goTo('s-tc-7')">‹</div>
+            <div class="screen-label" style="color:var(--text-amber-light);">After the Dialogue</div>
+        </div>
+        <div class="stage-pill" style="background:rgba(180,83,9,0.12);border-color:rgba(180,83,9,.2);color:var(--text-amber-light);">Notice what is here now</div>
+        <div class="hed">Something changed<br><em>between those<br>two parts.</em></div>
+        <div class="pquote" style="border-color:#b45309;background:rgba(180,83,9,0.06);">"The shift doesn't have to be dramatic to be real. Even a small change in the relationship between these two internal parts is meaningful."</div>
+        <div class="ibox">
+            <div class="ibox-label" style="color:var(--text-teal);">The full sequence you just practiced</div>
+            <p>Critic speaks (general) → Body impact → Fragmented response → Critic escalates (specific) → Self-protection rises → Core need named → Healthy feeling emerges → Critic sees the pain and softens</p>
+        </div>
+        <div class="sp"></div>
+        <button class="btn btn-primary" onclick="goTo('s-defuse')">Next: Unhooking from old stories →</button>
+    </div>
+
+    <div class="screen" id="s-defuse">
+        <div class="screen-header">
+            <div class="back-btn" onclick="goTo('s-tc-complete')">‹</div>
+            <div class="screen-label" style="color:var(--text-amber-light);">Stage 5 · Unhooking</div>
+        </div>
+        <div class="stage-pill" style="background:rgba(180,83,9,0.12);border-color:rgba(180,83,9,.2);color:var(--text-amber-light);">Old stories</div>
+        <div class="hed">The thought is not<br><em>the truth.</em></div>
+        <div class="body-text">Deep wounds come with old stories — thoughts that feel like facts. The way out isn't to argue with them. It's to change your relationship to them.</div>
+        <div class="body-text">Tap the thought below:</div>
+        <div class="fused-thought" id="fused-t" onclick="defuseThought()">"I'm not enough."</div>
+        <div class="ibox" id="defuse-ex" style="display:none;">
+            <div class="ibox-label" style="color:var(--text-amber-light);">What changed?</div>
+            <p>Adding "I'm having the thought that..." creates a gap. You're no longer identical with the thought — you're watching it. That gap is where choice lives.</p>
+        </div>
+        <div class="body-text" id="defuse-q" style="display:none;font-size:0.8rem;color:var(--text-muted);">Which do you get most hooked by?</div>
+        <div class="chips" id="defuse-chips" style="display:none;">
+            <div class="chip" onclick="defuseChip(this)">I'm not good enough</div>
+            <div class="chip" onclick="defuseChip(this)">Something is wrong with me</div>
+            <div class="chip" onclick="defuseChip(this)">I can't handle this</div>
+            <div class="chip" onclick="defuseChip(this)">I'll always be this way</div>
+            <div class="chip" onclick="defuseChip(this)">I'm a burden</div>
+            <div class="chip" onclick="defuseChip(this)">I don't belong</div>
+        </div>
+        <div class="pquote" id="defuse-reframe" style="display:none;border-color:#b45309;background:rgba(180,83,9,0.06);"></div>
+        <div class="sp"></div>
+        <button class="btn btn-primary" onclick="goTo('s-transform-complete')">Continue</button>
+    </div>
+
+    <div class="screen" id="s-transform-complete">
+        <div class="screen-header">
+            <div class="back-btn" onclick="goTo('s-defuse')">‹</div>
+            <div class="screen-label" style="color:var(--text-amber-light);">Stage 5 · Complete</div>
+        </div>
+        <div style="height:2rem"></div>
+        <div class="stage-pill" style="background:var(--success-bg);border-color:rgba(34,197,94,.2);color:var(--success);">✓ Stage 5 Complete</div>
+        <div class="hed">You changed<br><em>a feeling with<br>a feeling.</em></div>
+        <div class="pquote" style="border-color:#b45309;background:rgba(180,83,9,0.06);">"Notice what is here now — even if subtle. The shift doesn't have to be dramatic to be real."</div>
+        <div class="sp"></div>
+        <button class="btn btn-primary" onclick="goTo('s-live-intro')">Final Stage: Living It →</button>
+        <button class="btn-ghost" onclick="goTo('s-home')">Back to journey</button>
+    </div>
+
+    <!-- ══════════════════════════════
+         STAGE 6 · LIVE
+    ══════════════════════════════ -->
+    <div class="screen" id="s-live-intro">
+        <div class="screen-header">
+            <div class="back-btn" onclick="goTo('s-home')">‹</div>
+            <div class="screen-label" style="color:var(--text-teal);">Stage 6 · Live</div>
+        </div>
+        <div class="stage-pill" style="background:var(--teal-bg);border-color:rgba(14,116,144,.2);color:var(--text-teal);">Integration</div>
+        <div class="hed">What has your<br><em>emotional life been<br>trying to tell you?</em></div>
+        <div class="body-text">Everything so far has built a relationship with your inner world. Now: what does that world point toward? What have your deepest feelings been trying to protect or reach?</div>
+        <div class="pquote" style="border-color:var(--primary-teal);background:var(--teal-bg2);">"Suffering ceases to be suffering at the moment it finds a meaning."</div>
+        <div class="sp"></div>
+        <button class="btn btn-primary" onclick="goTo('s-live-values')">What matters most →</button>
+    </div>
+
+    <div class="screen" id="s-live-values">
+        <div class="screen-header">
+            <div class="back-btn" onclick="goTo('s-live-intro')">‹</div>
+            <div class="screen-label" style="color:var(--text-teal);">Stage 6 · Values</div>
+        </div>
+        <div class="stage-pill" style="background:var(--teal-bg);border-color:rgba(14,116,144,.2);color:var(--text-teal);">Your feelings know what matters</div>
+        <div class="hed">The needs underneath<br><em>your feelings point<br>to values.</em></div>
+        <div class="body-text">Safety, connection, being seen, autonomy, love — pointing toward what matters enough to generate pain when it's threatened. Tap all that resonate:</div>
+        <div class="value-grid" id="val-grid">
+            <div class="val-cell" onclick="toggleVal(this)"><div class="val-ico">🤝</div><div class="val-nm">Connection</div><div class="val-sub">Belonging</div></div>
+            <div class="val-cell" onclick="toggleVal(this)"><div class="val-ico">🛡️</div><div class="val-nm">Safety</div><div class="val-sub">Security</div></div>
+            <div class="val-cell" onclick="toggleVal(this)"><div class="val-ico">✊</div><div class="val-nm">Autonomy</div><div class="val-sub">Voice</div></div>
+            <div class="val-cell" onclick="toggleVal(this)"><div class="val-ico">🎨</div><div class="val-nm">Creation</div><div class="val-sub">Expression</div></div>
+            <div class="val-cell" onclick="toggleVal(this)"><div class="val-ico">⚖️</div><div class="val-nm">Justice</div><div class="val-sub">Fairness</div></div>
+            <div class="val-cell" onclick="toggleVal(this)"><div class="val-ico">🌱</div><div class="val-nm">Growth</div><div class="val-sub">Becoming</div></div>
+            <div class="val-cell" onclick="toggleVal(this)"><div class="val-ico">🫶</div><div class="val-nm">Love</div><div class="val-sub">Give & receive</div></div>
+            <div class="val-cell" onclick="toggleVal(this)"><div class="val-ico">✨</div><div class="val-nm">Meaning</div><div class="val-sub">Purpose</div></div>
+            <div class="val-cell" onclick="toggleVal(this)"><div class="val-ico">👁️</div><div class="val-nm">Authenticity</div><div class="val-sub">Being known</div></div>
+        </div>
+        <div class="sp"></div>
+        <button class="btn btn-primary" id="val-btn" onclick="goTo('s-live-meaning')" disabled>What these point toward →</button>
+    </div>
+
+    <div class="screen" id="s-live-meaning">
+        <div class="screen-header">
+            <div class="back-btn" onclick="goTo('s-live-values')">‹</div>
+            <div class="screen-label" style="color:var(--text-teal);">Stage 6 · Meaning</div>
+        </div>
+        <div class="stage-pill" style="background:var(--teal-bg);border-color:rgba(14,116,144,.2);color:var(--text-teal);">The question that remains</div>
+        <div class="hed">What do you want<br>your life to have<br><em>been in service of?</em></div>
+        <div class="meaning-card">
+            <div class="mc-lbl">The looking-back question</div>
+            <div class="mc-q">"Imagine you are eighty-five, looking back. The pain was real. The struggle was real. But you lived deliberately. What do you want to have moved toward?"</div>
+        </div>
+        <div class="card" onclick="selOne(this,'.meaning-opt','live-btn')"><div class="card-title meaning-opt">I loved deeply — and let myself be loved</div></div>
+        <div class="card" onclick="selOne(this,'.meaning-opt','live-btn')"><div class="card-title meaning-opt">I created things that mattered, honestly</div></div>
+        <div class="card" onclick="selOne(this,'.meaning-opt','live-btn')"><div class="card-title meaning-opt">I showed up for people when it was hard</div></div>
+        <div class="card" onclick="selOne(this,'.meaning-opt','live-btn')"><div class="card-title meaning-opt">I grew into the person I was trying to become</div></div>
+        <div class="card" onclick="selOne(this,'.meaning-opt','live-btn')"><div class="card-title meaning-opt">I faced what was difficult without abandoning myself</div></div>
+        <div class="sp"></div>
+        <button class="btn btn-primary" id="live-btn" onclick="goTo('s-live-complete')" disabled>See how it all connects →</button>
+    </div>
+
+    <div class="screen" id="s-live-complete">
+        <div class="screen-header">
+            <div class="back-btn" onclick="goTo('s-live-meaning')">‹</div>
+            <div class="screen-label" style="color:var(--text-teal);">Complete</div>
+        </div>
+        <div style="height:1.5rem"></div>
+        <div class="stage-pill" style="background:var(--success-bg);border-color:rgba(34,197,94,.2);color:var(--success);">✓ The Full Journey</div>
+        <div class="hed">The intelligence<br><em>was always there.</em></div>
+        <div class="body-text">Your feelings were never the problem. They were carrying information — about what hurt, what mattered, what was missing, what you were trying to protect.</div>
+        <div class="ibox" style="border-color:rgba(14,116,144,.2);">
+            <div class="ibox-label" style="color:var(--text-teal);">What you built</div>
+            <p>
+                <strong style="color:var(--text-teal);">Ground</strong> — Feelings have five parts, all at once<br>
+                <strong style="color:var(--text-amber);">Map</strong> — Four types: the skill that changes everything<br>
+                <strong style="color:var(--text-teal-light);">Arrive</strong> — Stay present without flooding or fleeing<br>
+                <strong style="color:var(--success);">Need</strong> — Every feeling points to something real<br>
+                <strong style="color:var(--text-amber-light);">Transform</strong> — A feeling changes a feeling<br>
+                <strong style="color:var(--text-teal);">Live</strong> — What your emotional life was pointing toward
+            </p>
+        </div>
+        <div class="pquote" style="border-color:var(--primary-teal);background:var(--teal-bg2);">"Between what happens and how you respond, there is a space. In that space is your power."</div>
+        <div class="sp"></div>
+        <button class="btn btn-primary" onclick="goTo('s-home')">Return to the beginning →</button>
+    </div>
+
+    </div><!-- /content-wrapper -->
+    </div><!-- /main-content -->
+
+</div><!-- /app-wrapper -->
+</div><!-- /container -->
+
+<script>
+// ══════════════════════════════════════
+// PERSISTENCE ENGINE
+// ══════════════════════════════════════
+const STORAGE_KEY = 'emotions_v2';
+
+// Screen → human label map for resume banner
+const screenLabels = {
+    's-ground-flash': 'Stage 1 · Ground — Begin',
+    's-flash-choose': 'Stage 1 · What did you notice?',
+    's-flash-insight': 'Stage 1 · What just happened',
+    's-ground-body': 'Stage 1 · Where do you feel it?',
+    's-ground-5parts': 'Stage 1 · Five parts of a feeling',
+    's-ground-complete': 'Stage 1 · Complete',
+    's-map-intro': 'Stage 2 · Map — Begin',
+    's-map-types': 'Stage 2 · The four types',
+    's-map-sort': 'Stage 2 · Sorting practice',
+    's-map-complete': 'Stage 2 · Complete',
+    's-arrive-intro': 'Stage 3 · Arrive — Begin',
+    's-arrive-wot': 'Stage 3 · Your window',
+    's-arrive-breath': 'Stage 3 · The breath',
+    's-arrive-steps': 'Stage 3 · How to arrive',
+    's-arrive-complete': 'Stage 3 · Complete',
+    's-need-intro': 'Stage 4 · Need — Begin',
+    's-need-practice': 'Stage 4 · Need finder',
+    's-need-insight': 'Stage 4 · Complete',
+    's-transform-intro': 'Stage 5 · Transform — Begin',
+    's-tc-intro': 'Stage 5 · Inner dialogue — Begin',
+    's-tc-1': 'Stage 5 · Round 1 — Critic speaks',
+    's-tc-2': 'Stage 5 · Round 1 — Receiving',
+    's-tc-3': 'Stage 5 · Round 2 — Critic escalates',
+    's-tc-4': 'Stage 5 · Something shifts',
+    's-tc-5': 'Stage 5 · Core need',
+    's-tc-6': 'Stage 5 · What rises',
+    's-tc-7': 'Stage 5 · The softening',
+    's-tc-complete': 'Stage 5 · After the dialogue',
+    's-defuse': 'Stage 5 · Unhooking from stories',
+    's-transform-complete': 'Stage 5 · Complete',
+    's-live-intro': 'Stage 6 · Live — Begin',
+    's-live-values': 'Stage 6 · What matters',
+    's-live-meaning': 'Stage 6 · The question that remains',
+    's-live-complete': 'Stage 6 · Complete',
+};
+
+// Which completion screen marks each stage done
+const stageCompleteScreens = {
+    1: 's-ground-complete',
+    2: 's-map-complete',
+    3: 's-arrive-complete',
+    4: 's-need-insight',
+    5: 's-transform-complete',
+    6: 's-live-complete',
+};
+
+// Home screen — don't persist as "resume" target
+const HOME_SCREEN = 's-home';
+
+let appState = {
+    lastScreen: null,       // screen id to resume to
+    completedStages: [],    // [1,2,3...]
+    visitedScreens: [],     // for back-state restoration
+};
+
+function saveState() {
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+    } catch(e) {}
+}
+
+function loadState() {
+    try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) appState = { ...appState, ...JSON.parse(raw) };
+    } catch(e) {}
+}
+
+function markStageComplete(stageNum) {
+    if (!appState.completedStages.includes(stageNum)) {
+        appState.completedStages.push(stageNum);
+        saveState();
+        renderJourney(); // re-render dots
+    }
+}
+
+// ══════════════════════════════════════
+// NAV & PROGRESS
+// ══════════════════════════════════════
+const progressMap = {
+    's-home':0,'s-ground-flash':5,'s-flash-run':7,'s-flash-choose':9,'s-flash-insight':13,
+    's-ground-body':17,'s-ground-5parts':21,'s-ground-complete':25,
+    's-map-intro':26,'s-map-types':30,'s-map-sort':38,'s-map-complete':50,
+    's-arrive-intro':51,'s-arrive-wot':55,'s-arrive-breath':60,'s-arrive-steps':65,'s-arrive-complete':70,
+    's-need-intro':71,'s-need-practice':74,'s-need-insight':78,
+    's-transform-intro':79,'s-tc-intro':80,'s-tc-1':82,'s-tc-2':84,'s-tc-3':86,
+    's-tc-4':88,'s-tc-5':90,'s-tc-6':92,'s-tc-7':94,'s-tc-complete':95,
+    's-defuse':96,'s-transform-complete':100,
+    's-live-intro':100,'s-live-values':100,'s-live-meaning':100,'s-live-complete':100
+};
+
+function goTo(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    const t = document.getElementById(id);
+    if (t) {
+        t.classList.add('active');
+        document.querySelector('.main-content').scrollTop = 0;
+    }
+    const pct = progressMap[id] || 0;
+    document.getElementById('pfill').style.width = pct + '%';
+
+    // Persist last non-home screen
+    if (id !== HOME_SCREEN) {
+        appState.lastScreen = id;
+        saveState();
+    }
+
+    // Check if this screen completes a stage
+    Object.entries(stageCompleteScreens).forEach(([num, screenId]) => {
+        if (id === screenId) markStageComplete(parseInt(num));
+    });
+
+    // Update resume banner when returning home
+    if (id === HOME_SCREEN) updateResumeBanner();
+}
+
+// ══════════════════════════════════════
+// RESUME BANNER
+// ══════════════════════════════════════
+function updateResumeBanner() {
+    const banner = document.getElementById('resume-banner');
+    const title = document.getElementById('resume-title');
+    if (appState.lastScreen && appState.lastScreen !== HOME_SCREEN && screenLabels[appState.lastScreen]) {
+        title.textContent = screenLabels[appState.lastScreen];
+        banner.classList.add('visible');
+    } else {
+        banner.classList.remove('visible');
+    }
+}
+
+function resumeJourney() {
+    if (appState.lastScreen) goTo(appState.lastScreen);
+}
+
+// ══════════════════════════════════════
+// JOURNEY HOME — with visited dots
+// ══════════════════════════════════════
+const stages = [
+    { num:1, color:'var(--primary-teal)', label:'Stage 1 · Ground', title:'What emotions actually are', sub:'A flash of faces · Your body speaks · Five parts', badge:'Begin here →', badgeBg:'var(--teal-bg)', badgeCol:'var(--text-teal)', dest:'s-ground-flash', glow:true },
+    { num:2, color:'var(--accent-amber)', label:'Stage 2 · Map', title:'Not all feelings are the same kind', sub:'The skill that changes everything — sorting what you\'re actually feeling', badge:'Core Skill', badgeBg:'var(--amber-bg)', badgeCol:'var(--text-amber)', dest:'s-map-intro' },
+    { num:3, color:'#0891b2', label:'Stage 3 · Arrive', title:'Learning to be with it', sub:'The zone where real work happens · Not fleeing, not flooding', badge:'Foundation', badgeBg:'rgba(8,145,178,0.12)', badgeCol:'var(--text-teal-light)', dest:'s-arrive-intro' },
+    { num:4, color:'var(--success)', label:'Stage 4 · Need', title:'What the feeling is pointing to', sub:'Every feeling is a message about something you actually need', badge:'Depth', badgeBg:'var(--success-bg)', badgeCol:'var(--success)', dest:'s-need-intro' },
+    { num:5, color:'#b45309', label:'Stage 5 · Transform', title:'Feelings change feelings', sub:'A dialogue with your inner critic · Self-compassion as the antidote', badge:'Advanced', badgeBg:'rgba(180,83,9,0.12)', badgeCol:'var(--text-amber-light)', dest:'s-transform-intro' },
+    { num:6, color:'var(--primary-teal)', label:'Stage 6 · Live', title:'From understanding to action', sub:'What your emotional life has been pointing toward all along', badge:'Integration', badgeBg:'var(--teal-bg)', badgeCol:'var(--text-teal)', dest:'s-live-intro' },
+];
+
+function renderJourney() {
+    const el = document.getElementById('journey-list');
+    el.innerHTML = stages.map((s, i) => {
+        const done = appState.completedStages.includes(s.num);
+        const dotStyle = done
+            ? `background:${s.color};box-shadow:0 0 6px ${s.color};`
+            : s.glow
+                ? `background:${s.color};box-shadow:0 0 8px ${s.color};`
+                : `background:transparent;border:1.5px solid ${s.color}40;`;
+        const cardBorder = done ? `${s.color}35` : `${s.color}20`;
+        const visitedBadge = done
+            ? `<span class="j-badge" style="background:rgba(74,222,128,0.1);color:var(--success);margin-left:0.4rem;">✓ visited</span>`
+            : '';
+        return `
+        <div class="journey-item" onclick="goTo('${s.dest}')">
+            <div class="j-left">
+                <div class="j-dot" style="${dotStyle}"></div>
+                ${i < stages.length - 1 ? '<div class="j-line"></div>' : ''}
+            </div>
+            <div class="jcard" style="border-color:${cardBorder};${done ? 'background:linear-gradient(135deg,rgba(30,41,59,0.5),rgba(15,23,42,0.4));' : ''}">
+                <div style="display:flex;align-items:center;gap:0.4rem;flex-wrap:wrap;">
+                    <div class="j-stage" style="color:${s.color};">${s.label}</div>
+                    ${visitedBadge}
+                </div>
+                <div class="j-title">${s.title}</div>
+                <div class="j-sub">${s.sub}</div>
+                <span class="j-badge" style="background:${s.badgeBg};color:${s.badgeCol};">${done ? 'Return ↩' : s.badge}</span>
+            </div>
+        </div>
+        `;
+    }).join('');
+}
+
+// ══════════════════════════════════════
+// FLASH
+// ══════════════════════════════════════
+function startFlash() {
+    goTo('s-flash-run');
+    const face = document.getElementById('ff');
+    const prompt = document.getElementById('fp');
+    const faces = ['😠','😐','😔'];
+    const bgs = ['rgba(217,119,6,0.15)','rgba(30,41,59,0.5)','rgba(14,116,144,0.12)'];
+    let i = 0;
+    function show() {
+        if (i >= faces.length) {
+            face.style.opacity = '0';
+            setTimeout(() => { prompt.style.opacity = '1'; setTimeout(() => goTo('s-flash-choose'), 700); }, 300);
+            return;
+        }
+        face.textContent = faces[i]; face.style.background = bgs[i]; face.style.opacity = '1';
+        setTimeout(() => { face.style.opacity = '0'; i++; setTimeout(show, 200); }, 500);
+    }
+    setTimeout(show, 400);
+}
+
+function selectFaceOpt(el) {
+    document.querySelectorAll('#s-flash-choose .card').forEach(c => c.classList.remove('sel'));
+    el.classList.add('sel');
+    setTimeout(() => goTo('s-flash-insight'), 300);
+}
+
+// ══════════════════════════════════════
+// BODY MAP
+// ══════════════════════════════════════
+function litB(el, label) {
+    document.querySelectorAll('.bspot').forEach(b => b.classList.remove('lit'));
+    el.classList.add('lit');
+    const lbl = document.getElementById('bspot-label');
+    if (lbl) lbl.textContent = label;
+}
+
+// ══════════════════════════════════════
+// ACCORDION
+// ══════════════════════════════════════
+function toggleAcc(el) {
+    const body = el.querySelector('.acc-body');
+    if (!body) return;
+    body.classList.toggle('open');
+}
+
+// ══════════════════════════════════════
+// SORTER
+// ══════════════════════════════════════
+const sortData = [
+    { text: '"Your partner is five minutes late. Before they arrive, a familiar terror floods you — the certainty you\'re being abandoned. You know rationally this makes no sense."',
+      answer: 'maladaptive',
+      fb: {
+        adaptive: { tag:'Look closer', text:'The word "familiar" is the tell. This doesn\'t fit the present moment.' },
+        secondary: { tag:'Getting there — go deeper', text:'The core here is an old fear running automatically regardless of actual threat. Old Wound fits.' },
+        maladaptive: { tag:'✓ Old Wound — correct', text:'"Familiar" gives it away. This fear formed when abandonment was genuinely threatening. It\'s running now with the same intensity in a situation that doesn\'t warrant it. It needs transformation, not expression.' },
+        instrumental: { tag:'Not quite', text:'This is internal, automatic, overwhelming. Old Wound fits.' }
+      }
+    },
+    { text: '"Your child falls and is crying. A rush of concern moves you immediately toward them."',
+      answer: 'adaptive',
+      fb: {
+        adaptive: { tag:'✓ Real Signal — correct', text:'This fits the present moment exactly. Your child genuinely needs you. The concern is appropriate, the urge to comfort is right. This is the system working perfectly. Trust it.' },
+        secondary: { tag:'Not this one', text:'Nothing is being covered here — the response fits directly. Real Signal.' },
+        maladaptive: { tag:'Not this one', text:'This is entirely appropriate to what\'s actually happening right now.' },
+        instrumental: { tag:'Not this one', text:'No performance here. Real Signal.' }
+      }
+    },
+    { text: '"You feel furious at a friend who cancelled plans. But underneath, if you sit with it — there\'s a hollowness, a hurt, a feeling of not being a priority."',
+      answer: 'secondary',
+      fb: {
+        adaptive: { tag:'Partially — but look beneath', text:'The hurt underneath might be a real signal. But the fury is covering it — which makes the anger itself a Cover Feeling.' },
+        secondary: { tag:'✓ Cover Feeling — correct', text:'The anger is real — but covering a more vulnerable feeling: the hurt of feeling unimportant. The work isn\'t to express the anger — it\'s to find and acknowledge the hurt underneath.' },
+        maladaptive: { tag:'An element — but Cover Feeling is the key', text:'The hurt may have old roots, but what\'s notable is the anger covering it. Start there.' },
+        instrumental: { tag:'Not quite', text:'Nothing suggests this is being used to influence. Cover Feeling.' }
+      }
+    },
+    { text: '"You feel a wave of deep shame wash through you — the same shame that has been with you since childhood. It says: you are fundamentally defective."',
+      answer: 'maladaptive',
+      fb: {
+        adaptive: { tag:'Not this one', text:'A real signal fits the present and points toward something true now. This has been present "since childhood" — that\'s not a present-moment signal.' },
+        secondary: { tag:'Close — but this goes deeper', text:'This doesn\'t feel like a cover — it feels like the bottom. The chronic, identity-level quality makes this an Old Wound.' },
+        maladaptive: { tag:'✓ Old Wound — correct', text:'"Since childhood" and "fundamentally defective" are the markers. This is an old wound, not a present signal. It needs transformation through self-compassion — not expression.' },
+        instrumental: { tag:'Not this one', text:'This is internal and chronic. Old Wound.' }
+      }
+    },
+    { text: '"You feel yourself tearing up in an argument with your partner — not because you\'re sad, but because when you cry, they tend to soften and stop pressing."',
+      answer: 'instrumental',
+      fb: {
+        adaptive: { tag:'Not quite', text:'Here, the tears arise not from genuine sadness but from their effect — different category.' },
+        secondary: { tag:'Not quite', text:'Cover feelings hide something more primary. Here, the function of the feeling is the key.' },
+        maladaptive: { tag:'Not quite', text:'Old wounds fire automatically. Here, the feeling is tied to its function in this interaction.' },
+        instrumental: { tag:'✓ Performance — correct', text:'The tell: "when I cry, they soften." This may not be conscious — often a learned pattern. But it\'s a feeling in service of influence. The real work: find what you actually need and ask for it directly.' }
+      }
+    }
+];
+let sortIdx = 0, sortScore = 0;
+
+function initSorter() {
+    sortIdx = 0; sortScore = 0;
+    document.getElementById('sg-card').textContent = sortData[0].text;
+    document.getElementById('sg-counter').textContent = 'Scenario 1 of 5';
+    document.getElementById('sg-reveal').style.display = 'none';
+    document.getElementById('sg-next').style.display = 'none';
+    document.querySelectorAll('#sg-grid .sg-btn').forEach(b => b.style.opacity = '1');
+    document.querySelectorAll('#sg-dots .sg-dot').forEach(d => d.style.background = 'rgba(30,41,59,0.7)');
+}
+
+function sortIt(type) {
+    const d = sortData[sortIdx];
+    const fb = d.fb[type];
+    const isRight = type === d.answer;
+    if (isRight) sortScore++;
+    document.getElementById('sg-reveal').style.display = 'block';
+    document.getElementById('sg-rtag').textContent = fb.tag;
+    document.getElementById('sg-rtag').style.color = isRight ? 'var(--success)' : 'var(--text-amber)';
+    document.getElementById('sg-rtext').textContent = fb.text;
+    document.querySelectorAll('#sg-grid .sg-btn').forEach(b => b.style.opacity = '0.3');
+    document.getElementById('sg-next').style.display = 'block';
+    const dots = document.querySelectorAll('#sg-dots .sg-dot');
+    if (dots[sortIdx]) dots[sortIdx].style.background = isRight ? 'var(--success)' : '#b45309';
+    if (sortIdx >= sortData.length - 1) {
+        document.getElementById('sg-next').textContent = `See results (${sortScore}/5) →`;
+        document.getElementById('sg-next').onclick = () => goTo('s-map-complete');
+    }
+}
+
+function nextSort() {
+    sortIdx++;
+    if (sortIdx >= sortData.length) { goTo('s-map-complete'); return; }
+    document.getElementById('sg-card').textContent = sortData[sortIdx].text;
+    document.getElementById('sg-reveal').style.display = 'none';
+    document.querySelectorAll('#sg-grid .sg-btn').forEach(b => b.style.opacity = '1');
+    document.getElementById('sg-next').style.display = 'none';
+    document.getElementById('sg-counter').textContent = `Scenario ${sortIdx + 1} of 5`;
+}
+
+// ══════════════════════════════════════
+// WINDOW OF TOLERANCE
+// ══════════════════════════════════════
+const wotText = {
+    hyper: { tag:'For flooding — ground first', text:'When overwhelmed, the nervous system can\'t process. First: feet on floor, 5 slow breaths, name 3 things you can see. Get back into your window before working with the feeling.' },
+    window: { tag:'You\'re in the window — good', text:'This is where real work is possible. You can feel without being controlled. Stay here.' },
+    hypo: { tag:'For numbness — activate gently', text:'When shut down, the feeling is suppressed not absent. Gentle movement, deep slow breaths, or speaking aloud can bring enough presence to work.' }
+};
+function selectWOT(el, type) {
+    document.querySelectorAll('.wot-zone').forEach(z => z.classList.remove('sel'));
+    el.classList.add('sel');
+    const a = wotText[type];
+    document.getElementById('wot-advice').style.display = 'block';
+    document.getElementById('wot-tag').textContent = a.tag;
+    document.getElementById('wot-text').textContent = a.text;
+    document.getElementById('wot-btn').disabled = false;
+}
+
+// ══════════════════════════════════════
+// BREATH
+// ══════════════════════════════════════
+let breathRunning = false;
+function runBreath() {
+    if (breathRunning) return;
+    breathRunning = true;
+    const ring = document.getElementById('br-ring');
+    const phase = document.getElementById('br-phase');
+    const txt = document.getElementById('br-txt');
+    ring.className = 'breath-ring inhale'; phase.textContent = 'Inhale'; txt.textContent = 'Breathe in for 4...';
+    setTimeout(() => { ring.className = 'breath-ring hold'; phase.textContent = 'Hold'; txt.textContent = 'Hold for 7...'; }, 4000);
+    setTimeout(() => { ring.className = 'breath-ring'; phase.textContent = 'Exhale'; txt.textContent = 'Breathe out for 8...'; }, 11000);
+    setTimeout(() => { ring.className = 'breath-ring'; phase.textContent = 'Complete'; txt.textContent = 'One cycle done. Tap to repeat.'; breathRunning = false; }, 19000);
+}
+
+// ══════════════════════════════════════
+// ARRIVAL STEPS
+// ══════════════════════════════════════
+function doneStep(el) { el.classList.toggle('done'); }
+
+// ══════════════════════════════════════
+// NEED FINDER
+// ══════════════════════════════════════
+function selNeed(el) {
+    document.querySelectorAll('#need-grid .need-cell').forEach(c => c.classList.remove('sel'));
+    el.classList.add('sel');
+    document.getElementById('need-btn').disabled = false;
+}
+
+// ══════════════════════════════════════
+// TWO CHAIR
+// ══════════════════════════════════════
+const needTexts = {
+    stop: "I need you to stop attacking me. You're not helping me become better — you're preventing me from functioning.",
+    seen: "I need you to see what I've been carrying. Not the failures — the weight of it. See me in this.",
+    support: "I need support, not a verdict. Put your arms around me instead of pointing your finger.",
+    enough: "I need you to tell me I am enough to deserve love. Not when I succeed. Now. Just as I am."
+};
+const softenedTexts = {
+    circumstances: "I can see now what you were dealing with. No wonder you struggled. I didn't let myself see that before.",
+    origin: "I think I've been saying to you what was said to me. I kept it going without ever questioning it. And I can see now what it has cost you.",
+    trying: "You were trying. I know that. I was just adding to what you were already carrying. I can see that now.",
+    stop: "You're right. You don't have to be perfect. I want to be someone you can bring things to — not someone you hide from."
+};
+
+function selTC1(el) {
+    document.querySelectorAll('#s-tc-1 .card').forEach(c => { c.classList.remove('sel'); c.style.borderColor = 'rgba(217,119,6,.15)'; });
+    el.classList.add('sel'); el.style.borderColor = 'var(--accent-amber)';
+    document.getElementById('tc1-btn').disabled = false;
+}
+function selTC2tex(el) {
+    el.classList.toggle('sel');
+    const any = document.querySelectorAll('#tc2-tex .btx.sel').length > 0;
+    document.getElementById('tc2-btn').disabled = !any;
+}
+function selTC2resp(el) {
+    document.querySelectorAll('#s-tc-2 .card').forEach(c => { c.classList.remove('sel'); c.style.borderColor = 'rgba(217,119,6,.1)'; });
+    el.classList.add('sel'); el.style.borderColor = 'var(--accent-amber)';
+    document.getElementById('tc2-btn').disabled = false;
+}
+function selTC3(el) {
+    document.querySelectorAll('#s-tc-3 .card').forEach(c => { c.classList.remove('sel'); c.style.borderColor = 'rgba(217,119,6,.15)'; });
+    el.classList.add('sel'); el.style.borderColor = 'var(--accent-amber)';
+    document.getElementById('tc3-btn').disabled = false;
+}
+function selTC4(el) {
+    document.querySelectorAll('#s-tc-4 .card').forEach(c => { c.classList.remove('sel'); c.style.borderColor = 'rgba(14,116,144,.15)'; });
+    el.classList.add('sel'); el.style.borderColor = 'var(--primary-teal)';
+    document.getElementById('tc4-btn').disabled = false;
+}
+function selTC5(el, key) {
+    document.querySelectorAll('#s-tc-5 .card').forEach(c => { c.classList.remove('sel'); c.style.borderColor = 'rgba(14,116,144,.1)'; });
+    el.classList.add('sel'); el.style.borderColor = 'var(--primary-teal)';
+    document.getElementById('tc5-btn').disabled = false;
+    const echo = document.getElementById('tc7-need-echo');
+    if (echo) echo.textContent = needTexts[key] || '';
+}
+function selTC6(el, path) {
+    document.querySelectorAll('#s-tc-6 .card').forEach(c => { c.classList.remove('sel'); c.style.background = ''; });
+    el.classList.add('sel');
+    el.style.background = path === 'anger' ? 'rgba(217,119,6,0.1)' : 'var(--teal-bg)';
+    document.getElementById('tc6-btn').disabled = false;
+}
+function selTC7(el, type) {
+    document.querySelectorAll('#s-tc-7 .card').forEach(c => { c.classList.remove('sel'); c.style.borderColor = 'rgba(14,116,144,.15)'; });
+    el.classList.add('sel'); el.style.borderColor = 'var(--primary-teal)';
+    document.getElementById('tc7-softened-text').textContent = softenedTexts[type];
+    document.getElementById('tc7-softened').style.display = 'block';
+    document.getElementById('tc7-btn').style.display = 'block';
+}
+
+// ══════════════════════════════════════
+// DEFUSION
+// ══════════════════════════════════════
+let defuseTapped = false;
+function defuseThought() {
+    if (defuseTapped) return;
+    defuseTapped = true;
+    const t = document.getElementById('fused-t');
+    t.classList.add('defused');
+    t.textContent = '"I\'m having the thought that I\'m not enough."';
+    document.getElementById('defuse-ex').style.display = 'block';
+    setTimeout(() => {
+        document.getElementById('defuse-q').style.display = 'block';
+        document.getElementById('defuse-chips').style.display = 'flex';
+    }, 900);
+}
+function defuseChip(el) {
+    document.querySelectorAll('#defuse-chips .chip').forEach(c => c.classList.remove('sel'));
+    el.classList.add('sel');
+    const rf = document.getElementById('defuse-reframe');
+    rf.style.display = 'block';
+    rf.textContent = `Try: "I'm having the thought that ${el.textContent.toLowerCase()}." Notice the small gap that creates between you and the story.`;
+}
+
+// ══════════════════════════════════════
+// VALUES
+// ══════════════════════════════════════
+function toggleVal(el) {
+    el.classList.toggle('sel');
+    const any = document.querySelectorAll('#val-grid .val-cell.sel').length > 0;
+    document.getElementById('val-btn').disabled = !any;
+}
+
+// ══════════════════════════════════════
+// SELECT ONE (meaning screen)
+// ══════════════════════════════════════
+function selOne(el, selector, btnId) {
+    document.querySelectorAll(selector).forEach(c => {
+        c.closest('.card').classList.remove('sel');
+        c.closest('.card').style.borderColor = '';
+    });
+    el.classList.add('sel'); el.style.borderColor = 'var(--primary-teal)';
+    if (btnId) document.getElementById(btnId).disabled = false;
+}
+
+// ══════════════════════════════════════
+// INIT
+// ══════════════════════════════════════
+document.addEventListener('touchstart', e => { if (e.touches.length > 1) e.preventDefault(); }, { passive: false });
+
+loadState();
+renderJourney();
+updateResumeBanner();
+initSorter();
+</script>
+
+</body>
+</html>
