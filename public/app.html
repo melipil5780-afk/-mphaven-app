@@ -192,8 +192,8 @@ body { background:var(--bg); font-family:var(--font-body); }
 .lock-badge { display:inline-flex; align-items:center; gap:.3rem; padding:.25rem .625rem; background:rgba(217,119,6,.15); border:1px solid rgba(217,119,6,.3); border-radius:var(--radius-full); font-size:.625rem; font-weight:700; color:var(--amber-light); text-transform:uppercase; letter-spacing:.05em; }
 
 @media (min-width:640px) {
-.pane { border-radius:2.5rem; height:min(844px,100%); }
-.shell { padding:2rem; align-items:center; justify-content:center; }
+  .pane { border-radius:2.5rem; height:min(844px,100%); }
+  .shell { padding:2rem; align-items:center; justify-content:center; }
 }
 </style>
 </head>
@@ -280,6 +280,121 @@ const APP_V = '3.0';
 const DISC_V = '3.0';
 const CRISIS_TIMEOUT = 5 * 60 * 1000;
 
+// ── Content version — bump this each time you add a new course ──────────
+// Change CONTENT_V to 2, 3, 4... with each quarterly release.
+// Users who last saw an older version get a "New content" banner.
+const CONTENT_V = 1;
+const CONTENT_WHATS_NEW = {
+  title: 'New: Getting Through the Storm',
+  desc:  'Your crisis resilience toolkit is ready.',
+  link:  'crisis-intro.html'
+};
+
+// ── Re-engagement helpers ───────────────────────────────
+function daysSinceLastOpen() {
+  const last = localStorage.getItem('mph_last_open');
+  if (!last) return 0;
+  return Math.floor((Date.now() - parseInt(last)) / 86400000);
+}
+function recordOpen() {
+  localStorage.setItem('mph_last_open', Date.now().toString());
+}
+function seenContentV() {
+  return parseInt(localStorage.getItem('mph_content_v') || '0');
+}
+function markContentSeen() {
+  localStorage.setItem('mph_content_v', CONTENT_V.toString());
+}
+function dismissReengagement() {
+  localStorage.setItem('mph_reeng_dismissed', Date.now().toString());
+  render();
+}
+function dismissNewContent() {
+  markContentSeen();
+  render();
+}
+window.dismissReengagement = dismissReengagement;
+window.dismissNewContent   = dismissNewContent;
+window.requestPushPermission = async function() {
+  if (!('Notification' in window)) { toast('Notifications not supported on this device'); return; }
+  const perm = await Notification.requestPermission();
+  if (perm === 'granted') {
+    localStorage.setItem('mph_push_ok', 'true');
+    scheduleDailyReminder();
+    toast('Daily reminders on 🔔');
+    render();
+  } else {
+    toast('Permission not granted — you can enable in settings');
+  }
+};
+function scheduleDailyReminder() {
+  // Web Notifications can't schedule future notifications natively —
+  // this fires a same-session reminder demo and notes the preference.
+  // Full scheduled push requires a service worker (add when going native).
+  localStorage.setItem('mph_push_ok', 'true');
+}
+function pushEnabled() {
+  return localStorage.getItem('mph_push_ok') === 'true'
+    && 'Notification' in window
+    && Notification.permission === 'granted';
+}
+function reengagementBanner() {
+  const days = daysSinceLastOpen();
+  const dismissed = localStorage.getItem('mph_reeng_dismissed');
+  // Don't show if dismissed in last 3 days
+  if (dismissed && Date.now() - parseInt(dismissed) < 3 * 86400000) return '';
+  if (days < 3) return '';
+
+  if (days >= 30) {
+    return `<div style="background:linear-gradient(135deg,rgba(99,102,241,0.15),rgba(99,102,241,0.06));border:1px solid rgba(99,102,241,0.3);border-radius:var(--radius-xl);padding:1.25rem;margin-bottom:1.25rem;position:relative">
+      <button onclick="dismissReengagement()" style="position:absolute;top:.75rem;right:.75rem;background:none;border:none;color:var(--text-3);font-size:1rem;cursor:pointer;line-height:1">×</button>
+      <div style="font-size:1.375rem;margin-bottom:.5rem">💙</div>
+      <div style="font-family:var(--font-display);font-size:1.0625rem;color:var(--text-1);margin-bottom:.375rem;font-style:italic">You've been away a while.</div>
+      <p class="body-sm" style="margin-bottom:.875rem">No judgment. Life gets in the way. You're here now — that's what matters. Want to ease back in?</p>
+      <button onclick="go('tools');toolkitSetIntensity(3);toolkitSetFeeling('growing');toolkitSetTiming('right-now');" class="btn btn-ghost" style="font-size:.8125rem;padding:.625rem 1rem">Start gently →</button>
+    </div>`;
+  }
+  if (days >= 7) {
+    return `<div style="background:rgba(217,119,6,0.08);border:1px solid rgba(217,119,6,0.25);border-radius:var(--radius-xl);padding:1.125rem;margin-bottom:1.25rem;position:relative">
+      <button onclick="dismissReengagement()" style="position:absolute;top:.75rem;right:.75rem;background:none;border:none;color:var(--text-3);font-size:1rem;cursor:pointer;line-height:1">×</button>
+      <div style="font-family:var(--font-display);font-size:1rem;color:var(--text-amber);margin-bottom:.25rem;font-style:italic">It's been a few days.</div>
+      <p class="body-sm">Small check-ins add up. Even today counts.</p>
+    </div>`;
+  }
+  // 3-6 days
+  return `<div style="background:rgba(13,148,136,0.06);border:1px solid rgba(13,148,136,0.2);border-radius:var(--radius-lg);padding:.875rem 1rem;margin-bottom:1rem;display:flex;align-items:center;gap:.75rem;position:relative">
+    <span style="font-size:1.125rem">🌿</span>
+    <p style="font-size:.8125rem;color:var(--text-2);flex:1">Welcome back. You were missed.</p>
+    <button onclick="dismissReengagement()" style="background:none;border:none;color:var(--text-3);font-size:1rem;cursor:pointer;line-height:1;flex-shrink:0">×</button>
+  </div>`;
+}
+function newContentBanner() {
+  if (seenContentV() >= CONTENT_V) return '';
+  return `<div style="background:linear-gradient(135deg,rgba(13,148,136,0.15),rgba(217,119,6,0.1));border:1px solid rgba(13,148,136,0.4);border-radius:var(--radius-xl);padding:1.125rem 1.25rem;margin-bottom:1.25rem;display:flex;align-items:center;gap:.875rem;cursor:pointer;position:relative" onclick="markContentSeen();location.href='${CONTENT_WHATS_NEW.link}'">
+    <div style="font-size:1.375rem;flex-shrink:0">✨</div>
+    <div style="flex:1">
+      <div style="font-size:.625rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-teal);margin-bottom:.2rem">New Content</div>
+      <div style="font-size:.9375rem;font-weight:600;color:var(--text-1);margin-bottom:.125rem">${CONTENT_WHATS_NEW.title}</div>
+      <div class="body-sm">${CONTENT_WHATS_NEW.desc}</div>
+    </div>
+    <button onclick="event.stopPropagation();dismissNewContent()" style="background:none;border:none;color:var(--text-3);font-size:1rem;cursor:pointer;line-height:1;flex-shrink:0">×</button>
+  </div>`;
+}
+function pushPromptBanner() {
+  if (pushEnabled()) return '';
+  if (localStorage.getItem('mph_push_dismissed')) return '';
+  if (S.streak < 7) return ''; // Only ask after 7-day streak — timing that converts
+  return `<div style="background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.25);border-radius:var(--radius-lg);padding:1rem 1.125rem;margin-bottom:1rem;position:relative">
+    <button onclick="localStorage.setItem('mph_push_dismissed','true');render()" style="position:absolute;top:.625rem;right:.75rem;background:none;border:none;color:var(--text-3);font-size:1rem;cursor:pointer;line-height:1">×</button>
+    <div style="display:flex;align-items:center;gap:.625rem;margin-bottom:.5rem">
+      <span style="font-size:1rem">🔔</span>
+      <span style="font-size:.875rem;font-weight:600;color:var(--text-1)">7-day streak — nice work.</span>
+    </div>
+    <p class="body-sm" style="margin-bottom:.75rem">Want a gentle daily nudge to keep it going?</p>
+    <button onclick="requestPushPermission()" class="btn btn-ghost" style="font-size:.8125rem;padding:.5rem .875rem">Turn on reminders</button>
+  </div>`;
+}
+
 // ── Mood data ────────────────────────────────────────────
 const MOODS = [
   { id:'rough',   emoji:'😔', word:'Rough',   color:'#e11d48',
@@ -353,11 +468,314 @@ const TRACKS = [
 ];
 
 // ── Quick tools ──────────────────────────────────────────
-const QUICK_TOOLS = [
-  { id:'breath',    icon:'🌊', title:'Breathe',          desc:'4-minute centering exercise',  link:'#breath' },
-  { id:'ground',    icon:'🪨', title:'Ground Yourself',   desc:'5-4-3-2-1 senses technique',   link:'my-toolkit.html' },
-  { id:'crisis',    icon:'🛡️', title:'Crisis Toolkit',   desc:'Immediate support, always free', link:'crisis-intro.html' },
+// ── Toolkit skills — full library ────────────────────────
+// free:true = always accessible   free:false = Pro only
+// levels: which intensity levels this skill suits (1=mild 10=crisis)
+// exercise: the short guided steps shown in-card
+const TOOLKIT_SKILLS = [
+
+  // ══ LEVEL 9-10 — BODY ONLY (all free — never gate crisis help) ══
+  {
+    id:'physio-sigh', icon:'💨', level:[9,10], free:true,
+    name:'The Double Breath',
+    tagline:'Fastest way to slow your nervous system',
+    source:'Stanford Neuroscience · 2023 RCT',
+    body:'Two inhales through the nose, one long exhale. This re-inflates your air sacs and dumps CO₂ — your brain\'s calming signal. Proven faster than any other breath technique.',
+    steps:['Inhale fully through your nose until your lungs feel full.','Sniff once more on top — pack a little extra air in.','Breathe out slowly through your mouth — longer than both inhales combined.','Repeat 2–3 times. Notice the shift.']
+  },
+  {
+    id:'cold-reset', icon:'🧊', level:[9,10], free:true,
+    name:'The Cold Reset',
+    tagline:'Interrupt a spiral with your body',
+    source:'Mammalian dive reflex research',
+    body:'Cold water on your face activates an evolutionary emergency brake — your heart rate slows within seconds. It sounds strange. It works.',
+    steps:['Splash cold water on your face, or hold ice in your hands.','Hold it for 30 seconds — breathe slowly while you do.','Feel your heart rate starting to drop.','When ready, take one slow breath and let go.']
+  },
+  {
+    id:'move-it-out', icon:'⚡', level:[9,10], free:true,
+    name:'Move It Out',
+    tagline:'Burn off what your body prepared for',
+    source:'Somatic discharge · Exercise physiology',
+    body:'When flooded, your body loaded adrenaline for physical action. Give it what it\'s asking for. 60 seconds of movement metabolizes the stress hormones.',
+    steps:['Stand up right now.','Do 60 seconds of jumping jacks, jogging in place, or squats.','Go as hard as you can — this is the point.','When finished, stand still and notice what changed.']
+  },
+  {
+    id:'come-to-now', icon:'🪨', level:[9,10], free:true,
+    name:'Come Back to Now',
+    tagline:'Anchor through all five senses',
+    source:'Grounding therapy · Trauma research',
+    body:'This pulls your brain\'s attention from threat-detection back into your actual body and surroundings. Name out loud if you can — speaking it out loud makes it more effective.',
+    steps:['Name 5 things you can SEE — describe color and shape.','Name 4 things you can TOUCH right now — actually touch them.','Name 3 things you can HEAR — near sounds and far sounds.','Name 2 things you can SMELL. Then 1 thing you can taste.']
+  },
+  {
+    id:'butterfly-hold', icon:'🦋', level:[9,10], free:true,
+    name:'The Butterfly Hold',
+    tagline:'Calm through gentle bilateral touch',
+    source:'Bilateral stimulation · Trauma therapy',
+    body:'Alternating left-right touch to both sides of your body simultaneously helps your brain process and calm intense emotional states. Slow is what makes it work.',
+    steps:['Cross your arms over your chest.','Slowly tap alternate shoulders — right, left, right, left.','One tap per second. Breathe slowly.','Continue for 2–3 minutes while staying with what you\'re feeling.']
+  },
+  {
+    id:'safety-scan', icon:'👁️', level:[9,10], free:true,
+    name:'Safety Scan',
+    tagline:'Tell your nervous system you\'re safe',
+    source:'Polyvagal theory · Nervous system regulation',
+    body:'Your threat-detection system is looking for a "safe" signal. Slowly scanning your environment gives it that signal and begins the shift out of crisis mode.',
+    steps:['Slowly look around the room. Don\'t rush.','Let your eyes rest on each object for a moment.','Notice the light, the space, where the exits are.','Say out loud: "I am in [place]. I am safe right now."']
+  },
+  {
+    id:'full-body-shake', icon:'🌀', level:[9,10], free:true,
+    name:'The Whole Body Release',
+    tagline:'Let your body discharge what it\'s holding',
+    source:'Somatic Experiencing · TRE research',
+    body:'Animals tremor after stress to release activation. Humans inhibit this. Deliberate shaking is your body completing what it biologically started — and it dramatically shifts state.',
+    steps:['Stand with feet shoulder-width apart.','Begin shaking your hands, arms, and shoulders.','Let the shaking spread to your legs and whole body.','Be uninhibited — 2 to 5 minutes. This is the discharge.']
+  },
+
+  // ══ LEVEL 7-8 — BODY + SIMPLE STRUCTURE (mostly free) ══
+  {
+    id:'four-corners', icon:'🔲', level:[7,8], free:true,
+    name:'Four Corners Breathing',
+    tagline:'Military-proven to reset under pressure',
+    source:'US Navy SEALs · HRV research',
+    body:'Equal-ratio breathing used by military and ER surgeons. The predictable pattern gives your nervous system something to organize around. Simple and remarkably effective.',
+    steps:['Breathe IN for 4 counts.','Hold for 4 counts.','Breathe OUT for 4 counts.','Hold empty for 4 counts. Repeat 4–8 times.']
+  },
+  {
+    id:'tense-release', icon:'🌊', level:[7,8], free:true,
+    name:'Tense and Let Go',
+    tagline:'Release tension your body is holding',
+    source:'Progressive Muscle Relaxation · 100+ clinical trials',
+    body:'Tensing then releasing muscle groups discharges physical tension and teaches your body the felt difference between tension and release. One of the most-studied relaxation methods ever.',
+    steps:['Start with your feet — tense them hard for 5 seconds.','Release suddenly. Notice the warmth and heaviness.','Move up: calves, thighs, belly, hands, shoulders, face.','Spend 20 seconds at each area after releasing.']
+  },
+  {
+    id:'long-exhale', icon:'💫', level:[7,8], free:true,
+    name:'The Long Exhale',
+    tagline:'The exhale is where calm lives',
+    source:'Parasympathetic nervous system research',
+    body:'The exhale — not the inhale — activates the calming branch of your nervous system. Longer out than in is the formula. The numbers don\'t matter as much as the ratio.',
+    steps:['Breathe in for 4 counts through your nose.','Breathe out for 7 or 8 counts through your mouth.','Keep the exhale slow and controlled — don\'t rush it.','Continue for 2 minutes. Feel the shift.']
+  },
+  {
+    id:'ride-the-wave', icon:'🏄', level:[7,8], free:true,
+    name:'Ride the Wave',
+    tagline:'Every urge peaks and fades — let it',
+    source:'Mindfulness-Based Relapse Prevention · Marlatt',
+    body:'Every urge and intense feeling moves like a wave — it builds, peaks at 10–20 minutes, and fades. You don\'t have to act on it. You just have to outlast it.',
+    steps:['Name the urge or feeling out loud: "There is [feeling] here."','Where do you feel it in your body? Notice it physically.','Rate its intensity from 0 to 10 right now.','Breathe and watch — check the rating every 2 minutes.']
+  },
+  {
+    id:'easing-breath', icon:'🫁', level:[7,8], free:true,
+    name:'Hum and Ease',
+    tagline:'Vibrate your nervous system calm',
+    source:'Vagal nerve stimulation · Polyvagal theory',
+    body:'Humming activates the vagus nerve — your body\'s main calming pathway — through vibration in your vocal cords. It bypasses thinking entirely.',
+    steps:['Breathe in deeply through your nose.','On the exhale, hum a low tone — loud enough to feel it vibrate.','Feel the vibration in your chest and throat.','Repeat 6–8 times. Add a slow gargle with water if available.']
+  },
+  {
+    id:'change-channel', icon:'🧩', level:[7,8], free:true,
+    name:'Change the Channel',
+    tagline:'Redirect with purpose, not avoidance',
+    source:'DBT Distress Tolerance · Linehan',
+    body:'When intensity is too high to process right now, deliberate distraction buys time for the wave to pass. This is not running away — it\'s choosing when to engage.',
+    steps:['Choose ONE absorbing activity — something that takes real attention.','Or: do something for someone else. Text to check in. Help.','Or: engage a different sensory stream — music, cold water, spicy food.','Stay with it until intensity drops below 6, then return.']
+  },
+
+  // ══ LEVEL 5-6 — THINKING AVAILABLE (Pro) ══
+  {
+    id:'this-is-what-is', icon:'⚓', level:[5,6], free:false,
+    name:'This Is What Is',
+    tagline:'Stop fighting the present moment',
+    source:'Radical Acceptance · DBT · Linehan',
+    body:'Fighting reality — wishing it were different — adds suffering on top of pain. Acceptance means "this is what is right now." Not approval. Not giving up. Just stopping the second layer.',
+    steps:['Notice the words "this shouldn\'t be happening" or "why me."','Say plainly: "This is happening. I don\'t like it AND it is."','Where in your body are you bracing against it? Soften there slightly.','Say: "I accept this is, even though I hate it." Repeat as needed.']
+  },
+  {
+    id:'notice-thought', icon:'💭', level:[5,6], free:false,
+    name:'"I Notice I\'m Thinking..."',
+    tagline:'Create space between you and the thought',
+    source:'Acceptance & Commitment Therapy · Hayes',
+    body:'Adding a prefix to a thought creates real distance between you and it. You move from being the thought to observing it. It doesn\'t disappear — but it loses its grip.',
+    steps:['When a distressing thought arrives, don\'t fight it.','Add this prefix: "I notice I\'m having the thought that..."','Say the whole thing: "I notice I\'m having the thought that I\'m failing."','Notice: you are the one observing the thought. Not the thought itself.']
+  },
+  {
+    id:'look-at-evidence', icon:'🔍', level:[5,6], free:false,
+    name:'Look at the Evidence',
+    tagline:'Test the thought before believing it',
+    source:'Cognitive Behavioral Therapy',
+    body:'Many intense emotions are driven not by events but by our stories about events. Separating what happened from what we\'re telling ourselves is one of the most powerful cognitive skills.',
+    steps:['Write the thought driving your emotion.','Ask: What is the actual evidence FOR this thought?','Ask: What is the evidence AGAINST it?','Ask: What would I tell a close friend who had this exact thought?']
+  },
+  {
+    id:'name-it', icon:'🏷️', level:[5,6], free:false,
+    name:'Name It to Soften It',
+    tagline:'Precise naming changes the experience',
+    source:'Affective neuroscience · Lieberman research',
+    body:'Precisely labeling an emotion reduces activity in the amygdala — your brain\'s alarm system. Not just "bad" — is it shame? Grief? Helplessness? Loneliness? Specificity is the tool.',
+    steps:['Sit with the feeling for a moment without reacting.','Move past "bad" or "upset" — get specific.','Is it shame? Disappointment? Fear? Loneliness? Helplessness?','Say: "There is [precise emotion] here." Notice what shifts.']
+  },
+  {
+    id:'ninety-seconds', icon:'⏱️', level:[5,6], free:false,
+    name:'Wait 90 Seconds',
+    tagline:'The chemistry of emotion passes quickly',
+    source:'Neuroscience of emotion · Bolte Taylor',
+    body:'The physiological peak of an emotion — the flood of stress hormones — lasts about 90 seconds. After that, any emotion that continues is being sustained by thought. Watch what happens.',
+    steps:['Set a timer for 90 seconds right now.','Feel the emotion fully — don\'t push it away.','Breathe and observe it like a scientist watching data.','Notice at 90 seconds: is the intensity the same? Watch it moving.']
+  },
+  {
+    id:'go-against-grain', icon:'🔄', level:[5,6], free:false,
+    name:'Go Against the Grain',
+    tagline:'Act opposite to what the emotion wants',
+    source:'Opposite Action · DBT Emotion Regulation',
+    body:'Every emotion has an action urge. When that urge isn\'t serving you, doing the opposite changes the emotion — not through thinking but through action.',
+    steps:['Identify the emotion and what it wants you to do.','Shame says hide → reach out to one safe person instead.','Anxiety says avoid → approach one small piece of the fear.','Sadness says withdraw → do one activating thing, even tiny.']
+  },
+  {
+    id:'four-question-unpack', icon:'✍️', level:[5,6], free:false,
+    name:'Four-Question Unpack',
+    tagline:'Understand what just happened inside you',
+    source:'Emotion journaling · Expressive writing research',
+    body:'Five minutes of this builds more emotional self-knowledge than years of vague reflection. Write — don\'t just think it. Writing is what makes it work.',
+    steps:['Write: What triggered this feeling?','Write: What did I feel in my body?','Write: What did the feeling want me to do?','Write: What did I actually do? What do I want to do differently?']
+  },
+  {
+    id:'self-compassion-break', icon:'💙', level:[5,6], free:false,
+    name:'This Is a Human Moment',
+    tagline:'What you would give a friend — give yourself',
+    source:'Self-Compassion · Kristin Neff · Multiple RCTs',
+    body:'Research shows self-compassion reduces emotional reactivity more effectively than self-esteem building. It specifically reduces shame spirals, which amplify all distress.',
+    steps:['Place one hand on your heart.','Say: "This is a moment of pain. This is real."','Say: "Pain is part of being human. I am not alone in this."','Ask: What do I need right now? Give yourself that — as you would a friend.']
+  },
+  {
+    id:'values-compass', icon:'🧭', level:[5,6], free:false,
+    name:'Your Inner Compass',
+    tagline:'Make one choice aligned with what matters',
+    source:'Values Clarification · Acceptance & Commitment Therapy',
+    body:'Reconnecting with what genuinely matters provides context for distress. One values-aligned action reconnects you to who you actually are — even on hard days.',
+    steps:['Name one value that matters to you (honesty, care, courage, growth...).','Ask: is there one small thing I can do today that reflects this?','It doesn\'t have to fix anything. Just one small honest action.','Do it. Notice how it feels to act from who you want to be.']
+  },
+  {
+    id:'wise-center', icon:'🌙', level:[5,6], free:false,
+    name:'Your Wise Center',
+    tagline:'The calm part of you always knows',
+    source:'Wise Mind · DBT · Mindfulness practice',
+    body:'Sit between emotional mind (feels everything) and rational mind (analyzes everything). Your wise self lives between them — quieter, but truer.',
+    steps:['Close your eyes and take three slow breaths.','Ask: what does my wisest, calmest self actually know about this?','Don\'t force it. Wait for what comes quietly.','When an answer arrives — it\'s usually simpler than expected — trust it.']
+  },
 ];
+
+// Toolkit UI state
+let T = { intensity: null, feeling: null, timing: null, openSkillId: null, viewMode: 'entry' };
+// viewMode: 'entry' | 'matched' | 'library'
+// timing: 'right-now' | 'ongoing'
+
+window.toolkitSetIntensity = function(val) {
+  T.intensity = val;
+  // If both answers given, show matched skills
+  if (T.intensity !== null && T.feeling !== null) {
+    T.viewMode = 'matched'; T.openSkillId = null;
+  }
+  render();
+};
+window.toolkitSetFeeling = function(val) {
+  T.feeling = val;
+  // If intensity already set, move to timing question (step 3)
+  // unless intensity is high (8+) — skip timing, go straight to skills
+  if (T.intensity !== null && T.feeling !== null) {
+    if (T.intensity >= 8) {
+      T.timing = 'right-now';
+      T.viewMode = 'matched'; T.openSkillId = null;
+    }
+    // else wait for timing answer
+  }
+  render();
+};
+window.toolkitSetTiming = function(val) {
+  T.timing = val;
+  if (T.intensity !== null && T.feeling !== null) {
+    T.viewMode = 'matched'; T.openSkillId = null;
+  }
+  render();
+};
+window.toolkitOpenSkill = function(id) {
+  T.openSkillId = T.openSkillId === id ? null : id;
+  render();
+};
+window.toolkitShowLibrary = function() { T.viewMode = 'library'; T.openSkillId = null; render(); };
+window.toolkitReset = function() { T.intensity = null; T.feeling = null; T.timing = null; T.openSkillId = null; T.viewMode = 'entry'; render(); };
+window.toolkitDone = function(id) { toast('Skill complete 🌿'); };
+
+function getMatchedSkills() {
+  const i = T.intensity;
+  const f = T.feeling;
+  const t = T.timing; // 'right-now' | 'ongoing'
+
+  // Intensity → level bands
+  let levels = [];
+  if (i >= 8) levels = [9,10];
+  else if (i >= 6) levels = [7,8];
+  else levels = [5,6];
+
+  let matched = TOOLKIT_SKILLS.filter(s => s.level.some(l => levels.includes(l)));
+
+  // Comprehensive routing map
+  // Covers: acute distress, relationship pain, grief, shame, identity, purpose,
+  // ongoing patterns, body/health, work stress, loneliness, proactive growth
+  const routing = {
+    // ── Acute / emotional flooding ──────────────────────────────
+    'flooded':        ['physio-sigh','cold-reset','move-it-out','butterfly-hold','four-corners'],
+    'panicking':      ['physio-sigh','long-exhale','come-to-now','four-corners','safety-scan'],
+    'angry':          ['move-it-out','full-body-shake','tense-release','long-exhale','go-against-grain'],
+    'spiraling':      ['ride-the-wave','notice-thought','four-corners','ninety-seconds','look-at-evidence'],
+
+    // ── Low mood / shutdown ──────────────────────────────────────
+    'low':            ['self-compassion-break','go-against-grain','values-compass','four-question-unpack','butterfly-hold'],
+    'numb':           ['safety-scan','full-body-shake','come-to-now','four-question-unpack','easing-breath'],
+    'hopeless':       ['self-compassion-break','values-compass','ninety-seconds','go-against-grain','wise-center'],
+    'exhausted':      ['tense-release','long-exhale','self-compassion-break','four-question-unpack','values-compass'],
+
+    // ── Relationship pain ─────────────────────────────────────────
+    'conflict':       ['long-exhale','go-against-grain','look-at-evidence','notice-thought','four-question-unpack'],
+    'lonely':         ['self-compassion-break','values-compass','go-against-grain','butterfly-hold','four-question-unpack'],
+    'heartbreak':     ['self-compassion-break','ride-the-wave','tense-release','four-question-unpack','wise-center'],
+    'people':         ['long-exhale','notice-thought','look-at-evidence','go-against-grain','four-question-unpack'],
+
+    // ── Inner experience ─────────────────────────────────────────
+    'shame':          ['self-compassion-break','notice-thought','go-against-grain','wise-center','four-question-unpack'],
+    'guilt':          ['look-at-evidence','go-against-grain','four-question-unpack','self-compassion-break','wise-center'],
+    'grief':          ['ride-the-wave','self-compassion-break','tense-release','four-question-unpack','butterfly-hold'],
+    'disconnected':   ['safety-scan','come-to-now','easing-breath','values-compass','four-question-unpack'],
+
+    // ── Life and direction ────────────────────────────────────────
+    'lost':           ['values-compass','wise-center','four-question-unpack','self-compassion-break','notice-thought'],
+    'stuck':          ['values-compass','go-against-grain','four-question-unpack','look-at-evidence','wise-center'],
+    'pressure':       ['physio-sigh','four-corners','long-exhale','this-is-what-is','values-compass'],
+    'overwhelmed':    ['physio-sigh','change-channel','tense-release','four-corners','this-is-what-is'],
+
+    // ── Proactive / building ──────────────────────────────────────
+    'growing':        ['values-compass','wise-center','four-question-unpack','self-compassion-break','notice-thought'],
+    'curious':        ['four-question-unpack','values-compass','wise-center','notice-thought','look-at-evidence'],
+  };
+
+  // Ongoing pattern modifier — add deeper processing skills
+  const ongoingBoost = ['four-question-unpack','wise-center','values-compass','self-compassion-break','look-at-evidence'];
+
+  const priority = routing[f] || [];
+  const finalPriority = t === 'ongoing'
+    ? [...new Set([...ongoingBoost, ...priority])]
+    : priority;
+
+  matched.sort((a,b) => {
+    const ai = finalPriority.indexOf(a.id), bi = finalPriority.indexOf(b.id);
+    if (ai === -1 && bi === -1) return 0;
+    if (ai === -1) return 1;
+    if (bi === -1) return -1;
+    return ai - bi;
+  });
+
+  return matched.slice(0, 5);
+}
 
 // ── State ────────────────────────────────────────────────
 let S = {
@@ -559,16 +977,23 @@ function vToday() {
     // Checked in — show affirmation + suggestion
     const msg = moodObj ? moodObj.message : 'You showed up. That\'s the first step.';
     const sug = moodObj ? moodObj.suggest : null;
-    checkinBlock = `<div class="card card-glass mb-3" style="padding:1.375rem;background:var(--teal-dim);border-color:rgba(13,148,136,.3)"> <div class="flex items-center gap-1 mb-2"> <span style="font-size:1.25rem">${moodObj?moodObj.emoji:'🌿'}</span> <span style="color:var(--text-teal);font-weight:600;font-size:.875rem">Checked in today</span> </div> <p style="font-family:var(--font-display);font-style:italic;color:var(--text-1);font-size:1rem;margin-bottom:${sug?'.875rem':'0'}">${msg}</p> ${sug?`<button onclick="location.href='${sug.link}'" class="suggestion-card" style="width:100%;text-align:left;border:none">
-    <span style="font-size:1.25rem">→</span>
-    <div>
-      <div style="font-weight:600;color:var(--text-amber);font-size:.9375rem">${sug.label}</div>
-      <div class="body-sm">${sug.desc}</div>
-    </div>
-    </button>`:''} </div>`;
+    checkinBlock = `<div class="card card-glass mb-3" style="padding:1.375rem;background:var(--teal-dim);border-color:rgba(13,148,136,.3)">
+      <div class="flex items-center gap-1 mb-2">
+        <span style="font-size:1.25rem">${moodObj?moodObj.emoji:'🌿'}</span>
+        <span style="color:var(--text-teal);font-weight:600;font-size:.875rem">Checked in today</span>
+      </div>
+      <p style="font-family:var(--font-display);font-style:italic;color:var(--text-1);font-size:1rem;margin-bottom:${sug?'.875rem':'0'}">${msg}</p>
+      ${sug?`<button onclick="location.href='${sug.link}'" class="suggestion-card" style="width:100%;text-align:left;border:none">
+        <span style="font-size:1.25rem">→</span>
+        <div>
+          <div style="font-weight:600;color:var(--text-amber);font-size:.9375rem">${sug.label}</div>
+          <div class="body-sm">${sug.desc}</div>
+        </div>
+      </button>`:''}
+    </div>`;
   }
 
-  // – Streak block
+  // -- Streak block
   const streakBlock = `<div class="card card-glass mb-3" style="padding:1.25rem">
     <div class="flex items-center justify-between mb-2">
       <div>
@@ -581,19 +1006,19 @@ function vToday() {
     <p class="body-sm" style="margin-top:.625rem;color:var(--text-3)">Last 7 days</p>
   </div>`;
 
-  // – Today’s focus (rotating daily tip)
+  // -- Today's focus (rotating daily tip)
   const tips = [
-    { icon:'🧠', title:'Notice without judgment', body:'When a feeling arises today, try naming it without labeling it as good or bad. “I notice I feel anxious” — not “I shouldn\'t feel this way.”' },
+    { icon:'🧠', title:'Notice without judgment', body:'When a feeling arises today, try naming it without labeling it as good or bad. "I notice I feel anxious" — not "I shouldn\'t feel this way."' },
     { icon:'💨', title:'One conscious breath', body:'Before any transition today — entering a room, starting a task — take one slow breath. You don\'t need three minutes. One counts.' },
     { icon:'🪞', title:'What triggered you?', body:'Think of a moment recently when you felt a strong emotion. What happened just before? Identifying triggers builds awareness over time.' },
-    { icon:'🤝', title:'Validate yourself', body:'Tell yourself: “It makes sense I feel this way, given what I\'ve been through.” Not as permission to stay stuck — just acknowledgment.' },
+    { icon:'🤝', title:'Validate yourself', body:'Tell yourself: "It makes sense I feel this way, given what I\'ve been through." Not as permission to stay stuck — just acknowledgment.' },
     { icon:'🌊', title:'Urge surfing', body:'When an uncomfortable feeling peaks, imagine riding it like a wave. It will crest and fade. You don\'t have to act on it — just ride it.' },
     { icon:'🌿', title:'Your body right now', body:'Take 10 seconds: where do you feel tension in your body? Your jaw? Shoulders? Upper chest? Awareness alone can start releasing it.' },
     { icon:'✍️', title:'Two-minute reflection', body:'Write one sentence about how you\'re feeling and one sentence about what you want from today. That\'s all. Two sentences can shift your whole morning.' },
   ];
   const tip = tips[new Date().getDay() % tips.length];
   const focusBlock = `<div class="card card-glass mb-3" style="padding:1.375rem">
-    <div class="section-label">Today’s focus</div>
+    <div class="section-label">Today's focus</div>
     <div class="flex items-center gap-1 mb-2">
       <span style="font-size:1.375rem">${tip.icon}</span>
       <span style="font-family:var(--font-display);font-size:1.0625rem;color:var(--text-1)">${tip.title}</span>
@@ -601,15 +1026,45 @@ function vToday() {
     <p class="body-md">${tip.body}</p>
   </div>`;
 
-  // – Continue course
+  // -- Continue course
   const startedTrack = TRACKS.find(t => t.courses.some(c => S.coursesStarted.includes(c.id)));
   let continueBlock = '';
   if (startedTrack) {
     const lastCourse = startedTrack.courses.find(c=>S.coursesStarted.includes(c.id));
-    continueBlock = `<button onclick="location.href='${lastCourse.link||'#'}'" class="card" style="width:100%;padding:1.125rem 1.25rem;background:linear-gradient(135deg,${startedTrack.color}20,${startedTrack.color}0a);border:1px solid ${startedTrack.color}40;text-align:left;margin-bottom:1.5rem"> <div class="flex items-center gap-2"> <div class="track-icon" style="background:${startedTrack.color}30;width:2.5rem;height:2.5rem"> <div style="width:1.25rem;height:1.25rem;color:${startedTrack.color}">${startedTrack.icon}</div> </div> <div style="flex:1"> <div class="section-label" style="margin-bottom:.125rem">Continue</div> <div style="font-weight:600;color:var(--text-1);font-size:.9375rem">${lastCourse.title}</div> </div> <svg style="width:1rem;height:1rem;color:var(--text-3)" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg> </div> </button>`;
+    continueBlock = `<button onclick="location.href='${lastCourse.link||'#'}'" class="card" style="width:100%;padding:1.125rem 1.25rem;background:linear-gradient(135deg,${startedTrack.color}20,${startedTrack.color}0a);border:1px solid ${startedTrack.color}40;text-align:left;margin-bottom:1.5rem">
+      <div class="flex items-center gap-2">
+        <div class="track-icon" style="background:${startedTrack.color}30;width:2.5rem;height:2.5rem">
+          <div style="width:1.25rem;height:1.25rem;color:${startedTrack.color}">${startedTrack.icon}</div>
+        </div>
+        <div style="flex:1">
+          <div class="section-label" style="margin-bottom:.125rem">Continue</div>
+          <div style="font-weight:600;color:var(--text-1);font-size:.9375rem">${lastCourse.title}</div>
+        </div>
+        <svg style="width:1rem;height:1rem;color:var(--text-3)" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+      </div>
+    </button>`;
   }
 
-  return ` <div class="flex items-center justify-between mb-4"> <div> <p class="body-sm" style="color:var(--text-3);margin-bottom:.25rem">${today}</p> <h1 class="title-xl">${greeting}<em>.</em></h1> </div> ${S.streak>0?`<div style="text-align:center;background:var(--amber-dim);border:1px solid rgba(217,119,6,.3);border-radius:var(--radius-lg);padding:.625rem .875rem"><div style="font-size:1.125rem">${S.streak>=7?'🔥':'⚡'}</div><div style="font-size:.6875rem;font-weight:700;color:var(--text-amber);margin-top:.125rem">${S.streak}d</div></div>`:''} </div> ${checkinBlock} ${focusBlock} ${continueBlock} ${streakBlock} <div style="text-align:center;padding:1rem 0"> <button onclick="go('learn')" class="btn btn-ghost" style="font-size:.875rem">Explore all tracks →</button> </div>`;
+  // -- Retention banners
+  const reengBanner   = reengagementBanner();
+  const newContentBnr = newContentBanner();
+  const pushBnr       = pushPromptBanner();
+
+  return `
+    <div class="flex items-center justify-between mb-4">
+      <div>
+        <p class="body-sm" style="color:var(--text-3);margin-bottom:.25rem">${today}</p>
+        <h1 class="title-xl">${greeting}<em>.</em></h1>
+      </div>
+      ${S.streak>0?`<div style="text-align:center;background:var(--amber-dim);border:1px solid rgba(217,119,6,.3);border-radius:var(--radius-lg);padding:.625rem .875rem"><div style="font-size:1.125rem">${S.streak>=7?'🔥':'⚡'}</div><div style="font-size:.6875rem;font-weight:700;color:var(--text-amber);margin-top:.125rem">${S.streak}d</div></div>`:''}
+    </div>
+    ${reengBanner}${newContentBnr}${pushBnr}${checkinBlock}
+    ${focusBlock}
+    ${continueBlock}
+    ${streakBlock}
+    <div style="text-align:center;padding:1rem 0">
+      <button onclick="go('learn')" class="btn btn-ghost" style="font-size:.875rem">Explore all tracks →</button>
+    </div>`;
 }
 
 // ── LEARN tab ──────────────────────────────────────────────
@@ -619,7 +1074,14 @@ function vLearn() {
     const mods = t.courses.map(c => {
       const done = S.coursesStarted.includes(c.id);
       const locked = c.locked && !S.isPro;
-      return `<div class="module-row" onclick="${locked?`toast('Unlock with MPHaven Pro 🔑')`:c.link&&c.link!=='#'?`location.href='${c.link}'`:`toast('Coming soon ✨')`}"> <div class="module-dot ${done?'done':locked?'locked':'active'}"></div> <div style="flex:1"> <div style="font-size:.875rem;font-weight:500;color:${locked?'var(--text-3)':'var(--text-1)'};">${c.title}</div> <div style="font-size:.75rem;color:var(--text-3);margin-top:.125rem">${c.desc}</div> </div> ${locked?`<div class="lock-badge">🔒 Pro</div>`:doneCount>0&&done?`<svg style="width:.875rem;height:.875rem;color:var(--teal)" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>`:''} </div>`;
+      return `<div class="module-row" onclick="${locked?`toast('Unlock with MPHaven Pro 🔑')`:c.link&&c.link!=='#'?`location.href='${c.link}'`:`toast('Coming soon ✨')`}">
+        <div class="module-dot ${done?'done':locked?'locked':'active'}"></div>
+        <div style="flex:1">
+          <div style="font-size:.875rem;font-weight:500;color:${locked?'var(--text-3)':'var(--text-1)'};">${c.title}</div>
+          <div style="font-size:.75rem;color:var(--text-3);margin-top:.125rem">${c.desc}</div>
+        </div>
+        ${locked?`<div class="lock-badge">🔒 Pro</div>`:doneCount>0&&done?`<svg style="width:.875rem;height:.875rem;color:var(--teal)" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>`:''}
+      </div>`;
     }).join('');
 
     return `<div class="track-card mb-3">
@@ -637,50 +1099,295 @@ function vLearn() {
     </div>`;
   }).join('');
 
-  return ` <div class="flex items-center justify-between mb-4"> <div> <h1 class="title-xl">Learn<em>.</em></h1> <p class="body-sm" style="margin-top:.25rem">Your growth curriculum</p> </div> </div> ${!S.isPro?`<div style="background:linear-gradient(135deg,rgba(217,119,6,.12),rgba(13,148,136,.08));border:1px solid rgba(217,119,6,.25);border-radius:var(--radius-xl);padding:1.25rem;margin-bottom:1.5rem">
-    <div class="flex items-center gap-2 mb-2">
-      <span style="font-size:1.25rem">✨</span>
-      <span style="font-family:var(--font-display);font-size:1.0625rem;color:var(--text-amber)">Unlock MPHaven Pro</span>
+  return `
+    <div class="flex items-center justify-between mb-4">
+      <div>
+        <h1 class="title-xl">Learn<em>.</em></h1>
+        <p class="body-sm" style="margin-top:.25rem">Your growth curriculum</p>
+      </div>
     </div>
-    <p class="body-sm" style="margin-bottom:.875rem">All tracks, all tools, unlimited journaling. Less than one therapy copay per month.</p>
-    <button class="btn btn-primary" style="font-size:.875rem;padding:.75rem 1.25rem" onclick="toast('Pro coming soon! 🚀')">$9.99/month — Get full access</button>
-  </div>`:''} ${trackCards}`;
+    ${!S.isPro?`<div style="background:linear-gradient(135deg,rgba(217,119,6,.12),rgba(13,148,136,.08));border:1px solid rgba(217,119,6,.25);border-radius:var(--radius-xl);padding:1.25rem;margin-bottom:1.5rem">
+      <div class="flex items-center gap-2 mb-2">
+        <span style="font-size:1.25rem">✨</span>
+        <span style="font-family:var(--font-display);font-size:1.0625rem;color:var(--text-amber)">Unlock MPHaven Pro</span>
+      </div>
+      <p class="body-sm" style="margin-bottom:.875rem">All tracks, all tools, unlimited journaling. Less than one therapy copay per month.</p>
+      <button class="btn btn-primary" style="font-size:.875rem;padding:.75rem 1.25rem" onclick="toast('Pro coming soon! 🚀')">$9.99/month — Get full access</button>
+    </div>`:''}
+    ${trackCards}`;
 }
 
 // ── TOOLS tab ─────────────────────────────────────────────
-function vTools() {
-  const toolPills = QUICK_TOOLS.map(t=>` <button class="tool-pill w-full mb-2" onclick="${t.id==='breath'?`go('today');startBreath()`:`location.href='${t.link}'`}"> <span style="font-size:1.5rem;width:2.25rem;text-align:center">${t.icon}</span> <div style="flex:1;text-align:left"> <div style="font-weight:600;color:var(--text-1);font-size:.9375rem">${t.title}</div> <div class="body-sm">${t.desc}</div> </div> <svg style="width:.875rem;height:.875rem;color:var(--text-3)" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg> </button>`).join('');
+function skillCardHTML(sk) {
+  const open = T.openSkillId === sk.id;
+  const locked = !sk.free && !S.isPro;
+  const borderColor = locked ? 'var(--border)' : open ? 'rgba(13,148,136,.45)' : 'var(--border)';
+  const bg = open ? 'rgba(13,148,136,0.07)' : 'var(--bg-glass)';
 
-  const breathSection = S.breathActive ? ` <div class="card card-glass mb-3" style="padding:1.5rem;text-align:center"> <div class="orb" id="breathOrb"></div> <div style="color:var(--text-teal);font-weight:600;font-size:1.125rem;margin-bottom:1rem;min-height:1.5rem" id="breathTxt">Get ready…</div> <button class="btn btn-ghost" onclick="stopBreath()">Finish early</button> </div>` : '';
+  const steps = sk.steps.map((step, i) => `
+    <div style="display:flex;gap:.625rem;margin-bottom:.5rem;align-items:flex-start">
+      <div style="min-width:1.375rem;height:1.375rem;border-radius:50%;background:rgba(13,148,136,0.2);border:1px solid rgba(13,148,136,0.4);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.05rem">
+        <span style="font-size:.625rem;font-weight:700;color:var(--text-teal)">${i+1}</span>
+      </div>
+      <p style="font-size:.8125rem;color:var(--text-2);line-height:1.55;margin:0">${step}</p>
+    </div>`).join('');
 
   return `
-    <div class="mb-4">
-      <h1 class="title-xl">Tools<em>.</em></h1>
-      <p class="body-sm" style="margin-top:.25rem">Quick access, any time you need</p>
-    </div>
-    ${breathSection}
-    <div class="section-label">Right now</div>
-    ${toolPills}
-    <div class="section-label mt-3">Grounding practice</div>
-    <div class="card card-glass" style="padding:1.375rem;margin-bottom:1rem">
-      <div style="font-family:var(--font-display);font-size:1.0625rem;color:var(--text-1);margin-bottom:.625rem">5 things you can see</div>
-      <p class="body-sm">Look around and name 5 things. Then 4 you can touch. 3 you can hear. 2 you can smell. 1 you can taste. Your nervous system will slow down.</p>
-      <button class="btn btn-ghost" style="margin-top:1rem;font-size:.875rem" onclick="toast('Grounding logged 🪨')">I did this</button>
-    </div>
-    <div class="section-label mt-3">Body scan</div>
-    <div class="card card-glass" style="padding:1.375rem;margin-bottom:1rem">
-      <div style="font-family:var(--font-display);font-size:1.0625rem;color:var(--text-1);margin-bottom:.625rem">Where are you holding tension?</div>
-      <p class="body-sm">Start at the top of your head. Slowly move your attention down. Jaw, neck, shoulders, chest, belly. Don't try to fix anything — just notice.</p>
-      <button class="btn btn-ghost" style="margin-top:1rem;font-size:.875rem" onclick="toast('Body scan complete 🌿')">I did this</button>
-    </div>
-    <div style="background:var(--rose-dim);border:1px solid rgba(225,29,72,.2);border-radius:var(--radius-xl);padding:1.25rem;margin-top:1.5rem">
-      <div class="flex items-center gap-1 mb-2">
-        <span>🛡️</span>
-        <span style="font-weight:600;color:#fca5a5;font-size:.9375rem">Always here for you</span>
+    <div style="background:${bg};border:1px solid ${borderColor};border-radius:var(--radius-lg);margin-bottom:.625rem;overflow:hidden;transition:all .2s">
+      <div onclick="${locked ? `toast('Unlock with MPHaven Pro 🔑')` : `toolkitOpenSkill('${sk.id}')`}"
+           style="padding:.875rem 1rem;display:flex;align-items:center;gap:.75rem;cursor:pointer">
+        <div style="font-size:1.25rem;width:2.25rem;height:2.25rem;border-radius:.625rem;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;flex-shrink:0">${sk.icon}</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:.9375rem;font-weight:600;color:${locked?'var(--text-3)':'var(--text-1)'};margin-bottom:.125rem">${sk.name}</div>
+          <div style="font-size:.75rem;color:var(--text-3)">${sk.tagline}</div>
+        </div>
+        ${locked
+          ? `<div class="lock-badge">🔒 Pro</div>`
+          : `<svg style="width:.875rem;height:.875rem;color:var(--text-3);transition:transform .2s;transform:rotate(${open?'180deg':'0deg'})" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>`
+        }
       </div>
-      <p class="body-sm" style="margin-bottom:.875rem">If things feel unmanageable, the Crisis Toolkit is always free — no subscription needed.</p>
-      <button class="btn" style="background:rgba(225,29,72,.2);border:1.5px solid rgba(225,29,72,.35);color:#fca5a5;font-size:.875rem;padding:.75rem 1.25rem" onclick="location.href='crisis-intro.html'">Open Crisis Toolkit</button>
+      ${open && !locked ? `
+      <div style="padding:0 1rem 1rem;border-top:1px solid rgba(255,255,255,0.06)">
+        <p style="font-size:.8125rem;color:var(--text-2);line-height:1.6;margin:.875rem 0 .75rem">${sk.body}</p>
+        <div style="font-size:.625rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-3);margin-bottom:.625rem">How to do it</div>
+        ${steps}
+        <div style="display:flex;gap:.5rem;margin-top:.875rem;flex-wrap:wrap">
+          <button onclick="toolkitDone('${sk.id}')" class="btn btn-ghost" style="font-size:.8125rem;padding:.625rem 1rem">I did this ✓</button>
+          <div style="display:inline-flex;align-items:center;gap:.3rem;padding:.25rem .625rem;border-radius:var(--radius-full);background:rgba(100,116,139,.12);border:1px solid rgba(100,116,139,.2);font-size:.6rem;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em">${sk.source}</div>
+        </div>
+      </div>` : ''}
     </div>`;
+}
+
+function vToolsEntry() {
+  // Step shown depends on what's been answered
+  const step = T.intensity === null ? 1 : T.feeling === null ? 2 : 3;
+
+  // ── Step 1 — Intensity ───────────────────────────────────────
+  const intensityBtns = [1,2,3,4,5,6,7,8,9,10].map(n => {
+    const sel = T.intensity === n;
+    const color = n >= 8 ? '#e11d48' : n >= 6 ? '#d97706' : n >= 4 ? '#6366f1' : '#10b981';
+    const label = n===1?'Fine':n===3?'A bit off':n===5?'Struggling':n===7?'Hard':n===10?'Crisis':'';
+    return `<div style="display:flex;flex-direction:column;align-items:center;gap:.25rem;flex:1">
+      <button onclick="toolkitSetIntensity(${n})"
+        style="width:100%;padding:.625rem .125rem;border-radius:.5rem;border:1.5px solid ${sel?color:'var(--border)'};background:${sel?color+'22':'transparent'};color:${sel?color:'var(--text-3)'};font-weight:700;font-size:.9375rem;cursor:pointer;transition:all .15s">${n}</button>
+      ${label?`<span style="font-size:.5rem;color:${sel?color:'var(--text-3)'};font-weight:600;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap">${label}</span>`:'<span style="font-size:.5rem">&nbsp;</span>'}
+    </div>`;
+  }).join('');
+
+  // ── Step 2 — What's going on ─────────────────────────────────
+  // 8 options covering the full range of human difficulty
+  // Language matches how people actually describe their experience
+  const situations = [
+    { id:'flooded',      emoji:'🌊', line1:'Intense feelings',   line2:'flooded, can\u2019t think' },
+    { id:'spiraling',    emoji:'🌪️', line1:'Mind won\u2019t stop',   line2:'racing, overthinking' },
+    { id:'low',          emoji:'🌑', line1:'Low or heavy',       line2:'sad, empty, flat' },
+    { id:'angry',        emoji:'🔥', line1:'Angry or reactive',  line2:'frustrated, fired up' },
+    { id:'people',       emoji:'💔', line1:'Someone or something', line2:'conflict, hurt, alone' },
+    { id:'lost',         emoji:'🧭', line1:'Lost or stuck',      line2:'no direction, trapped' },
+    { id:'pressure',     emoji:'⚡', line1:'Pressure or stress', line2:'too much, can’t cope' },
+    { id:'growing',      emoji:'🌱', line1:'Doing okay',         line2:'want to build something' },
+  ];
+
+  const sitBtns = situations.map(s => {
+    const sel = T.feeling === s.id;
+    return `<button onclick="toolkitSetFeeling('${s.id}')"
+      style="padding:.75rem .5rem;border-radius:var(--radius-md);border:1px solid ${sel?'rgba(13,148,136,.5)':'var(--border)'};background:${sel?'var(--teal-dim)':'var(--bg-glass)'};cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:.3rem;text-align:center">
+      <span style="font-size:1.375rem;line-height:1">${s.emoji}</span>
+      <span style="font-size:.6875rem;font-weight:700;color:${sel?'var(--text-teal)':'var(--text-1)'};line-height:1.2">${s.line1}</span>
+      <span style="font-size:.625rem;color:${sel?'rgba(94,234,212,.7)':'var(--text-3)'};line-height:1.2">${s.line2}</span>
+    </button>`;
+  }).join('');
+
+  // ── Step 3 — Timing (only if intensity < 8) ──────────────────
+  const selRN = T.timing === 'right-now';
+  const selOP = T.timing === 'ongoing';
+  const timingBtns = [
+    `<button onclick="toolkitSetTiming('right-now')"
+      style="flex:1;padding:1rem .875rem;border-radius:var(--radius-lg);border:1.5px solid ${selRN?'rgba(13,148,136,.5)':'var(--border)'};background:${selRN?'var(--teal-dim)':'var(--bg-glass)'};cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:.375rem;text-align:center">
+      <span style="font-size:1.375rem">⚡</span>
+      <span style="font-size:.9375rem;font-weight:600;color:${selRN?'var(--text-teal)':'var(--text-1)'}">Right now</span>
+      <span style="font-size:.75rem;color:${selRN?'rgba(94,234,212,.7)':'var(--text-3)'}">This came up today</span>
+    </button>`,
+    `<button onclick="toolkitSetTiming('ongoing')"
+      style="flex:1;padding:1rem .875rem;border-radius:var(--radius-lg);border:1.5px solid ${selOP?'rgba(13,148,136,.5)':'var(--border)'};background:${selOP?'var(--teal-dim)':'var(--bg-glass)'};cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:.375rem;text-align:center">
+      <span style="font-size:1.375rem">🔁</span>
+      <span style="font-size:.9375rem;font-weight:600;color:${selOP?'var(--text-teal)':'var(--text-1)'}">Ongoing pattern</span>
+      <span style="font-size:.75rem;color:${selOP?'rgba(94,234,212,.7)':'var(--text-3)'}">This keeps coming back</span>
+    </button>`
+  ].join('');
+
+  // ── Progress dots ────────────────────────────────────────────
+  const dots = [1,2,3].map(n => {
+    const active = n === step;
+    const done   = n < step;
+    return `<div style="width:${active?'1.5rem':'.5rem'};height:.375rem;border-radius:3px;background:${done?'var(--teal)':active?'var(--amber)':'var(--border)'};transition:all .3s"></div>`;
+  }).join('');
+
+  // ── Labels per step ──────────────────────────────────────────
+  const stepLabel = step===1 ? 'How intense is it right now?' : step===2 ? 'What’s going on?' : 'Is this new or recurring?';
+  const stepSub   = step===1 ? '1 = calm and fine  ·  10 = can’t cope' : step===2 ? 'Pick the one that feels closest' : 'This helps us choose the right depth';
+
+  return `
+    <div class="mb-3">
+      <h1 class="title-xl">Tools<em>.</em></h1>
+      <p class="body-sm" style="margin-top:.25rem">Skills matched to what you're going through</p>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1.25rem">
+      <div style="display:flex;gap:.375rem;align-items:center">${dots}</div>
+      <div>
+        <div style="font-size:.875rem;font-weight:600;color:var(--text-1)">${stepLabel}</div>
+        <div style="font-size:.75rem;color:var(--text-3)">${stepSub}</div>
+      </div>
+    </div>
+
+    ${step === 1 ? `
+    <div class="card card-glass" style="padding:1.125rem;margin-bottom:1.25rem">
+      <div style="display:flex;gap:.25rem;align-items:flex-end">${intensityBtns}</div>
+    </div>` : ''}
+
+    ${step >= 2 ? `
+    <div class="card card-glass" style="padding:1rem;margin-bottom:.75rem;${step===2?'':'opacity:.5'}">
+      <div style="font-size:.625rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-3);margin-bottom:.75rem">
+        Intensity: <span style="color:var(--text-amber)">${T.intensity}/10</span>
+        <button onclick="T.intensity=null;T.feeling=null;T.timing=null;render()" style="float:right;background:none;border:none;color:var(--text-3);font-size:.75rem;cursor:pointer">change</button>
+      </div>
+      ${step===2 ? `<div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem">${sitBtns}</div>` : `
+      <div style="font-size:.8125rem;color:var(--text-2)">
+        ${situations.find(s=>s.id===T.feeling)?.emoji} ${situations.find(s=>s.id===T.feeling)?.line1}
+        <button onclick="T.feeling=null;T.timing=null;render()" style="float:right;background:none;border:none;color:var(--text-3);font-size:.75rem;cursor:pointer">change</button>
+      </div>`}
+    </div>` : ''}
+
+    ${step === 3 ? `
+    <div class="card card-glass" style="padding:1rem;margin-bottom:1.25rem">
+      <div style="display:flex;gap:.625rem">${timingBtns}</div>
+    </div>` : ''}
+
+    <div style="background:var(--rose-dim);border:1px solid rgba(225,29,72,.2);border-radius:var(--radius-lg);padding:.875rem 1rem;margin-bottom:1rem;display:flex;align-items:center;gap:.75rem">
+      <span style="font-size:1rem;flex-shrink:0">🛡️</span>
+      <div style="flex:1">
+        <div style="font-size:.8125rem;font-weight:600;color:#fca5a5">Crisis Toolkit — always free</div>
+        <div style="font-size:.75rem;color:var(--text-3)">If things feel unsafe, this is always here</div>
+      </div>
+      <button onclick="location.href='crisis-intro.html'" style="background:rgba(225,29,72,.2);border:1px solid rgba(225,29,72,.3);border-radius:var(--radius-md);padding:.375rem .625rem;color:#fca5a5;font-size:.75rem;cursor:pointer;white-space:nowrap">Open →</button>
+    </div>
+
+    <div style="text-align:center;padding:.5rem 0">
+      <button onclick="toolkitShowLibrary()" style="background:none;border:none;color:var(--text-3);font-size:.8125rem;cursor:pointer;text-decoration:underline;text-underline-offset:3px">Browse all ${TOOLKIT_SKILLS.length} skills →</button>
+    </div>`;
+}
+
+function vToolsMatched() {
+  const matched = getMatchedSkills();
+  const i = T.intensity;
+  const feelingLabels = {
+    'flooded':'Intense feelings','spiraling':'Mind racing','low':'Low or heavy',
+    'angry':'Angry or reactive','people':'Relationship pain','lost':'Lost or stuck',
+    'pressure':'Under pressure','growing':'Building & growing','panicking':'Panicking',
+    'numb':'Feeling numb','hopeless':'Hopeless','exhausted':'Exhausted',
+    'conflict':'In conflict','lonely':'Feeling lonely','heartbreak':'Heartbreak',
+    'shame':'Carrying shame','guilt':'Feeling guilt','grief':'Grieving',
+    'disconnected':'Disconnected','stuck':'Feeling stuck','overwhelmed':'Overwhelmed',
+    'curious':'Curious'
+  };
+  const levelLabel = i >= 8 ? 'Body-First — Thinking Is Hard Right Now' : i >= 6 ? 'Body + Simple Structure' : 'Full Thinking Available';
+  const levelColor = i >= 8 ? '#e11d48' : i >= 6 ? '#d97706' : '#10b981';
+  const freeCount = matched.filter(s=>s.free).length;
+  const lockedCount = matched.filter(s=>!s.free&&!S.isPro).length;
+
+  const breathBtn = `<button onclick="startBreath();go('today')" class="tool-pill w-full mb-2" style="background:rgba(13,148,136,0.1);border-color:rgba(13,148,136,0.3)">
+    <span style="font-size:1.5rem;width:2.25rem;text-align:center">🌊</span>
+    <div style="flex:1;text-align:left">
+      <div style="font-weight:600;color:var(--text-teal);font-size:.9375rem">Guided Breathing</div>
+      <div class="body-sm">4-minute centering — always free</div>
+    </div>
+  </button>`;
+
+  const skillCards = matched.map(s => skillCardHTML(s)).join('');
+
+  const proPrompt = lockedCount > 0 && !S.isPro ? `
+    <div style="background:var(--amber-dim);border:1px solid rgba(217,119,6,.3);border-radius:var(--radius-lg);padding:1rem;margin-top:.5rem;margin-bottom:1rem">
+      <div style="font-size:.875rem;font-weight:600;color:var(--text-amber);margin-bottom:.375rem">✨ ${lockedCount} more skill${lockedCount>1?'s':''} matched — unlock with Pro</div>
+      <div class="body-sm" style="margin-bottom:.75rem">Deeper tools for processing what you're going through.</div>
+      <button onclick="toast('Pro coming soon! 🚀')" class="btn btn-primary" style="font-size:.8125rem;padding:.625rem 1rem">Get MPHaven Pro</button>
+    </div>` : '';
+
+  return `
+    <div class="flex items-center justify-between mb-3">
+      <div>
+        <h1 class="title-xl">Tools<em>.</em></h1>
+        <div style="font-size:.6875rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:${levelColor};margin-top:.25rem">${levelLabel}</div>
+      </div>
+      <button onclick="toolkitReset()" style="background:var(--bg-glass);border:1px solid var(--border);border-radius:var(--radius-md);padding:.5rem .75rem;color:var(--text-3);font-size:.75rem;cursor:pointer">← Back</button>
+    </div>
+
+    <div style="background:rgba(13,148,136,0.06);border:1px solid rgba(13,148,136,0.15);border-radius:var(--radius-lg);padding:.875rem 1rem;margin-bottom:1.125rem">
+      <p style="font-size:.8125rem;color:var(--text-2);line-height:1.5">Showing skills for <strong style="color:var(--text-1)">${feelingLabels[T.feeling]||T.feeling}</strong> at intensity <strong style="color:var(--text-1)">${T.intensity}/10</strong>${T.timing==='ongoing'?' · <em style="color:var(--text-amber)">ongoing</em>':''}.  Tap any to open the guided steps.</p>
+    </div>
+
+    ${i >= 7 ? breathBtn : ''}
+    ${skillCards}
+    ${proPrompt}
+
+    <div style="margin-top:1.25rem;padding-top:1rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+      <button onclick="toolkitShowLibrary()" style="background:none;border:none;color:var(--text-3);font-size:.8125rem;cursor:pointer;text-decoration:underline">All ${TOOLKIT_SKILLS.length} skills</button>
+      <button onclick="location.href='crisis-intro.html'" style="background:none;border:none;color:#fca5a5;font-size:.8125rem;cursor:pointer">🛡️ Crisis Toolkit</button>
+    </div>`;
+}
+
+function vToolsLibrary() {
+  const freeTier = TOOLKIT_SKILLS.filter(s=>s.free);
+  const proTier  = TOOLKIT_SKILLS.filter(s=>!s.free);
+  const freeCards = freeTier.map(s=>skillCardHTML(s)).join('');
+  const proCards  = proTier.map(s=>skillCardHTML(s)).join('');
+
+  return `
+    <div class="flex items-center justify-between mb-3">
+      <div>
+        <h1 class="title-xl">Tools<em>.</em></h1>
+        <p class="body-sm" style="margin-top:.25rem">All ${TOOLKIT_SKILLS.length} skills</p>
+      </div>
+      <button onclick="toolkitReset()" style="background:var(--bg-glass);border:1px solid var(--border);border-radius:var(--radius-md);padding:.5rem .75rem;color:var(--text-3);font-size:.75rem;cursor:pointer">← Back</button>
+    </div>
+
+    <div style="display:inline-flex;align-items:center;gap:.4rem;padding:.3rem .75rem;border-radius:var(--radius-full);background:var(--emerald-dim);border:1px solid rgba(16,185,129,.3);font-size:.6875rem;font-weight:700;color:#6ee7b7;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.75rem">
+      Free — Crisis & Acute Skills
+    </div>
+    <p style="font-size:.8125rem;color:var(--text-3);margin-bottom:.875rem">Body-based. No thinking required. Always accessible.</p>
+    ${freeCards}
+
+    <div style="display:inline-flex;align-items:center;gap:.4rem;padding:.3rem .75rem;border-radius:var(--radius-full);background:var(--amber-dim);border:1px solid rgba(217,119,6,.3);font-size:.6875rem;font-weight:700;color:var(--amber-light);text-transform:uppercase;letter-spacing:.05em;margin-top:.75rem;margin-bottom:.75rem">
+      Pro — Deeper Processing Skills
+    </div>
+    <p style="font-size:.8125rem;color:var(--text-3);margin-bottom:.875rem">Cognitive and emotional processing. Available when thinking is online.</p>
+    ${proCards}
+
+    ${!S.isPro ? `<div style="background:var(--grad-subtle);border:1px solid rgba(13,148,136,.25);border-radius:var(--radius-xl);padding:1.25rem;margin-top:1rem">
+      <div style="font-family:var(--font-display);font-size:1.0625rem;color:var(--text-1);margin-bottom:.5rem">Unlock all ${proTier.length} Pro skills</div>
+      <p class="body-sm" style="margin-bottom:.875rem">The deeper tools for processing emotions, shifting patterns, and building long-term resilience.</p>
+      <button class="btn btn-primary" style="font-size:.875rem;padding:.75rem 1.25rem" onclick="toast('Pro coming soon! 🚀')">Get MPHaven Pro</button>
+    </div>` : ''}
+
+    <div style="text-align:center;margin-top:1.5rem">
+      <button onclick="location.href='crisis-intro.html'" style="background:none;border:none;color:#fca5a5;font-size:.8125rem;cursor:pointer">🛡️ Crisis Toolkit — always free</button>
+    </div>`;
+}
+
+function vTools() {
+  const breathSection = S.breathActive ? `
+    <div class="card card-glass mb-3" style="padding:1.5rem;text-align:center">
+      <div class="orb" id="breathOrb"></div>
+      <div style="color:var(--text-teal);font-weight:600;font-size:1.125rem;margin-bottom:1rem;min-height:1.5rem" id="breathTxt">Get ready…</div>
+      <button class="btn btn-ghost" onclick="stopBreath()">Finish early</button>
+    </div>` : '';
+
+  if (S.breathActive) return breathSection;
+
+  if (T.viewMode === 'matched') return vToolsMatched();
+  if (T.viewMode === 'library') return vToolsLibrary();
+  return vToolsEntry();
 }
 
 // ── YOU tab ────────────────────────────────────────────────
@@ -693,6 +1400,7 @@ function vYou() {
       <h1 class="title-xl">You<em>.</em></h1>
       <p class="body-sm" style="margin-top:.25rem">Your journey so far</p>
     </div>
+
     <div class="section-label">Your stats</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1.5rem">
       <div class="card card-glass" style="padding:1.125rem;text-align:center">
@@ -704,16 +1412,19 @@ function vYou() {
         <div class="body-sm">day streak</div>
       </div>
     </div>
+
     <div class="section-label">Last 7 days</div>
     <div class="card card-glass" style="padding:1.25rem;margin-bottom:1.5rem">
       ${streakDots()}
       <p class="body-sm" style="margin-top:.75rem;color:var(--text-3)">Each dot is a day you checked in</p>
     </div>
+
     ${!S.isPro?`<div style="background:var(--grad-subtle);border:1px solid rgba(13,148,136,.25);border-radius:var(--radius-xl);padding:1.375rem;margin-bottom:1.5rem">
       <div style="font-family:var(--font-display);font-size:1.125rem;color:var(--text-1);margin-bottom:.5rem">Unlock the full journey</div>
       <p class="body-sm" style="margin-bottom:.875rem">All 4 tracks, journaling, and everything we build next.</p>
       <button class="btn btn-primary w-full" onclick="toast('Pro coming soon! 🚀')">$9.99/mo · $74.99/yr</button>
     </div>`:''}
+
     <div class="section-label">Settings</div>
     <div class="card card-glass" style="padding:1.25rem;margin-bottom:1rem">
       <div class="flex items-center justify-between">
@@ -721,11 +1432,12 @@ function vYou() {
           <div style="font-weight:600;color:var(--text-1);font-size:.9375rem">Practice reminders</div>
           <div class="body-sm">Daily gentle nudge</div>
         </div>
-        <div style="width:2.75rem;height:1.625rem;border-radius:var(--radius-full);background:var(--border);position:relative;cursor:pointer" onclick="toast('Reminders coming soon 🔔')">
+        <div style="width:2.75rem;height:1.625rem;border-radius:var(--radius-full);background:var(--border);position:relative;cursor:pointer" onclick="pushEnabled()?toast('Reminders already on 🔔'):requestPushPermission()">
           <div style="width:1.125rem;height:1.125rem;border-radius:50%;background:white;position:absolute;top:.25rem;left:.25rem"></div>
         </div>
       </div>
     </div>
+
     <div class="card card-glass" style="padding:1.125rem;margin-bottom:1.5rem">
       <div class="flex items-center gap-1">
         <svg style="width:1.125rem;height:1.125rem;color:var(--text-teal);flex-shrink:0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
@@ -735,6 +1447,7 @@ function vYou() {
         </div>
       </div>
     </div>
+
     <div style="padding-top:1.5rem;border-top:1px solid rgba(225,29,72,.15)">
       <button class="btn btn-danger w-full" onclick="show('logoutModal')">
         <svg style="width:1rem;height:1rem" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
@@ -780,12 +1493,13 @@ document.addEventListener('DOMContentLoaded', ()=>{
     localStorage.setItem('mph_app_v', APP_V);
   }
 
+  recordOpen();
   load(); render();
 
   // Check disclaimer — accepts any version acknowledgment from old or new app
   setTimeout(()=>{
-    const ok = localStorage.getItem('mph_disc_ok') === 'true'
-      || localStorage.getItem('mphaven_disclaimer_acknowledged') === 'true';
+    const ok = localStorage.getItem('mph_disc_ok') === 'true' 
+            || localStorage.getItem('mphaven_disclaimer_acknowledged') === 'true';
     // If never acknowledged at all, redirect to disclaimer
     if (!ok) { window.location.href='disclaimer.html'; return; }
     // Already acknowledged — mark new keys so future checks pass
