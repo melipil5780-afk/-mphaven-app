@@ -796,12 +796,16 @@ case ‘you’:   el.innerHTML = vYou(); break;
 
 // ── Boot ──────────────────────────────────────────────────
 document.addEventListener(‘DOMContentLoaded’, ()=>{
-// Version migration
+// Version migration — preserve ALL safety/disclaimer keys across versions
 if (localStorage.getItem(‘mph_app_v’) !== APP_V) {
 const keep = {
-mph_disc_v: localStorage.getItem(‘mph_disc_v’) || localStorage.getItem(‘mphaven_disclaimer_version’),
-mph_disc_ok: localStorage.getItem(‘mph_disc_ok’) || localStorage.getItem(‘mphaven_disclaimer_acknowledged’),
-mph_crisis: localStorage.getItem(‘mph_crisis’) || localStorage.getItem(‘mphaven_last_crisis_check’)
+‘mph_disc_v’:  localStorage.getItem(‘mph_disc_v’)  || localStorage.getItem(‘mphaven_disclaimer_version’),
+‘mph_disc_ok’: localStorage.getItem(‘mph_disc_ok’) || localStorage.getItem(‘mphaven_disclaimer_acknowledged’),
+‘mph_crisis’:  localStorage.getItem(‘mph_crisis’)  || localStorage.getItem(‘mphaven_last_crisis_check’),
+// Preserve old keys too so old disclaimer.html still works
+‘mphaven_disclaimer_acknowledged’: localStorage.getItem(‘mphaven_disclaimer_acknowledged’),
+‘mphaven_disclaimer_version’:      localStorage.getItem(‘mphaven_disclaimer_version’),
+‘mphaven_last_crisis_check’:       localStorage.getItem(‘mphaven_last_crisis_check’),
 };
 localStorage.clear();
 Object.entries(keep).forEach(([k,v])=>{ if(v) localStorage.setItem(k,v); });
@@ -810,11 +814,15 @@ localStorage.setItem(‘mph_app_v’, APP_V);
 
 load(); render();
 
-// Check disclaimer
+// Check disclaimer — accepts any version acknowledgment from old or new app
 setTimeout(()=>{
-const ok = localStorage.getItem(‘mph_disc_ok’) || localStorage.getItem(‘mphaven_disclaimer_acknowledged’);
-const v  = localStorage.getItem(‘mph_disc_v’)  || localStorage.getItem(‘mphaven_disclaimer_version’);
-if (ok!==‘true’ || v!==DISC_V) { window.location.href=‘disclaimer.html’; return; }
+const ok = localStorage.getItem(‘mph_disc_ok’) === ‘true’
+|| localStorage.getItem(‘mphaven_disclaimer_acknowledged’) === ‘true’;
+// If never acknowledged at all, redirect to disclaimer
+if (!ok) { window.location.href=‘disclaimer.html’; return; }
+// Already acknowledged — mark new keys so future checks pass
+localStorage.setItem(‘mph_disc_ok’, ‘true’);
+localStorage.setItem(‘mph_disc_v’, DISC_V);
 
 ```
 const last = localStorage.getItem('mph_crisis') || localStorage.getItem('mphaven_last_crisis_check');
