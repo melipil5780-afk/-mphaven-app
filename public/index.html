@@ -8,19 +8,17 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="MPHaven">
     <meta name="format-detection" content="telephone=no">
-    <meta name="theme-color" content="#0f172a">
+    <meta name="theme-color" content="#0a0f1e">
     <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>❤️</text></svg>">
-    <title>MPHaven - Welcome</title>
+    <!-- Google Fonts – Fraunces & DM Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&display=swap" rel="stylesheet">
+    <title>MPHaven – Welcome</title>
     <style>
         /* ========== CRITICAL FIXES ========== */
-        
-        /* Prevent initial flash */
         body:not(.loaded) {
             visibility: hidden;
             opacity: 0;
         }
-        
-        /* Prevent iOS rubber band effect */
         html, body {
             position: fixed;
             width: 100%;
@@ -28,8 +26,6 @@
             overflow: hidden;
             -webkit-overflow-scrolling: auto !important;
         }
-        
-        /* FIX TEXT GLITCH: Prevent text collapse */
         body, .container, .content, p, span, h1, h2, h3, .tagline, .subtitle, .btn, .feature-content, .footer {
             white-space: normal !important;
             word-wrap: break-word !important;
@@ -37,41 +33,91 @@
             text-rendering: optimizeLegibility;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            letter-spacing: normal !important;
         }
-        
-        /* Ensure proper spacing */
         .tagline, .subtitle, .feature-content p, .footer p {
             line-height: 1.6 !important;
             letter-spacing: 0.01em !important;
             word-spacing: 0.05em !important;
         }
-        
-        /* ========== BASE STYLES ========== */
-        
+
+        /* ========== DESIGN TOKENS (First version's colors) ========== */
+        :root {
+            /* Backgrounds – deep navy from first design */
+            --bg-dark: #0a0f1e;
+            --bg-card: rgba(12, 18, 34, 0.97);
+            --bg-card-light: rgba(255, 255, 255, 0.04);    /* glass */
+            --bg-card-dark: rgba(10, 15, 30, 0.45);
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-softer: rgba(255, 255, 255, 0.15);
+
+            /* Primary – Teal (#0d9488) */
+            --primary-teal: #0d9488;
+            --primary-teal-dark: #0a7c6e;
+            --teal-glow: rgba(13, 148, 136, 0.35);
+
+            /* Accent – Amber (#d97706) */
+            --accent-amber: #d97706;
+            --accent-amber-dark: #b45309;
+            --amber-glow: rgba(217, 119, 6, 0.35);
+
+            /* Text colors */
+            --text-teal-light: #5eead4;
+            --text-teal: #5eead4;
+            --text-teal-dark: #0d9488;
+            --text-amber-light: #fbbf24;
+            --text-amber: #fbbf24;
+            --text-amber-dark: #d97706;
+            --success-emerald: #10b981;
+            --success-bg: rgba(16, 185, 129, 0.15);
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #475569;
+            --text-dim: #334155;
+
+            /* Blur orbs */
+            --blur-teal: rgba(13, 148, 136, 0.08);
+            --blur-amber: rgba(217, 119, 6, 0.07);
+            --blur-radius: 140px;
+
+            /* Gradients */
+            --gradient-main: linear-gradient(135deg, #0d9488, #d97706);
+            --gradient-teal-heavy: linear-gradient(to right, #0d9488 70%, #d97706);
+            --gradient-subtle: linear-gradient(135deg, rgba(13,148,136,0.12), rgba(217,119,6,0.08));
+            --gradient-success: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(5,150,105,0.08));
+
+            /* Shadows */
+            --shadow-card: 0 25px 50px -12px rgba(0, 0, 0, 0.45);
+            --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+
+            /* Fonts */
+            --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+            --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        /* ========== BASE & LAYOUT (from second version) ========== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
         }
-       
+
         @keyframes pulse-glow {
             0%, 100% { opacity: 0.2; }
             50% { opacity: 0.4; }
         }
-       
+
         @keyframes float {
             0%, 100% { transform: translateY(0px); }
             50% { transform: translateY(-20px); }
         }
-       
+
         html, body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            font-family: var(--font-body);
             overscroll-behavior: none;
             touch-action: pan-y;
         }
-       
+
         body {
             display: flex;
             align-items: center;
@@ -81,12 +127,12 @@
             opacity: 0;
             transition: opacity 0.3s ease;
         }
-       
+
         body.loaded {
             opacity: 1;
             visibility: visible;
         }
-       
+
         .container {
             width: 100%;
             max-width: 28rem;
@@ -111,15 +157,15 @@
             opacity: 0;
             transition: opacity 0.4s ease;
         }
-       
+
         body.loaded .container {
             opacity: 1;
         }
-       
+
         .container::-webkit-scrollbar {
             display: none;
         }
-       
+
         .bg-blur-1 {
             position: absolute;
             top: -10%;
@@ -133,7 +179,7 @@
             pointer-events: none;
             animation: pulse-glow 4s ease-in-out infinite;
         }
-       
+
         .bg-blur-2 {
             position: absolute;
             bottom: -10%;
@@ -145,7 +191,7 @@
             filter: blur(100px);
             pointer-events: none;
         }
-       
+
         .content {
             position: relative;
             z-index: 10;
@@ -156,12 +202,12 @@
             justify-content: center;
             min-height: min-content;
         }
-       
+
         .logo {
             text-align: center;
             margin-bottom: 2rem;
         }
-       
+
         .logo-icon {
             width: 4.5rem;
             height: 4.5rem;
@@ -174,13 +220,13 @@
             box-shadow: 0 20px 40px var(--teal-glow);
             animation: float 3s ease-in-out infinite;
         }
-       
+
         .logo-icon svg {
             width: 40px !important;
             height: 40px !important;
             color: var(--text-primary);
         }
-       
+
         h1 {
             color: var(--text-primary);
             font-size: 2.5rem;
@@ -188,32 +234,34 @@
             letter-spacing: -0.025em;
             margin-bottom: 0.5rem;
             line-height: 1.1;
+            font-family: var(--font-display);
         }
-       
+        h1 em {
+            font-style: italic;
+            color: var(--text-teal);
+        }
+
         .tagline {
             color: var(--text-secondary);
             font-size: 1rem;
             line-height: 1.6;
             margin-bottom: 0.75rem;
             word-spacing: 0.05em;
-            white-space: normal;
         }
-       
+
         .subtitle {
             color: var(--text-muted);
             font-size: 0.875rem;
             line-height: 1.6;
-            word-spacing: 0.05em;
-            white-space: normal;
         }
-       
+
         .auth-buttons {
             margin-top: 2rem;
             display: flex;
             flex-direction: column;
             gap: 0.75rem;
         }
-       
+
         .btn {
             width: 100%;
             padding: 0.875rem 1.25rem;
@@ -227,92 +275,89 @@
             align-items: center;
             justify-content: center;
             gap: 0.75rem;
-            position: relative;
-            overflow: hidden;
             min-height: 48px;
             -webkit-appearance: none;
             touch-action: manipulation;
             -webkit-touch-callout: none;
             user-select: none;
-            white-space: normal;
-            word-wrap: break-word;
+            font-family: var(--font-body);
         }
-       
+
         .btn:disabled {
             opacity: 0.6;
             cursor: not-allowed;
         }
-       
+
         .btn:active:not(:disabled) {
             transform: scale(0.98);
         }
-       
+
         .btn-primary {
-            background: linear-gradient(135deg, var(--primary-teal), var(--primary-teal-dark));
+            background: var(--gradient-main);
             color: var(--text-primary);
             box-shadow: 0 10px 25px var(--teal-glow);
         }
-       
+
         .btn-primary:hover:not(:disabled) {
             box-shadow: 0 15px 35px var(--teal-glow);
             transform: translateY(-2px);
         }
-       
+
         .btn-secondary {
             background: var(--bg-card-light);
             color: var(--text-primary);
             border: 1px solid var(--border-softer);
         }
-       
+
         .btn-secondary:hover:not(:disabled) {
             background: rgba(30, 41, 59, 0.9);
             border-color: var(--text-muted);
         }
-       
+
         .btn-google {
             background: var(--text-primary);
             color: #1f2937;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         }
-       
+
         .btn-google:hover:not(:disabled) {
             background: #f9fafb;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
             transform: translateY(-2px);
         }
-       
+
         .btn svg {
             width: 20px !important;
             height: 20px !important;
             flex-shrink: 0;
         }
-       
+
         .divider {
             display: flex;
             align-items: center;
             gap: 1rem;
             margin: 1.5rem 0;
         }
-       
+
         .divider-line {
             flex: 1;
             height: 1px;
             background: var(--border-softer);
         }
-       
+
         .divider-text {
             color: var(--text-muted);
             font-size: 0.875rem;
             font-weight: 500;
             white-space: nowrap;
         }
-       
+
         .features {
             margin-top: 2rem;
             display: grid;
             gap: 0.75rem;
         }
-       
+
         .feature {
             display: flex;
             align-items: start;
@@ -322,7 +367,7 @@
             border-radius: 1rem;
             border: 1px solid var(--border-softer);
         }
-       
+
         .feature-icon {
             width: 2.25rem;
             height: 2.25rem;
@@ -332,29 +377,38 @@
             justify-content: center;
             flex-shrink: 0;
         }
-       
+
         .feature-icon svg {
             width: 20px !important;
             height: 20px !important;
             color: var(--text-primary);
         }
-       
+
         .feature-content h3 {
             color: var(--text-primary);
             font-size: 0.8125rem;
             font-weight: 600;
             margin-bottom: 0.25rem;
-            white-space: normal;
         }
-       
+
         .feature-content p {
             color: var(--text-muted);
             font-size: 0.75rem;
             line-height: 1.6;
-            white-space: normal;
-            word-spacing: 0.05em;
         }
-       
+
+        .feature:nth-child(1) .feature-icon {
+            background: linear-gradient(135deg, var(--primary-teal), var(--primary-teal-dark));
+        }
+
+        .feature:nth-child(2) .feature-icon {
+            background: linear-gradient(135deg, var(--success-emerald), #059669);
+        }
+
+        .feature:nth-child(3) .feature-icon {
+            background: linear-gradient(135deg, var(--primary-teal), var(--accent-amber));
+        }
+
         .footer {
             text-align: center;
             padding: max(1.5rem, env(safe-area-inset-bottom)) 1.5rem 1.5rem;
@@ -362,23 +416,21 @@
             font-size: 0.75rem;
             flex-shrink: 0;
         }
-       
+
         .footer a {
             color: var(--text-teal);
             text-decoration: none;
         }
-       
+
         .footer a:hover {
             text-decoration: underline;
             color: var(--text-teal-light);
         }
-       
+
         .footer p {
             line-height: 1.6;
-            word-spacing: 0.05em;
-            white-space: normal;
         }
-       
+
         .loading-overlay {
             position: fixed;
             top: 0;
@@ -397,11 +449,11 @@
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
         }
-       
+
         .loading-overlay.show {
             display: flex;
         }
-       
+
         .loading-spinner {
             width: 3rem;
             height: 3rem;
@@ -410,117 +462,34 @@
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
-       
-        .loading-text {
-            color: var(--text-primary);
-            font-size: 1rem;
-            font-weight: 500;
-            white-space: normal;
-        }
-       
+
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-       
-        /* iOS SVG FIXES */
-        .logo-icon,
-        .feature-icon,
-        .btn svg {
-            position: relative;
-            -webkit-transform: translateZ(0);
-            transform: translateZ(0);
-            backface-visibility: hidden;
-            will-change: transform;
-        }
-       
-        /* Comfortable Theme CSS Variables */
-        :root {
-            /* Backgrounds & Neutrals */
-            --bg-dark: #0f172a;
-            --bg-card: rgba(15, 23, 42, 0.98);
-            --bg-card-light: rgba(30, 41, 59, 0.65);
-            --bg-card-dark: rgba(15, 23, 42, 0.45);
-            --border-subtle: rgba(30, 41, 59, 0.5);
-            --border-softer: rgba(51, 65, 85, 0.4);
 
-            /* Primary – Teal */
-            --primary-teal: #0e7490;
-            --primary-teal-dark: #0c627a;
-            --teal-glow: rgba(14, 116, 144, 0.25);
-
-            /* Accent – Amber */
-            --accent-amber: #d97706;
-            --accent-amber-dark: #b45309;
-            --amber-glow: rgba(217, 119, 6, 0.25);
-
-            /* Teal / Cyan text & accent shades */
-            --text-teal-light: rgb(165, 243, 252);
-            --text-teal: rgb(94, 234, 212);
-            --text-teal-dark: rgb(14, 116, 144);
-
-            /* Amber / Warm text shades */
-            --text-amber-light: rgb(253, 230, 138);
-            --text-amber: rgb(251, 191, 36);
-            --text-amber-dark: rgb(217, 119, 6);
-
-            /* Success / Positive feedback */
-            --success-emerald: rgb(74, 222, 128);
-            --success-bg: rgba(34, 197, 94, 0.12);
-
-            /* Neutral text */
-            --text-primary: rgb(241, 245, 249);
-            --text-secondary: rgb(203, 213, 225);
-            --text-muted: rgb(148, 163, 184);
-            --text-dim: rgb(100, 116, 139);
-
-            /* Blur / Glow orbs */
-            --blur-teal: rgba(14, 116, 144, 0.08);
-            --blur-amber: rgba(217, 119, 6, 0.08);
-            --blur-radius: 140px;
-            --blur-opacity: 0.6;
-
-            /* Gradients */
-            --gradient-main: linear-gradient(135deg, #0e7490, #d97706);
-            --gradient-teal-heavy: linear-gradient(to right, #0e7490 70%, #d97706);
-            --gradient-subtle: linear-gradient(135deg, rgba(14,116,144,0.15), rgba(217,119,6,0.10));
-            --gradient-success: linear-gradient(135deg, rgba(34,197,94,0.15), rgba(21,128,61,0.08));
-
-            /* Shadows & Depth */
-            --shadow-card: 0 25px 50px -12px rgba(0,0,0,0.25);
-            --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+        .loading-text {
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-weight: 500;
         }
 
-        /* Feature icon specific colors */
-        .feature:nth-child(1) .feature-icon {
-            background: linear-gradient(135deg, var(--primary-teal), var(--primary-teal-dark));
-        }
-       
-        .feature:nth-child(2) .feature-icon {
-            background: linear-gradient(135deg, var(--success-emerald), rgb(34, 197, 94));
-        }
-       
-        .feature:nth-child(3) .feature-icon {
-            background: linear-gradient(135deg, var(--primary-teal), var(--accent-amber));
-        }
-       
         .error-message {
             background: rgba(239, 68, 68, 0.2);
             border: 1px solid rgba(239, 68, 68, 0.4);
             border-radius: 1rem;
             padding: 1rem;
             margin-top: 1rem;
-            color: rgb(252, 165, 165);
+            color: #fca5a5;
             font-size: 0.875rem;
             display: none;
             line-height: 1.6;
-            white-space: normal;
         }
-       
+
         .error-message.show {
             display: block;
         }
-       
+
         @media (min-width: 640px) {
             .container {
                 height: 844px;
@@ -528,50 +497,41 @@
                 border-radius: 2.5rem;
                 margin: 20px;
             }
-           
             .content {
                 padding: 3rem 2rem;
             }
-           
             .logo-icon {
                 width: 5rem;
                 height: 5rem;
             }
-           
             .logo-icon svg {
                 width: 48px !important;
                 height: 48px !important;
             }
-           
             h1 {
                 font-size: 3rem;
             }
-           
             .tagline {
                 font-size: 1.125rem;
             }
-           
             .btn {
                 padding: 1rem 1.5rem;
                 font-size: 1rem;
             }
-           
             .btn svg {
                 width: 24px !important;
                 height: 24px !important;
             }
         }
-       
+
         @supports (-webkit-touch-callout: none) {
             body {
                 height: -webkit-fill-available;
             }
-           
             .container {
                 height: -webkit-fill-available;
                 max-height: -webkit-fill-available;
             }
-           
             .btn {
                 min-height: 44px;
             }
@@ -582,7 +542,7 @@
     <div class="container">
         <div class="bg-blur-1"></div>
         <div class="bg-blur-2"></div>
-       
+
         <div class="content">
             <div class="logo">
                 <div class="logo-icon">
@@ -592,11 +552,11 @@
                               d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
                     </svg>
                 </div>
-                <h1>MPHaven</h1>
+                <h1>MP<em>Haven</em></h1>
                 <p class="tagline">Your journey to authentic wellbeing</p>
                 <p class="subtitle">Mental health & personal growth tools designed for real life</p>
             </div>
-           
+
             <div class="auth-buttons">
                 <button class="btn btn-google" id="googleBtn">
                     <svg width="20" height="20" preserveAspectRatio="xMidYMid meet" 
@@ -608,13 +568,13 @@
                     </svg>
                     Continue with Google
                 </button>
-               
+
                 <div class="divider">
                     <div class="divider-line"></div>
                     <span class="divider-text">or</span>
                     <div class="divider-line"></div>
                 </div>
-               
+
                 <button class="btn btn-primary" id="signupBtn">
                     <svg width="20" height="20" preserveAspectRatio="xMidYMid meet" 
                          fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -623,13 +583,13 @@
                     </svg>
                     Create Account
                 </button>
-               
+
                 <button class="btn btn-secondary" id="loginBtn">
                     Already have an account? Sign In
                 </button>
                 <div class="error-message" id="errorMessage"></div>
             </div>
-           
+
             <div class="features">
                 <div class="feature">
                     <div class="feature-icon">
@@ -644,7 +604,7 @@
                         <p>Your data is encrypted and never shared</p>
                     </div>
                 </div>
-               
+
                 <div class="feature">
                     <div class="feature-icon">
                         <svg width="20" height="20" preserveAspectRatio="xMidYMid meet" 
@@ -658,7 +618,7 @@
                         <p>No credit card required, free forever</p>
                     </div>
                 </div>
-               
+
                 <div class="feature">
                     <div class="feature-icon">
                         <svg width="20" height="20" preserveAspectRatio="xMidYMid meet" 
@@ -674,121 +634,83 @@
                 </div>
             </div>
         </div>
-       
+
         <div class="footer">
             <p>By continuing, you agree to our <a href="terms.html">Terms of Service</a>, <a href="privacy.html">Privacy Policy</a></p>
             <p style="margin-top: 0.25rem; font-size: 0.7rem;">⚠️ Educational content only. Not therapy or medical treatment.</p>
         </div>
     </div>
-   
+
     <div class="loading-overlay" id="loadingOverlay">
         <div class="loading-spinner"></div>
         <div class="loading-text" id="loadingText">Loading...</div>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-   
     <script>
-        // ========== FIXED VERSION - PROPER AUTH STATE MANAGEMENT ==========
-        
-        // Prevent multiple initializations
+        // ========== ROBUST AUTH STATE MANAGEMENT (from second version) ==========
         let isInitialized = false;
         let isProcessingAuth = false;
         let loadTimer = null;
-        
-        // Device detection
+
         const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-        
-        // Supabase configuration
+
         const SUPABASE_URL = 'https://ocdwpaefmslyidelkzde.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jZHdwYWVmbXNseWlkZWxremRlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk0NjQ1OTQsImV4cCI6MjA4NTA0MDU5NH0.OAYuCQhxrmZMLI_H8OuaJvs7dKVm82gUPgGzQDUYq-Q';
-       
-        // Initialize Supabase
+
         let sbClient = null;
-       
-        // ========== UI HELPER FUNCTIONS ==========
-        
+
         function showLoading(message = 'Loading...') {
             const overlay = document.getElementById('loadingOverlay');
             const text = document.getElementById('loadingText');
             if (text) text.textContent = message;
             overlay.classList.add('show');
-            
             if (loadTimer) clearTimeout(loadTimer);
-            
-            loadTimer = setTimeout(() => {
-                hideLoading();
-            }, 15000);
+            loadTimer = setTimeout(hideLoading, 15000);
         }
-       
+
         function hideLoading() {
             const overlay = document.getElementById('loadingOverlay');
             overlay.classList.remove('show');
-            
             if (loadTimer) {
                 clearTimeout(loadTimer);
                 loadTimer = null;
             }
         }
-       
+
         function showError(message) {
             const errorDiv = document.getElementById('errorMessage');
             if (!errorDiv) return;
-            
             errorDiv.textContent = message;
             errorDiv.classList.add('show');
-            
-            setTimeout(() => {
-                errorDiv.classList.remove('show');
-            }, 5000);
+            setTimeout(() => errorDiv.classList.remove('show'), 5000);
         }
-        
-        // ========== FIX: RESET AUTH STATE ==========
-        
+
         function resetAuthState() {
             console.log('Resetting auth state...');
             isProcessingAuth = false;
-            
-            // Re-enable all buttons
-            const googleBtn = document.getElementById('googleBtn');
-            const signupBtn = document.getElementById('signupBtn');
-            const loginBtn = document.getElementById('loginBtn');
-            
-            if (googleBtn) googleBtn.disabled = false;
-            if (signupBtn) signupBtn.disabled = false;
-            if (loginBtn) loginBtn.disabled = false;
-            
+            ['googleBtn', 'signupBtn', 'loginBtn'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.disabled = false;
+            });
             hideLoading();
-            console.log('Auth state reset complete');
         }
-       
-        // ========== GOOGLE SIGN-IN ==========
-        
+
         async function handleGoogleSignIn() {
-            if (isProcessingAuth) {
-                console.log('Already processing auth, ignoring click');
-                return;
-            }
-            
-            console.log('Starting Google sign-in...');
-           
+            if (isProcessingAuth) return;
             if (!sbClient) {
                 showError('Authentication service not available. Please refresh the page.');
                 return;
             }
-           
             const googleBtn = document.getElementById('googleBtn');
             if (!googleBtn) return;
-            
-            // Disable button and set flag
+
             googleBtn.disabled = true;
             isProcessingAuth = true;
-           
             showLoading('Connecting to Google...');
-           
+
             try {
                 const redirectTo = window.location.origin + '/disclaimer.html';
-                console.log('Redirect URL:', redirectTo);
-               
                 const { data, error } = await sbClient.auth.signInWithOAuth({
                     provider: 'google',
                     options: {
@@ -796,19 +718,14 @@
                         skipBrowserRedirect: isIOS ? true : false
                     }
                 });
-                   
                 if (error) throw error;
-                
                 if (isIOS && data?.url) {
                     window.location.href = data.url;
                 }
-               
             } catch (error) {
                 console.error('Google sign-in error:', error);
-                resetAuthState(); // RESET on error
-               
+                resetAuthState();
                 let errorMessage = 'Unable to sign in with Google. ';
-               
                 if (error.message.includes('popup')) {
                     errorMessage += 'Please allow popups for this site.';
                 } else if (isIOS) {
@@ -816,85 +733,57 @@
                 } else {
                     errorMessage += error.message || 'Please try again.';
                 }
-               
                 showError(errorMessage);
             }
         }
-       
-        // ========== SIMPLE NAVIGATION ==========
-        
+
         function handleSignUp() {
             if (isProcessingAuth) return;
             isProcessingAuth = true;
-            
             const signupBtn = document.getElementById('signupBtn');
             if (signupBtn) signupBtn.disabled = true;
-            
             showLoading('Loading sign up...');
             setTimeout(() => {
                 window.location.href = 'signup.html';
             }, 300);
         }
-       
+
         function handleLogin() {
             if (isProcessingAuth) return;
             isProcessingAuth = true;
-            
             const loginBtn = document.getElementById('loginBtn');
             if (loginBtn) loginBtn.disabled = true;
-            
             showLoading('Loading login...');
             setTimeout(() => {
                 window.location.href = 'login.html';
             }, 300);
         }
-       
-        // ========== SESSION CHECK ==========
-        
+
         async function checkSession() {
             if (!sbClient) return false;
-           
             try {
                 const { data: { session }, error } = await sbClient.auth.getSession();
-               
-                if (error) {
-                    console.log('Session check error:', error);
-                    return false;
-                }
-               
+                if (error) return false;
                 if (session) {
-                    console.log('Active session found');
-                    
                     const disclaimerAcknowledged = localStorage.getItem('mphaven_disclaimer_acknowledged');
-                    
                     if (disclaimerAcknowledged === 'true') {
                         showLoading('Welcome back!');
-                        setTimeout(() => {
-                            window.location.href = 'app.html';
-                        }, 800);
+                        setTimeout(() => window.location.href = 'app.html', 800);
                     } else {
-                        setTimeout(() => {
-                            window.location.href = 'disclaimer.html';
-                        }, 800);
+                        setTimeout(() => window.location.href = 'disclaimer.html', 800);
                     }
                     return true;
                 }
-               
                 return false;
             } catch (err) {
-                console.log('Session check failed:', err);
                 return false;
             }
         }
-       
-        // ========== INITIALIZATION ==========
-        
+
         async function initializeApp() {
             if (isInitialized) return;
             isInitialized = true;
-            
-            console.log('Initializing app...');
-            
+
             try {
                 sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
                     auth: {
@@ -904,20 +793,14 @@
                         flowType: 'pkce'
                     }
                 });
-               
-                console.log('Supabase initialized');
-               
             } catch (error) {
-                console.error('Failed to initialize Supabase:', error);
                 showError('Unable to initialize authentication. Please refresh the page.');
             }
-            
-            // Setup button listeners
+
             document.getElementById('googleBtn')?.addEventListener('click', handleGoogleSignIn);
             document.getElementById('signupBtn')?.addEventListener('click', handleSignUp);
             document.getElementById('loginBtn')?.addEventListener('click', handleLogin);
-            
-            // iOS specific fixes
+
             if (isIOS) {
                 const setVH = () => {
                     const vh = window.innerHeight * 0.01;
@@ -926,60 +809,36 @@
                 setVH();
                 window.addEventListener('resize', setVH);
             }
-            
-            // Mark page as loaded
-            setTimeout(() => {
-                document.body.classList.add('loaded');
-            }, 100);
+
+            setTimeout(() => document.body.classList.add('loaded'), 100);
         }
-       
-        // ========== FIX: DETECT WHEN USER RETURNS TO PAGE ==========
-        
-        // Reset auth state when page becomes visible again (back button)
-        document.addEventListener('visibilitychange', function() {
+
+        // Reset auth when returning to page (back button, etc.)
+        document.addEventListener('visibilitychange', () => {
             if (document.visibilityState === 'visible') {
-                console.log('Page became visible - checking auth state');
                 setTimeout(() => {
-                    if (isProcessingAuth) {
-                        console.log('Auth was processing, resetting state');
-                        resetAuthState();
-                    }
+                    if (isProcessingAuth) resetAuthState();
                 }, 500);
             }
         });
-        
-        // Also handle pageshow event (Safari back button)
-        window.addEventListener('pageshow', function(event) {
-            // event.persisted means the page was cached
-            if (event.persisted) {
-                console.log('Page restored from cache - resetting auth state');
-                resetAuthState();
-            }
+
+        window.addEventListener('pageshow', (event) => {
+            if (event.persisted) resetAuthState();
         });
-        
-        // Handle focus event as backup
-        window.addEventListener('focus', function() {
-            console.log('Window focused');
+
+        window.addEventListener('focus', () => {
             setTimeout(() => {
                 if (isProcessingAuth && !document.getElementById('loadingOverlay').classList.contains('show')) {
-                    console.log('Window focused but auth stuck, resetting');
                     resetAuthState();
                 }
             }, 300);
         });
-       
-        // ========== MAIN EXECUTION ==========
-        
-        document.addEventListener('DOMContentLoaded', async function() {
-            console.log('DOM loaded');
+
+        document.addEventListener('DOMContentLoaded', async () => {
             await initializeApp();
-            
-            // Check for existing session after a brief delay
-            setTimeout(() => {
-                checkSession();
-            }, 1000);
+            setTimeout(checkSession, 1000);
         });
-       
+
         // Debug helper
         window.debugAuth = async function() {
             console.log('=== AUTH DEBUG ===');
@@ -987,27 +846,13 @@
             console.log('isProcessingAuth:', isProcessingAuth);
             console.log('Supabase client:', !!sbClient);
             console.log('Disclaimer:', localStorage.getItem('mphaven_disclaimer_acknowledged'));
-           
             if (sbClient) {
                 try {
                     const { data, error } = await sbClient.auth.getSession();
                     console.log('Session:', data, error);
-                } catch (e) {
-                    console.error('Session check failed:', e);
-                }
+                } catch (e) {}
             }
-            
-            // Show button states
-            const googleBtn = document.getElementById('googleBtn');
-            const signupBtn = document.getElementById('signupBtn');
-            const loginBtn = document.getElementById('loginBtn');
-            
-            console.log('Button states:');
-            console.log('- Google:', googleBtn?.disabled ? 'DISABLED' : 'enabled');
-            console.log('- Signup:', signupBtn?.disabled ? 'DISABLED' : 'enabled');
-            console.log('- Login:', loginBtn?.disabled ? 'DISABLED' : 'enabled');
         };
-       
     </script>
 </body>
 </html>
