@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -19,49 +18,49 @@
   --border: rgba(255,255,255,0.08);
   --border-active: rgba(255,255,255,0.15);
 
-/* Core palette — deep teal + warm amber + soft rose */
-–teal: #0d9488;
-–teal-light: #5eead4;
-–teal-dim: rgba(13,148,136,0.2);
-–amber: #d97706;
-–amber-light: #fbbf24;
-–amber-dim: rgba(217,119,6,0.18);
-–rose: #e11d48;
-–rose-dim: rgba(225,29,72,0.15);
-–indigo: #6366f1;
-–indigo-dim: rgba(99,102,241,0.18);
-–emerald: #10b981;
-–emerald-dim: rgba(16,185,129,0.15);
+  /* Core palette — deep teal + warm amber + soft rose */
+  --teal: #0d9488;
+  --teal-light: #5eead4;
+  --teal-dim: rgba(13,148,136,0.2);
+  --amber: #d97706;
+  --amber-light: #fbbf24;
+  --amber-dim: rgba(217,119,6,0.18);
+  --rose: #e11d48;
+  --rose-dim: rgba(225,29,72,0.15);
+  --indigo: #6366f1;
+  --indigo-dim: rgba(99,102,241,0.18);
+  --emerald: #10b981;
+  --emerald-dim: rgba(16,185,129,0.15);
 
-–text-1: #f1f5f9;
-–text-2: #94a3b8;
-–text-3: #475569;
-–text-teal: #5eead4;
-–text-amber: #fbbf24;
+  --text-1: #f1f5f9;
+  --text-2: #94a3b8;
+  --text-3: #475569;
+  --text-teal: #5eead4;
+  --text-amber: #fbbf24;
 
-–grad-main: linear-gradient(135deg, #0d9488, #d97706);
-–grad-subtle: linear-gradient(135deg, rgba(13,148,136,0.12), rgba(217,119,6,0.08));
-–grad-teal: linear-gradient(135deg, rgba(13,148,136,0.25), rgba(13,148,136,0.08));
+  --grad-main: linear-gradient(135deg, #0d9488, #d97706);
+  --grad-subtle: linear-gradient(135deg, rgba(13,148,136,0.12), rgba(217,119,6,0.08));
+  --grad-teal: linear-gradient(135deg, rgba(13,148,136,0.25), rgba(13,148,136,0.08));
 
-–shadow: 0 25px 50px -12px rgba(0,0,0,0.4);
-–shadow-sm: 0 4px 16px rgba(0,0,0,0.2);
+  --shadow: 0 25px 50px -12px rgba(0,0,0,0.4);
+  --shadow-sm: 0 4px 16px rgba(0,0,0,0.2);
 
-–font-display: ‘Fraunces’, Georgia, serif;
-–font-body: ‘DM Sans’, -apple-system, sans-serif;
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'DM Sans', -apple-system, sans-serif;
 
-–radius-xl: 1.5rem;
-–radius-lg: 1.125rem;
-–radius-md: .875rem;
-–radius-full: 9999px;
+  --radius-xl: 1.5rem;
+  --radius-lg: 1.125rem;
+  --radius-md: .875rem;
+  --radius-full: 9999px;
 }
 
-- { margin:0; padding:0; box-sizing:border-box; -webkit-font-smoothing:antialiased; }
-  html, body { width:100%; height:100%; overflow:hidden; position:fixed; overscroll-behavior:none; }
-  body { background:var(–bg); font-family:var(–font-body); }
+* { margin:0; padding:0; box-sizing:border-box; -webkit-font-smoothing:antialiased; }
+html, body { width:100%; height:100%; overflow:hidden; position:fixed; overscroll-behavior:none; }
+body { background:var(--bg); font-family:var(--font-body); }
 
 /* Layout */
 .shell { width:100%; height:100vh; height:100dvh; display:flex; flex-direction:column; }
-.pane { width:100%; max-width:28rem; height:100%; margin:0 auto; background:var(–bg-card); display:flex; flex-direction:column; position:relative; border-left:1px solid var(–border); border-right:1px solid var(–border); overflow:hidden; }
+.pane { width:100%; max-width:28rem; height:100%; margin:0 auto; background:var(--bg-card); display:flex; flex-direction:column; position:relative; border-left:1px solid var(--border); border-right:1px solid var(--border); overflow:hidden; }
 
 /* Atmospheric blobs */
 .blob { position:absolute; border-radius:50%; pointer-events:none; z-index:0; filter:blur(120px); transition:opacity 2s ease; }
@@ -74,41 +73,41 @@
 .pad { padding:1.5rem; padding-bottom:7rem; min-height:100%; }
 
 /* Nav */
-.nav { position:relative; z-index:100; background:var(–bg-card); border-top:1px solid var(–border); backdrop-filter:blur(24px); padding:.625rem 0; padding-bottom:calc(.625rem + env(safe-area-inset-bottom)); }
+.nav { position:relative; z-index:100; background:var(--bg-card); border-top:1px solid var(--border); backdrop-filter:blur(24px); padding:.625rem 0; padding-bottom:calc(.625rem + env(safe-area-inset-bottom)); }
 .nav-inner { display:flex; align-items:center; justify-content:space-around; }
 .nav-btn { display:flex; flex-direction:column; align-items:center; gap:.3rem; padding:.5rem 1.25rem; background:none; border:none; cursor:pointer; -webkit-tap-highlight-color:transparent; transition:opacity .15s; position:relative; }
 .nav-btn:active { opacity:.6; }
-.nav-dot { position:absolute; top:0; left:50%; transform:translateX(-50%); width:2rem; height:2.5px; border-radius:2px; background:var(–grad-main); opacity:0; transition:opacity .2s; }
+.nav-dot { position:absolute; top:0; left:50%; transform:translateX(-50%); width:2rem; height:2.5px; border-radius:2px; background:var(--grad-main); opacity:0; transition:opacity .2s; }
 .nav-dot.on { opacity:1; }
 .nav-ico { width:22px; height:22px; transition:color .2s; }
-.nav-ico.on { color:var(–text-1); }
-.nav-ico.off { color:var(–text-3); }
+.nav-ico.on { color:var(--text-1); }
+.nav-ico.off { color:var(--text-3); }
 .nav-lbl { font-size:.625rem; font-weight:600; letter-spacing:.04em; text-transform:uppercase; transition:color .2s; }
-.nav-lbl.on { color:var(–text-1); }
-.nav-lbl.off { color:var(–text-3); }
+.nav-lbl.on { color:var(--text-1); }
+.nav-lbl.off { color:var(--text-3); }
 
 /* Typography */
-.title-xl { font-family:var(–font-display); font-size:2.75rem; font-weight:400; color:var(–text-1); line-height:1.15; letter-spacing:-.02em; }
-.title-xl em { font-style:italic; color:var(–text-teal); }
-.title-md { font-family:var(–font-display); font-size:1.5rem; font-weight:400; color:var(–text-1); letter-spacing:-.01em; }
-.section-label { font-size:.6875rem; font-weight:600; color:var(–text-3); text-transform:uppercase; letter-spacing:.1em; margin-bottom:.875rem; }
-.body-md { font-size:.9375rem; color:var(–text-2); line-height:1.6; }
-.body-sm { font-size:.8125rem; color:var(–text-2); line-height:1.5; }
+.title-xl { font-family:var(--font-display); font-size:2.75rem; font-weight:400; color:var(--text-1); line-height:1.15; letter-spacing:-.02em; }
+.title-xl em { font-style:italic; color:var(--text-teal); }
+.title-md { font-family:var(--font-display); font-size:1.5rem; font-weight:400; color:var(--text-1); letter-spacing:-.01em; }
+.section-label { font-size:.6875rem; font-weight:600; color:var(--text-3); text-transform:uppercase; letter-spacing:.1em; margin-bottom:.875rem; }
+.body-md { font-size:.9375rem; color:var(--text-2); line-height:1.6; }
+.body-sm { font-size:.8125rem; color:var(--text-2); line-height:1.5; }
 
 /* Cards */
-.card { border-radius:var(–radius-xl); transition:transform .2s cubic-bezier(.4,0,.2,1), box-shadow .2s; cursor:pointer; -webkit-tap-highlight-color:transparent; }
+.card { border-radius:var(--radius-xl); transition:transform .2s cubic-bezier(.4,0,.2,1), box-shadow .2s; cursor:pointer; -webkit-tap-highlight-color:transparent; }
 .card:active { transform:scale(.97); }
-.card-glass { background:var(–bg-glass); border:1px solid var(–border); }
-.card-glass:hover { background:var(–bg-glass-hover); border-color:var(–border-active); }
+.card-glass { background:var(--bg-glass); border:1px solid var(--border); }
+.card-glass:hover { background:var(--bg-glass-hover); border-color:var(--border-active); }
 
 /* Check-in emotions */
 .mood-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:.5rem; margin:.75rem 0; }
-.mood-btn { display:flex; flex-direction:column; align-items:center; gap:.375rem; padding:.75rem .25rem; border-radius:var(–radius-md); border:1px solid var(–border); background:var(–bg-glass); cursor:pointer; -webkit-tap-highlight-color:transparent; transition:all .2s; }
+.mood-btn { display:flex; flex-direction:column; align-items:center; gap:.375rem; padding:.75rem .25rem; border-radius:var(--radius-md); border:1px solid var(--border); background:var(--bg-glass); cursor:pointer; -webkit-tap-highlight-color:transparent; transition:all .2s; }
 .mood-btn:active { transform:scale(.94); }
-.mood-btn.selected { border-color:var(–teal); background:var(–teal-dim); }
+.mood-btn.selected { border-color:var(--teal); background:var(--teal-dim); }
 .mood-emoji { font-size:1.375rem; line-height:1; }
-.mood-word { font-size:.625rem; font-weight:600; color:var(–text-3); text-transform:uppercase; letter-spacing:.03em; transition:color .2s; }
-.mood-btn.selected .mood-word { color:var(–text-teal); }
+.mood-word { font-size:.625rem; font-weight:600; color:var(--text-3); text-transform:uppercase; letter-spacing:.03em; transition:color .2s; }
+.mood-btn.selected .mood-word { color:var(--text-teal); }
 
 /* Progress ring */
 .prog-ring { position:relative; display:inline-flex; align-items:center; justify-content:center; }
@@ -116,17 +115,17 @@
 .prog-ring-inner { position:absolute; text-align:center; }
 
 /* Course track card */
-.track-card { background:var(–bg-glass); border:1px solid var(–border); border-radius:var(–radius-xl); overflow:hidden; transition:all .2s; cursor:pointer; -webkit-tap-highlight-color:transparent; }
+.track-card { background:var(--bg-glass); border:1px solid var(--border); border-radius:var(--radius-xl); overflow:hidden; transition:all .2s; cursor:pointer; -webkit-tap-highlight-color:transparent; }
 .track-card:active { transform:scale(.98); }
 .track-header { padding:1.25rem; display:flex; align-items:center; gap:1rem; }
-.track-icon { width:3rem; height:3rem; border-radius:var(–radius-md); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.track-icon { width:3rem; height:3rem; border-radius:var(--radius-md); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
 .track-icon svg, .track-icon span { width:1.5rem; height:1.5rem; font-size:1.25rem; }
 .track-modules { padding:0 1.25rem 1.25rem; display:grid; gap:.5rem; }
-.module-row { display:flex; align-items:center; gap:.75rem; padding:.625rem .875rem; border-radius:var(–radius-md); background:rgba(0,0,0,0.2); }
+.module-row { display:flex; align-items:center; gap:.75rem; padding:.625rem .875rem; border-radius:var(--radius-md); background:rgba(0,0,0,0.2); }
 .module-dot { width:.5rem; height:.5rem; border-radius:50%; flex-shrink:0; }
-.module-dot.done { background:var(–teal); }
-.module-dot.active { background:var(–amber); }
-.module-dot.locked { background:var(–text-3); }
+.module-dot.done { background:var(--teal); }
+.module-dot.active { background:var(--amber); }
+.module-dot.locked { background:var(--text-3); }
 
 /* Breath orb */
 .orb { width:130px; height:130px; border-radius:50%; background:radial-gradient(circle at 35% 35%, rgba(13,148,136,.8), rgba(217,119,6,.5)); margin:1.5rem auto; box-shadow:0 0 60px rgba(13,148,136,.3), 0 0 120px rgba(217,119,6,.15); will-change:transform,box-shadow; }
@@ -134,18 +133,18 @@
 /* Streak dots */
 .streak-row { display:flex; gap:.375rem; }
 .streak-dot { width:1.875rem; height:.375rem; border-radius:3px; transition:background .3s; }
-.streak-dot.done { background:var(–teal); }
-.streak-dot.today { background:var(–amber); }
-.streak-dot.empty { background:var(–border); }
+.streak-dot.done { background:var(--teal); }
+.streak-dot.today { background:var(--amber); }
+.streak-dot.empty { background:var(--border); }
 
 /* Toast */
-.toast { position:fixed; bottom:90px; left:50%; transform:translateX(-50%) translateY(20px); background:rgba(15,23,42,.95); border:1px solid var(–border-active); border-radius:var(–radius-md); padding:.875rem 1.25rem; color:var(–text-1); font-weight:600; font-size:.875rem; z-index:9999; opacity:0; transition:all .3s ease; backdrop-filter:blur(16px); box-shadow:var(–shadow); pointer-events:none; white-space:nowrap; }
+.toast { position:fixed; bottom:90px; left:50%; transform:translateX(-50%) translateY(20px); background:rgba(15,23,42,.95); border:1px solid var(--border-active); border-radius:var(--radius-md); padding:.875rem 1.25rem; color:var(--text-1); font-weight:600; font-size:.875rem; z-index:9999; opacity:0; transition:all .3s ease; backdrop-filter:blur(16px); box-shadow:var(--shadow); pointer-events:none; white-space:nowrap; }
 .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
 
 /* Modal overlay */
 .overlay { position:fixed; inset:0; background:rgba(0,0,0,.85); display:flex; align-items:center; justify-content:center; z-index:10000; opacity:0; visibility:hidden; transition:all .3s; backdrop-filter:blur(12px); }
 .overlay.show { opacity:1; visibility:visible; }
-.modal { background:var(–bg-card); border:1px solid var(–border); border-radius:var(–radius-xl); padding:2rem; max-width:320px; width:90%; box-shadow:var(–shadow); }
+.modal { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-xl); padding:2rem; max-width:320px; width:90%; box-shadow:var(--shadow); }
 
 /* Utility */
 .flex { display:flex; }
@@ -166,10 +165,10 @@
 .text-center { text-align:center; }
 
 /* Btn */
-.btn { display:inline-flex; align-items:center; justify-content:center; gap:.5rem; padding:.875rem 1.5rem; border-radius:var(–radius-md); font-family:var(–font-body); font-weight:600; font-size:.9375rem; cursor:pointer; -webkit-tap-highlight-color:transparent; transition:all .2s; border:none; }
+.btn { display:inline-flex; align-items:center; justify-content:center; gap:.5rem; padding:.875rem 1.5rem; border-radius:var(--radius-md); font-family:var(--font-body); font-weight:600; font-size:.9375rem; cursor:pointer; -webkit-tap-highlight-color:transparent; transition:all .2s; border:none; }
 .btn:active { transform:scale(.97); }
-.btn-primary { background:var(–grad-main); color:white; }
-.btn-ghost { background:var(–bg-glass); border:1px solid var(–border); color:var(–text-2); }
+.btn-primary { background:var(--grad-main); color:white; }
+.btn-ghost { background:var(--bg-glass); border:1px solid var(--border); color:var(--text-2); }
 .btn-danger { background:rgba(225,29,72,.15); border:1.5px solid rgba(225,29,72,.4); color:#fca5a5; }
 
 /* Fade in */
@@ -177,27 +176,26 @@
 .fade-up { animation:fadeUp .35s ease-out; }
 
 /* Check-in follow-up */
-.followup { background:var(–grad-teal); border:1px solid rgba(13,148,136,.3); border-radius:var(–radius-xl); padding:1.25rem; margin-top:1rem; }
-.followup-q { font-size:1rem; font-weight:500; color:var(–text-teal); margin-bottom:.75rem; font-family:var(–font-display); font-style:italic; }
-.followup-input { width:100%; background:rgba(0,0,0,.3); border:1px solid var(–border); border-radius:var(–radius-md); padding:.875rem 1rem; color:var(–text-1); font-family:var(–font-body); font-size:.9375rem; resize:none; outline:none; transition:border-color .2s; min-height:80px; }
-.followup-input::placeholder { color:var(–text-3); }
+.followup { background:var(--grad-teal); border:1px solid rgba(13,148,136,.3); border-radius:var(--radius-xl); padding:1.25rem; margin-top:1rem; }
+.followup-q { font-size:1rem; font-weight:500; color:var(--text-teal); margin-bottom:.75rem; font-family:var(--font-display); font-style:italic; }
+.followup-input { width:100%; background:rgba(0,0,0,.3); border:1px solid var(--border); border-radius:var(--radius-md); padding:.875rem 1rem; color:var(--text-1); font-family:var(--font-body); font-size:.9375rem; resize:none; outline:none; transition:border-color .2s; min-height:80px; }
+.followup-input::placeholder { color:var(--text-3); }
 .followup-input:focus { border-color:rgba(13,148,136,.5); }
-.suggestion-card { background:rgba(217,119,6,.1); border:1px solid rgba(217,119,6,.25); border-radius:var(–radius-lg); padding:1rem 1.25rem; margin-top:.875rem; display:flex; align-items:center; gap:.875rem; cursor:pointer; -webkit-tap-highlight-color:transparent; transition:all .2s; }
+.suggestion-card { background:rgba(217,119,6,.1); border:1px solid rgba(217,119,6,.25); border-radius:var(--radius-lg); padding:1rem 1.25rem; margin-top:.875rem; display:flex; align-items:center; gap:.875rem; cursor:pointer; -webkit-tap-highlight-color:transparent; transition:all .2s; }
 .suggestion-card:active { transform:scale(.97); }
 
 /* Tools quick access */
-.tool-pill { display:flex; align-items:center; gap:.75rem; padding:.875rem 1rem; background:var(–bg-glass); border:1px solid var(–border); border-radius:var(–radius-lg); cursor:pointer; -webkit-tap-highlight-color:transparent; transition:all .2s; }
-.tool-pill:active { transform:scale(.97); background:var(–bg-glass-hover); }
+.tool-pill { display:flex; align-items:center; gap:.75rem; padding:.875rem 1rem; background:var(--bg-glass); border:1px solid var(--border); border-radius:var(--radius-lg); cursor:pointer; -webkit-tap-highlight-color:transparent; transition:all .2s; }
+.tool-pill:active { transform:scale(.97); background:var(--bg-glass-hover); }
 
 /* Paywall lock */
-.lock-badge { display:inline-flex; align-items:center; gap:.3rem; padding:.25rem .625rem; background:rgba(217,119,6,.15); border:1px solid rgba(217,119,6,.3); border-radius:var(–radius-full); font-size:.625rem; font-weight:700; color:var(–amber-light); text-transform:uppercase; letter-spacing:.05em; }
+.lock-badge { display:inline-flex; align-items:center; gap:.3rem; padding:.25rem .625rem; background:rgba(217,119,6,.15); border:1px solid rgba(217,119,6,.3); border-radius:var(--radius-full); font-size:.625rem; font-weight:700; color:var(--amber-light); text-transform:uppercase; letter-spacing:.05em; }
 
 @media (min-width:640px) {
 .pane { border-radius:2.5rem; height:min(844px,100%); }
 .shell { padding:2rem; align-items:center; justify-content:center; }
 }
 </style>
-
 </head>
 <body>
 <div class="shell">
@@ -205,47 +203,42 @@
     <div class="blob blob-1"></div>
     <div class="blob blob-2"></div>
 
-```
-<div class="scroll" id="scroll">
-  <div id="view" class="pad fade-up"></div>
-</div>
+    <div class="scroll" id="scroll">
+      <div id="view" class="pad fade-up"></div>
+    </div>
 
-<!-- Bottom Nav (4 tabs) -->
-<nav class="nav">
-  <div class="nav-inner">
-    <button class="nav-btn" onclick="go('today')">
-      <div class="nav-dot on" id="dot-today"></div>
-      <svg class="nav-ico on" id="ico-today" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"/></svg>
-      <span class="nav-lbl on" id="lbl-today">Today</span>
-    </button>
-    <button class="nav-btn" onclick="go('learn')">
-      <div class="nav-dot" id="dot-learn"></div>
-      <svg class="nav-ico off" id="ico-learn" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/></svg>
-      <span class="nav-lbl off" id="lbl-learn">Learn</span>
-    </button>
-    <button class="nav-btn" onclick="go('tools')">
-      <div class="nav-dot" id="dot-tools"></div>
-      <svg class="nav-ico off" id="ico-tools" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437l1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008z"/></svg>
-      <span class="nav-lbl off" id="lbl-tools">Tools</span>
-    </button>
-    <button class="nav-btn" onclick="go('you')">
-      <div class="nav-dot" id="dot-you"></div>
-      <svg class="nav-ico off" id="ico-you" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>
-      <span class="nav-lbl off" id="lbl-you">You</span>
-    </button>
-  </div>
-</nav>
-```
-
+    <!-- Bottom Nav (4 tabs) -->
+    <nav class="nav">
+      <div class="nav-inner">
+        <button class="nav-btn" onclick="go('today')">
+          <div class="nav-dot on" id="dot-today"></div>
+          <svg class="nav-ico on" id="ico-today" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"/></svg>
+          <span class="nav-lbl on" id="lbl-today">Today</span>
+        </button>
+        <button class="nav-btn" onclick="go('learn')">
+          <div class="nav-dot" id="dot-learn"></div>
+          <svg class="nav-ico off" id="ico-learn" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/></svg>
+          <span class="nav-lbl off" id="lbl-learn">Learn</span>
+        </button>
+        <button class="nav-btn" onclick="go('tools')">
+          <div class="nav-dot" id="dot-tools"></div>
+          <svg class="nav-ico off" id="ico-tools" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437l1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008z"/></svg>
+          <span class="nav-lbl off" id="lbl-tools">Tools</span>
+        </button>
+        <button class="nav-btn" onclick="go('you')">
+          <div class="nav-dot" id="dot-you"></div>
+          <svg class="nav-ico off" id="ico-you" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>
+          <span class="nav-lbl off" id="lbl-you">You</span>
+        </button>
+      </div>
+    </nav>
   </div>
 </div>
 
 <!-- Toast -->
-
 <div class="toast" id="toast"></div>
 
 <!-- Logout modal -->
-
 <div class="overlay" id="logoutModal">
   <div class="modal">
     <h3 style="font-family:var(--font-display);font-size:1.375rem;font-weight:400;color:var(--text-1);margin-bottom:.5rem">Log out?</h3>
@@ -258,7 +251,6 @@
 </div>
 
 <!-- Crisis modal -->
-
 <div class="overlay" id="crisisModal" style="z-index:20000">
   <div class="modal" style="max-width:340px">
     <div style="font-size:1.5rem;margin-bottom:.75rem">🚨</div>
@@ -552,288 +544,260 @@ function vToday() {
       followup = `<div class="followup">
         <p class="followup-q">"${moodObj.q}"</p>
         <textarea class="followup-input" id="checkinNote" placeholder="Optional — just for you…">${S.todayNote||''}</textarea>
+        <p class="body-sm" style="color:var(--text-teal);margin:.625rem 0 .875rem;font-style:italic">${moodObj.message}</p>
+        <button class="btn btn-primary w-full" onclick="submitCheckin()">Save check-in</button>
+      </div>`;
+    }
 
-```
-    <p class="body-sm" style="color:var(--text-teal);margin:.625rem 0 .875rem;font-style:italic">${moodObj.message}</p>
-    <button class="btn btn-primary w-full" onclick="submitCheckin()">Save check-in</button>
-  </div>`;
-}
+    checkinBlock = `<div class="card card-glass mb-3" style="padding:1.375rem">
+      <div class="section-label">Daily check-in</div>
+      <p style="font-family:var(--font-display);font-size:1.0625rem;color:var(--text-1);margin-bottom:.125rem;font-style:italic">How are you right now?</p>
+      <div class="mood-grid">${moodBtns}</div>
+      ${followup}
+    </div>`;
+  } else {
+    // Checked in — show affirmation + suggestion
+    const msg = moodObj ? moodObj.message : 'You showed up. That\'s the first step.';
+    const sug = moodObj ? moodObj.suggest : null;
+    checkinBlock = `<div class="card card-glass mb-3" style="padding:1.375rem;background:var(--teal-dim);border-color:rgba(13,148,136,.3)"> <div class="flex items-center gap-1 mb-2"> <span style="font-size:1.25rem">${moodObj?moodObj.emoji:'🌿'}</span> <span style="color:var(--text-teal);font-weight:600;font-size:.875rem">Checked in today</span> </div> <p style="font-family:var(--font-display);font-style:italic;color:var(--text-1);font-size:1rem;margin-bottom:${sug?'.875rem':'0'}">${msg}</p> ${sug?`<button onclick="location.href='${sug.link}'" class="suggestion-card" style="width:100%;text-align:left;border:none">
+    <span style="font-size:1.25rem">→</span>
+    <div>
+      <div style="font-weight:600;color:var(--text-amber);font-size:.9375rem">${sug.label}</div>
+      <div class="body-sm">${sug.desc}</div>
+    </div>
+    </button>`:''} </div>`;
+  }
 
-checkinBlock = `<div class="card card-glass mb-3" style="padding:1.375rem">
-  <div class="section-label">Daily check-in</div>
-  <p style="font-family:var(--font-display);font-size:1.0625rem;color:var(--text-1);margin-bottom:.125rem;font-style:italic">How are you right now?</p>
-  <div class="mood-grid">${moodBtns}</div>
-  ${followup}
-</div>`;
-```
-
-} else {
-// Checked in — show affirmation + suggestion
-const msg = moodObj ? moodObj.message : ‘You showed up. That's the first step.’;
-const sug = moodObj ? moodObj.suggest : null;
-checkinBlock = `<div class="card card-glass mb-3" style="padding:1.375rem;background:var(--teal-dim);border-color:rgba(13,148,136,.3)"> <div class="flex items-center gap-1 mb-2"> <span style="font-size:1.25rem">${moodObj?moodObj.emoji:'🌿'}</span> <span style="color:var(--text-teal);font-weight:600;font-size:.875rem">Checked in today</span> </div> <p style="font-family:var(--font-display);font-style:italic;color:var(--text-1);font-size:1rem;margin-bottom:${sug?'.875rem':'0'}">${msg}</p> ${sug?`<button onclick="location.href='${sug.link}'" class="suggestion-card" style="width:100%;text-align:left;border:none">
-<span style="font-size:1.25rem">→</span>
-<div>
-<div style="font-weight:600;color:var(--text-amber);font-size:.9375rem">${sug.label}</div>
-<div class="body-sm">${sug.desc}</div>
-</div>
-</button>`:''} </div>`;
-}
-
-// – Streak block
-const streakBlock = `<div class="card card-glass mb-3" style="padding:1.25rem">
-<div class="flex items-center justify-between mb-2">
-<div>
-<div class="section-label" style="margin-bottom:.25rem">Your streak</div>
-<div style="font-family:var(--font-display);font-size:1.5rem;color:var(--text-1)">${S.streak} <span style="font-size:1rem;color:var(--text-2)">day${S.streak!==1?‘s’:’’}</span></div>
-</div>
-<span style="font-size:1.75rem">${S.streak>=7?‘🔥’:S.streak>=3?‘⚡’:‘🌱’}</span>
-</div>
-${streakDots()}
-<p class="body-sm" style="margin-top:.625rem;color:var(--text-3)">Last 7 days</p>
-
+  // – Streak block
+  const streakBlock = `<div class="card card-glass mb-3" style="padding:1.25rem">
+    <div class="flex items-center justify-between mb-2">
+      <div>
+        <div class="section-label" style="margin-bottom:.25rem">Your streak</div>
+        <div style="font-family:var(--font-display);font-size:1.5rem;color:var(--text-1)">${S.streak} <span style="font-size:1rem;color:var(--text-2)">day${S.streak!==1?'s':''}</span></div>
+      </div>
+      <span style="font-size:1.75rem">${S.streak>=7?'🔥':S.streak>=3?'⚡':'🌱'}</span>
+    </div>
+    ${streakDots()}
+    <p class="body-sm" style="margin-top:.625rem;color:var(--text-3)">Last 7 days</p>
   </div>`;
 
-// – Today’s focus (rotating daily tip)
-const tips = [
-{ icon:‘🧠’, title:‘Notice without judgment’, body:‘When a feeling arises today, try naming it without labeling it as good or bad. “I notice I feel anxious” — not “I shouldn't feel this way.”’ },
-{ icon:‘💨’, title:‘One conscious breath’, body:‘Before any transition today — entering a room, starting a task — take one slow breath. You don't need three minutes. One counts.’ },
-{ icon:‘🪞’, title:‘What triggered you?’, body:‘Think of a moment recently when you felt a strong emotion. What happened just before? Identifying triggers builds awareness over time.’ },
-{ icon:‘🤝’, title:‘Validate yourself’, body:‘Tell yourself: “It makes sense I feel this way, given what I've been through.” Not as permission to stay stuck — just acknowledgment.’ },
-{ icon:‘🌊’, title:‘Urge surfing’, body:‘When an uncomfortable feeling peaks, imagine riding it like a wave. It will crest and fade. You don't have to act on it — just ride it.’ },
-{ icon:‘🌿’, title:‘Your body right now’, body:‘Take 10 seconds: where do you feel tension in your body? Your jaw? Shoulders? Upper chest? Awareness alone can start releasing it.’ },
-{ icon:‘✍️’, title:‘Two-minute reflection’, body:‘Write one sentence about how you're feeling and one sentence about what you want from today. That's all. Two sentences can shift your whole morning.’ },
-];
-const tip = tips[new Date().getDay() % tips.length];
-const focusBlock = `<div class="card card-glass mb-3" style="padding:1.375rem">
-<div class="section-label">Today’s focus</div>
-<div class="flex items-center gap-1 mb-2">
-<span style="font-size:1.375rem">${tip.icon}</span>
-<span style="font-family:var(--font-display);font-size:1.0625rem;color:var(--text-1)">${tip.title}</span>
-</div>
-<p class="body-md">${tip.body}</p>
-
+  // – Today’s focus (rotating daily tip)
+  const tips = [
+    { icon:'🧠', title:'Notice without judgment', body:'When a feeling arises today, try naming it without labeling it as good or bad. “I notice I feel anxious” — not “I shouldn\'t feel this way.”' },
+    { icon:'💨', title:'One conscious breath', body:'Before any transition today — entering a room, starting a task — take one slow breath. You don\'t need three minutes. One counts.' },
+    { icon:'🪞', title:'What triggered you?', body:'Think of a moment recently when you felt a strong emotion. What happened just before? Identifying triggers builds awareness over time.' },
+    { icon:'🤝', title:'Validate yourself', body:'Tell yourself: “It makes sense I feel this way, given what I\'ve been through.” Not as permission to stay stuck — just acknowledgment.' },
+    { icon:'🌊', title:'Urge surfing', body:'When an uncomfortable feeling peaks, imagine riding it like a wave. It will crest and fade. You don\'t have to act on it — just ride it.' },
+    { icon:'🌿', title:'Your body right now', body:'Take 10 seconds: where do you feel tension in your body? Your jaw? Shoulders? Upper chest? Awareness alone can start releasing it.' },
+    { icon:'✍️', title:'Two-minute reflection', body:'Write one sentence about how you\'re feeling and one sentence about what you want from today. That\'s all. Two sentences can shift your whole morning.' },
+  ];
+  const tip = tips[new Date().getDay() % tips.length];
+  const focusBlock = `<div class="card card-glass mb-3" style="padding:1.375rem">
+    <div class="section-label">Today’s focus</div>
+    <div class="flex items-center gap-1 mb-2">
+      <span style="font-size:1.375rem">${tip.icon}</span>
+      <span style="font-family:var(--font-display);font-size:1.0625rem;color:var(--text-1)">${tip.title}</span>
+    </div>
+    <p class="body-md">${tip.body}</p>
   </div>`;
 
-// – Continue course
-const startedTrack = TRACKS.find(t => t.courses.some(c => S.coursesStarted.includes(c.id)));
-let continueBlock = ‘’;
-if (startedTrack) {
-const lastCourse = startedTrack.courses.find(c=>S.coursesStarted.includes(c.id));
-continueBlock = `<button onclick="location.href='${lastCourse.link||'#'}'" class="card" style="width:100%;padding:1.125rem 1.25rem;background:linear-gradient(135deg,${startedTrack.color}20,${startedTrack.color}0a);border:1px solid ${startedTrack.color}40;text-align:left;margin-bottom:1.5rem"> <div class="flex items-center gap-2"> <div class="track-icon" style="background:${startedTrack.color}30;width:2.5rem;height:2.5rem"> <div style="width:1.25rem;height:1.25rem;color:${startedTrack.color}">${startedTrack.icon}</div> </div> <div style="flex:1"> <div class="section-label" style="margin-bottom:.125rem">Continue</div> <div style="font-weight:600;color:var(--text-1);font-size:.9375rem">${lastCourse.title}</div> </div> <svg style="width:1rem;height:1rem;color:var(--text-3)" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg> </div> </button>`;
-}
+  // – Continue course
+  const startedTrack = TRACKS.find(t => t.courses.some(c => S.coursesStarted.includes(c.id)));
+  let continueBlock = '';
+  if (startedTrack) {
+    const lastCourse = startedTrack.courses.find(c=>S.coursesStarted.includes(c.id));
+    continueBlock = `<button onclick="location.href='${lastCourse.link||'#'}'" class="card" style="width:100%;padding:1.125rem 1.25rem;background:linear-gradient(135deg,${startedTrack.color}20,${startedTrack.color}0a);border:1px solid ${startedTrack.color}40;text-align:left;margin-bottom:1.5rem"> <div class="flex items-center gap-2"> <div class="track-icon" style="background:${startedTrack.color}30;width:2.5rem;height:2.5rem"> <div style="width:1.25rem;height:1.25rem;color:${startedTrack.color}">${startedTrack.icon}</div> </div> <div style="flex:1"> <div class="section-label" style="margin-bottom:.125rem">Continue</div> <div style="font-weight:600;color:var(--text-1);font-size:.9375rem">${lastCourse.title}</div> </div> <svg style="width:1rem;height:1rem;color:var(--text-3)" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg> </div> </button>`;
+  }
 
-return ` <div class="flex items-center justify-between mb-4"> <div> <p class="body-sm" style="color:var(--text-3);margin-bottom:.25rem">${today}</p> <h1 class="title-xl">${greeting}<em>.</em></h1> </div> ${S.streak>0?`<div style="text-align:center;background:var(--amber-dim);border:1px solid rgba(217,119,6,.3);border-radius:var(--radius-lg);padding:.625rem .875rem"><div style="font-size:1.125rem">${S.streak>=7?‘🔥’:‘⚡’}</div><div style="font-size:.6875rem;font-weight:700;color:var(--text-amber);margin-top:.125rem">${S.streak}d</div></div>`:''} </div> ${checkinBlock} ${focusBlock} ${continueBlock} ${streakBlock} <div style="text-align:center;padding:1rem 0"> <button onclick="go('learn')" class="btn btn-ghost" style="font-size:.875rem">Explore all tracks →</button> </div>`;
+  return ` <div class="flex items-center justify-between mb-4"> <div> <p class="body-sm" style="color:var(--text-3);margin-bottom:.25rem">${today}</p> <h1 class="title-xl">${greeting}<em>.</em></h1> </div> ${S.streak>0?`<div style="text-align:center;background:var(--amber-dim);border:1px solid rgba(217,119,6,.3);border-radius:var(--radius-lg);padding:.625rem .875rem"><div style="font-size:1.125rem">${S.streak>=7?'🔥':'⚡'}</div><div style="font-size:.6875rem;font-weight:700;color:var(--text-amber);margin-top:.125rem">${S.streak}d</div></div>`:''} </div> ${checkinBlock} ${focusBlock} ${continueBlock} ${streakBlock} <div style="text-align:center;padding:1rem 0"> <button onclick="go('learn')" class="btn btn-ghost" style="font-size:.875rem">Explore all tracks →</button> </div>`;
 }
 
 // ── LEARN tab ──────────────────────────────────────────────
 function vLearn() {
-const trackCards = TRACKS.map(t => {
-const doneCount = t.courses.filter(c=>S.coursesStarted.includes(c.id)).length;
-const mods = t.courses.map(c => {
-const done = S.coursesStarted.includes(c.id);
-const locked = c.locked && !S.isPro;
-return `<div class="module-row" onclick="${locked?`toast(‘Unlock with MPHaven Pro 🔑’)`:c.link&&c.link!=='#'?`location.href=’${c.link}’`:`toast(‘Coming soon ✨’)`}"> <div class="module-dot ${done?'done':locked?'locked':'active'}"></div> <div style="flex:1"> <div style="font-size:.875rem;font-weight:500;color:${locked?'var(--text-3)':'var(--text-1)'};">${c.title}</div> <div style="font-size:.75rem;color:var(--text-3);margin-top:.125rem">${c.desc}</div> </div> ${locked?`<div class="lock-badge">🔒 Pro</div>`:doneCount>0&&done?`<svg style="width:.875rem;height:.875rem;color:var(--teal)" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>`:''} </div>`;
-}).join(’’);
+  const trackCards = TRACKS.map(t => {
+    const doneCount = t.courses.filter(c=>S.coursesStarted.includes(c.id)).length;
+    const mods = t.courses.map(c => {
+      const done = S.coursesStarted.includes(c.id);
+      const locked = c.locked && !S.isPro;
+      return `<div class="module-row" onclick="${locked?`toast('Unlock with MPHaven Pro 🔑')`:c.link&&c.link!=='#'?`location.href='${c.link}'`:`toast('Coming soon ✨')`}"> <div class="module-dot ${done?'done':locked?'locked':'active'}"></div> <div style="flex:1"> <div style="font-size:.875rem;font-weight:500;color:${locked?'var(--text-3)':'var(--text-1)'};">${c.title}</div> <div style="font-size:.75rem;color:var(--text-3);margin-top:.125rem">${c.desc}</div> </div> ${locked?`<div class="lock-badge">🔒 Pro</div>`:doneCount>0&&done?`<svg style="width:.875rem;height:.875rem;color:var(--teal)" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>`:''} </div>`;
+    }).join('');
 
-```
-return `<div class="track-card mb-3">
-  <div class="track-header">
-    <div class="track-icon" style="background:${t.color}25;color:${t.color}">
-      ${t.icon}
+    return `<div class="track-card mb-3">
+      <div class="track-header">
+        <div class="track-icon" style="background:${t.color}25;color:${t.color}">
+          ${t.icon}
+        </div>
+        <div style="flex:1">
+          <div style="font-family:var(--font-display);font-size:1.125rem;color:var(--text-1)">${t.label}</div>
+          <div class="body-sm">${doneCount} of ${t.courses.length} started</div>
+        </div>
+        ${!t.free?`<div class="lock-badge">Pro</div>`:`<div style="display:inline-flex;align-items:center;gap:.3rem;padding:.25rem .625rem;background:var(--emerald-dim);border:1px solid rgba(16,185,129,.3);border-radius:var(--radius-full);font-size:.625rem;font-weight:700;color:#6ee7b7;text-transform:uppercase;letter-spacing:.05em">Free</div>`}
+      </div>
+      <div class="track-modules">${mods}</div>
+    </div>`;
+  }).join('');
+
+  return ` <div class="flex items-center justify-between mb-4"> <div> <h1 class="title-xl">Learn<em>.</em></h1> <p class="body-sm" style="margin-top:.25rem">Your growth curriculum</p> </div> </div> ${!S.isPro?`<div style="background:linear-gradient(135deg,rgba(217,119,6,.12),rgba(13,148,136,.08));border:1px solid rgba(217,119,6,.25);border-radius:var(--radius-xl);padding:1.25rem;margin-bottom:1.5rem">
+    <div class="flex items-center gap-2 mb-2">
+      <span style="font-size:1.25rem">✨</span>
+      <span style="font-family:var(--font-display);font-size:1.0625rem;color:var(--text-amber)">Unlock MPHaven Pro</span>
     </div>
-    <div style="flex:1">
-      <div style="font-family:var(--font-display);font-size:1.125rem;color:var(--text-1)">${t.label}</div>
-      <div class="body-sm">${doneCount} of ${t.courses.length} started</div>
-    </div>
-    ${!t.free?`<div class="lock-badge">Pro</div>`:`<div style="display:inline-flex;align-items:center;gap:.3rem;padding:.25rem .625rem;background:var(--emerald-dim);border:1px solid rgba(16,185,129,.3);border-radius:var(--radius-full);font-size:.625rem;font-weight:700;color:#6ee7b7;text-transform:uppercase;letter-spacing:.05em">Free</div>`}
-  </div>
-  <div class="track-modules">${mods}</div>
-</div>`;
-```
-
-}).join(’’);
-
-return ` <div class="flex items-center justify-between mb-4"> <div> <h1 class="title-xl">Learn<em>.</em></h1> <p class="body-sm" style="margin-top:.25rem">Your growth curriculum</p> </div> </div> ${!S.isPro?`<div style="background:linear-gradient(135deg,rgba(217,119,6,.12),rgba(13,148,136,.08));border:1px solid rgba(217,119,6,.25);border-radius:var(--radius-xl);padding:1.25rem;margin-bottom:1.5rem">
-<div class="flex items-center gap-2 mb-2">
-<span style="font-size:1.25rem">✨</span>
-<span style="font-family:var(--font-display);font-size:1.0625rem;color:var(--text-amber)">Unlock MPHaven Pro</span>
-</div>
-<p class="body-sm" style="margin-bottom:.875rem">All tracks, all tools, unlimited journaling. Less than one therapy copay per month.</p>
-<button class="btn btn-primary" style="font-size:.875rem;padding:.75rem 1.25rem" onclick="toast('Pro coming soon! 🚀')">$9.99/month — Get full access</button>
-</div>`:''} ${trackCards}`;
+    <p class="body-sm" style="margin-bottom:.875rem">All tracks, all tools, unlimited journaling. Less than one therapy copay per month.</p>
+    <button class="btn btn-primary" style="font-size:.875rem;padding:.75rem 1.25rem" onclick="toast('Pro coming soon! 🚀')">$9.99/month — Get full access</button>
+  </div>`:''} ${trackCards}`;
 }
 
 // ── TOOLS tab ─────────────────────────────────────────────
 function vTools() {
-const toolPills = QUICK_TOOLS.map(t=>` <button class="tool-pill w-full mb-2" onclick="${t.id==='breath'?`go(‘today’);startBreath()`:`location.href=’${t.link}’`}"> <span style="font-size:1.5rem;width:2.25rem;text-align:center">${t.icon}</span> <div style="flex:1;text-align:left"> <div style="font-weight:600;color:var(--text-1);font-size:.9375rem">${t.title}</div> <div class="body-sm">${t.desc}</div> </div> <svg style="width:.875rem;height:.875rem;color:var(--text-3)" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg> </button>`).join(’’);
+  const toolPills = QUICK_TOOLS.map(t=>` <button class="tool-pill w-full mb-2" onclick="${t.id==='breath'?`go('today');startBreath()`:`location.href='${t.link}'`}"> <span style="font-size:1.5rem;width:2.25rem;text-align:center">${t.icon}</span> <div style="flex:1;text-align:left"> <div style="font-weight:600;color:var(--text-1);font-size:.9375rem">${t.title}</div> <div class="body-sm">${t.desc}</div> </div> <svg style="width:.875rem;height:.875rem;color:var(--text-3)" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg> </button>`).join('');
 
-const breathSection = S.breathActive ? ` <div class="card card-glass mb-3" style="padding:1.5rem;text-align:center"> <div class="orb" id="breathOrb"></div> <div style="color:var(--text-teal);font-weight:600;font-size:1.125rem;margin-bottom:1rem;min-height:1.5rem" id="breathTxt">Get ready…</div> <button class="btn btn-ghost" onclick="stopBreath()">Finish early</button> </div>` : ‘’;
+  const breathSection = S.breathActive ? ` <div class="card card-glass mb-3" style="padding:1.5rem;text-align:center"> <div class="orb" id="breathOrb"></div> <div style="color:var(--text-teal);font-weight:600;font-size:1.125rem;margin-bottom:1rem;min-height:1.5rem" id="breathTxt">Get ready…</div> <button class="btn btn-ghost" onclick="stopBreath()">Finish early</button> </div>` : '';
 
-return `
-<div class="mb-4">
-<h1 class="title-xl">Tools<em>.</em></h1>
-<p class="body-sm" style="margin-top:.25rem">Quick access, any time you need</p>
-</div>
-${breathSection}
-<div class="section-label">Right now</div>
-${toolPills}
-
-```
-<div class="section-label mt-3">Grounding practice</div>
-<div class="card card-glass" style="padding:1.375rem;margin-bottom:1rem">
-  <div style="font-family:var(--font-display);font-size:1.0625rem;color:var(--text-1);margin-bottom:.625rem">5 things you can see</div>
-  <p class="body-sm">Look around and name 5 things. Then 4 you can touch. 3 you can hear. 2 you can smell. 1 you can taste. Your nervous system will slow down.</p>
-  <button class="btn btn-ghost" style="margin-top:1rem;font-size:.875rem" onclick="toast('Grounding logged 🪨')">I did this</button>
-</div>
-
-<div class="section-label mt-3">Body scan</div>
-<div class="card card-glass" style="padding:1.375rem;margin-bottom:1rem">
-  <div style="font-family:var(--font-display);font-size:1.0625rem;color:var(--text-1);margin-bottom:.625rem">Where are you holding tension?</div>
-  <p class="body-sm">Start at the top of your head. Slowly move your attention down. Jaw, neck, shoulders, chest, belly. Don't try to fix anything — just notice.</p>
-  <button class="btn btn-ghost" style="margin-top:1rem;font-size:.875rem" onclick="toast('Body scan complete 🌿')">I did this</button>
-</div>
-
-<div style="background:var(--rose-dim);border:1px solid rgba(225,29,72,.2);border-radius:var(--radius-xl);padding:1.25rem;margin-top:1.5rem">
-  <div class="flex items-center gap-1 mb-2">
-    <span>🛡️</span>
-    <span style="font-weight:600;color:#fca5a5;font-size:.9375rem">Always here for you</span>
-  </div>
-  <p class="body-sm" style="margin-bottom:.875rem">If things feel unmanageable, the Crisis Toolkit is always free — no subscription needed.</p>
-  <button class="btn" style="background:rgba(225,29,72,.2);border:1.5px solid rgba(225,29,72,.35);color:#fca5a5;font-size:.875rem;padding:.75rem 1.25rem" onclick="location.href='crisis-intro.html'">Open Crisis Toolkit</button>
-</div>`;
-```
-
+  return `
+    <div class="mb-4">
+      <h1 class="title-xl">Tools<em>.</em></h1>
+      <p class="body-sm" style="margin-top:.25rem">Quick access, any time you need</p>
+    </div>
+    ${breathSection}
+    <div class="section-label">Right now</div>
+    ${toolPills}
+    <div class="section-label mt-3">Grounding practice</div>
+    <div class="card card-glass" style="padding:1.375rem;margin-bottom:1rem">
+      <div style="font-family:var(--font-display);font-size:1.0625rem;color:var(--text-1);margin-bottom:.625rem">5 things you can see</div>
+      <p class="body-sm">Look around and name 5 things. Then 4 you can touch. 3 you can hear. 2 you can smell. 1 you can taste. Your nervous system will slow down.</p>
+      <button class="btn btn-ghost" style="margin-top:1rem;font-size:.875rem" onclick="toast('Grounding logged 🪨')">I did this</button>
+    </div>
+    <div class="section-label mt-3">Body scan</div>
+    <div class="card card-glass" style="padding:1.375rem;margin-bottom:1rem">
+      <div style="font-family:var(--font-display);font-size:1.0625rem;color:var(--text-1);margin-bottom:.625rem">Where are you holding tension?</div>
+      <p class="body-sm">Start at the top of your head. Slowly move your attention down. Jaw, neck, shoulders, chest, belly. Don't try to fix anything — just notice.</p>
+      <button class="btn btn-ghost" style="margin-top:1rem;font-size:.875rem" onclick="toast('Body scan complete 🌿')">I did this</button>
+    </div>
+    <div style="background:var(--rose-dim);border:1px solid rgba(225,29,72,.2);border-radius:var(--radius-xl);padding:1.25rem;margin-top:1.5rem">
+      <div class="flex items-center gap-1 mb-2">
+        <span>🛡️</span>
+        <span style="font-weight:600;color:#fca5a5;font-size:.9375rem">Always here for you</span>
+      </div>
+      <p class="body-sm" style="margin-bottom:.875rem">If things feel unmanageable, the Crisis Toolkit is always free — no subscription needed.</p>
+      <button class="btn" style="background:rgba(225,29,72,.2);border:1.5px solid rgba(225,29,72,.35);color:#fca5a5;font-size:.875rem;padding:.75rem 1.25rem" onclick="location.href='crisis-intro.html'">Open Crisis Toolkit</button>
+    </div>`;
 }
 
 // ── YOU tab ────────────────────────────────────────────────
 function vYou() {
-const totalDays = S.streakHistory.length;
-const totalCourses = S.coursesStarted.length;
+  const totalDays = S.streakHistory.length;
+  const totalCourses = S.coursesStarted.length;
 
-return `
-<div class="mb-4">
-<h1 class="title-xl">You<em>.</em></h1>
-<p class="body-sm" style="margin-top:.25rem">Your journey so far</p>
-</div>
-
-```
-<div class="section-label">Your stats</div>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1.5rem">
-  <div class="card card-glass" style="padding:1.125rem;text-align:center">
-    <div style="font-family:var(--font-display);font-size:2rem;color:var(--text-1)">${totalDays}</div>
-    <div class="body-sm">days checked in</div>
-  </div>
-  <div class="card card-glass" style="padding:1.125rem;text-align:center">
-    <div style="font-family:var(--font-display);font-size:2rem;color:var(--text-1)">${S.streak}</div>
-    <div class="body-sm">day streak</div>
-  </div>
-</div>
-
-<div class="section-label">Last 7 days</div>
-<div class="card card-glass" style="padding:1.25rem;margin-bottom:1.5rem">
-  ${streakDots()}
-  <p class="body-sm" style="margin-top:.75rem;color:var(--text-3)">Each dot is a day you checked in</p>
-</div>
-
-${!S.isPro?`<div style="background:var(--grad-subtle);border:1px solid rgba(13,148,136,.25);border-radius:var(--radius-xl);padding:1.375rem;margin-bottom:1.5rem">
-  <div style="font-family:var(--font-display);font-size:1.125rem;color:var(--text-1);margin-bottom:.5rem">Unlock the full journey</div>
-  <p class="body-sm" style="margin-bottom:.875rem">All 4 tracks, journaling, and everything we build next.</p>
-  <button class="btn btn-primary w-full" onclick="toast('Pro coming soon! 🚀')">$9.99/mo · $74.99/yr</button>
-</div>`:''}
-
-<div class="section-label">Settings</div>
-<div class="card card-glass" style="padding:1.25rem;margin-bottom:1rem">
-  <div class="flex items-center justify-between">
-    <div>
-      <div style="font-weight:600;color:var(--text-1);font-size:.9375rem">Practice reminders</div>
-      <div class="body-sm">Daily gentle nudge</div>
+  return `
+    <div class="mb-4">
+      <h1 class="title-xl">You<em>.</em></h1>
+      <p class="body-sm" style="margin-top:.25rem">Your journey so far</p>
     </div>
-    <div style="width:2.75rem;height:1.625rem;border-radius:var(--radius-full);background:var(--border);position:relative;cursor:pointer" onclick="toast('Reminders coming soon 🔔')">
-      <div style="width:1.125rem;height:1.125rem;border-radius:50%;background:white;position:absolute;top:.25rem;left:.25rem"></div>
+    <div class="section-label">Your stats</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1.5rem">
+      <div class="card card-glass" style="padding:1.125rem;text-align:center">
+        <div style="font-family:var(--font-display);font-size:2rem;color:var(--text-1)">${totalDays}</div>
+        <div class="body-sm">days checked in</div>
+      </div>
+      <div class="card card-glass" style="padding:1.125rem;text-align:center">
+        <div style="font-family:var(--font-display);font-size:2rem;color:var(--text-1)">${S.streak}</div>
+        <div class="body-sm">day streak</div>
+      </div>
     </div>
-  </div>
-</div>
-
-<div class="card card-glass" style="padding:1.125rem;margin-bottom:1.5rem">
-  <div class="flex items-center gap-1">
-    <svg style="width:1.125rem;height:1.125rem;color:var(--text-teal);flex-shrink:0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-    <div>
-      <div style="font-weight:600;color:var(--text-teal);font-size:.875rem">Your privacy</div>
-      <div class="body-sm" style="margin-top:.125rem">All progress saved locally on your device only.</div>
+    <div class="section-label">Last 7 days</div>
+    <div class="card card-glass" style="padding:1.25rem;margin-bottom:1.5rem">
+      ${streakDots()}
+      <p class="body-sm" style="margin-top:.75rem;color:var(--text-3)">Each dot is a day you checked in</p>
     </div>
-  </div>
-</div>
-
-<div style="padding-top:1.5rem;border-top:1px solid rgba(225,29,72,.15)">
-  <button class="btn btn-danger w-full" onclick="show('logoutModal')">
-    <svg style="width:1rem;height:1rem" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
-    Log out
-  </button>
-  <div style="text-align:center;margin-top:2rem">
-    <p style="color:var(--text-3);font-size:.6875rem">MPHaven v3.0 · Your companion for growth</p>
-    <button onclick="if(confirm('Reset everything?')){localStorage.clear();location.reload();}" style="margin-top:.75rem;padding:.375rem .875rem;background:none;border:1px solid var(--border);border-radius:var(--radius-md);color:var(--text-3);font-size:.625rem;cursor:pointer">Reset all data</button>
-  </div>
-</div>`;
-```
-
+    ${!S.isPro?`<div style="background:var(--grad-subtle);border:1px solid rgba(13,148,136,.25);border-radius:var(--radius-xl);padding:1.375rem;margin-bottom:1.5rem">
+      <div style="font-family:var(--font-display);font-size:1.125rem;color:var(--text-1);margin-bottom:.5rem">Unlock the full journey</div>
+      <p class="body-sm" style="margin-bottom:.875rem">All 4 tracks, journaling, and everything we build next.</p>
+      <button class="btn btn-primary w-full" onclick="toast('Pro coming soon! 🚀')">$9.99/mo · $74.99/yr</button>
+    </div>`:''}
+    <div class="section-label">Settings</div>
+    <div class="card card-glass" style="padding:1.25rem;margin-bottom:1rem">
+      <div class="flex items-center justify-between">
+        <div>
+          <div style="font-weight:600;color:var(--text-1);font-size:.9375rem">Practice reminders</div>
+          <div class="body-sm">Daily gentle nudge</div>
+        </div>
+        <div style="width:2.75rem;height:1.625rem;border-radius:var(--radius-full);background:var(--border);position:relative;cursor:pointer" onclick="toast('Reminders coming soon 🔔')">
+          <div style="width:1.125rem;height:1.125rem;border-radius:50%;background:white;position:absolute;top:.25rem;left:.25rem"></div>
+        </div>
+      </div>
+    </div>
+    <div class="card card-glass" style="padding:1.125rem;margin-bottom:1.5rem">
+      <div class="flex items-center gap-1">
+        <svg style="width:1.125rem;height:1.125rem;color:var(--text-teal);flex-shrink:0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+        <div>
+          <div style="font-weight:600;color:var(--text-teal);font-size:.875rem">Your privacy</div>
+          <div class="body-sm" style="margin-top:.125rem">All progress saved locally on your device only.</div>
+        </div>
+      </div>
+    </div>
+    <div style="padding-top:1.5rem;border-top:1px solid rgba(225,29,72,.15)">
+      <button class="btn btn-danger w-full" onclick="show('logoutModal')">
+        <svg style="width:1rem;height:1rem" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+        Log out
+      </button>
+      <div style="text-align:center;margin-top:2rem">
+        <p style="color:var(--text-3);font-size:.6875rem">MPHaven v3.0 · Your companion for growth</p>
+        <button onclick="if(confirm('Reset everything?')){localStorage.clear();location.reload();}" style="margin-top:.75rem;padding:.375rem .875rem;background:none;border:1px solid var(--border);border-radius:var(--radius-md);color:var(--text-3);font-size:.625rem;cursor:pointer">Reset all data</button>
+      </div>
+    </div>`;
 }
 
 // ── Render ────────────────────────────────────────────────
 function render() {
-const el = document.getElementById(‘view’);
-if (!el) return;
-el.className = ‘pad fade-up’;
-void el.offsetWidth;
-el.className = ‘pad fade-up’;
-switch(S.tab) {
-case ‘today’: el.innerHTML = vToday(); break;
-case ‘learn’: el.innerHTML = vLearn(); break;
-case ‘tools’: el.innerHTML = vTools(); if(S.breathActive) setTimeout(breathCycle,80); break;
-case ‘you’:   el.innerHTML = vYou(); break;
-}
+  const el = document.getElementById('view');
+  if (!el) return;
+  el.className = 'pad fade-up';
+  void el.offsetWidth;
+  el.className = 'pad fade-up';
+  switch(S.tab) {
+    case 'today': el.innerHTML = vToday(); break;
+    case 'learn': el.innerHTML = vLearn(); break;
+    case 'tools': el.innerHTML = vTools(); if(S.breathActive) setTimeout(breathCycle,80); break;
+    case 'you':   el.innerHTML = vYou(); break;
+  }
 }
 
 // ── Boot ──────────────────────────────────────────────────
-document.addEventListener(‘DOMContentLoaded’, ()=>{
-// Version migration — preserve ALL safety/disclaimer keys across versions
-if (localStorage.getItem(‘mph_app_v’) !== APP_V) {
-const keep = {
-‘mph_disc_v’:  localStorage.getItem(‘mph_disc_v’)  || localStorage.getItem(‘mphaven_disclaimer_version’),
-‘mph_disc_ok’: localStorage.getItem(‘mph_disc_ok’) || localStorage.getItem(‘mphaven_disclaimer_acknowledged’),
-‘mph_crisis’:  localStorage.getItem(‘mph_crisis’)  || localStorage.getItem(‘mphaven_last_crisis_check’),
-// Preserve old keys too so old disclaimer.html still works
-‘mphaven_disclaimer_acknowledged’: localStorage.getItem(‘mphaven_disclaimer_acknowledged’),
-‘mphaven_disclaimer_version’:      localStorage.getItem(‘mphaven_disclaimer_version’),
-‘mphaven_last_crisis_check’:       localStorage.getItem(‘mphaven_last_crisis_check’),
-};
-localStorage.clear();
-Object.entries(keep).forEach(([k,v])=>{ if(v) localStorage.setItem(k,v); });
-localStorage.setItem(‘mph_app_v’, APP_V);
-}
+document.addEventListener('DOMContentLoaded', ()=>{
+  // Version migration — preserve ALL safety/disclaimer keys across versions
+  if (localStorage.getItem('mph_app_v') !== APP_V) {
+    const keep = {
+      'mph_disc_v':  localStorage.getItem('mph_disc_v')  || localStorage.getItem('mphaven_disclaimer_version'),
+      'mph_disc_ok': localStorage.getItem('mph_disc_ok') || localStorage.getItem('mphaven_disclaimer_acknowledged'),
+      'mph_crisis':  localStorage.getItem('mph_crisis')  || localStorage.getItem('mphaven_last_crisis_check'),
+      // Preserve old keys too so old disclaimer.html still works
+      'mphaven_disclaimer_acknowledged': localStorage.getItem('mphaven_disclaimer_acknowledged'),
+      'mphaven_disclaimer_version':      localStorage.getItem('mphaven_disclaimer_version'),
+      'mphaven_last_crisis_check':       localStorage.getItem('mphaven_last_crisis_check'),
+    };
+    localStorage.clear();
+    Object.entries(keep).forEach(([k,v])=>{ if(v) localStorage.setItem(k,v); });
+    localStorage.setItem('mph_app_v', APP_V);
+  }
 
-load(); render();
+  load(); render();
 
-// Check disclaimer — accepts any version acknowledgment from old or new app
-setTimeout(()=>{
-const ok = localStorage.getItem(‘mph_disc_ok’) === ‘true’
-|| localStorage.getItem(‘mphaven_disclaimer_acknowledged’) === ‘true’;
-// If never acknowledged at all, redirect to disclaimer
-if (!ok) { window.location.href=‘disclaimer.html’; return; }
-// Already acknowledged — mark new keys so future checks pass
-localStorage.setItem(‘mph_disc_ok’, ‘true’);
-localStorage.setItem(‘mph_disc_v’, DISC_V);
+  // Check disclaimer — accepts any version acknowledgment from old or new app
+  setTimeout(()=>{
+    const ok = localStorage.getItem('mph_disc_ok') === 'true'
+      || localStorage.getItem('mphaven_disclaimer_acknowledged') === 'true';
+    // If never acknowledged at all, redirect to disclaimer
+    if (!ok) { window.location.href='disclaimer.html'; return; }
+    // Already acknowledged — mark new keys so future checks pass
+    localStorage.setItem('mph_disc_ok', 'true');
+    localStorage.setItem('mph_disc_v', DISC_V);
 
-```
-const last = localStorage.getItem('mph_crisis') || localStorage.getItem('mphaven_last_crisis_check');
-if (!last || Date.now()-parseInt(last)>CRISIS_TIMEOUT) show('crisisModal');
-```
-
-}, 120);
+    const last = localStorage.getItem('mph_crisis') || localStorage.getItem('mphaven_last_crisis_check');
+    if (!last || Date.now()-parseInt(last)>CRISIS_TIMEOUT) show('crisisModal');
+  }, 120);
 });
 
-window.addEventListener(‘beforeunload’, save);
+window.addEventListener('beforeunload', save);
 </script>
-
 </body>
 </html>
